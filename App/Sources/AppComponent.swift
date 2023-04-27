@@ -1,7 +1,7 @@
 //
 //  AppComponent.swift
 //
-//  ModulariedSuperApp
+//  MOIT
 //
 //  Created by 김찬수
 //
