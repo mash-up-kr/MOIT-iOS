@@ -1,0 +1,23 @@
+//
+//  {{ name }}AppDelegate.swift
+//
+//  ModulariedSuperApp
+//
+//  Created by {{author}} on {{currentDate}}.
+//
+
+import UIKit
+
+@UIApplicationMain
+class {{name}}AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = {{name}}UserInterfaceViewController()
+        window.makeKeyAndVisible()
+        self.window = window
+        return true
+    }
+    
+}
+

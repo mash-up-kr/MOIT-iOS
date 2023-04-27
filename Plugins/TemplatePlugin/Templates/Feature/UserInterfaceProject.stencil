@@ -1,0 +1,22 @@
+//
+//  {{ name }}AppDelegate.swift
+//
+//  ModulariedSuperApp
+//
+//  Created by {{author}}
+//
+
+import ProjectDescription
+import ProjectDescriptionHelpers
+import UtilityPlugin
+
+let project = Project.invertedDualTargetProjectWithDemoApp(
+    name: "{{ name }}UserInterface",
+    platform: .iOS,
+    iOSTargetVersion: "15.0.0",
+    interfaceDependencies: [
+    ],
+    implementDependencies: [
+    ]
+)
+

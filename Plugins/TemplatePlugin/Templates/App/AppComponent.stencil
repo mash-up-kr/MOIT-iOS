@@ -1,0 +1,18 @@
+//
+//  AppComponent.swift
+//
+//  ModulariedSuperApp
+//
+//  Created by {{name}}
+//
+
+import Foundation
+import RIBs
+
+final class AppComponent: Component<EmptyDependency>, RootDependency {
+  
+  init() {
+    super.init(dependency: EmptyComponent())
+  }
+  
+}
