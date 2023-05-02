@@ -1,0 +1,9 @@
+app_identifier("com.chansoo.MOIT") # The bundle identifier of your app
+apple_id("kcs05008@naver.com") # Your Apple Developer Portal username
+
+# itc_team_id("123946758") # App Store Connect Team ID
+team_id("4NV4Z6BW27") # Developer Portal Team ID
+username("kcs05008@naver.com") 
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
