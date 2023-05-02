@@ -96,3 +96,11 @@ public extension TargetDependency.ThirdParty {
     static let SnapKit = TargetDependency.external(name: "SnapKit")
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
 }
+
+// MARK: - Scripts
+public extension TargetScript {
+    static let swiftLintScript = TargetScript.pre(
+        path: .relativeToRoot("Scripts/SwiftLintRunScript.sh"),
+        name: "SwiftLint"
+    )
+}

@@ -1,4 +1,5 @@
 import ProjectDescription
+import UtilityPlugin
 
 extension Project {
     private static let organizationName = "chansoo.io"
@@ -85,6 +86,7 @@ extension Project {
              ),
              infoPlist: .default,
              sources: ["./Tests/**"],
+             scripts: [.swiftLintScript],
              dependencies: [
                  .target(name: name),
                  .target(name: name + "Impl"),
@@ -141,6 +143,7 @@ extension Project {
             ),
             sources: ["./DemoApp/Sources/**"],
             resources: ["./DemoApp/Resources/**"],
+            scripts: [.swiftLintScript],
             dependencies: implementDependencies + [.target(name: name)]
         )
 
@@ -161,6 +164,7 @@ extension Project {
                deploymentTarget: .iOS(targetVersion: iOSTargetVersion, devices: [.iphone]),
                infoPlist: .default,
                sources: ["./\(name)/**"],
+                scripts: [.swiftLintScript],
     //           resources: ["Resources/**"],
                dependencies: dependencies)
     }
@@ -184,6 +188,7 @@ private extension Project {
                       ),
                       infoPlist: .default,
                       sources: ["./Implement/**"],
+                      scripts: [.swiftLintScript],
 //                      sources: ["\(name)/Sources/Implement/**"],
 //                      resources: ["Resources/**"],
                       dependencies: dependencies)
@@ -204,6 +209,7 @@ private extension Project {
                       ),
                       infoPlist: .default,
                       sources: ["./Interface/**"],
+                      scripts: [.swiftLintScript],
                       //                             resources: ["Resources/**"],
                       dependencies: dependencies)
     }
@@ -218,6 +224,7 @@ private extension Project {
 //                             infoPlist: .default,
                              sources: ["Sources/**"],
                              resources: ["Resources/**"],
+                             scripts: [.swiftLintScript],
                              dependencies: dependencies)
 //        let tests = Target(name: "\(name)Tests",
 //                           platform: platform,
@@ -242,6 +249,7 @@ private extension Project {
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            scripts: [.swiftLintScript],
             dependencies: dependencies
         )
 //        let testTarget = Target(
@@ -267,6 +275,7 @@ private extension Project {
             infoPlist: InfoPlist(stringLiteral: infoPlist),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            scripts: [.swiftLintScript],
             dependencies: dependencies
         )
         return [mainTarget]
