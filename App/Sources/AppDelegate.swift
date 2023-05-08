@@ -1,0 +1,23 @@
+//
+//  AppDelegate.swift
+//
+//  MOIT
+//
+//  Created by 김찬수
+//
+
+import UIKit
+import RIBs
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let result = RootBuilder(dependency: AppComponent()).build()
+        self.launchRouter = result.launchRouter
+        launchRouter?.launch(from:window)
+        return true
+    }
+}
+

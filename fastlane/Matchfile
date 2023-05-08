@@ -1,0 +1,5 @@
+git_url("https://github.com/chansooo/MOIT-Cert")
+storage_mode("git")
+type("development") # The default type, can be: appstore, adhoc, enterprise or development
+app_identifier("com.chansoo.MOIT")
+# username("kcs05008@naver.com") # Your Apple Developer Portal username

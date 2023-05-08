@@ -1,0 +1,19 @@
+# .github/workflows/my-project.yml
+name: MOIT
+
+on:
+  pull_request: 
+    branches: [ main ]
+
+jobs:
+  build:
+    name: test action
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Tuist
+      run: curl -Ls https://install.tuist.io | bash
+    - name: Fetch Swift Packages
+      run: tuist fetch
+    - name: Build and Test
+      run:  tuist test MOIT-Workspace
