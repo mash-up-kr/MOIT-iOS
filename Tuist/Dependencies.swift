@@ -25,7 +25,6 @@ let spm = SwiftPackageManagerDependencies(
         "Kingfisher": .framework,
         "Nimble": .framework,
         "Quick": .framework,
-        "Nimble": .framework,
         "Lottie": .framework,
     ]
 )
