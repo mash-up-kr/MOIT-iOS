@@ -30,7 +30,7 @@ let project = Project(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             dependencies: [
-
+                .ThirdParty.RIBs,
             ]
         )
     ]
