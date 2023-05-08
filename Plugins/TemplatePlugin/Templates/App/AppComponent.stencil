@@ -1,9 +1,9 @@
 //
 //  AppComponent.swift
 //
-//  MOIT
+//  {{name}}
 //
-//  Created by {{name}}
+//  Created by {{author}}
 //
 
 import Foundation
