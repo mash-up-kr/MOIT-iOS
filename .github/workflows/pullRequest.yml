@@ -18,4 +18,4 @@ jobs:
     - name: Generate Project
       run: tuist generate
     - name: Build and Test
-      run:  xcodebuild test -workspace MOIT.xcworkspace -scheme MOIT-Workspace -destination 'platform=iOS Simulator,name=iPhone 13 Pro,OS=latest' build test
+      run:  tuist test MOIT-Workspace
