@@ -9,7 +9,7 @@ import ProjectDescription
 
 let spm = SwiftPackageManagerDependencies(
     [
-        .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .branch("master")),
+        .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .branch("main")),
         .remote(url: "https://github.com/uber/RIBs", requirement: .branch("master")),
         .remote(url: "https://github.com/onevcat/Kingfisher", requirement: .branch("master")),
         .remote(url: "https://github.com/airbnb/lottie-ios", requirement: .branch("master")),

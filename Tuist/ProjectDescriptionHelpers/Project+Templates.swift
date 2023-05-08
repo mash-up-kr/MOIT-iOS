@@ -2,7 +2,9 @@ import ProjectDescription
 import UtilityPlugin
 
 extension Project {
+    
     private static let organizationName = "chansoo.io"
+    
     public static func app(name: String,
                            platform: Platform,
                            iOSTargetVersion: String,
@@ -17,6 +19,7 @@ extension Project {
                        organizationName: organizationName,
                        targets: targets)
     }
+    
     public static func frameworkWithDemoApp(name: String,
                                             platform: Platform,
                                             iOSTargetVersion: String,
@@ -35,6 +38,7 @@ extension Project {
                        organizationName: organizationName,
                        targets: targets)
     }
+    
     public static func framework(name: String,
                                  platform: Platform,
                                  iOSTargetVersion: String,
@@ -50,6 +54,7 @@ extension Project {
                        organizationName: organizationName,
                        targets: targets)
     }
+    
     /// 현재 경로 내부의 Implement, Interface 두개의 디렉토리에 각각 Target을 가지는 Project를 만듭니다.
     /// interface와 implement에 필요한 dependency를 각각 주입해줍니다.
     /// implement는 자동으로 interface에 대한 종속성을 가지고 있습니다.
@@ -60,6 +65,7 @@ extension Project {
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         demoApp: Bool = false,
+        useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default
     ) -> Project {
 
@@ -69,34 +75,24 @@ extension Project {
             iOSTargetVersion: iOSTargetVersion,
             dependencies: interfaceDependencies
         )
+        
         let implementTarget = makeImplementStaticLibraryTarget(
             name: name,
             platform: platform,
             iOSTargetVersion: iOSTargetVersion,
             dependencies: implementDependencies + [.target(name: name)]
         )
-        let testTarget = Target(
-             name: "\(name)Tests",
-             platform: platform,
-             product: .unitTests,
-             bundleId: "team.io.\(name)Tests",
-             deploymentTarget: .iOS(
-                 targetVersion: iOSTargetVersion,
-                 devices: [.iphone]
-             ),
-             infoPlist: .default,
-             sources: ["./Tests/**"],
-             scripts: [.swiftLintScript],
-             dependencies: [
-                 .target(name: name),
-                 .target(name: name + "Impl"),
-             ]
-         )
-
+        
+        let testTarget = makeTestTarget(name: name,
+                                        platform: platform,
+                                         targetVersion: iOSTargetVersion)
+        var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, testTarget] : [interfaceTarget, implementTarget]
+        
         return Project(name: name,
                        organizationName: organizationName,
-                       targets: [interfaceTarget, implementTarget, testTarget])
+                       targets: targets)
     }
+    
     /// 현재 경로 내부의 Implement, Interface, DemoApp 세개의 디렉토리에 각각 Target을 가지는 Project를 만듭니다.
     /// interface와 implement에 필요한 dependency를 각각 주입해줍니다.
     /// implement는 자동으로 interface에 대한 종속성을 가지고 있습니다.
@@ -108,6 +104,7 @@ extension Project {
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         demoApp: Bool = false,
+        useTestTarget: Bool = false,
         infoPlist: InfoPlist = .default
     ) -> Project {
 
@@ -146,10 +143,16 @@ extension Project {
             scripts: [.swiftLintScript],
             dependencies: implementDependencies + [.target(name: name)]
         )
+        
+        let testTarget = makeTestTarget(name: name,
+                                        platform: platform,
+                                        targetVersion: iOSTargetVersion)
+        
+        var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, demoApp, testTarget] : [interfaceTarget, implementTarget, demoApp]
 
         return Project(name: name,
                        organizationName: organizationName,
-                       targets: [interfaceTarget, implementTarget, demoApp])
+                       targets: targets)
     }
 
     public static func makeTarget(
@@ -236,7 +239,6 @@ private extension Project {
                       infoPlist: .default,
                       sources: ["./Interface/**"],
                       scripts: [.swiftLintScript],
-                      //                             resources: ["Resources/**"],
                       dependencies: dependencies)
     }
 
@@ -253,6 +255,7 @@ private extension Project {
                              dependencies: dependencies)
         return [sources]
     }
+    
     static func makeAppTargets(name: String, platform: Platform, iOSTargetVersion: String, infoPlist: [String: InfoPlist.Value] = [:], dependencies: [TargetDependency] = []) -> [Target] {
         let platform: Platform = platform
         let mainTarget = Target(
