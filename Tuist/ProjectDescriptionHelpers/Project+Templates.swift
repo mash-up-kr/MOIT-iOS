@@ -165,7 +165,6 @@ extension Project {
                infoPlist: .default,
                sources: ["./\(name)/**"],
                 scripts: [.swiftLintScript],
-    //           resources: ["Resources/**"],
                dependencies: dependencies)
     }
 
@@ -189,8 +188,6 @@ private extension Project {
                       infoPlist: .default,
                       sources: ["./Implement/**"],
                       scripts: [.swiftLintScript],
-//                      sources: ["\(name)/Sources/Implement/**"],
-//                      resources: ["Resources/**"],
                       dependencies: dependencies)
     }
     static func makeInterfaceDynamicFrameworkTarget(
@@ -221,21 +218,10 @@ private extension Project {
                              bundleId: "team.io.\(name)",
                              deploymentTarget: .iOS(targetVersion: iOSTargetVersion, devices: [.iphone]),
                              infoPlist: .extendingDefault(with: infoPlist),
-//                             infoPlist: .default,
                              sources: ["Sources/**"],
                              resources: ["Resources/**"],
                              scripts: [.swiftLintScript],
                              dependencies: dependencies)
-//        let tests = Target(name: "\(name)Tests",
-//                           platform: platform,
-//                           product: .unitTests,
-//                           bundleId: "team.io.\(name)Tests",
-//                           infoPlist: .default,
-//                           sources: ["Tests/**"],
-//                           resources: [],
-//                           dependencies: [
-//                            .target(name: name)
-//                           ])
         return [sources]
     }
     static func makeAppTargets(name: String, platform: Platform, iOSTargetVersion: String, infoPlist: [String: InfoPlist.Value] = [:], dependencies: [TargetDependency] = []) -> [Target] {
@@ -252,18 +238,9 @@ private extension Project {
             scripts: [.swiftLintScript],
             dependencies: dependencies
         )
-//        let testTarget = Target(
-//            name: "\(name)Tests",
-//            platform: platform,
-//            product: .unitTests,
-//            bundleId: "team.io.Tests",
-//            infoPlist: .default,
-//            sources: ["Tests/**"],
-//            dependencies: [
-//                .target(name: "\(name)"),
-//            ])
         return [mainTarget]
     }
+    
     static func makeAppTargets(name: String, platform: Platform, iOSTargetVersion: String, infoPlist: String, dependencies: [TargetDependency] = []) -> [Target] {
         let platform: Platform = platform
         let mainTarget = Target(

@@ -15,6 +15,7 @@ let App = Template(
     description: "This Template is for making App files",
     attributes: [
         AppName,
+        author,
     ],
     items: [
         .file(
@@ -25,10 +26,6 @@ let App = Template(
             path: "App/Sources/AppDelegate.swift",
             templatePath: "AppDelegate.stencil"
         ),
-//        .file(
-//            path: "App/Sources/SceneDelegate.swift",
-//            templatePath: "SceneDelegate.stencil"
-//        ),
         .file(
             path: "App/Resources/LaunchScreen.storyboard",
             templatePath: "LaunchScreen.stencil"
@@ -47,9 +44,3 @@ let App = Template(
         ),
     ]
 )
-
-//extension String {
-//    static var appBasePath: Self {
-//        return "Features/\(name)"
-//    }
-//}

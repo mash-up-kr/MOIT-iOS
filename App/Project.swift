@@ -17,7 +17,7 @@ let project = Project(
             name: "App",
             platform: .iOS,
             product: .app,
-            bundleId: "com.chansoo.app",
+            bundleId: "com.chansoo.MOIT",
             infoPlist: InfoPlist.extendingDefault(
                 with:
                     [
