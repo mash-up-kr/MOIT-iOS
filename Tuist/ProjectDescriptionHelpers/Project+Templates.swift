@@ -171,6 +171,35 @@ extension Project {
 }
 
 private extension Project {
+    
+    private static func makeTestTarget(
+        name: String,
+        platform: Platform,
+        targetVersion: String
+    ) -> Target {
+        let testTarget = Target(
+            name: "\(name)Tests",
+            platform: platform,
+            product: .unitTests,
+            bundleId: "team.io.\(name)Tests",
+            deploymentTarget: .iOS(
+                targetVersion: targetVersion,
+                devices: [.iphone]
+            ),
+            infoPlist: .default,
+            sources: ["./Tests/**"],
+            scripts: [.swiftLintScript],
+            dependencies: [
+                .target(name: name),
+                .target(name: name + "Impl"),
+                .ThirdParty.Quick,
+                .ThirdParty.Nimble,
+            ]
+        )
+        return testTarget
+    }
+
+    
     static func makeImplementStaticLibraryTarget(
         name: String,
         platform: Platform,

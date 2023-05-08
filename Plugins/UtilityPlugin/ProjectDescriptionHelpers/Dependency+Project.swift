@@ -95,6 +95,8 @@ public extension TargetDependency.ThirdParty {
     static let RxGesture = TargetDependency.external(name: "RxGesture")
     static let SnapKit = TargetDependency.external(name: "SnapKit")
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
+    static let Quick = TargetDependency.external(name: "Quick")
+    static let Nimble = TargetDependency.external(name: "Nimble")
 }
 
 // MARK: - Scripts
