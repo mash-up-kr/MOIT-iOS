@@ -31,6 +31,8 @@ let project = Project(
             resources: ["Resources/**"],
             dependencies: [
                 .ThirdParty.RIBs,
+                .Feature.MOITWeb.Implement,
+                .Feature.MOITWeb.Interface
             ]
         )
     ]

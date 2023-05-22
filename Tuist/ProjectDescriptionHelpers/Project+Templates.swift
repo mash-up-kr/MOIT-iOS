@@ -64,7 +64,6 @@ extension Project {
         iOSTargetVersion: String,
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
-        demoApp: Bool = false,
         useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default
     ) -> Project {
@@ -99,12 +98,11 @@ extension Project {
     ///
     public static func invertedDualTargetProjectWithDemoApp(
         name: String,
-        platform: Platform,
-        iOSTargetVersion: String,
+        platform: Platform = .iOS,
+        iOSTargetVersion: String = "15.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
-        demoApp: Bool = false,
-        useTestTarget: Bool = false,
+        useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default
     ) -> Project {
 
