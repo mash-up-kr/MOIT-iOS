@@ -10,13 +10,23 @@ import UIKit
 import RIBs
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder,
+                            UIApplicationDelegate {
+    
     var window: UIWindow?
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    private var launchRouter: LaunchRouting?
+    
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let result = RootBuilder(dependency: AppComponent()).build()
-        self.launchRouter = result.launchRouter
-        launchRouter?.launch(from:window)
+        guard let window = self.window
+        else { return false }
+        
+        let router = RootBuilder(dependency: EmptyComponent()).build()
+        self.launchRouter = router
+        self.launchRouter?.launch(from: window)
         return true
     }
 }
