@@ -139,7 +139,7 @@ extension Project {
             sources: ["./DemoApp/Sources/**"],
             resources: ["./DemoApp/Resources/**"],
             scripts: [.swiftLintScript],
-            dependencies: implementDependencies + [.target(name: name)]
+            dependencies: implementDependencies + [.target(name: name), .target(name: "\(name)Impl")]
         )
         
         let testTarget = makeTestTarget(name: name,
