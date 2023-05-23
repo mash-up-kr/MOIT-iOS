@@ -24,11 +24,20 @@ let project = Project(
                         "CFBundleDevelopmentRegion": "ko_KR",
                         "CFBundleShortVersionString": "1.0",
                         "CFBundleVersion": "1",
-                        "UILaunchStoryboardName": "LaunchScreen"
+                        "UILaunchStoryboardName": "LaunchScreen",
+                        "NSAppTransportSecurity": [
+                            "NSAllowsArbitraryLoads": true
+                        ],
+                        "UIBackgroundModes": [
+                            "fetch",
+                            "remote-notification",
+                            "remove-notification"
+                        ],
                     ]
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            entitlements: "MOIT.entitlements"
             dependencies: [
                 .ThirdParty.RIBs,
             ]
