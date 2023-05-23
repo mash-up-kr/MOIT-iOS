@@ -64,7 +64,6 @@ extension Project {
         iOSTargetVersion: String,
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
-        demoApp: Bool = false,
         useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default
     ) -> Project {
@@ -103,8 +102,8 @@ extension Project {
         iOSTargetVersion: String,
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
-        demoApp: Bool = false,
-        useTestTarget: Bool = false,
+        demoApp: Bool = true,
+        useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default
     ) -> Project {
 
@@ -141,7 +140,7 @@ extension Project {
             sources: ["./DemoApp/Sources/**"],
             resources: ["./DemoApp/Resources/**"],
             scripts: [.swiftLintScript],
-            dependencies: implementDependencies + [.target(name: name)]
+            dependencies: implementDependencies + [.target(name: name), .target(name: "\(name)Impl")]
         )
         
         let testTarget = makeTestTarget(name: name,
