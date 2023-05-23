@@ -37,7 +37,7 @@ let project = Project(
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
-            entitlements: "MOIT.entitlements"
+            entitlements: "../MOIT.entitlements",
             dependencies: [
                 .ThirdParty.RIBs,
             ]
