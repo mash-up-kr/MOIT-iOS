@@ -105,7 +105,8 @@ extension Project {
         implementDependencies: [TargetDependency] = [],
         demoApp: Bool = false,
         useTestTarget: Bool = false,
-        infoPlist: InfoPlist = .default
+        infoPlist: InfoPlist = .default,
+        isUserInterface: Bool = false
     ) -> Project {
 
         let interfaceTarget = makeInterfaceDynamicFrameworkTarget(
@@ -118,7 +119,8 @@ extension Project {
             name: name,
             platform: platform,
             iOSTargetVersion: iOSTargetVersion,
-            dependencies: implementDependencies + [.target(name: name)]
+            dependencies: implementDependencies + [.target(name: name)],
+            isUserInterface: isUserInterface
         )
         let demoApp = Target(
             name: "\(name)DemoApp",
@@ -207,8 +209,16 @@ private extension Project {
         name: String,
         platform: Platform,
         iOSTargetVersion: String,
-        dependencies: [TargetDependency] = []
+        dependencies: [TargetDependency] = [],
+        isUserInterface: Bool = false
     ) -> Target {
+        let userInterfaceSetting: Settings = .settings(
+            base: [
+                "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
+            ],
+            configurations: [.debug(name: .debug)]
+        )
+        
         return Target(name: "\(name)Impl",
                       platform: platform,
                       product: .staticLibrary,
@@ -220,7 +230,9 @@ private extension Project {
                       infoPlist: .default,
                       sources: ["./Implement/**"],
                       scripts: [.swiftLintScript],
-                      dependencies: dependencies)
+                      dependencies: dependencies,
+                      settings: isUserInterface ? userInterfaceSetting : .settings(defaultSettings: .recommended())
+        )
     }
     static func makeInterfaceDynamicFrameworkTarget(
         name: String,

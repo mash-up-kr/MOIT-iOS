@@ -97,6 +97,8 @@ public extension TargetDependency.ThirdParty {
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
+    static let FlexLayout = TargetDependency.package(product: "FlexLayout")
+    static let PinLayout = TargetDependency.package(product: "PinLayout")
 }
 
 // MARK: - Scripts

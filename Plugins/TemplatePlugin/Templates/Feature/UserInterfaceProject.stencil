@@ -17,6 +17,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     interfaceDependencies: [
     ],
     implementDependencies: [
-    ]
+    ],
+    isUserInterface: true
 )
 
