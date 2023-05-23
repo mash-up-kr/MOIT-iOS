@@ -41,6 +41,12 @@ let project = Project(
             dependencies: [
                 .ThirdParty.RIBs,
             ]
+//            settings: .settings(
+//                base: [
+//                    "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
+//                ],
+//                configurations: [.debug(name: .debug)]
+//            )
         )
     ]
 )
