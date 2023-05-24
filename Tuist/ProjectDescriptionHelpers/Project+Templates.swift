@@ -108,8 +108,8 @@ extension Project {
         iOSTargetVersion: String,
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
-        demoApp: Bool = false,
-        useTestTarget: Bool = false,
+        demoApp: Bool = true,
+        useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default,
         isUserInterface: Bool = false
     ) -> Project {
