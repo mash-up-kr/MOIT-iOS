@@ -3,7 +3,7 @@ import UtilityPlugin
 
 extension Project {
     
-    private static let organizationName = "chansoo.io"
+    private static let organizationName = "chansoo.MOIT"
     
     public static func app(name: String,
                            platform: Platform,
@@ -86,7 +86,7 @@ extension Project {
         let testTarget = makeTestTarget(name: name,
                                         platform: platform,
                                          targetVersion: iOSTargetVersion)
-        var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, testTarget] : [interfaceTarget, implementTarget]
+        let targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, testTarget] : [interfaceTarget, implementTarget]
         
         let settings: Settings = .settings(configurations: [
             .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
@@ -156,15 +156,17 @@ extension Project {
                                         platform: platform,
                                         targetVersion: iOSTargetVersion)
         
-        var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, demoApp, testTarget] : [interfaceTarget, implementTarget, demoApp]
+        let targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, demoApp, testTarget] : [interfaceTarget, implementTarget, demoApp]
 
         let settings: Settings = .settings(configurations: [
             .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
             .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
         ])
-
+    
+        let packages: [Package] = isUserInterface ? [.SPM.PinLayout, .SPM.FlexLayout] : []
         return Project(name: name,
                        organizationName: organizationName,
+                       packages: packages,
                        settings: settings,
                        targets: targets)
     }

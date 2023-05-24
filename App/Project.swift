@@ -12,6 +12,16 @@ import UtilityPlugin
 
 let project = Project(
     name: "App",
+    packages: [
+        .SPM.FlexLayout,
+        .SPM.PinLayout,
+    ],
+    settings: .settings(
+        base: [
+            "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
+        ],
+        configurations: [.debug(name: .debug)]
+    ),
     targets: [
         Target(
             name: "App",
@@ -52,8 +62,8 @@ let project = Project(
             entitlements: "../MOIT.entitlements",
             dependencies: [
                 .ThirdParty.RIBs,
-//                .ThirdParty.FlexLayout,
-//                .ThirdParty.PinLayout,
+                .ThirdParty.FlexLayout,
+                .ThirdParty.PinLayout,
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
