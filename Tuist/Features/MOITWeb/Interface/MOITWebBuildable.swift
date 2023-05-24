@@ -10,5 +10,8 @@ import Foundation
 import RIBs
 
 public protocol MOITWebBuildable: Buildable {
-    func build(withListener listener: MOITWebListener) -> ViewableRouting
+    func build(
+        withListener listener: MOITWebListener,
+        path: MOITWebPath
+    ) -> ViewableRouting
 }
