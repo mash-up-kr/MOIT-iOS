@@ -12,6 +12,12 @@ import UtilityPlugin
 
 let project = Project(
     name: "App",
+    settings: .settings(
+        base: [
+            "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
+        ],
+        configurations: [.debug(name: .debug)]
+    ),
     targets: [
         Target(
             name: "App",
@@ -28,6 +34,17 @@ let project = Project(
                         "NSAppTransportSecurity": [
                             "NSAllowsArbitraryLoads": true
                         ],
+                        "UIApplicationSceneManifest": [
+                            "UIApplicationSupportsMultipleScenes": false,
+                            "UISceneConfigurations": [
+                                "UIWindowSceneSessionRoleApplication": [
+                                    [
+                                        "UISceneConfigurationName": "Default Configuration",
+                                        "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
+                                    ],
+                                ]
+                            ]
+                        ],
                         "UIBackgroundModes": [
                             "fetch",
                             "remote-notification",
@@ -37,10 +54,15 @@ let project = Project(
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            
             entitlements: "../MOIT.entitlements",
             dependencies: [
                 .ThirdParty.RIBs,
-            ]
+            ],
+            settings: .settings(configurations: [
+                .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
+                .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
+            ])
         )
     ]
 )

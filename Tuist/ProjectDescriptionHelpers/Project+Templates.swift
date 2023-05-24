@@ -3,7 +3,7 @@ import UtilityPlugin
 
 extension Project {
     
-    private static let organizationName = "chansoo.io"
+    private static let organizationName = "chansoo.MOIT"
     
     public static func app(name: String,
                            platform: Platform,
@@ -85,10 +85,16 @@ extension Project {
         let testTarget = makeTestTarget(name: name,
                                         platform: platform,
                                          targetVersion: iOSTargetVersion)
-        var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, testTarget] : [interfaceTarget, implementTarget]
+        let targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, testTarget] : [interfaceTarget, implementTarget]
         
+        let settings: Settings = .settings(configurations: [
+            .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
+            .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
+        ])
+
         return Project(name: name,
                        organizationName: organizationName,
+                       settings: settings,
                        targets: targets)
     }
     
@@ -104,7 +110,8 @@ extension Project {
         implementDependencies: [TargetDependency] = [],
         demoApp: Bool = true,
         useTestTarget: Bool = true,
-        infoPlist: InfoPlist = .default
+        infoPlist: InfoPlist = .default,
+        isUserInterface: Bool = false
     ) -> Project {
 
         let interfaceTarget = makeInterfaceDynamicFrameworkTarget(
@@ -117,7 +124,8 @@ extension Project {
             name: name,
             platform: platform,
             iOSTargetVersion: iOSTargetVersion,
-            dependencies: implementDependencies + [.target(name: name)]
+            dependencies: implementDependencies + [.target(name: name)],
+            isUserInterface: isUserInterface
         )
         let demoApp = Target(
             name: "\(name)DemoApp",
@@ -147,10 +155,18 @@ extension Project {
                                         platform: platform,
                                         targetVersion: iOSTargetVersion)
         
-        var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, demoApp, testTarget] : [interfaceTarget, implementTarget, demoApp]
+        let targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, demoApp, testTarget] : [interfaceTarget, implementTarget, demoApp]
 
+        let settings: Settings = .settings(configurations: [
+            .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
+            .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
+        ])
+    
+        let packages: [Package] = isUserInterface ? [.SPM.PinLayout, .SPM.FlexLayout] : []
         return Project(name: name,
                        organizationName: organizationName,
+                       packages: packages,
+                       settings: settings,
                        targets: targets)
     }
 
@@ -206,8 +222,16 @@ private extension Project {
         name: String,
         platform: Platform,
         iOSTargetVersion: String,
-        dependencies: [TargetDependency] = []
+        dependencies: [TargetDependency] = [],
+        isUserInterface: Bool = false
     ) -> Target {
+        let userInterfaceSetting: Settings = .settings(
+            base: [
+                "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
+            ],
+            configurations: [.debug(name: .debug)]
+        )
+        
         return Target(name: "\(name)Impl",
                       platform: platform,
                       product: .staticLibrary,
@@ -219,7 +243,9 @@ private extension Project {
                       infoPlist: .default,
                       sources: ["./Implement/**"],
                       scripts: [.swiftLintScript],
-                      dependencies: dependencies)
+                      dependencies: dependencies,
+                      settings: isUserInterface ? userInterfaceSetting : .settings(defaultSettings: .recommended())
+        )
     }
     static func makeInterfaceDynamicFrameworkTarget(
         name: String,
