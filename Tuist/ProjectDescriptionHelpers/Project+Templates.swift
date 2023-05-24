@@ -88,8 +88,14 @@ extension Project {
                                          targetVersion: iOSTargetVersion)
         var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, testTarget] : [interfaceTarget, implementTarget]
         
+        let settings: Settings = .settings(configurations: [
+            .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
+            .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
+        ])
+
         return Project(name: name,
                        organizationName: organizationName,
+                       settings: settings,
                        targets: targets)
     }
     
@@ -152,8 +158,14 @@ extension Project {
         
         var targets: [Target] = useTestTarget ? [interfaceTarget, implementTarget, demoApp, testTarget] : [interfaceTarget, implementTarget, demoApp]
 
+        let settings: Settings = .settings(configurations: [
+            .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
+            .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
+        ])
+
         return Project(name: name,
                        organizationName: organizationName,
+                       settings: settings,
                        targets: targets)
     }
 
