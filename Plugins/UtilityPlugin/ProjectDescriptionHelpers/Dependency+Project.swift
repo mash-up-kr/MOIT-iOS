@@ -108,7 +108,7 @@ public extension TargetDependency.ThirdParty {
 
 public extension Package.SPM {
     static let FlexLayout = Package.package(url: "https://github.com/layoutBox/FlexLayout", .upToNextMajor(from: "1.3.18"))
-    static let PinLayout = Package.package(url: "https://github.com/layoutBox/PinLayout", .branch("master"))
+    static let PinLayout = Package.package(url: "https://github.com/layoutBox/PinLayout", .upToNextMajor(from: "1.10.1"))
 }
 
 // MARK: - Scripts
