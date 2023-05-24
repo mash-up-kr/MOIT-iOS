@@ -3,7 +3,7 @@ name: MOIT
 
 on:
   pull_request: 
-    branches: [ development ]
+    branches: [ develop ]
 
 jobs:
   build:
