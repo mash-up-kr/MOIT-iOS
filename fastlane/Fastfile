@@ -13,11 +13,61 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+BundleId = 'com.chansoo.MOIT'
+AppName = 'MOIT'
+
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+
+  desc "build app and upload to testflight in remote"
+  lane :remote do
+
+	#app_store_connect_api_key 사용해서 2중 인증 회피
+	app_store_connect_api_key(
+	  key_id: ENV['API_KEY_ID'],
+	  issuer_id: ENV['API_ISSUER_ID'], 
+	  key_content: ENV['API_PRIVATE_KEY'],
+	  duration: 500,
+	  in_house: false
+	)
+
+	sync_code_signing(
+		type: "appstore",
+		app_identifier: BundleId,
+		readonly: false
+	  )
+
+	#testflight에 등록된 최신 빌드버전을 가져와 +1을 해준다.
+	increment_build_number({
+	  build_number: latest_testflight_build_number + 1
+	})
+
+	buildApp "Release"
+
+	upload_to_testflight
+
   end
+end
+
+def buildApp(configuration)
+	#auto signing 세팅 해제.
+  update_code_signing_settings(
+		use_automatic_signing: false,
+		path: AppName + ".xcodeproj"
+  )
+  
+  build_app(
+	  workspace: AppName + ".xcworkspace", 
+	  scheme: AppName, 
+	  configuration: configuration,
+	  export_method: "app-store",
+	  codesigning_identity: "Apple Distribution: Seyoung Kim (GTB6BR222W)", # 여기 수정해줘야함
+	  export_options: {
+		method: "app-store",
+		provisioningProfiles: { 
+			BundleId => 'match AppStore com.tnzkm.Trinap' # 여기 수정해줘야함.
+		}
+	  }
+	)
 end
