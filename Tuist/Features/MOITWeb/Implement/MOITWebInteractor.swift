@@ -22,10 +22,15 @@ final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
                                 MOITWebInteractable,
                                 MOITWebPresentableListener {
 
+    // MARK: - Properties
+    
     weak var router: MOITWebRouting?
     weak var listener: MOITWebListener?
 
     private let path: String
+    
+    // MARK: - LifeCycles
+    
     init(
         presenter: MOITWebPresentable,
         path: String
@@ -37,7 +42,6 @@ final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        print(#function)
         self.presenter.render(with: self.path)
     }
 
@@ -46,4 +50,12 @@ final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
     }
     
     deinit { debugPrint("\(self) deinit") }
+}
+
+// MARK: - MOITWebPresentableListener
+
+extension MOITWebInteractor {
+    func didSwipeBack() {
+        self.listener?.shouldDetach(withPop: false)
+    }
 }

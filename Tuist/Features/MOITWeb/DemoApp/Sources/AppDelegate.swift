@@ -8,13 +8,6 @@
 
 import Foundation
 import UIKit
-import MOITWeb
-import MOITWebImpl
-import RIBs
-
-final class MockListener: MOITWebListener {
-}
-final class MockMOITWebDependencyImpl: MOITWebDependency { }
 
 @main
 final class AppDelegate: UIResponder,

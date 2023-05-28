@@ -9,4 +9,5 @@
 import Foundation
 
 public protocol MOITWebListener: AnyObject {
+    func shouldDetach(withPop: Bool)
 }

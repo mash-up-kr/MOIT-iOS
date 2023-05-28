@@ -31,8 +31,5 @@ final class MOITWebRouter: ViewableRouter<MOITWebInteractable, MOITWebViewContro
         interactor.router = self
     }
     
-    override func didLoad() {
-        super.didLoad()
-        print(#function)
-    }
+    deinit { debugPrint("\(self) deinit") }
 }

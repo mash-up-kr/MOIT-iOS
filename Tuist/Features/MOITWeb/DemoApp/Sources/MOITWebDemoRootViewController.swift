@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 import MOITWeb
+import MOITWebImpl
+import RIBs
 
 final class MOITWebDemoRootViewController: UITableViewController {
     
@@ -16,18 +18,26 @@ final class MOITWebDemoRootViewController: UITableViewController {
     
     private let items: [MOITWebPath] = [
         .스터디생성1,
-        .스터디생성2
+        .스터디생성2,
     ]
     
+    private var webRouter: ViewableRouting?
+    
     // MARK: - LifeCycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.registerCell()
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     // MARK: - Private functions
+    
     private func registerCell() {
-        self.tableView.register(MOITWebDemoTableViewCell.self, forCellReuseIdentifier: "MOITWebDemoTableViewCell")
+        self.tableView.register(
+            MOITWebDemoTableViewCell.self,
+            forCellReuseIdentifier: "MOITWebDemoTableViewCell"
+        )
     }
 }
 
@@ -60,5 +70,40 @@ extension MOITWebDemoRootViewController {
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
         return 50
+    }
+    
+    override func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        guard self.webRouter == nil else { return }
+        
+        let builder = MOITWebBuilder(dependency: MockMOITWebDependencyImpl())
+        let router = builder.build(
+            withListener: self,
+            path: self.items[indexPath.item]
+        )
+        self.webRouter = router
+        
+        router.load()
+        router.interactable.activate()
+        self.navigationController?.pushViewController(
+            router.viewControllable.uiviewController,
+            animated: true
+        )
+    }
+}
+
+// MARK: - MOITWebListener
+
+extension MOITWebDemoRootViewController: MOITWebListener {
+    func shouldDetach(withPop: Bool) {
+        guard let router = self.webRouter else { return }
+        self.webRouter = nil
+        router.interactable.deactivate()
+        
+        if withPop {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }

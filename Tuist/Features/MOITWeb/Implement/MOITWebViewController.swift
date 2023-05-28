@@ -13,6 +13,7 @@ import WebKit
 
 
 protocol MOITWebPresentableListener: AnyObject {
+    func didSwipeBack()
 }
 
 final class MOITWebViewController: UIViewController,
@@ -21,16 +22,28 @@ final class MOITWebViewController: UIViewController,
     
     private enum Constant {
         static let messageName = "MOIT"
+        
+        // TODO: 합의 후 수정 필요
         static let domain = "https://entertain.naver.com"
     }
     
     weak var listener: MOITWebPresentableListener?
+    private let contentViewcontroller = WKUserContentController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
-        print(#function)
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if self.isMovingFromParent {
+            self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
+            self.listener?.didSwipeBack()
+        }
+    }
+    
+    deinit { debugPrint("\(self) deinit") }
 }
 
 // MARK: - MOITWebPresentable
@@ -41,11 +54,9 @@ extension MOITWebViewController {
         let configuration = self.setWebConfiguration(with: cookie)
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
-        webView.backgroundColor = .blue
         self.view.addSubview(webView)
-        webView.frame = self.view.frame
-        
-        guard let url = URL(string: "\(Self.Constant.domain)/tv") else { return }
+
+        guard let url = URL(string: "\(Self.Constant.domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
         webView.load(URLRequest)
     }
@@ -59,8 +70,8 @@ extension MOITWebViewController {
         HTTPCookie(properties: [
             .domain: Self.Constant.domain,
             .path: path,
-            .name: "accessToken",
-            .value: "어딘가에서 가지고 온 토큰값"
+            .name: "accessToken",   // TODO: 합의 후 수정 필요
+            .value: "어딘가에서 가지고 온 토큰값"  // TODO: 합의 후 수정 필요
         ])
     }
     
@@ -77,9 +88,12 @@ extension MOITWebViewController {
     }
     
     private func setUserContentViewController(with messageName: String) -> WKUserContentController {
-        let contentViewcontroller = WKUserContentController()
-        contentViewcontroller.add(self, name: messageName)
+        self.contentViewcontroller.add(self, name: messageName)
         return contentViewcontroller
+    }
+    
+    private func removeWKScriptMessageHandler(messageName: String) {
+        self.contentViewcontroller.removeScriptMessageHandler(forName: messageName)
     }
 }
 

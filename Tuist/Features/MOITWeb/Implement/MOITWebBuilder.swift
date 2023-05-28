@@ -20,18 +20,22 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
     public override init(dependency: MOITWebDependency) {
         super.init(dependency: dependency)
     }
+    
+    deinit { debugPrint("\(self) deinit") }
 
     public func build(
         withListener listener: MOITWebListener,
         path: MOITWebPath
     ) -> ViewableRouting {
         let component = MOITWebComponent(dependency: dependency)
+        
         let viewController = MOITWebViewController()
         let interactor = MOITWebInteractor(
             presenter: viewController,
             path: path.rawValue
         )
         interactor.listener = listener
+        
         return MOITWebRouter(
             interactor: interactor,
             viewController: viewController
