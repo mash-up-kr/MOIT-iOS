@@ -12,7 +12,12 @@ import UtilityPlugin
 
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITWeb",
-    interfaceDependencies: [.ThirdParty.RIBs],
-    implementDependencies: [.ThirdParty.RIBs],
-    useTestTarget: true
+    interfaceDependencies: [
+        .ThirdParty.RIBs
+    ],
+    implementDependencies: [
+        .ThirdParty.RIBs,
+    ],
+    useTestTarget: true,
+    isUserInterface: true
 )

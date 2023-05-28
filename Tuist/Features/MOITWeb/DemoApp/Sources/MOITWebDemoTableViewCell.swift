@@ -11,7 +11,18 @@ import UIKit
 
 final class MOITWebDemoTableViewCell: UITableViewCell {
     
+    private let flexRootView = UIView()
     private let titleLabel = UILabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.setupLayouts()
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -22,5 +33,11 @@ final class MOITWebDemoTableViewCell: UITableViewCell {
         self.titleLabel.frame = self.contentView.frame
         self.titleLabel.textColor = .black
         self.titleLabel.text = title
+    }
+    
+    private func setupLayouts() {
+        self.contentView.addSubview(self.flexRootView)
+        self.flexRootView.flex.addItem(self.titleLabel)
+            .margin(10)
     }
 }

@@ -23,6 +23,10 @@ extension TargetDependency {
     public struct ThirdParty {}
 }
 
+public extension Package {
+    public struct SPM {}
+}
+
 public extension TargetDependency.Core {
     static let folderName = "Core"
     static func project(name: String, isInterface: Bool) -> TargetDependency {
@@ -97,6 +101,14 @@ public extension TargetDependency.ThirdParty {
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
+
+    static let FlexLayout = TargetDependency.package(product: "FlexLayout")
+    static let PinLayout = TargetDependency.package(product: "PinLayout")
+}
+
+public extension Package.SPM {
+    static let FlexLayout = Package.package(url: "https://github.com/layoutBox/FlexLayout", .upToNextMajor(from: "1.3.18"))
+    static let PinLayout = Package.package(url: "https://github.com/layoutBox/PinLayout", .upToNextMajor(from: "1.10.1"))
 }
 
 // MARK: - Scripts
