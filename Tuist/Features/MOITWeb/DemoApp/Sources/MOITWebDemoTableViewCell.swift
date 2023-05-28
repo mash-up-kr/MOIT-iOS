@@ -8,13 +8,21 @@
 
 import Foundation
 import UIKit
+import FlexLayout
+import PinLayout
 
 final class MOITWebDemoTableViewCell: UITableViewCell {
+    
+    // MARK: - UIComponents
     
     private let flexRootView = UIView()
     private let titleLabel = UILabel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    // MARK: - LifeCycles
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupLayouts()
     }
@@ -29,15 +37,30 @@ final class MOITWebDemoTableViewCell: UITableViewCell {
         self.titleLabel.text = nil
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.flexRootView.pin.all()
+        self.flexRootView.flex.layout()
+    }
+    
+    // MARK: - Functions
+    
     func configure(_ title: String) {
         self.titleLabel.frame = self.contentView.frame
         self.titleLabel.textColor = .black
         self.titleLabel.text = title
     }
-    
+}
+
+// MARK: - Private functions
+
+extension MOITWebDemoTableViewCell {
     private func setupLayouts() {
         self.contentView.addSubview(self.flexRootView)
-        self.flexRootView.flex.addItem(self.titleLabel)
-            .margin(10)
+        self.flexRootView.flex
+            .addItem(self.titleLabel)
+            .marginHorizontal(20)
+            .marginVertical(10)
     }
 }

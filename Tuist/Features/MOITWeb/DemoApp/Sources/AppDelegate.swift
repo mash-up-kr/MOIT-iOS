@@ -27,7 +27,9 @@ final class AppDelegate: UIResponder,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = UINavigationController(rootViewController: MOITWebDemoRootViewController())
+        self.window?.rootViewController = UINavigationController(
+            rootViewController: MOITWebDemoRootViewController()
+        )
         self.window?.makeKeyAndVisible()
         return true
     }
