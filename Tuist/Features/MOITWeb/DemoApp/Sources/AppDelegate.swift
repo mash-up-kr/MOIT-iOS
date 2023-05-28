@@ -21,19 +21,13 @@ final class AppDelegate: UIResponder,
                          UIApplicationDelegate {
     
     var window: UIWindow?
-    private var webRouter: ViewableRouting?
     
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let builder = MOITWebBuilder(dependency: MockMOITWebDependencyImpl())
-        let router = builder.build(withListener: MockListener())
-        self.webRouter = router
-        router.interactable.activate()
-        router.load()
-        self.window?.rootViewController = MOITWebDemoRootViewController(rootViewController: router.viewControllable.uiviewController)
+        self.window?.rootViewController = UINavigationController(rootViewController: MOITWebDemoRootViewController())
         self.window?.makeKeyAndVisible()
         return true
     }

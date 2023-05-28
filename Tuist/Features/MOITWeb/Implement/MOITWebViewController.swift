@@ -20,7 +20,7 @@ final class MOITWebViewController: UIViewController,
     
     private enum Constant {
         static let messageName = "MOIT"
-        static let domain = "https://MOIT"
+        static let domain = "https://entertain.naver.com"
     }
     
     weak var listener: MOITWebPresentableListener?
@@ -41,6 +41,12 @@ extension MOITWebViewController {
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
         webView.backgroundColor = .blue
+        self.view.addSubview(webView)
+        webView.frame = self.view.frame
+        
+        guard let url = URL(string: "\(Self.Constant.domain)/tv") else { return }
+        let URLRequest = URLRequest(url: url)
+        webView.load(URLRequest)
     }
 }
 
@@ -74,7 +80,6 @@ extension MOITWebViewController {
         contentViewcontroller.add(self, name: messageName)
         return contentViewcontroller
     }
-
 }
 
 // MARK: - WKScriptMessageHandler
