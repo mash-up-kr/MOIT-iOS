@@ -104,8 +104,8 @@ extension Project {
     ///
     public static func invertedDualTargetProjectWithDemoApp(
         name: String,
-        platform: Platform,
-        iOSTargetVersion: String,
+        platform: Platform = .iOS,
+        iOSTargetVersion: String = "15.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         demoApp: Bool = true,
