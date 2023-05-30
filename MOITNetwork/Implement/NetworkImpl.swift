@@ -13,34 +13,33 @@ import RxSwift
 public final class NetworkImpl: Network {
 
 	private let session: URLSession
-	
+
 	public init(session: URLSession = URLSession.shared) {
 		self.session = session
 	}
-		
+
 	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
-			
+
 			return Single.create { [weak self] single in
 				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
 					guard let self else { return }
-					
+
 					let result = self.checkError(with: data, response, error)
-					
+
 					switch result {
-						case .success(let data):
-							do {
-								let response = try JSONDecoder().decode(E.Response.self, from: data)
-								single(.success(response))
-							} catch {
-								single(.failure(NetworkError.decodingError))
-							}
-						case .failure(let error):
-							single(.failure(error))
+					case .success(let data):
+						do {
+							let response = try JSONDecoder().decode(E.Response.self, from: data)
+							single(.success(response))
+						} catch {
+							single(.failure(NetworkError.decodingError))
+						}
+					case .failure(let error):
+						single(.failure(error))
 					}
 				}.resume()
-				
 				return Disposables.create()
 			}
 		} catch {
@@ -52,7 +51,7 @@ public final class NetworkImpl: Network {
 		with data: Data?,
 		_ response: URLResponse?,
 		_ error: Error?
-	) -> Result<Data,Error> {
+	) -> Result<Data, Error> {
 		if let error = error {
 			return .failure(error)
 		}

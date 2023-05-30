@@ -17,34 +17,34 @@ public struct FormData {
 
 public struct MultipartFormData {
 	public typealias FormField = [String: String]
-	
+
 	public init(
 		boundary: String = UUID().uuidString,
 		formFields: FormField = [:],
 		formDatas: [FormData] = []
 	) {
 		self.boundary = boundary
-		
+
 		formFields.forEach {
 			self.body.append(convertToFormField(named: $0, value: $1))
 		}
-		
+
 		formDatas.forEach {
 			self.body.append(convertToData(formData: $0))
 		}
-		
+
 		self.body.appendString("--\(boundary)--")
 	}
-	
+
 	public var boundary: String
 	public let body = NSMutableData()
-	
+
 	private func convertToFormField(
 		named name: String,
 		value: String
 	) -> Data {
 		let data = NSMutableData()
-		
+
 		data.appendString("--\(boundary)")
 		data.appendLineBreak()
 		data.appendString("Content-Disposition: form-data; name=\"\(name)\"")
@@ -54,12 +54,12 @@ public struct MultipartFormData {
 
 		return data as Data
 	}
-	
+
 	private func convertToData(
 		formData: FormData
 	) -> Data {
 		let data = NSMutableData()
-		
+
 		data.appendString("--\(boundary)")
 		data.appendLineBreak()
 		data.appendString("Content-Disposition: form-data; name=\"\(formData.fieldName)\"; filename=\"\(formData.fileName)\"")
@@ -79,7 +79,7 @@ extension NSMutableData {
 			self.append(data)
 		}
 	}
-	
+
 	func appendLineBreak(times: Int = 1) {
 		for _ in 0..<times {
 			self.appendString("\r\n")

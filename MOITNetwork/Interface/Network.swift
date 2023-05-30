@@ -12,4 +12,3 @@ import RxSwift
 public protocol Network {
 	func request<E: Requestable>(with endpoint: E) -> Single<E.Response>
 }
-

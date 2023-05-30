@@ -10,22 +10,22 @@ import Foundation
 import MOITNetwork
 
 public final class MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
-	
+
 	public typealias Response = R
-	
-	public var baseURL: URL?
+
+	public var baseURL: URL
 	public var path: String?
 	public var method: HTTPMethod
 	public var headers: HTTPHeaders
 	public var parameters: HTTPRequestParameter?
 	public var formData: MultipartFormData
-	
+
 	public init(
-		baseURL: URL?,
-		path: String?,
+		baseURL: URL,
+		path: String? = nil,
 		method: HTTPMethod,
 		headers: HTTPHeaders,
-		parameters: HTTPRequestParameter?,
+		parameters: HTTPRequestParameter? = nil,
 		formData: MultipartFormData
 	) {
 		self.baseURL = baseURL
@@ -35,5 +35,4 @@ public final class MultipartEndpoint<R>: MultipartRequestable where R: Decodable
 		self.parameters = parameters
 		self.formData = formData
 	}
-	
 }

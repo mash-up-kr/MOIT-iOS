@@ -20,7 +20,7 @@ public enum ServerError: Int {
 	case unknownError
 	case badReqeust = 400
 	case notFount = 404
-	
+
 	public init(fromRawValue rawValue: Int) {
 		self = ServerError(rawValue: rawValue) ?? .unknownError
 	}

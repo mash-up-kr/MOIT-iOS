@@ -19,14 +19,14 @@ extension MultipartRequestable {
 
 	func toURLRequest() throws -> URLRequest {
 		guard let url = makeURL() else { throw NetworkError.invalidURL }
-		
+
 		var urlRequest = URLRequest(url: url)
 			.append(method: method)
 			.append(header: headers)
 			.append(multiPartData: formData.body)
-		
+
 		urlRequest.setValue("multipart/form-data; boundary=\(formData.boundary)", forHTTPHeaderField: "Content-Type")
-		
+
 		return urlRequest
 	}
 }
