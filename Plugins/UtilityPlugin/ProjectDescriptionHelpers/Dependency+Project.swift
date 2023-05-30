@@ -101,16 +101,14 @@ public extension TargetDependency.ThirdParty {
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
-//    static let FlexLayout = TargetDependency.external(name: "FlexLayout")
-//    
-//    static let PinLayout = TargetDependency.external(name: "PinLayout")
+
     static let FlexLayout = TargetDependency.package(product: "FlexLayout")
     static let PinLayout = TargetDependency.package(product: "PinLayout")
 }
 
 public extension Package.SPM {
     static let FlexLayout = Package.package(url: "https://github.com/layoutBox/FlexLayout", .upToNextMajor(from: "1.3.18"))
-    static let PinLayout = Package.package(url: "https://github.com/layoutBox/PinLayout", .branch("master"))
+    static let PinLayout = Package.package(url: "https://github.com/layoutBox/PinLayout", .upToNextMajor(from: "1.10.1"))
 }
 
 // MARK: - Scripts
