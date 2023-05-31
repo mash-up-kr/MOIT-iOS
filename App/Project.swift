@@ -12,12 +12,6 @@ import UtilityPlugin
 
 let project = Project(
     name: "App",
-    settings: .settings(
-        base: [
-            "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
-        ],
-        configurations: [.debug(name: .debug)]
-    ),
     targets: [
         Target(
             name: "App",
