@@ -16,7 +16,10 @@ let project = Project(
         base: [
             "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
         ],
-        configurations: [.debug(name: .debug)]
+        configurations: [
+            .debug(name: .debug),
+            .release(name: .release)
+        ]
     ),
     targets: [
         Target(
