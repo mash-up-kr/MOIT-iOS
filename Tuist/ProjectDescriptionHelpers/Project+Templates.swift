@@ -225,16 +225,10 @@ private extension Project {
         dependencies: [TargetDependency] = [],
         isUserInterface: Bool = false
     ) -> Target {
-        let userInterfaceSetting: Settings = .settings(
-            base: [
-                "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
-            ],
-            configurations: [.debug(name: .debug)]
-        )
         
         return Target(name: "\(name)Impl",
                       platform: platform,
-                      product: .staticLibrary,
+                      product: .staticFramework,
                       bundleId: "team.io.\(name)",
                       deploymentTarget: .iOS(
                         targetVersion: iOSTargetVersion,
@@ -243,8 +237,7 @@ private extension Project {
                       infoPlist: .default,
                       sources: ["./Implement/**"],
                       scripts: [.swiftLintScript],
-                      dependencies: dependencies,
-                      settings: isUserInterface ? userInterfaceSetting : .settings(defaultSettings: .recommended())
+                      dependencies: dependencies
         )
     }
     static func makeInterfaceDynamicFrameworkTarget(
