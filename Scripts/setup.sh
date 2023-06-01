@@ -25,7 +25,7 @@ echo 'moit() {
     elif [ "$1" = "edit" ]; then
         tuist edit
     else
-        echo "Invalid command. Use 'fetch'."
+        echo "Invalid command."
     fi
 }' >> ~/.zshrc
 
