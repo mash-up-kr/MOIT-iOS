@@ -4,7 +4,7 @@
 ## 프로젝트 실행하는 법
 FlexLayout 설정으로 인해서 간단한 추가적인 명령어가 필요합니다.
 1. `chmod +x Scripts/setup.sh`
-2. `~/setup.sh`
+2. `./Scripts/setup.sh`
 3. `moit fetch`
 4. `moit generate`
 
