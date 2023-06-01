@@ -31,13 +31,3 @@ echo 'moit() {
 
 # Reload .zshrc so the changes take effect immediately
 source ~/.zshrc
-
-# echo "" >> ~/.zshrc
-# echo "moit() {" >> ~/.zshrc
-# echo "    if [ \"\$1\" == \"fetch\" ]; then" >> ~/.zshrc
-# echo "        ~/moit_fetch.sh" >> ~/.zshrc
-# echo "    else" >> ~/.zshrc
-# echo "        echo \"Invalid command. Use 'fetch'.\"" >> ~/.zshrc
-# echo "    fi" >> ~/.zshrc
-# echo "}" >> ~/.zshrc
-# echo "" >> ~/.zshrc
