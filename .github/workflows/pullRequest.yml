@@ -14,10 +14,8 @@ jobs:
     - name: Install Tuist
       run: curl -Ls https://install.tuist.io | bash
     - name: Access Available
-      run: chmod +x Scripts/setup.sh
-    - name: Install Setup Script
-      run: ./Scripts/setup.sh
-    - name: Fetch Swift Packages
-      run: moit fetch
+      run: chmod +x Scripts/setup_remote.sh
+    - name: Install Setup Script and Fetch Dependencies
+      run: ./Scripts/setup_remote.sh
     - name: Build and Test
       run:  tuist test MOIT-Workspace
