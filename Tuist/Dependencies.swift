@@ -7,6 +7,17 @@
 
 import ProjectDescription
 
+let carthageDep = CarthageDependencies([
+    .github(
+        path: "layoutBox/PinLayout",
+        requirement: .branch("master")
+    ),
+    .github(
+        path: "layoutBox/FlexLayout",
+        requirement: .branch("master")
+    ),
+])
+
 let spm = SwiftPackageManagerDependencies(
     [
         .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .upToNextMajor(from:"6.0.0")),
@@ -15,6 +26,7 @@ let spm = SwiftPackageManagerDependencies(
         .remote(url: "https://github.com/airbnb/lottie-ios", requirement: .upToNextMajor(from: "4.2.0")),
         .remote(url: "https://github.com/Quick/Nimble", requirement: .upToNextMajor(from: "9.2.0")),
         .remote(url: "https://github.com/Quick/Quick", requirement: .upToNextMajor(from: "5.0.0")),
+        
     ],
     productTypes: [
         "RIBs": .framework,
@@ -30,6 +42,7 @@ let spm = SwiftPackageManagerDependencies(
 )
 
 let dependencies = Dependencies(
+    carthage: carthageDep,
     swiftPackageManager: spm,
     platforms: [.iOS]
 )
