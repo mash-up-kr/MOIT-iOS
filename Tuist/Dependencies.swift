@@ -10,11 +10,11 @@ import ProjectDescription
 let carthageDep = CarthageDependencies([
     .github(
         path: "layoutBox/PinLayout",
-        requirement: .branch("master")
+        requirement: .upToNext("1.10.1")
     ),
     .github(
         path: "layoutBox/FlexLayout",
-        requirement: .branch("master")
+        requirement: .upToNext("1.3.18")
     ),
 ])
 
