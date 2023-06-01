@@ -15,7 +15,7 @@ jobs:
       run: curl -Ls https://install.tuist.io | bash
     - name: Fetch Swift Packages
       run: chmod +x Scripts/setup.sh
-      run: ~/setup.sh
+      run: ./Scripts/setup.sh
       run: moit fetch
     - name: Build and Test
       run:  tuist test MOIT-Workspace
