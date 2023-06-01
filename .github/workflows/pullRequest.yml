@@ -13,9 +13,11 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install Tuist
       run: curl -Ls https://install.tuist.io | bash
-    - name: Fetch Swift Packages
+    - name: Access Available
       run: chmod +x Scripts/setup.sh
+    - name: Install Setup Script
       run: ./Scripts/setup.sh
+    - name: Fetch Swift Packages
       run: moit fetch
     - name: Build and Test
       run:  tuist test MOIT-Workspace
