@@ -41,20 +41,25 @@ final class ButtonDemoViewController: UIViewController {
                 
                 flex.addItem(self.mediumButton())
                     .marginTop(10)
-                    
+                
                 flex.addItem(self.largeButton())
+                    .marginTop(10)
+                
+                flex.addItem(self.kakaoButton())
+                    .marginTop(10)
+                
+                flex.addItem(self.appleButton())
                     .marginTop(10)
             }
     }
     
     private func miniButton() -> MOITButton {
-        let button = MOITButton(
+        MOITButton(
             type: .mini,
             title: "납부인증하기",
             titleColor: .white,
             backgroundColor: ResourceKitAsset.Color.blue800.color
         )
-        return button
     }
     
     private func smallButton() -> MOITButton {
@@ -76,6 +81,26 @@ final class ButtonDemoViewController: UIViewController {
             title: "긴이름의버튼이들어가게되면이렇게됩니다요예시야요",
             titleColor: ResourceKitAsset.Color.gray700.color,
             backgroundColor: ResourceKitAsset.Color.gray200.color
+        )
+    }
+    
+    private func kakaoButton() -> MOITButton {
+        MOITButton(
+            type: .large,
+            image: ResourceKitAsset.Icon.kakaotalk.image,
+            title: "카카오톡으로 시작하기",
+            titleColor: .black,
+            backgroundColor: ResourceKitAsset.Color.kakao.color
+        )
+    }
+    
+    private func appleButton() -> MOITButton {
+        MOITButton(
+            type: .large,
+            image: ResourceKitAsset.Icon.apple.image,
+            title: "Apple로 시작하기",
+            titleColor: .white,
+            backgroundColor: .black
         )
     }
 }
