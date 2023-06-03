@@ -32,7 +32,10 @@ let project = Project(
                dependencies: [
                 .ThirdParty.PinLayout,
                 .ThirdParty.FlexLayout,
-                .ResourceKit
+                .ResourceKit,
+                .ThirdParty.RxCocoa,
+                .ThirdParty.RxSwift,
+                .ThirdParty.RxGesture,
                ]),
         Target(
             name: "DesignSystemDemoApp",
@@ -60,6 +63,9 @@ let project = Project(
                     .target(name: "DesignSystem"),
                     .ThirdParty.FlexLayout,
                     .ThirdParty.PinLayout,
+                    .ThirdParty.RxCocoa,
+                    .ThirdParty.RxSwift,
+                    .ThirdParty.RxGesture,
                 ]
         )
         
