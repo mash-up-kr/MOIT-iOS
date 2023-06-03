@@ -26,9 +26,18 @@ public enum MOITButtonType {
         }
     }
     
+//    fileprivate var marginHorizontal: CGFloat {
+//        switch self {
+//        case .mini: return 4
+//        case .small: return 16.5
+//        case .medium: return 13
+//        case .large: return 14
+//        }
+//    }
+    
     fileprivate var width: CGFloat {
         switch self {
-        case .mini: return 89
+        case .mini: return 101
         case .small: return 163
         case .medium: return 303
         case .large: return 335
@@ -37,11 +46,19 @@ public enum MOITButtonType {
     
     fileprivate var cornerRadius: CGFloat {
         switch self {
-        case .mini: return 10
+        case .mini, .medium: return 10
         default: return 20
         }
     }
+    
+    fileprivate var font: UIFont {
+        switch self {
+        case .mini: return ResourceKitFontFamily.p2
+        default: return ResourceKitFontFamily.h6
+        }
+    }
 }
+
 public final class MOITButton: UIView {
     
     private let flexRootView = UIView()
@@ -54,6 +71,7 @@ public final class MOITButton: UIView {
     private let titleColor: UIColor
     
     // MARK: - Initializers
+    
     public init(
         type: MOITButtonType,
         title: String,
@@ -64,10 +82,10 @@ public final class MOITButton: UIView {
         self.title = title
         self.titleColor = titleColor
         super.init(frame: .zero)
-        self.backgroundColor = backgroundColor
+        self.flexRootView.backgroundColor = backgroundColor
         
-        self.layer.cornerRadius = self.type.cornerRadius
-        self.clipsToBounds = true
+        self.flexRootView.layer.cornerRadius = self.type.cornerRadius
+        self.flexRootView.clipsToBounds = true
         self.configureTitleLabel(title: self.title, color: self.titleColor)
         self.configureLayouts()
     }
@@ -79,6 +97,7 @@ public final class MOITButton: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+        
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout(mode: .adjustWidth)
     }
@@ -93,19 +112,23 @@ extension MOITButton {
     ) {
         self.titleLabel.text = title
         self.titleLabel.textColor = color
-    } // 혜린이가 함
+        self.titleLabel.font = self.type.font
+        self.titleLabel.numberOfLines = 1
+        self.titleLabel.flex.markDirty()
+        self.setNeedsLayout()
+    }
     
     private func configureLayouts() {
         self.addSubview(self.flexRootView)
-        ++
         self.flexRootView.flex
             .justifyContent(.center)
             .alignItems(.center)
             .define { flex in
                 flex.addItem(self.titleLabel)
+                    .height(23)
+                    .marginHorizontal(12)
                     .marginVertical(self.type.marginVertical)
-                    .marginHorizontal(self.type.)
-//                    .width(self.type.width)
             }
+            .width(self.type.width)
     }
 }
