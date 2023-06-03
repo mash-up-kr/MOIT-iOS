@@ -18,7 +18,8 @@ extension TargetDependency {
     
     public struct MOITNetwork {}
     
-    public struct ResourceKit {}
+    public static let ResourceKit = TargetDependency.project(target: "ResourceKit",
+                                   path: .relativeToRoot("ResourceKit"))
 
     public struct ThirdParty {}
 }
@@ -32,16 +33,6 @@ public extension TargetDependency.Core {
     }
     
     static let CSLogger = project(name: "CSLogger", isInterface: true)
-}
-
-public extension TargetDependency.ResourceKit {
-    static let folderName = "ResourceKit"
-    static func project(name: String) -> TargetDependency {
-        return .project(target: "\(name)",
-                        path: .relativeToRoot("\(folderName)"))
-    }
-
-    static let Implement = project(name: "ResourceKit")
 }
 
 // MARK: - Features/Home

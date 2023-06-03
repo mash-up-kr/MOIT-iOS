@@ -32,6 +32,7 @@ let project = Project(
                dependencies: [
                 .ThirdParty.PinLayout,
                 .ThirdParty.FlexLayout,
+                .ResourceKit
                ]),
         Target(
             name: "DesignSystemDemoApp",
