@@ -10,6 +10,9 @@ import Foundation
 import PinLayout
 import FlexLayout
 import ResourceKit
+import RxSwift
+import RxCocoa
+import RxGesture
 
 public final class MOITButton: UIView {
     
@@ -24,6 +27,7 @@ public final class MOITButton: UIView {
     private let title: String
     private let titleColor: UIColor
     private let image: UIImage?
+    private let _backgroundColor: UIColor
     
     // MARK: - Initializers
     
@@ -34,6 +38,7 @@ public final class MOITButton: UIView {
         titleColor: UIColor,
         backgroundColor: UIColor
     ) {
+        self._backgroundColor = backgroundColor
         self.image = image
         self.type = type
         self.title = title
@@ -66,7 +71,7 @@ public final class MOITButton: UIView {
 extension MOITButton {
     
     private func configureFlexRootView() {
-        self.flexRootView.backgroundColor = backgroundColor
+        self.flexRootView.backgroundColor = _backgroundColor
         self.flexRootView.layer.cornerRadius = self.type.cornerRadius
         self.flexRootView.clipsToBounds = true
     }
@@ -101,5 +106,20 @@ extension MOITButton {
                     .marginVertical(self.type.marginVertical)
             }
             .width(self.type.width)
+    }
+}
+
+// MARK: - Reactive
+
+extension Reactive where Base: MOITButton {
+    public var tap: Observable<Void> {
+        tapGesture()
+            .when(.recognized)
+            .throttle(
+                .milliseconds(400),
+                latest: false,
+                scheduler: MainScheduler.instance
+            )
+            .map { _ in return }
     }
 }

@@ -24,6 +24,7 @@ public enum MOITButtonType {
         case .large: return 14
         }
     }
+    
     var width: CGFloat {
         switch self {
         case .mini: return 101
@@ -42,7 +43,7 @@ public enum MOITButtonType {
     
     var font: UIFont {
         switch self {
-        case .mini: return ResourceKitFontFamily.p2
+        case .mini: return ResourceKitFontFamily.p3
         default: return ResourceKitFontFamily.h6
         }
     }

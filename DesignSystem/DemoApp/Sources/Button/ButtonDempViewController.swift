@@ -14,13 +14,13 @@ import DesignSystem
 import ResourceKit
 
 final class ButtonDemoViewController: UIViewController {
+    
     private let flexRootView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(self.flexRootView)
         self.configureLayouts()
-        self.flexRootView.backgroundColor = .systemRed
         self.view.backgroundColor = .white
         self.navigationController?.navigationItem.title = "MOITButton"
     }
@@ -63,12 +63,12 @@ final class ButtonDemoViewController: UIViewController {
     }
     
     private func smallButton() -> MOITButton {
-        MOITButton(
+      MOITButton(
             type: .small,
             title: "스터디생성",
             titleColor: ResourceKitAsset.Color.gray700.color,
             backgroundColor: ResourceKitAsset.Color.gray200.color
-        )
+       )
     }
     
     private func mediumButton() -> MOITButton {
