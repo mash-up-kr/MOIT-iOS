@@ -19,7 +19,7 @@ public enum NetworkError: Error {
 public enum ServerError: Int {
 	case unknownError
 	case badReqeust = 400
-	case notFount = 404
+	case notFound = 404
 
 	public init(fromRawValue rawValue: Int) {
 		self = ServerError(rawValue: rawValue) ?? .unknownError
