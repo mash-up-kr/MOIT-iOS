@@ -9,7 +9,7 @@
 import Foundation
 import MOITNetwork
 
-public final class MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
+public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 
 	public typealias Response = R
 

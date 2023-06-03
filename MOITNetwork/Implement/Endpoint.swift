@@ -9,7 +9,7 @@
 import Foundation
 import MOITNetwork
 
-public final class EndPoint<R>: Requestable where R: Decodable {
+public struct EndPoint<R>: Requestable where R: Decodable {
 	public typealias Response = R
 
 	public let baseURL: URL
