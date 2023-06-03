@@ -17,6 +17,7 @@ extension ResourceKitFontFamily {
     public static let h6 = Pretendard.semiBold.font(size: 16)
     public static let p1 = Pretendard.medium.font(size: 16)
     public static let p2 = Pretendard.medium.font(size: 14)
+    public static let p3 = Pretendard.regular.font(size: 14)
     public static let caption = Pretendard.medium.font(size: 12)
 }
 
