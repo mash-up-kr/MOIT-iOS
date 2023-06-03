@@ -12,11 +12,11 @@ import MOITNetwork
 public final class EndPoint<R>: Requestable where R: Decodable {
 	public typealias Response = R
 
-	public var baseURL: URL
-	public var path: String?
-	public var method: HTTPMethod
-	public var headers: HTTPHeaders
-	public var parameters: HTTPRequestParameter?
+	public let baseURL: URL
+	public let path: String?
+	public let method: HTTPMethod
+	public let headers: HTTPHeaders
+	public let parameters: HTTPRequestParameter?
 
 	public init(
 		baseURL: URL,

@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol MultipartRequestable: Requestable {
-	var formData: MultipartFormData { get set }
+	var formData: MultipartFormData { get }
 }
 
 extension MultipartRequestable {

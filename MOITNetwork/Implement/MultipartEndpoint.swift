@@ -13,12 +13,12 @@ public final class MultipartEndpoint<R>: MultipartRequestable where R: Decodable
 
 	public typealias Response = R
 
-	public var baseURL: URL
-	public var path: String?
-	public var method: HTTPMethod
-	public var headers: HTTPHeaders
-	public var parameters: HTTPRequestParameter?
-	public var formData: MultipartFormData
+	public let baseURL: URL
+	public let path: String?
+	public let method: HTTPMethod
+	public let headers: HTTPHeaders
+	public let parameters: HTTPRequestParameter?
+	public let formData: MultipartFormData
 
 	public init(
 		baseURL: URL,
