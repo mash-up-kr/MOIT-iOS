@@ -23,10 +23,6 @@ extension TargetDependency {
     public struct ThirdParty {}
 }
 
-public extension Package {
-    public struct SPM {}
-}
-
 public extension TargetDependency.Core {
     static let folderName = "Core"
     static func project(name: String, isInterface: Bool) -> TargetDependency {
@@ -35,7 +31,7 @@ public extension TargetDependency.Core {
                         path: .relativeToRoot("\(folderName)"))
     }
     
-//    static let RIBsUtil = project(name: "RIBsUtil", isInterface: true)
+    static let CSLogger = project(name: "CSLogger", isInterface: true)
 }
 
 public extension TargetDependency.ResourceKit {
