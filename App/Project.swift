@@ -12,12 +12,6 @@ import UtilityPlugin
 
 let project = Project(
     name: "App",
-    settings: .settings(
-        base: [
-            "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
-        ],
-        configurations: [.debug(name: .debug)]
-    ),
     targets: [
         Target(
             name: "App",
@@ -36,14 +30,6 @@ let project = Project(
                         ],
                         "UIApplicationSceneManifest": [
                             "UIApplicationSupportsMultipleScenes": false,
-                            "UISceneConfigurations": [
-                                "UIWindowSceneSessionRoleApplication": [
-                                    [
-                                        "UISceneConfigurationName": "Default Configuration",
-                                        "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
-                                    ],
-                                ]
-                            ]
                         ],
                         "UIBackgroundModes": [
                             "fetch",

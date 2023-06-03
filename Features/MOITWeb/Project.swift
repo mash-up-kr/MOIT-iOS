@@ -17,6 +17,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     ],
     implementDependencies: [
         .ThirdParty.RIBs,
+        .ThirdParty.PinLayout,
+        .ThirdParty.FlexLayout
     ],
     useTestTarget: true,
     isUserInterface: true

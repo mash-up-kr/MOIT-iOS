@@ -97,19 +97,20 @@ public extension TargetDependency.ThirdParty {
     static let RxCocoa = TargetDependency.external(name: "RxCocoa")
     static let RIBs = TargetDependency.external(name: "RIBs")
     static let RxGesture = TargetDependency.external(name: "RxGesture")
-    static let SnapKit = TargetDependency.external(name: "SnapKit")
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
-
-    static let FlexLayout = TargetDependency.package(product: "FlexLayout")
-    static let PinLayout = TargetDependency.package(product: "PinLayout")
 }
 
-public extension Package.SPM {
-    static let FlexLayout = Package.package(url: "https://github.com/layoutBox/FlexLayout", .upToNextMajor(from: "1.3.18"))
-    static let PinLayout = Package.package(url: "https://github.com/layoutBox/PinLayout", .upToNextMajor(from: "1.10.1"))
+public extension TargetDependency.ThirdParty {
+    private static func framework(name: String) -> TargetDependency {
+        .xcframework(path: .relativeToRoot("Tuist/Dependencies/Carthage/Build/\(name).xcframework"))
+    }
+    
+    static let FlexLayout = framework(name: "FlexLayout")
+    static let PinLayout = framework(name: "PinLayout")
 }
+
 
 // MARK: - Scripts
 public extension TargetScript {

@@ -80,7 +80,10 @@ let Feature = Template(
             path: .featureBasePath + "/\(name)Data/Tests/dummy.swift",
             templatePath: "dummy.stencil"
         ),
-
+        .file(
+            path: .featureBasePath + "/\(name)UserInterface/Tests/dummy.swift",
+            templatePath: "dummy.stencil"
+        )
     ]
 )
 
