@@ -182,7 +182,7 @@ extension Project {
         return Target(name: name,
                platform: .iOS,
                product: .framework,
-               bundleId: "team.io.\(name)",
+               bundleId: "chansoo.io.\(name)",
                deploymentTarget: .iOS(targetVersion: iOSTargetVersion, devices: [.iphone]),
                infoPlist: .default,
                sources: ["./\(name)/**"],
