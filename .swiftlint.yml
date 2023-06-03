@@ -567,6 +567,9 @@ function_body_length:
   warning: 20
   error: 40
   
+included:
+  - MOITNetwork
+  
 excluded:
   - Carthage
   - Pods
