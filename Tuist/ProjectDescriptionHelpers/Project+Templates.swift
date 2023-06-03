@@ -33,7 +33,7 @@ extension Project {
                                                   platform: platform,
                                                   iOSTargetVersion: iOSTargetVersion,
                                                   infoPlist: infoPlist,
-                                                  dependencies: [.target(name: name)]))
+                                                  dependencies: [.target(name: name)] + dependencies))
         return Project(name: name,
                        organizationName: organizationName,
                        targets: targets)
