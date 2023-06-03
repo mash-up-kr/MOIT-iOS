@@ -127,6 +127,7 @@ extension Project {
             dependencies: implementDependencies + [.target(name: name)],
             isUserInterface: isUserInterface
         )
+        
         let demoApp = Target(
             name: "\(name)DemoApp",
             platform: .iOS,
@@ -148,7 +149,12 @@ extension Project {
             sources: ["./DemoApp/Sources/**"],
             resources: ["./DemoApp/Resources/**"],
             scripts: [.swiftLintScript],
-            dependencies: implementDependencies + [.target(name: name), .target(name: "\(name)Impl")]
+            dependencies:
+                implementDependencies +
+            [
+                .target(name: name),
+                .target(name: "\(name)Impl"),
+            ]
         )
         
         let testTarget = makeTestTarget(name: name,
@@ -161,11 +167,9 @@ extension Project {
             .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
             .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
         ])
-    
-        let packages: [Package] = isUserInterface ? [.SPM.PinLayout, .SPM.FlexLayout] : []
+
         return Project(name: name,
                        organizationName: organizationName,
-                       packages: packages,
                        settings: settings,
                        targets: targets)
     }
@@ -225,16 +229,10 @@ private extension Project {
         dependencies: [TargetDependency] = [],
         isUserInterface: Bool = false
     ) -> Target {
-        let userInterfaceSetting: Settings = .settings(
-            base: [
-                "GCC_PREPROCESSOR_DEFINITIONS[arch=*]": "FLEXLAYOUT_SWIFT_PACKAGE=1",
-            ],
-            configurations: [.debug(name: .debug)]
-        )
         
         return Target(name: "\(name)Impl",
                       platform: platform,
-                      product: .staticLibrary,
+                      product: .staticFramework,
                       bundleId: "team.io.\(name)",
                       deploymentTarget: .iOS(
                         targetVersion: iOSTargetVersion,
@@ -243,8 +241,7 @@ private extension Project {
                       infoPlist: .default,
                       sources: ["./Implement/**"],
                       scripts: [.swiftLintScript],
-                      dependencies: dependencies,
-                      settings: isUserInterface ? userInterfaceSetting : .settings(defaultSettings: .recommended())
+                      dependencies: dependencies
         )
     }
     static func makeInterfaceDynamicFrameworkTarget(
