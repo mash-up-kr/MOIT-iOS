@@ -14,7 +14,7 @@ public final class MultipartEndpoint<R>: MultipartRequestable where R: Decodable
 	public typealias Response = R
 
 	public let baseURL: URL
-	public let path: String?
+	public let path: String
 	public let method: HTTPMethod
 	public let headers: HTTPHeaders
 	public let parameters: HTTPRequestParameter?
@@ -22,7 +22,7 @@ public final class MultipartEndpoint<R>: MultipartRequestable where R: Decodable
 
 	public init(
 		baseURL: URL,
-		path: String? = nil,
+		path: String,
 		method: HTTPMethod,
 		headers: HTTPHeaders,
 		parameters: HTTPRequestParameter? = nil,

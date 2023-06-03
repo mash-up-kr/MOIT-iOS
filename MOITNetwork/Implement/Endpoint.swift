@@ -13,14 +13,14 @@ public final class EndPoint<R>: Requestable where R: Decodable {
 	public typealias Response = R
 
 	public let baseURL: URL
-	public let path: String?
+	public let path: String
 	public let method: HTTPMethod
 	public let headers: HTTPHeaders
 	public let parameters: HTTPRequestParameter?
 
 	public init(
 		baseURL: URL,
-		path: String? = nil,
+		path: String,
 		method: HTTPMethod,
 		headers: HTTPHeaders,
 		parameters: HTTPRequestParameter? = nil

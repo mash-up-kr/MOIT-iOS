@@ -19,7 +19,7 @@ public protocol Requestable {
 	associatedtype Response: Decodable
 
 	var baseURL: URL { get }
-	var path: String? { get }
+	var path: String { get }
 	var method: HTTPMethod { get }
 	var headers: HTTPHeaders { get }
 	var parameters: HTTPRequestParameter? { get }
@@ -39,7 +39,7 @@ public extension Requestable {
 	}
 
 	func makeURL() -> URL? {
-		self.baseURL.append(path: path)?.append(queries: parameters)
+		self.baseURL.append(path: path).append(queries: parameters)
 	}
 }
 
@@ -71,8 +71,7 @@ extension URLRequest {
 }
 
 extension URL {
-	func append(path: String?) -> URL? {
-		guard let path else { return self }
+	func append(path: String) -> URL {
 		return self.appending(path: path)
 	}
 
