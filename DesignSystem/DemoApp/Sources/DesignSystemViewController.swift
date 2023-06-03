@@ -17,6 +17,7 @@ fileprivate enum DesignSystemType: String,
     case button
     case card
     case modal
+	case chip
 }
 
 final class DesignSystemViewController: UITableViewController {
