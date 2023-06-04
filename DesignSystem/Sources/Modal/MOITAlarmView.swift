@@ -14,36 +14,14 @@ import RxCocoa
 import PinLayout
 import FlexLayout
 
-public enum MOITAlarmType: Equatable {
-    case attendance
-    case penalty(amount: String) // TODO: 서버에서 어떻게 내려줄지 합의봐야됨 (int로 내려주는지 string으로 내려주는지?)
-
-    func alarmTitle(with studyName: String) -> String {
-        switch self {
-        case .attendance: return "\(studyName) 스터디\n출석체크를 시작해보세요!"
-        case .penalty: return "\(studyName) 스터디\n벌금을 납부하고 인증하세요!"
-        }
-    }
-    
-    var descriptionTitle: String {
-        switch self {
-        case .attendance: return "남은 시간"
-        case .penalty: return "쌓인 벌금"
-        }
-    }
-    
-    var buttonTitle: String {
-        switch self {
-        case .attendance: return "출석체크하기"
-        case .penalty: return "벌금 납부하기"
-        }
-    }
-}
-
 public final class MOITAlarmView: UIView {
+    // MARK: - Properties
+    
     private let type: MOITAlarmType
     private let studyName: String
+    private let disposeBag = DisposeBag()
     
+    // MARK: - UIComponents
     private let flexRootView = UIView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
@@ -55,8 +33,8 @@ public final class MOITAlarmView: UIView {
         titleColor: .white,
         backgroundColor: ResourceKitAsset.Color.blue800.color
     )
-    
-    private let disposeBag = DisposeBag()
+
+    // MARK: - LifeCycles
     
     public init(
         type: MOITAlarmType,
@@ -70,33 +48,6 @@ public final class MOITAlarmView: UIView {
         self.configureLayouts()
     }
     
-    private func subscribeRemainTimer() {
-        Observable<Int>.interval(
-            .seconds(1),
-            scheduler: ConcurrentDispatchQueueScheduler.init(qos: .background)
-        )
-        .filter { [weak self] second in
-            guard let self = self else { return false }
-            return self.type == .attendance &&
-                    60*3 >= second
-        }
-        .map { second -> String in
-            let remainSecond = 60*3 - second
-            let minute = remainSecond / 60
-            let second = remainSecond % 60
-            if second < 10 { return "\(minute):0\(second)" }
-            else { return "\(minute):\(second)" }
-        }
-        .observe(on: MainScheduler.instance)
-        .bind(onNext: { [weak self] remainTime in
-            self?.mainLabel.text = remainTime
-            self?.mainLabel.flex.markDirty()
-            self?.layoutIfNeeded()
-        })
-        .disposed(by: self.disposeBag)
-    }
-    
-    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("can not init from coder")
@@ -108,6 +59,11 @@ public final class MOITAlarmView: UIView {
         self.flexRootView.flex.layout()
         self.configureGradient()
     }
+}
+
+// MARK: - Private functions
+
+extension MOITAlarmView {
     
     private func configureLayouts() {
         self.addSubview(self.flexRootView)
@@ -160,6 +116,32 @@ public final class MOITAlarmView: UIView {
         gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
         gradient.frame = self.flexRootView.bounds
         self.flexRootView.layer.insertSublayer(gradient, at: 0)
+    }
+    
+    private func subscribeRemainTimer() {
+        Observable<Int>.interval(
+            .seconds(1),
+            scheduler: ConcurrentDispatchQueueScheduler.init(qos: .background)
+        )
+        .filter { [weak self] second in
+            guard let self = self else { return false }
+            return self.type == .attendance &&
+            60*3 >= second
+        }
+        .map { second -> String in
+            let remainSecond = 60*3 - second
+            let minute = remainSecond / 60
+            let second = remainSecond % 60
+            if second < 10 { return "\(minute):0\(second)" }
+            else { return "\(minute):\(second)" }
+        }
+        .observe(on: MainScheduler.instance)
+        .bind(onNext: { [weak self] remainTime in
+            self?.mainLabel.text = remainTime
+            self?.mainLabel.flex.markDirty()
+            self?.layoutIfNeeded()
+        })
+        .disposed(by: self.disposeBag)
     }
     
     private func configreUI() {
