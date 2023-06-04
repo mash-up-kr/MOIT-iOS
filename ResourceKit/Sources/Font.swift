@@ -20,4 +20,3 @@ extension ResourceKitFontFamily {
     public static let p3 = Pretendard.regular.font(size: 14)
     public static let caption = Pretendard.medium.font(size: 12)
 }
-
