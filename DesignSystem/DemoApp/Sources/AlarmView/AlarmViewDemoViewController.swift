@@ -47,7 +47,7 @@ final class AlarmViewDemoViewController: UIViewController {
         print(Date.now)
         print(targetTime)
         return MOITAlarmView(
-            type: .attendance(targetTime: Date()),
+            type: .attendance,
             studyName: "전자군단🤖"
         )
     }
