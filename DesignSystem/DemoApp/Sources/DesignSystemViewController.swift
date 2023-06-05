@@ -62,7 +62,7 @@ final class DesignSystemViewController: UITableViewController {
         switch designSystem {
             // TODO: 여기에서 각자 화면 만드시오 !
         case .navigation:
-            let viewController = MOITNavigationViewController()
+            let viewController = MOITNavigationDemoViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
         default: return
         }

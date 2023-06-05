@@ -1,5 +1,5 @@
 //
-//  MOITNavigationViewController.swift
+//  MOITNavigationDemoViewController.swift
 //  DesignSystemDemoApp
 //
 //  Created by kimchansoo on 2023/06/04.
@@ -13,21 +13,21 @@ import DesignSystem
 import PinLayout
 import FlexLayout
 import RxSwift
+import RxGesture
 
-final class MOITNavigationViewController: UIViewController {
+final class MOITNavigationDemoViewController: UIViewController {
     
     // MARK: - UI
     private let moitNavigationBar = MOITNavigationBar(
         leftItems: [
             .back,
         ],
-        title: "MOIT Design System",
+        title: "MOIT NavigationBar",
         rightItems: [
             .share,
             .close,
         ],
-        backgroundColor: .white,
-        tintColor: .black
+        colorType: .reverse
     )
     private let flexRootView = UIView()
 
@@ -42,7 +42,6 @@ final class MOITNavigationViewController: UIViewController {
         super.viewDidLoad()
         self.view.addSubview(self.flexRootView)
         self.configureLayouts()
-        self.view.backgroundColor = .white
         self.navigationController?.navigationItem.title = "MOITNavigationBar"
         
         self.moitNavigationBar.leftItems[0].rx.tap.subscribe(onNext: { [weak self] in
@@ -65,5 +64,6 @@ final class MOITNavigationViewController: UIViewController {
                     .width(100%)
             }
     }
+    
     // MARK: - Methods
 }
