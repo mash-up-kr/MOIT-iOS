@@ -128,7 +128,7 @@ extension MOITAlarmView {
         )
         .filter { [weak self] second in
             guard let self = self else { return false }
-            return self.type == .attendance &&
+            return self.type == .출석체크 &&
             60*3 >= second
         }
         .map { second -> String in
@@ -180,12 +180,15 @@ extension MOITAlarmView {
     }
     private func configureMainLabel() {
         switch self.type {
-        case .attendance:
+        case .출석체크:
             self.subscribeRemainTimer()
             self.mainLabel.text = "3:00"
-        case .penalty(let amount):
+        case .벌금(let amount):
             self.mainLabel.text = amount
+        case .출석률(let percent):
+            self.mainLabel.text = percent
         }
+    
         self.mainLabel.font = ResourceKitFontFamily.h2
         self.mainLabel.textColor = ResourceKitAsset.Color.blue200.color
     }
