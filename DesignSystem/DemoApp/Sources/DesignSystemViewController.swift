@@ -61,8 +61,10 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
-		case .chip:
-			self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
+        case .button:
+            self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
+        case .chip:
+            self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
         default: return
         }
     }
