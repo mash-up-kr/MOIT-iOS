@@ -7,14 +7,18 @@
 //
 
 import Foundation
-import ResourceKit
 import UIKit
+
+import ResourceKit
+
 import RxSwift
 import RxCocoa
 import PinLayout
 import FlexLayout
+import RxGesture
 
 public final class MOITAlarmView: UIView {
+    
     // MARK: - Properties
     
     private let type: MOITAlarmType
@@ -27,7 +31,7 @@ public final class MOITAlarmView: UIView {
     private let descriptionLabel = UILabel()
     private let mainLabel = UILabel()
     private let imageView = UIImageView()
-    private lazy var button = MOITButton(
+    fileprivate lazy var button = MOITButton(
         type: .medium,
         title: self.type.buttonTitle,
         titleColor: .white,
@@ -70,18 +74,16 @@ extension MOITAlarmView {
         
         self.flexRootView.flex
             .direction(.column)
-        
             .define { flex in
+                
                 flex.addItem(self.titleLabel)
                     .marginTop(20)
                     .marginHorizontal(16)
                 
                 flex.addItem()
-                    .alignItems(.center)
                     .direction(.row)
-                    .justifyContent(.spaceBetween)
+                    .alignItems(.center)
                     .define { flex in
-                        
                         flex.addItem()
                             .define { flex in
                                 flex.addItem(self.descriptionLabel)
@@ -90,11 +92,12 @@ extension MOITAlarmView {
                             .grow(1)
                         
                         flex.addItem(self.imageView)
-                            .width(200)
-                            .height(130)
+                            .alignSelf(.end)
                             .shrink(1)
+                            .aspectRatio(200/130)
                     }
                     .marginHorizontal(16)
+                    .height(130)
                 
                 flex.addItem(self.button)
                     .marginHorizontal(16)
@@ -185,5 +188,12 @@ extension MOITAlarmView {
         }
         self.mainLabel.font = ResourceKitFontFamily.h2
         self.mainLabel.textColor = ResourceKitAsset.Color.blue200.color
+    }
+}
+
+// MARK: - Reactive
+extension Reactive where Base: MOITAlarmView {
+    public var didTapButton: Observable<Void> {
+        self.base.button.rx.tap
     }
 }

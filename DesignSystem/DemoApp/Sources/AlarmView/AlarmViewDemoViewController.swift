@@ -54,8 +54,15 @@ final class AlarmViewDemoViewController: UIViewController {
     
     private func penaltyView() -> MOITAlarmView {
         MOITAlarmView(
+            type: .penalty(amount: "9,999,999원"),
+            studyName: "전자군단🤖✨☘️🗯️"
+        )
+    }
+    
+    private func penaltyView2() -> MOITAlarmView {
+        MOITAlarmView(
             type: .penalty(amount: "12,000원"),
-            studyName: "전자군단🤖✨"
+            studyName: "전자군단🤖✨☘️🗯️"
         )
     }
 }
