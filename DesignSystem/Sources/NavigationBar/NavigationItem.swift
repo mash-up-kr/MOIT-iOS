@@ -11,16 +11,27 @@ import UIKit
 import ResourceKit
 
 import RxSwift
-import RxGesture
 
 public final class NavigationItem: UIButton {
     
+    let type: NavigationItemType
+    
     public init(type: NavigationItemType) {
+        self.type = type
         super.init(frame: .zero)
-        self.setImage(type.icon, for: .normal)
+        configureIcon(icon: type.icon)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureIcon(icon: UIImage?) {
+        guard let tintedImage = type.icon?.withRenderingMode(.alwaysTemplate) else {
+            self.setImage(type.icon, for: .normal)
+            return 
+        }
+        
+        self.setImage(tintedImage, for: .normal)
     }
 }
