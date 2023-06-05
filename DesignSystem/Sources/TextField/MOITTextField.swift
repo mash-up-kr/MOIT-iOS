@@ -30,7 +30,7 @@ public final class MOITTextField: UIView {
 		label.font = ResourceKitFontFamily.p2
 		return label
 	}()
-	private var textField: UITextField = {
+	fileprivate var textField: UITextField = {
 		let textField = UITextField()
 		textField.layer.cornerRadius = 12
 		textField.clipsToBounds = true
@@ -43,11 +43,6 @@ public final class MOITTextField: UIView {
 		textField.addHorizontalPadding()
 		return textField
 	}()
-
-	private let textFieldInputRelay = PublishRelay<String>()
-	public var textFieldInput: Observable<String> {
-		textFieldInputRelay.asObservable()
-	}
 
 	private let disposeBag = DisposeBag()
 	private let title: String
@@ -65,7 +60,6 @@ public final class MOITTextField: UIView {
 
 		configureLayout()
 		configureComponent()
-		bind()
 	}
 
 	required init?(coder: NSCoder) {
@@ -104,13 +98,6 @@ public final class MOITTextField: UIView {
 			]
 		)
 	}
-
-	private func bind() {
-		textField.rx.text
-			.orEmpty
-			.bind(to: textFieldInputRelay)
-			.disposed(by: disposeBag)
-	}
 }
 
 // MARK: - UITextField Extension
@@ -123,3 +110,10 @@ extension UITextField {
 		self.rightViewMode = ViewMode.always
 	}
 }
+
+// MARK: - Reactive
+extension Reactive where Base: MOITTextField {
+	public var text: Observable<String> {
+		base.textField.rx.text.orEmpty.asObservable()
+	}
+ }

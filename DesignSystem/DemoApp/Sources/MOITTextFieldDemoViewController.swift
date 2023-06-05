@@ -53,7 +53,7 @@ final class MOITTextFieldDemoViewController: UIViewController {
 	}
 
 	private func bind() {
-		emptyTextField.textFieldInput
+		emptyTextField.rx.text
 			.bind(to: label.rx.text)
 			.disposed(by: disposeBag)
 	}
