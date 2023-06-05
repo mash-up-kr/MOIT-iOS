@@ -12,7 +12,7 @@ fileprivate enum DesignSystemType: String,
                                    CaseIterable {
     case navigation
     case list
-    case control_tab
+    case controlTab
     case input
     case button
     case card
