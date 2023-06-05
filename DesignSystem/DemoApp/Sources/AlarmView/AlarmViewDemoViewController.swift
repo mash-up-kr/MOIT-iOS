@@ -16,6 +16,8 @@ import ResourceKit
 final class AlarmViewDemoViewController: UIViewController {
     
     private let flexRootView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,16 +31,33 @@ final class AlarmViewDemoViewController: UIViewController {
         super.viewDidLayoutSubviews()
         self.flexRootView.pin.all(self.view.pin.safeArea)
         self.flexRootView.flex.layout()
+        self.scrollView.pin.all()
+        self.scrollView.contentSize = contentView.frame.size
     }
     
     private func configureLayouts() {
-        self.flexRootView.flex
+        self.contentView.flex
             .alignItems(.center)
             .define { flex in
+                
                 flex.addItem(self.attendanceView())
                 
                 flex.addItem(self.출석률())
                     .marginTop(10)
+                
+                flex.addItem(self.penaltyView())
+                    .marginTop(10)
+                
+                flex.addItem(self.penaltyView2())
+                    .marginTop(10)
+            }
+        
+        self.scrollView.flex
+            .addItem(self.contentView)
+        
+        self.flexRootView.flex
+            .define { flex in
+                flex.addItem(self.scrollView)
             }
     }
     
