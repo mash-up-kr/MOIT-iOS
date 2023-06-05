@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+public enum MOITListType {
+	case allAttend
+	case myAttend
+	case sendMoney
+	case myMoney
+	case people
+}
