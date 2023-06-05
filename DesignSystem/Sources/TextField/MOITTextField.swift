@@ -65,7 +65,6 @@ public final class MOITTextField: UIView {
 		super.layoutSubviews()
 
 		flexRootView.pin.all()
-		flexRootView.pin.height(85)
 		flexRootView.flex.layout()
 	}
 
@@ -75,10 +74,13 @@ public final class MOITTextField: UIView {
 
 		flexRootView.flex
 			.direction(.column)
-			.justifyContent(.spaceBetween)
 			.define { flex in
 				flex.addItem(titleLabel)
-				flex.addItem(textField).height(53)
+					.height(22)
+				
+				flex.addItem(textField)
+					.height(53)
+					.marginTop(10)
 		 }
 	}
 
