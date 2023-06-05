@@ -16,14 +16,8 @@ import RxCocoa
 import RxSwift
 
 public final class MOITTextField: UIView {
-	
+
 	private let flexRootView = UIView()
-	private let stackView: UIStackView = {
-		let stackView = UIStackView()
-		stackView.axis = .vertical
-		stackView.spacing = 10
-		return stackView
-	}()
 	private var titleLabel: UILabel = {
 		let label = UILabel()
 		label.textColor = ResourceKitAsset.Color.gray700.color
@@ -34,8 +28,8 @@ public final class MOITTextField: UIView {
 		let textField = UITextField()
 		textField.layer.cornerRadius = 12
 		textField.clipsToBounds = true
-		textField.borderStyle = .roundedRect
 		textField.layer.borderColor = ResourceKitAsset.Color.gray200.color.cgColor
+		textField.layer.borderWidth = 1
 		textField.backgroundColor = ResourceKitAsset.Color.gray50.color
 		textField.font = ResourceKitFontFamily.p1
 		textField.textColor = ResourceKitAsset.Color.black.color
