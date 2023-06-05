@@ -65,7 +65,7 @@ public final class MOITButton: UIView {
         super.layoutSubviews()
         
         self.flexRootView.pin.all()
-        self.flexRootView.flex.layout(mode: .adjustWidth)
+        self.flexRootView.flex.layout()
     }
 }
 

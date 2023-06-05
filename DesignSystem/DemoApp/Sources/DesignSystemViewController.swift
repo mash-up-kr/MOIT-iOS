@@ -62,6 +62,8 @@ final class DesignSystemViewController: UITableViewController {
         switch designSystem {
         case .button:
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
+        case .modal:
+            self.navigationController?.pushViewController(BottomSheetDemoViewController(), animated: true)
         default: return
         }
     }
