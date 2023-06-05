@@ -31,8 +31,9 @@ public final class MOITNavigationBar: UIView {
     
     // MARK: - Properties
     public let leftItems: [NavigationItem]
-//    let titleText: String?
     public let rightItems: [NavigationItem]
+    
+    private let colorType: NavigationColorType
     
     // MARK: - Initializers
     /// leftItems와 rightItems에 좌우측에 들어갈 item을 정의합니다.
@@ -41,18 +42,18 @@ public final class MOITNavigationBar: UIView {
         leftItems: [NavigationItemType],
         title: String?,
         rightItems: [NavigationItemType],
-        backgroundColor: UIColor,
-        tintColor: UIColor
+        colorType: NavigationColorType = .normal
     ) {
         self.leftItems = leftItems.map { NavigationItem(type: $0)}
         self.rightItems = rightItems.map { NavigationItem(type: $0)}
+        self.colorType = colorType
         
         super.init(frame: .zero)
         
-        self.configureLeftItems(self.leftItems)
         self.configureTitle(title)
-        self.configureRightItems(self.rightItems)
         self.configureLayout()
+        self.configureColor()
+        
     }
     
     @available(*, unavailable)
@@ -67,8 +68,6 @@ public final class MOITNavigationBar: UIView {
 
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout(mode: .fitContainer)
-        
-        self.flexRootView.backgroundColor = .systemPink
     }
     
     // MARK: - Methods
@@ -79,62 +78,25 @@ public final class MOITNavigationBar: UIView {
 extension MOITNavigationBar {
     
     private func configureFlexRootView() {
-//        self.flexRootView.backgroundColor = _backgroundColor
         self.flexRootView.clipsToBounds = true
-    }
-    
-    private func configureLeftItems(_ leftItems: [NavigationItem]) {
-        
     }
     
     private func configureTitle(_ title: String?) {
         self.titleLabel.text = title
     }
-    
-    private func configureRightItems(_ rightItems: [NavigationItem]) {
-        
-    }
-//
-//    private func configureLayout() {
-//        self.addSubview(flexRootView)
-//
-//        self.flexRootView.flex
-//            .height(56)
-//            .width(100%)
-//            .direction(.row)
-//            .justifyContent(.spaceBetween)
-//            .alignItems(.center)
-//            .define { flex in
-//                flex.addItem()
-//                    .direction(.row)
-//                    .define { flex in
-//                        self.leftItems.forEach { flex.addItem($0).size(24)}
-//                    }
-//                    .marginLeft(16)
-//                // 여백 생성 코드
-//
-//
-//                flex.addItem(self.titleLabel).grow(1)
-//                flex.addItem()
-//                    .direction(.row)
-//                    .define { flex in
-//                        self.rightItems.forEach { flex.addItem($0).size(24).marginLeft(20)}
-//                    }
-//                    .marginRight(16)
-//            }
-//    }
+
     private func configureLayout() {
         self.addSubview(flexRootView)
 
         self.flexRootView.flex
             .height(56)
-//            .width(100%)
             .direction(.row)
             .alignItems(.center)
+            .backgroundColor(colorType.backgroundColor)
             .define { flex in
                 flex.addItem()
                     .direction(.row)
-                    .grow(1)
+                    .width(80)
                     .justifyContent(.start)
                     .define { flex in
                         self.leftItems.forEach { flex.addItem($0).size(24)}
@@ -142,18 +104,32 @@ extension MOITNavigationBar {
                     .marginLeft(16)
                 
                 flex.addItem(self.titleLabel)
-
-//                    .alignSelf(.center)
-                    
+                    .grow(1)
+                    .alignSelf(.center)
+                
                 flex.addItem()
                     .direction(.row)
-                    .grow(1)
+                    .width(80)
                     .justifyContent(.end)
                     .define { flex in
                         self.rightItems.forEach { flex.addItem($0).size(24).marginLeft(20)}
                     }
                     .marginRight(16)
             }
+    }
+    
+    private func configureColor() {
+        
+        
+        leftItems.forEach { $0.tintColor = self.colorType.tintColor}
+        rightItems.forEach { $0.tintColor = self.colorType.tintColor}
+        titleLabel.textColor = colorType.tintColor
+        
+        leftItems.forEach { $0.backgroundColor = self.colorType.backgroundColor}
+        rightItems.forEach { $0.backgroundColor = self.colorType.backgroundColor}
+        titleLabel.backgroundColor = colorType.backgroundColor
+        
+        self.backgroundColor = colorType.backgroundColor
     }
 
 }
