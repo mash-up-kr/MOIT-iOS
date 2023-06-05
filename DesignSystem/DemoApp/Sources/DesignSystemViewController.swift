@@ -17,6 +17,7 @@ fileprivate enum DesignSystemType: String,
     case button
     case card
     case modal
+    case bottomSheet
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -62,7 +63,7 @@ final class DesignSystemViewController: UITableViewController {
         switch designSystem {
         case .button:
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
-        case .modal:
+        case .bottomSheet:
             self.navigationController?.pushViewController(BottomSheetDemoViewController(), animated: true)
         default: return
         }
