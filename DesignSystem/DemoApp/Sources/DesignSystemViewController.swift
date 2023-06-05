@@ -60,10 +60,11 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
-			case .input:
-				let inputDemoViewController = MOITTextFieldDemoViewController()
-				self.navigationController?.pushViewController(inputDemoViewController, animated: true)
-			default: return
+			  case .input:
+          self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
+        case .button:
+            self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
+        default: return
         }
     }
 }
