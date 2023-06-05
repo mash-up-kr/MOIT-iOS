@@ -61,9 +61,11 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
-            // TODO: 여기에서 각자 화면 만드시오 !
+		case .chip:
+			self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
         default: return
         }
     }
 }
+
 
