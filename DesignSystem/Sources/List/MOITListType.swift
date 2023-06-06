@@ -14,4 +14,13 @@ public enum MOITListType {
 	case sendMoney
 	case myMoney
 	case people
+	
+	var height: CGFloat {
+		switch self {
+		case .people:
+			return 41
+		default:
+			return 40
+		}
+	}
 }
