@@ -65,6 +65,8 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
         case .chip:
             self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
+		case .list:
+			self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
         default: return
         }
     }
