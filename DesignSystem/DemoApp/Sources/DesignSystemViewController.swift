@@ -17,6 +17,7 @@ fileprivate enum DesignSystemType: String,
     case button
     case card
     case modal
+	case chip
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -60,9 +61,13 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
-            // TODO: 여기에서 각자 화면 만드시오 !
+        case .button:
+            self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
+        case .chip:
+            self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
         default: return
         }
     }
 }
+
 
