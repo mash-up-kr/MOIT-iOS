@@ -76,11 +76,7 @@ public final class MOITNavigationBar: UIView {
 // MARK: - Private Functions
 
 extension MOITNavigationBar {
-    
-    private func configureFlexRootView() {
-        self.flexRootView.clipsToBounds = true
-    }
-    
+        
     private func configureTitle(_ title: String?) {
         self.titleLabel.text = title
     }
@@ -119,8 +115,6 @@ extension MOITNavigationBar {
     }
     
     private func configureColor() {
-        
-        
         leftItems.forEach { $0.tintColor = self.colorType.tintColor}
         rightItems.forEach { $0.tintColor = self.colorType.tintColor}
         titleLabel.textColor = colorType.tintColor
