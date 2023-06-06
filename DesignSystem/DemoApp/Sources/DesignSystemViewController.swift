@@ -64,6 +64,8 @@ final class DesignSystemViewController: UITableViewController {
         case .navigation:
             let viewController = MOITNavigationDemoViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
+        case .button:
+            self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
         default: return
         }
     }
