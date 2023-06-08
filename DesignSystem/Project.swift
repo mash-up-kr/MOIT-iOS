@@ -66,6 +66,7 @@ let project = Project(
                     .ThirdParty.RxCocoa,
                     .ThirdParty.RxSwift,
                     .ThirdParty.RxGesture,
+                    .ResourceKit
                 ]
         )
         
