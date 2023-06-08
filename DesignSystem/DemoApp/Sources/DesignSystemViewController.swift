@@ -60,6 +60,10 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
+            // TODO: 여기에서 각자 화면 만드시오 !
+        case .navigation:
+            let viewController = MOITNavigationDemoViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
 			  case .input:
           self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
         case .button:
