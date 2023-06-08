@@ -16,7 +16,7 @@ fileprivate enum DesignSystemType: String,
     case input
     case button
     case card
-    case modal
+    case alarmView
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -60,7 +60,6 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
-            // TODO: 여기에서 각자 화면 만드시오 !
         case .navigation:
             let viewController = MOITNavigationDemoViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
@@ -68,6 +67,8 @@ final class DesignSystemViewController: UITableViewController {
           self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
         case .button:
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
+        case .alarmView:
+            self.navigationController?.pushViewController(AlarmViewDemoViewController(), animated: true)
         default: return
         }
     }
