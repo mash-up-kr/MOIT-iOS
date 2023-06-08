@@ -21,7 +21,7 @@ public enum MOITChipType {
 		switch self {
 		case .attend, .late, .absent:
 			return 15
-		case .dueDate(_), .finish:
+		case .dueDate, .finish:
 			return 9
 		}
 	}
@@ -50,7 +50,7 @@ public enum MOITChipType {
 		case .absent:
 			// TODO: Secondary Color 확정된 후 수정 필요
 			return ResourceKitAsset.Color.blue200.color
-		case .dueDate(_), .finish:
+		case .dueDate, .finish:
 			return ResourceKitAsset.Color.gray200.color
 		}
 	}
@@ -70,7 +70,7 @@ public enum MOITChipType {
 		switch self {
 		case .attend, .late, .absent:
 			return 30
-		case .dueDate(_), .finish:
+		case .dueDate, .finish:
 			return 18
 		}
 	}
@@ -79,7 +79,7 @@ public enum MOITChipType {
 		switch self {
 		case .attend, .late, .absent:
 			return 12
-		case .dueDate(_), .finish:
+		case .dueDate, .finish:
 			return 10
 		}
 	}
@@ -88,7 +88,7 @@ public enum MOITChipType {
 		switch self {
 		case .attend, .late, .absent:
 			return ResourceKitFontFamily.p3
-		case .dueDate(_), .finish:
+		case .dueDate, .finish:
 			return ResourceKitFontFamily.caption
 		}
 	}
