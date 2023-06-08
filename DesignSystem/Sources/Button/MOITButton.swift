@@ -7,9 +7,12 @@
 //
 
 import Foundation
+import UIKit
+
+import ResourceKit
+
 import PinLayout
 import FlexLayout
-import ResourceKit
 import RxSwift
 import RxCocoa
 import RxGesture
