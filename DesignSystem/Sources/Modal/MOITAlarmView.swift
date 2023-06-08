@@ -6,7 +6,6 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 import ResourceKit
@@ -121,28 +120,50 @@ extension MOITAlarmView {
         self.flexRootView.layer.insertSublayer(gradient, at: 0)
     }
     
+    private func generateTimerString(
+        남은시간: Int,
+        second: Int
+    ) -> String? {
+        let remainSecond = 남은시간 - second
+        let minute = remainSecond / 60
+        let second = remainSecond % 60
+        
+        if second < 10 { return "\(minute):0\(second)" }
+        else { return "\(minute):\(second)" }
+    }
+    
     private func subscribeRemainTimer() {
         Observable<Int>.interval(
             .seconds(1),
             scheduler: ConcurrentDispatchQueueScheduler.init(qos: .background)
         )
+        .map { $0 + 1 }  // 0초부터 카운팅 방지
+        .take(while: { [weak self] second in
+            guard let self = self else { return true }
+            switch self.type {
+            case .출석체크(let 남은시간): return (남은시간 + 1) != second
+            default: return true
+            }
+        })
         .filter { [weak self] second in
             guard let self = self else { return false }
-            return self.type == .출석체크 &&
-            60*3 >= second
+            switch self.type {
+            case .출석체크(let 남은시간): return 남은시간 >= second
+            default: return false
+            }
         }
-        .map { second -> String in
-            let remainSecond = 60*3 - second
-            let minute = remainSecond / 60
-            let second = remainSecond % 60
-            if second < 10 { return "\(minute):0\(second)" }
-            else { return "\(minute):\(second)" }
+        .compactMap { [weak self] second -> String? in
+            guard let self = self else { return nil }
+            switch self.type {
+            case .출석체크(let 남은시간): return self.generateTimerString(남은시간: 남은시간, second: second)
+            default: return nil
+            }
         }
         .observe(on: MainScheduler.instance)
         .bind(onNext: { [weak self] remainTime in
             self?.mainLabel.text = remainTime
             self?.mainLabel.flex.markDirty()
-            self?.layoutIfNeeded()
+            self?.setNeedsLayout()
         })
         .disposed(by: self.disposeBag)
     }
@@ -178,11 +199,12 @@ extension MOITAlarmView {
         self.descriptionLabel.font = ResourceKitFontFamily.p2
         self.descriptionLabel.textColor = ResourceKitAsset.Color.gray500.color
     }
+    
     private func configureMainLabel() {
         switch self.type {
-        case .출석체크:
+        case .출석체크(let 남은시간):
             self.subscribeRemainTimer()
-            self.mainLabel.text = "3:00"
+            self.mainLabel.text = self.generateTimerString(남은시간: 남은시간, second: 0)
         case .벌금(let amount):
             self.mainLabel.text = amount
         case .출석률(let percent):

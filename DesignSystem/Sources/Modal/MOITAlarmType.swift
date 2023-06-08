@@ -9,7 +9,8 @@
 import Foundation
 
 public enum MOITAlarmType: Equatable {
-    case 출석체크
+    /// 남은시간 = second
+    case 출석체크(남은시간: Int)
     case 벌금(amount: String) // TODO: 서버에서 어떻게 내려줄지 합의봐야됨 (int로 내려주는지 string으로 내려주는지?)
     case 출석률(percent: String)
 

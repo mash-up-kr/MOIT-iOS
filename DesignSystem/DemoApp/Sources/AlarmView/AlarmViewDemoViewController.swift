@@ -6,7 +6,6 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import FlexLayout
 import PinLayout
@@ -62,11 +61,8 @@ final class AlarmViewDemoViewController: UIViewController {
     }
     
     private func attendanceView() -> MOITAlarmView {
-        let targetTime = Date.init(timeIntervalSinceNow: TimeInterval(60 * 3))
-        print(Date.now)
-        print(targetTime)
         return MOITAlarmView(
-            type: .출석체크,
+            type: .출석체크(남은시간: 5),
             studyName: "전자군단🤖"
         )
     }
