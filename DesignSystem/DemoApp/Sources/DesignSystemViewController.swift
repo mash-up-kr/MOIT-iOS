@@ -65,6 +65,9 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
 			  case .input:
           self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
+        case .controlTab:
+            let viewController = MOITTapPagerDemoViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
         case .button:
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
         case .alarmView:

@@ -76,7 +76,11 @@ public final class MOITNavigationBar: UIView {
 // MARK: - Private Functions
 
 extension MOITNavigationBar {
-        
+    
+    private func configureFlexRootView() {
+        self.flexRootView.clipsToBounds = true
+    }
+    
     private func configureTitle(_ title: String?) {
         self.titleLabel.text = title
     }
@@ -88,36 +92,35 @@ extension MOITNavigationBar {
             .height(56)
             .direction(.row)
             .alignItems(.center)
-            .justifyContent(.spaceBetween)
-            .padding(16)
             .backgroundColor(colorType.backgroundColor)
             .define { flex in
                 flex.addItem()
                     .direction(.row)
+                    .width(80)
                     .justifyContent(.start)
                     .define { flex in
                         self.leftItems.forEach { flex.addItem($0).size(24)}
                     }
+                    .marginLeft(16)
+                
+                flex.addItem(self.titleLabel)
+                    .grow(1)
+                    .alignSelf(.center)
                 
                 flex.addItem()
                     .direction(.row)
-                    .position(.absolute)
-                    .width(100%)
-                    .justifyContent(.center)
-                    .define { flex in
-                        flex.addItem(self.titleLabel)
-                    }
-                
-                flex.addItem()
-                    .direction(.row)
+                    .width(80)
                     .justifyContent(.end)
                     .define { flex in
                         self.rightItems.forEach { flex.addItem($0).size(24).marginLeft(20)}
                     }
+                    .marginRight(16)
             }
     }
     
     private func configureColor() {
+        
+        
         leftItems.forEach { $0.tintColor = self.colorType.tintColor}
         rightItems.forEach { $0.tintColor = self.colorType.tintColor}
         titleLabel.textColor = colorType.tintColor

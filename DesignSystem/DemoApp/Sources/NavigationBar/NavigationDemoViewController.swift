@@ -43,7 +43,7 @@ final class MOITNavigationDemoViewController: UIViewController {
         self.view.addSubview(self.flexRootView)
         self.configureLayouts()
         self.navigationController?.navigationItem.title = "MOITNavigationBar"
-        
+        self.view.backgroundColor = .white
         self.moitNavigationBar.leftItems[0].rx.tap.subscribe(onNext: { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }).disposed(by: self.disposeBag)
