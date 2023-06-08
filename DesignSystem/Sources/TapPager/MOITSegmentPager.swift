@@ -112,7 +112,7 @@ public final class MOITSegmentPager: UIView {
         
         let xPosition = selectedLabel.frame.origin.x + 4
         let width = selectedLabel.frame.width
-        let height = selectedLabel.frame.height
+        let height = 34.0
         
         self.moveCircle(xPosition: xPosition, width: width, height: height)
         UIView.animate(withDuration: 0.25) {
@@ -120,13 +120,13 @@ public final class MOITSegmentPager: UIView {
         }
     }
     
-    private func moveCircle(xPosition: CGFloat, width: CGFloat, height: CGFloat) {
+    private func moveCircle(xPosition: CGFloat, width: CGFloat, height: CGFloat = 34) {
         self.selectedCircle.flex
             .define { flex in
                 flex.marginLeft(xPosition)
                     .width(width)
-                    .height(34)
-                    .cornerRadius(17)
+                    .height(height)
+                    .cornerRadius(height/2)
             }
     }
 }
