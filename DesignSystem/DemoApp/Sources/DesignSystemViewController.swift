@@ -18,6 +18,7 @@ fileprivate enum DesignSystemType: String,
     case card
     case modal
 	case chip
+    case studyPreview
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -68,6 +69,13 @@ final class DesignSystemViewController: UITableViewController {
         case .controlTab:
             let viewController = MOITTapPagerDemoViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
+        case .button:
+            self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
+        case .chip:
+            self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
+        case .studyPreview:
+            self.navigationController?.pushViewController(StudyPreviewDemoViewController(), animated: true)
+            
         default: return
         }
     }
