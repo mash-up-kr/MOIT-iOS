@@ -22,6 +22,7 @@ public final class NavigationItem: UIButton {
         configureIcon(icon: type.icon)
     }
     
+    @available (*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
