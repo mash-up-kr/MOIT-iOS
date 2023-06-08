@@ -12,7 +12,7 @@ fileprivate enum DesignSystemType: String,
                                    CaseIterable {
     case navigation
     case list
-    case control_tab
+    case controlTab
     case input
     case button
     case card
@@ -60,6 +60,8 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
+			  case .input:
+          self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
         case .button:
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
         default: return
