@@ -18,7 +18,13 @@ import RxGesture
 final class StudyPreviewDemoViewController: UIViewController {
     
     // MARK: - UI
-    private let studyPreview = MOITStudyPreview()
+    private let studyPreview = MOITStudyPreview(
+        remainingDate: 19,
+        profileURL: URL(string: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4")!,
+        studyName: "공부스터디",
+        studyProgressDescription: "공부스터디"
+    )
+    
     private let flexRootView = UIView()
 
     // MARK: - Properties
@@ -32,11 +38,7 @@ final class StudyPreviewDemoViewController: UIViewController {
         super.viewDidLoad()
         self.view.addSubview(self.flexRootView)
         self.configureLayouts()
-//        self.navigationController?.navigationItem.title = "MOITNavigationBar"
-        self.configurePreview()
-//        self.moitNavigationBar.leftItems[0].rx.tap.subscribe(onNext: { [weak self] in
-//            self?.navigationController?.popViewController(animated: true)
-//        }).disposed(by: self.disposeBag)
+//        self.configurePreview()
     }
 
     override func viewDidLayoutSubviews() {
@@ -56,10 +58,7 @@ final class StudyPreviewDemoViewController: UIViewController {
                     .backgroundColor(.systemPink)
             }
     }
-    
-    private func configurePreview() {
-        self.studyPreview.configure(remainingDate: "D-19", profileURL: URL(string: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4"), studyName: "공부스터디", studyProgressDescription: "공부스터디")
-    }
+
     
     // MARK: - Methods
 }

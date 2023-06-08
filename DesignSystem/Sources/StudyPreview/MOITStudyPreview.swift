@@ -17,38 +17,61 @@ import RxGesture
 
 public final class MOITStudyPreview: UIView {
     
-    let flexRootView = UIView()
+    // MARK: - UI
+    private let flexRootView = UIView()
     
-    let remainingDateLabel = UILabel()
-    let profileImageView = UIImageView()
-    let studyNameLabel = UILabel()
-    let studyProgressDescriptionLabel = UILabel()
-    let actionButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 40
-        return button
+    private var remainingDateLabel: MOITChip?
+    private let profileImageView = UIImageView()
+    private let studyNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = ResourceKitFontFamily.h5
+        label.textColor = ResourceKitAsset.Color.gray800.color
+        return label
     }()
     
+    private let studyDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = ResourceKitFontFamily.p3
+        label.textColor = ResourceKitAsset.Color.gray600.color
+        return label
+    }()
+    
+    private let deleteButton: UIButton = {
+        let button = UIButton()
+        button.setImage(ResourceKitAsset.Icon.trash.image.withTintColor(.white), for: .normal)
+        return button
+    }()
+   
+    // MARK: - Properties
     private var disposebag = DisposeBag()
     
-    
-    public init() {
+    // MARK: - Initializers
+    public init(remainingDate: Int,
+                profileURL: URL,
+                studyName: String,
+                studyProgressDescription: String?
+    ){
         super.init(frame: .zero)
         
-
-        
+        configureAttributes(
+            remainingDate: remainingDate,
+            profileURL: profileURL,
+            studyName: studyName,
+            studyProgressDescription: studyProgressDescription
+        )
         configureLayout()
         setupGesture()
     }
     
     @available (*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configureLayout()
-        setupGesture()
+        fatalError()
     }
     
     
+    // MARK: - Lifecycle
+    
+    // MARK: - Methods
     private func setupGesture() {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
         flexRootView.addGestureRecognizer(panGestureRecognizer)
@@ -68,40 +91,65 @@ public final class MOITStudyPreview: UIView {
         self.flexRootView.flex
             .direction(.row)
             .define { (flex) in
-                flex.addItem(profileImageView).size(50).aspectRatio(1.0)
-                flex.addItem(remainingDateLabel)
-                flex.addItem(studyNameLabel).margin(UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0))
-                flex.addItem(studyProgressDescriptionLabel).margin(UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0))
-                flex.addItem(actionButton).backgroundColor(.black).size(100).margin(UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20))
+                flex.addItem()
+//                    .marginVertical(19.5)
+                    .paddingLeft(16)
+                    .marginRight(10)
+                    .width(100%)
+                    .backgroundColor(.green)
+//                    .alignItems(.center) // 얘 하면 왜 iamge 사라짐..?
+                    .direction(.row)
+                    .define { flex in
+                        flex.addItem(profileImageView)
+//                            .marginLeft(16)
+                            .marginVertical(19.5)
+                            .aspectRatio(1.0)
+                            .marginRight(10)
+                        
+                        flex.addItem()
+                            .direction(.column)
+                            .marginVertical(14)
+                            .justifyContent(.spaceBetween)
+                            .alignItems(.start)
+//                            .alignSelf(.start)
+                            .define { flex in
+                                flex.addItem(remainingDateLabel ?? UILabel())
+                                flex.addItem(studyNameLabel)
+                                flex.addItem(studyDescriptionLabel)
+                            }
+                    }
+                    
+                
+                flex.addItem(deleteButton)
+                    .backgroundColor(.orange)
+                    .aspectRatio(0.77)
+                    .cornerRadius(self.deleteButton.bounds.height / 2)
             }
-        actionButton.isHidden = true
     }
     
-    public func configure(remainingDate: String?, profileURL: URL?, studyName: String?, studyProgressDescription: String?) {
-        remainingDateLabel.text = remainingDate
+    private func configureAttributes(remainingDate: Int, profileURL: URL, studyName: String, studyProgressDescription: String?) {
+        remainingDateLabel = MOITChip(type: .dueDate(date: remainingDate))
         profileImageView.kf.setImage(with: profileURL)
         studyNameLabel.text = studyName
-        studyProgressDescriptionLabel.text = studyProgressDescription
+        studyDescriptionLabel.text = studyProgressDescription
         self.flexRootView.flex.markDirty()
         self.layoutIfNeeded()
-        
     }
     
     @objc func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: flexRootView)
         let velocity = gestureRecognizer.velocity(in: flexRootView)
-        // TODO: 뷰 길게 뽑고 안보이는 오른쪽에 버튼(뷰) 붙이기
+
         switch gestureRecognizer.state {
         case .began, .changed:
-            if translation.x < 0 { // If swiping to the left
-                // Move the frontView to reveal the backView
+            if translation.x < 0 {
                 flexRootView.transform = CGAffineTransform(translationX: translation.x, y: 0)
             }
         case .ended:
-            if velocity.x < 0 { // If swipe to the left
+            if velocity.x < 0 {
                 UIView.animate(withDuration: 0.2) {
                     // Fully reveal the backView
-                    self.flexRootView.transform = CGAffineTransform(translationX: -self.actionButton.frame.width, y: 0)
+                    self.flexRootView.transform = CGAffineTransform(translationX: -(self.deleteButton.frame.width + 10), y: 0)
                 }
             } else {
                 UIView.animate(withDuration: 0.2) {
