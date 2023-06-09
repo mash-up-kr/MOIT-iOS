@@ -58,17 +58,25 @@ final class MOITDetailViewController: UIViewController,
         return button
     }()
     
-    private let sheetScrollView: UIScrollView = {
+    private let scrollView: UIScrollView = {
         let view = UIScrollView()
+        view.backgroundColor = .white
+        view.contentInsetAdjustmentBehavior = .never
+        return view
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    private let sheetContentView: UIView = {
+        let view = UIView()
         view.backgroundColor = .white
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
-        return view
-    }()
-    private let sheetContentView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
         return view
     }()
 
@@ -98,6 +106,17 @@ final class MOITDetailViewController: UIViewController,
         self.navigationBar.flex.layout()
         
         self.moitNameLabel.pin.center(to: self.navigationBar.anchor.center)
+        
+        self.scrollView.pin.all()
+//        self.scrollView.contentSize = self.contentView.frame.size
+        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 2000)
+        print("scrollView contentSize = \(self.contentView.frame.size)")
+        
+        self.sheetContentView.pin.top(to: self.moitImageView.edge.top).marginTop(240)
+            .right()
+            .left()
+            .bottom()
+        self.sheetContentView.flex.layout()
     }
     
     private func configureLayouts() {
@@ -128,18 +147,25 @@ final class MOITDetailViewController: UIViewController,
             }
             .height(56)
         
-        self.flexRootView.flex
+        self.contentView.flex
             .define { flex in
                 flex.addItem(self.moitImageView)
-                    .define { flex in
-                        flex.addItem(self.navigationBar)
-                            .position(.absolute)
-                    }
                     .backgroundColor(.brown)
                     .height(285)
                 
-                flex.addItem()
-                    .grow(1)
-        }
+                flex.addItem(self.sheetContentView)
+                    .position(.absolute)
+                    .height(2000)
+                    .backgroundColor(.systemPink)
+            }
+            
+        self.scrollView.flex
+            .addItem(self.contentView)
+             
+        self.flexRootView.flex
+            .define { flex in
+                flex.addItem(self.scrollView)
+                flex.addItem(self.navigationBar)
+            }
     }
 }
