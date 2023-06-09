@@ -57,6 +57,9 @@ final class MOITListDemoViewController: UIViewController {
 			flex.addItem(sendMoneyList())
 				.margin(10)
 			
+			flex.addItem(sendMoneyListWithoutButton())
+				.margin(10)
+			
 			flex.addItem(myMoneyList())
 				.margin(10)
 			
@@ -111,6 +114,15 @@ final class MOITListDemoViewController: UIViewController {
 			.disposed(by: disposeBag)
 		
 		return sendMoneyList
+	}
+	
+	private func sendMoneyListWithoutButton() -> MOITList {
+		MOITList(
+			type: .sendMoney,
+			image: DesignSystemDemoAppAsset.profileImage.image,
+			title: "가나다라마바사아자차카타",
+			detail: "15,000원"
+		)
 	}
 	
 	private func myMoneyList() -> MOITList {
