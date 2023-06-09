@@ -12,12 +12,13 @@ fileprivate enum DesignSystemType: String,
                                    CaseIterable {
     case navigation
     case list
-    case control_tab
+    case controlTab
     case input
     case button
     case card
-    case modal
     case bottomSheet
+	  case chip
+    case alarmView
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -61,12 +62,25 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
+        case .navigation:
+            let viewController = MOITNavigationDemoViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
+			  case .input:
+          self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
+        case .controlTab:
+            let viewController = MOITTapPagerDemoViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
         case .button:
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
         case .bottomSheet:
             self.navigationController?.pushViewController(BottomSheetDemoViewController(), animated: true)
+        case .chip:
+            self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
+        case .alarmView:
+            self.navigationController?.pushViewController(AlarmViewDemoViewController(), animated: true)
         default: return
         }
     }
 }
+
 

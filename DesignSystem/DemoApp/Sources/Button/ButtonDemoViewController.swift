@@ -6,7 +6,6 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import FlexLayout
 import PinLayout
