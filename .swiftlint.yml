@@ -1,5 +1,9 @@
 # - 제작 Jercy - 
 disabled_rules: #사용하지 않는 룰
+    
+    # 변수나 클래스등 이름은 소문자, 대문자로 시작하며 너무길거나 짧으면 안됩니다. https://realm.github.io/SwiftLint/identifier_name.html
+    - identifier_name # new
+    
     # 탭을 필요없이 두번이상 하지 않습니다 https://realm.github.io/SwiftLint/indentation_width.html
     - indentation_width
 
@@ -294,9 +298,6 @@ opt_in_rules: #사용하는 룰
     
     # 같은걸 비교하면 안됩니다. https://realm.github.io/SwiftLint/identical_operands.html
     - identical_operands # new
-    
-    # 변수나 클래스등 이름은 소문자, 대문자로 시작하며 너무길거나 짧으면 안됩니다. https://realm.github.io/SwiftLint/identifier_name.html
-    - identifier_name # new
     
     # getter를 명시적으로 적을 필요가 없는경우 생략하고 작성합니다 https://realm.github.io/SwiftLint/implicit_getter.html
     - implicit_getter
