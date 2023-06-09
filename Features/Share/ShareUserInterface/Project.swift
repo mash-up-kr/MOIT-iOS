@@ -1,7 +1,7 @@
 //
-//  ShareAppDelegate.swift
+//  MOITShareAppDelegate.swift
 //
-//  Share
+//  MOITShare
 //
 //  Created by 송서영
 //
@@ -11,7 +11,7 @@ import ProjectDescriptionHelpers
 import UtilityPlugin
 
 let project = Project.invertedDualTargetProjectWithDemoApp(
-    name: "Share",
+    name: "MOITShare",
     platform: .iOS,
     iOSTargetVersion: "15.0.0",
     interfaceDependencies: [
