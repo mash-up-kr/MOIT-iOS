@@ -46,7 +46,7 @@ final class MOITDetailViewController: UIViewController,
         button.tintColor = .white
         return button
     }()
-    private let moitNameLabel: UILabel = {
+    private let moitNameNavigationTitleLabel: UILabel = {
         let label = UILabel()
         label.font = ResourceKitFontFamily.h6
         label.textColor = .white
@@ -90,6 +90,22 @@ final class MOITDetailViewController: UIViewController,
         view.clipsToBounds = true
         return view
     }()
+    
+    private let moitNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = ResourceKitFontFamily.h3
+        label.textColor = ResourceKitAsset.Color.gray900.color
+        label.text = "전자군단 스터디"
+        return label
+    }()
+    
+    private let moitDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = ResourceKitFontFamily.p3
+        label.textColor = ResourceKitAsset.Color.gray500.color
+        label.text = "매시업 IT 개발 동아리 WEB&iOS팀!!"
+        return label
+    }()
 
     // MARK: - Properties
     
@@ -125,7 +141,7 @@ final class MOITDetailViewController: UIViewController,
         
         self.navigationBar.flex.layout()
         
-        self.moitNameLabel.pin.center(to: self.navigationBar.anchor.center)
+        self.moitNameNavigationTitleLabel.pin.center(to: self.navigationBar.anchor.center)
         
         self.scrollView.pin.all()
 //        self.scrollView.contentSize = self.contentView.frame.size
@@ -150,7 +166,7 @@ final class MOITDetailViewController: UIViewController,
                     .size(24)
                     .marginLeft(16)
                 
-                flex.addItem(self.moitNameLabel)
+                flex.addItem(self.moitNameNavigationTitleLabel)
                     .position(.absolute)
                     
              
@@ -166,7 +182,20 @@ final class MOITDetailViewController: UIViewController,
                     .marginRight(16)
             }
             
-        
+        self.sheetContentView.flex
+            .alignItems(.start)
+            .define { flex in
+                flex.addItem(self.moitNameLabel)
+                    .marginHorizontal(20)
+                    .marginTop(30)
+                    .height(36)
+                
+                flex.addItem(self.moitDescriptionLabel)
+                    .marginHorizontal(20)
+                    .marginTop(10)
+                    .height(22)
+            }
+            
         self.contentView.flex
             .define { flex in
                 flex.addItem(self.moitImageView)
@@ -176,7 +205,6 @@ final class MOITDetailViewController: UIViewController,
                 flex.addItem(self.sheetContentView)
                     .position(.absolute)
                     .height(2000)
-                    .backgroundColor(.systemPink)
             }
             
         self.scrollView.flex
@@ -235,21 +263,21 @@ final class MOITDetailViewController: UIViewController,
                 if alpha <= 0 {
                     self?.navigationBar.backgroundColor = .clear
                     self?.navigationTopView.backgroundColor = .clear
-                    self?.moitNameLabel.textColor = .white
+                    self?.moitNameNavigationTitleLabel.textColor = .white
                     self?.backButton.tintColor = .white
                     self?.participantsButton.tintColor = .white
                     self?.shareButton.tintColor = .white
                 } else if alpha <= 0.15 {
                     self?.navigationBar.backgroundColor = .white.withAlphaComponent(alpha)
                     self?.navigationTopView.backgroundColor = .white.withAlphaComponent(alpha)
-                    self?.moitNameLabel.textColor = .white
+                    self?.moitNameNavigationTitleLabel.textColor = .white
                     self?.backButton.tintColor = .white
                     self?.participantsButton.tintColor = .white
                     self?.shareButton.tintColor = .white
                 } else {
                     self?.navigationBar.backgroundColor = .white.withAlphaComponent(alpha)
                     self?.navigationTopView.backgroundColor = .white.withAlphaComponent(alpha)
-                    self?.moitNameLabel.textColor = .black
+                    self?.moitNameNavigationTitleLabel.textColor = .black
                     self?.backButton.tintColor = .black
                     self?.participantsButton.tintColor = .black
                     self?.shareButton.tintColor = .black
