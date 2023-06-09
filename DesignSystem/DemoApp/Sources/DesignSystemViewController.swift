@@ -16,7 +16,7 @@ fileprivate enum DesignSystemType: String,
     case input
     case button
     case card
-	case chip
+	  case chip
     case alarmView
 }
 
@@ -75,8 +75,8 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
         case .alarmView:
             self.navigationController?.pushViewController(AlarmViewDemoViewController(), animated: true)
-		case .list:
-			self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
+    		case .list:
+		      	self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
         default: return
         }
     }
