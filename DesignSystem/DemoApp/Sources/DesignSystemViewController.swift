@@ -62,6 +62,11 @@ final class DesignSystemViewController: UITableViewController {
     ) {
         let designSystem = self.designSystems[indexPath.item]
         switch designSystem {
+        case .navigation:
+            let viewController = MOITNavigationDemoViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
+			  case .input:
+          self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
             // TODO: 여기에서 각자 화면 만드시오 !
         case .navigation:
             let viewController = MOITNavigationDemoViewController()
@@ -73,6 +78,8 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(ButtonDemoViewController(), animated: true)
         case .chip:
             self.navigationController?.pushViewController(MOITChipDemoViewController(), animated: true)
+        case .alarmView:
+            self.navigationController?.pushViewController(AlarmViewDemoViewController(), animated: true)
         case .studyPreview:
             self.navigationController?.pushViewController(StudyPreviewDemoViewController(), animated: true)
             

@@ -39,7 +39,6 @@ public final class MOITTabPager: UIView {
         super.init(frame: .zero)
 
         configurePages(pages: pages)
-        configureUI()
         configureLayout()
         congifureUnderline()
     }
@@ -59,9 +58,6 @@ public final class MOITTabPager: UIView {
     }
     
     // MARK: - Functions
-    private func configureUI() {
-        
-    }
     
     private func configureLayout() {
         self.addSubview(flexRootView)
