@@ -121,10 +121,10 @@ extension MOITAlarmView {
     }
     
     private func generateTimerString(
-        남은시간: Int,
+        remainSeconds: Int,
         second: Int
     ) -> String? {
-        let remainSecond = 남은시간 - second
+        let remainSecond = remainSeconds - second
         let minute = remainSecond / 60
         let second = remainSecond % 60
         
@@ -141,21 +141,21 @@ extension MOITAlarmView {
         .take(while: { [weak self] second in
             guard let self = self else { return true }
             switch self.type {
-            case .출석체크(let 남은시간): return (남은시간 + 1) != second
+            case .attendanceCheck(let remainSeconds): return (remainSeconds + 1) != second
             default: return true
             }
         })
         .filter { [weak self] second in
             guard let self = self else { return false }
             switch self.type {
-            case .출석체크(let 남은시간): return 남은시간 >= second
+            case .attendanceCheck(let remainSeconds): return remainSeconds >= second
             default: return false
             }
         }
         .compactMap { [weak self] second -> String? in
             guard let self = self else { return nil }
             switch self.type {
-            case .출석체크(let 남은시간): return self.generateTimerString(남은시간: 남은시간, second: second)
+            case .attendanceCheck(let remainSeconds): return self.generateTimerString(remainSeconds: remainSeconds, second: second)
             default: return nil
             }
         }
@@ -202,12 +202,12 @@ extension MOITAlarmView {
     
     private func configureMainLabel() {
         switch self.type {
-        case .출석체크(let 남은시간):
+        case .attendanceCheck(let remainSeconds):
             self.subscribeRemainTimer()
-            self.mainLabel.text = self.generateTimerString(남은시간: 남은시간, second: 0)
-        case .벌금(let amount):
+            self.mainLabel.text = self.generateTimerString(remainSeconds: remainSeconds, second: 0)
+        case .penalty(let amount):
             self.mainLabel.text = amount
-        case .출석률(let percent):
+        case .attendanceRating(let percent):
             self.mainLabel.text = percent
         }
     
