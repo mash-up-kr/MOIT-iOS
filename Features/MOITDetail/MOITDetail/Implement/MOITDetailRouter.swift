@@ -7,6 +7,7 @@
 //
 
 import RIBs
+import MOITDetail
 
 protocol MOITDetailInteractable: Interactable {
     var router: MOITDetailRouting? { get set }

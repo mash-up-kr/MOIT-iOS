@@ -9,6 +9,7 @@
 import RIBs
 import RxSwift
 import UIKit
+import DesignSystem
 
 protocol MOITDetailPresentableListener: AnyObject {
     // TODO: Declare properties and methods that the view controller can invoke to perform
@@ -16,7 +17,14 @@ protocol MOITDetailPresentableListener: AnyObject {
     // interactor class.
 }
 
-final class MOITDetailViewController: UIViewController, MOITDetailPresentable, MOITDetailViewControllable {
+final class MOITDetailViewController: UIViewController,
+                                      MOITDetailPresentable,
+                                      MOITDetailViewControllable {
 
     weak var listener: MOITDetailPresentableListener?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .red
+    }
 }

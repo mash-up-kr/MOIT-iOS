@@ -26,6 +26,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RxGesture,
         .ThirdParty.FlexLayout,
         .ThirdParty.PinLayout,
+        .ResourceKit,
+        .DesignSystem,
     ],
     isUserInterface: true
 )

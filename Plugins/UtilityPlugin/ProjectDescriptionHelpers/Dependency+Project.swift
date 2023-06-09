@@ -20,6 +20,10 @@ extension TargetDependency {
     
     public static let ResourceKit = TargetDependency.project(target: "ResourceKit",
                                    path: .relativeToRoot("ResourceKit"))
+    public static let DesignSystem = TargetDependency.project(
+        target: "DesignSystem",
+        path: .relativeToRoot("DesignSystem")
+    )
 
     public struct ThirdParty {}
 }
