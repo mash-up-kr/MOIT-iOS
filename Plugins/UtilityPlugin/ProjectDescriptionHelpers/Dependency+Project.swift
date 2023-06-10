@@ -87,6 +87,7 @@ public extension TargetDependency.ThirdParty {
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
+    static let SkeletonView = TargetDependency.external(name: "SkeletonView")
 }
 
 public extension TargetDependency.ThirdParty {
