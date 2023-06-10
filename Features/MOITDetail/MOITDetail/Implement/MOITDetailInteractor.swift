@@ -19,7 +19,13 @@ protocol MOITDetailPresentable: Presentable {
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
-final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>, MOITDetailInteractable, MOITDetailPresentableListener {
+final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
+                                  MOITDetailInteractable,
+                                  MOITDetailPresentableListener {
+    
+    func didTapInfoButton(type: MOITDetailInfoViewButtonType) {
+        
+    }
 
     weak var router: MOITDetailRouting?
     weak var listener: MOITDetailListener?

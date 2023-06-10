@@ -15,6 +15,7 @@ import FlexLayout
 import PinLayout
 
 protocol MOITDetailPresentableListener: AnyObject {
+    func didTapInfoButton(type: MOITDetailInfoViewButtonType)
 }
 
 final class MOITDetailViewController: UIViewController,
@@ -108,6 +109,8 @@ final class MOITDetailViewController: UIViewController,
     }()
     
     private let infoView = MOITDetailInfosView()
+    
+    private let tapPageView = MOITTabPager(pages: ["출결", "벌금"])
 
     // MARK: - Properties
     
@@ -127,7 +130,7 @@ final class MOITDetailViewController: UIViewController,
         self.bind()
         self.infoView.configure(viewModel:
                 .init(
-                    buttonType: .fold,
+                    buttonType: .canEdit,
                     infos: [
                         .init(title: "일정", description: "격주 금요일 17:00-20:00"),
                         .init(title: "규칙", description: "지각 15분부터 5,000원\n결석 30분 부터 8,000원")
@@ -209,6 +212,9 @@ final class MOITDetailViewController: UIViewController,
                 flex.addItem(self.infoView)
                     .marginHorizontal(20)
                     .marginTop(20)
+                
+                flex.addItem(self.tapPageView)
+                    .marginTop(20)
             }
             
         self.contentView.flex
@@ -234,16 +240,29 @@ final class MOITDetailViewController: UIViewController,
     }
     
     private func bind() {
+        
+        self.tapPageView.rx.tapIndex
+            .subscribe(onNext: { index in
+                print("\(index)번쨰")
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.infoView.rx.didTapButton
+            .debug()
+            .bind(onNext: { [weak self] in
+                print($0)
+                self?.listener?.didTapInfoButton(type: $0)
+            })
+            .disposed(by: self.disposeBag)
+        
         self.scrollView.rx.contentOffset
             .map(\.y)
             .map { [weak self] yPoint -> Bool in
                 guard let self = self else { return false }
                 let navigationHeight: CGFloat = 56
-                print(yPoint)
                 let navigationFrameY = self.navigationBar.frame.minY
                 let betweenFrameY: CGFloat = 240
                 let value = betweenFrameY - navigationHeight - navigationFrameY
-                print(value, "value")
                 return yPoint >= value
             }
             .distinctUntilChanged()

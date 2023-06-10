@@ -6,7 +6,7 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import FlexLayout
 import PinLayout
 import DesignSystem
@@ -17,7 +17,7 @@ struct MOITDetailInfoViewModel {
     let description: String
 }
 
-fileprivate class MOITDetailInfoView: UIView {
+final class MOITDetailInfoView: UIView {
     
     
     
@@ -69,91 +69,5 @@ fileprivate class MOITDetailInfoView: UIView {
     func confifugre(viewModel: MOITDetailInfoViewModel) {
         self.titleLabel.text = viewModel.title
         self.descriptionLabel.text = viewModel.description
-    }
-}
-
-enum MOITDetailInfoViewButtonType {
-    /// 닫힘
-    case fold
-    /// 펼쳐짐
-    case unfold
-    /// 수정 (스터디장)
-    case canEdit
-    
-    var buttonImage: UIImage {
-        switch self {
-        case .fold: return ResourceKitAsset.Icon.chevronDown.image
-        case .unfold: return ResourceKitAsset.Icon.chevronUp.image
-        case .canEdit: return ResourceKitAsset.Icon.edit.image
-        }
-    }
-}
-
-struct MOITDetailInfosViewModel {
-    let buttonType: MOITDetailInfoViewButtonType
-    let infos: [MOITDetailInfoViewModel]
-}
-
-final class MOITDetailInfosView: UIView {
-
-    private let flexRootView = UIView()
-    fileprivate let button = UIButton()
-    private var infoViews: [MOITDetailInfoView] = []
-    
-    func configure(viewModel: MOITDetailInfosViewModel) {
-        let buttonImage = viewModel.buttonType.buttonImage
-            .withTintColor(ResourceKitAsset.Color.gray500.color)
-        self.button.setImage(buttonImage, for: .normal)
-        self.infoViews = viewModel.infos.map { infoViewModel in
-            MOITDetailInfoView(viewModel: infoViewModel)
-        }
-        self.configureLayouts()
-    }
-    
-    init() {
-        super.init(frame: .zero)
-        self.flexRootView.backgroundColor = ResourceKitAsset.Color.gray50.color
-        self.flexRootView.layer.cornerRadius = 20
-        self.flexRootView.clipsToBounds = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.flexRootView.pin.all()
-        self.flexRootView.flex.layout()
-        
-        self.button.pin.top()
-            .right()
-            .marginTop(20)
-            .marginRight(11)
-            .size(24)
-    }
-    
-    private func configureLayouts() {
-        self.addSubview(self.flexRootView)
-        self.flexRootView.flex
-            .define { flex in
-                flex.addItem(self.button)
-                    .position(.absolute)
-                
-                flex.addItem()
-                    .marginVertical(20)
-                    .marginLeft(10)
-                    .marginRight(45)
-                    .define { flex in
-                        self.infoViews.enumerated().forEach { index, infoView in
-                            if index != 0 {
-                                flex.addItem(infoView)
-                                    .marginTop(9)
-                            } else {
-                                flex.addItem(infoView)
-                            }
-                        }
-                    }
-            }
     }
 }
