@@ -106,6 +106,8 @@ final class MOITDetailViewController: UIViewController,
         label.text = "매시업 IT 개발 동아리 WEB&iOS팀!!"
         return label
     }()
+    
+    private let infoView = MOITDetailInfosView()
 
     // MARK: - Properties
     
@@ -123,6 +125,15 @@ final class MOITDetailViewController: UIViewController,
         print(#function)
         self.configureLayouts()
         self.bind()
+        self.infoView.configure(viewModel:
+                .init(
+                    buttonType: .fold,
+                    infos: [
+                        .init(title: "일정", description: "격주 금요일 17:00-20:00"),
+                        .init(title: "규칙", description: "지각 15분부터 5,000원\n결석 30분 부터 8,000원")
+                    ]
+                )
+        )
     }
     
     override func viewDidLayoutSubviews() {
@@ -183,7 +194,7 @@ final class MOITDetailViewController: UIViewController,
             }
             
         self.sheetContentView.flex
-            .alignItems(.start)
+            .alignItems(.stretch)
             .define { flex in
                 flex.addItem(self.moitNameLabel)
                     .marginHorizontal(20)
@@ -194,6 +205,10 @@ final class MOITDetailViewController: UIViewController,
                     .marginHorizontal(20)
                     .marginTop(10)
                     .height(22)
+                
+                flex.addItem(self.infoView)
+                    .marginHorizontal(20)
+                    .marginTop(20)
             }
             
         self.contentView.flex
