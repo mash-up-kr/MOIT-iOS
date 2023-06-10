@@ -11,7 +11,7 @@ import RxSwift
 import MOITDetail
 
 protocol MOITDetailRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    func attachAttendance()
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -29,21 +29,34 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
 
     weak var router: MOITDetailRouting?
     weak var listener: MOITDetailListener?
+    
+    private let tabTypes: [MOITDetailTab]
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init(presenter: MOITDetailPresentable) {
+    init(
+        tabTypes: [MOITDetailTab],
+        presenter: MOITDetailPresentable
+    ) {
+        self.tabTypes = tabTypes
         super.init(presenter: presenter)
         presenter.listener = self
     }
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        // TODO: Implement business logic here.
+        
     }
 
     override func willResignActive() {
         super.willResignActive()
         // TODO: Pause any business logic.
+    }
+    
+    func viewDidLoad() {
+        self.tabTypes.forEach { type  in
+            switch type {
+            case .attendance: self.router?.attachAttendance()
+            default: return
+            }
+        }
     }
 }

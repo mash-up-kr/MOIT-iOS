@@ -12,6 +12,10 @@ import MOITDetail
 final class MOITDetailComponent: Component<MOITDetailDependency> {
 }
 
+extension MOITDetailComponent: MOITDetailAttendanceDependency {
+    
+}
+
 // MARK: - Builder
 
 public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
@@ -27,12 +31,18 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         
         let component = MOITDetailComponent(dependency: dependency)
         let viewController = MOITDetailViewController()
-        let interactor = MOITDetailInteractor(presenter: viewController)
+        let interactor = MOITDetailInteractor(
+            tabTypes: [.attendance, .fine],
+            presenter: viewController
+        )
         interactor.listener = listener
+        
+        let attendanceBuiler = MOITDetailAttendanceBuilder(dependency: component)
         
         return MOITDetailRouter(
             interactor: interactor,
-            viewController: viewController
+            viewController: viewController,
+            attendanceBuiler: attendanceBuiler
         )
     }
 }

@@ -16,6 +16,7 @@ import PinLayout
 
 protocol MOITDetailPresentableListener: AnyObject {
     func didTapInfoButton(type: MOITDetailInfoViewButtonType)
+    func viewDidLoad()
 }
 
 final class MOITDetailViewController: UIViewController,
@@ -111,6 +112,7 @@ final class MOITDetailViewController: UIViewController,
     private let infoView = MOITDetailInfosView()
     
     private let tapPageView = MOITTabPager(pages: ["출결", "벌금"])
+    private let childViewControllerContainer = UIView()
 
     // MARK: - Properties
     
@@ -137,6 +139,7 @@ final class MOITDetailViewController: UIViewController,
                     ]
                 )
         )
+        self.listener?.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -215,6 +218,10 @@ final class MOITDetailViewController: UIViewController,
                 
                 flex.addItem(self.tapPageView)
                     .marginTop(20)
+                
+                flex.addItem(self.childViewControllerContainer)
+                    .backgroundColor(.orange)
+                    .marginBottom(0)
             }
             
         self.contentView.flex
@@ -318,5 +325,14 @@ final class MOITDetailViewController: UIViewController,
                 }
             })
             .disposed(by: self.disposeBag)
+    }
+}
+
+extension MOITDetailViewController {
+    func addChild(viewController: ViewControllable) {
+        self.addChild(viewController.uiviewController)
+        print(self.childViewControllerContainer.frame)
+        viewController.uiviewController.view.frame = self.childViewControllerContainer.frame
+        viewController.uiviewController.willMove(toParent: self)
     }
 }

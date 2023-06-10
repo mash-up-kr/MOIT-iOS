@@ -1,5 +1,5 @@
 //
-//  MOITDetailAttendanceViewController.swift
+//  MOITDetailAttendanceGraphView.swift
 //  MOITDetailImpl
 //
 //  Created by 송서영 on 2023/06/10.
@@ -8,5 +8,6 @@
 
 import UIKit
 
-final class MOITDetailAttendanceViewController: UIViewController {
+final class MOITDetailAttendanceGraphView: UIView {
+    
 }

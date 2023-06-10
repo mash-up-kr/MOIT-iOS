@@ -9,20 +9,36 @@
 import RIBs
 import MOITDetail
 
-protocol MOITDetailInteractable: Interactable {
+protocol MOITDetailInteractable: Interactable,
+                                 MOITDetailAttendanceListener {
     var router: MOITDetailRouting? { get set }
     var listener: MOITDetailListener? { get set }
 }
 
 protocol MOITDetailViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
+    func addChild(viewController: ViewControllable)
 }
 
 final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailViewControllable>, MOITDetailRouting {
 
-    // TODO: Constructor inject child builder protocols to allow building children.
-    override init(interactor: MOITDetailInteractable, viewController: MOITDetailViewControllable) {
+    private let attendanceBuiler: MOITDetailAttendanceBuildable
+    private var attendacneRouter: ViewableRouting?
+    
+    init(
+        interactor: MOITDetailInteractable,
+        viewController: MOITDetailViewControllable,
+        attendanceBuiler: MOITDetailAttendanceBuildable
+    ) {
+        self.attendanceBuiler = attendanceBuiler
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
+    }
+    
+    func attachAttendance() {
+        guard attendacneRouter == nil else { return }
+        let router = self.attendanceBuiler.build(withListener: self.interactor)
+        self.attendacneRouter = router
+        self.attachChild(router)
+        self.viewController.addChild(viewController: router.viewControllable)
     }
 }

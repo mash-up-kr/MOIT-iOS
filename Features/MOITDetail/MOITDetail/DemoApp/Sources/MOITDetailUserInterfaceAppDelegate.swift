@@ -29,7 +29,8 @@ final class MOITDetailAppDelegate: UIResponder,
             .build(withListener: MOCKMOITDetailListener())
         self.router?.load()
         self.router?.interactable.activate()
-        window.rootViewController = self.router?.viewControllable.uiviewController
+//        window.rootViewController = self.router?.viewControllable.uiviewController
+        window.rootViewController = MOITDetailAttendanceViewController()
         window.makeKeyAndVisible()
         self.window = window
         return true
