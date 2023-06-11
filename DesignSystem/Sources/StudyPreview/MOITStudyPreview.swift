@@ -74,7 +74,11 @@ public final class MOITStudyPreview: UIView {
     // MARK: - Methods
     private func setupGesture() {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
+        tapGestureRecognizer.delegate = self
+        panGestureRecognizer.delegate = self
         flexRootView.addGestureRecognizer(panGestureRecognizer)
+        flexRootView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     public override func layoutSubviews() {
@@ -128,6 +132,9 @@ public final class MOITStudyPreview: UIView {
     }
     
     private func configureAttributes(remainingDate: Int, profileURL: URL, studyName: String, studyProgressDescription: String?) {
+        deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+        flexRootView.button = deleteButton
+        
         remainingDateLabel = MOITChip(type: .dueDate(date: remainingDate))
         profileImageView.kf.setImage(with: profileURL)
         studyNameLabel.text = studyName
@@ -136,10 +143,10 @@ public final class MOITStudyPreview: UIView {
         self.layoutIfNeeded()
     }
     
-    @objc func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc private func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: flexRootView)
         let velocity = gestureRecognizer.velocity(in: flexRootView)
-
+        
         switch gestureRecognizer.state {
         case .began, .changed:
             if translation.x < 0 {
@@ -161,5 +168,51 @@ public final class MOITStudyPreview: UIView {
             break
         }
     }
+    
+    @objc private func didTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        // didTap 이벤트를 방출
+        self.didTapSubject.onNext(())
+    }
+    
+    @objc private func didTapDelete() {
+        let alert = UIAlertController(
+            title: "\(self.studyNameLabel.text ?? "") 스터디를 삭제할까요?",
+            message: "스터디를 삭제하면 해당 데이터도 모두 삭제됩니다.",
+            preferredStyle: .alert
+        )
+        let confirmAction = UIAlertAction(title: "확인", style: .default) { action in
+            self.deleteConfirmSubject.onNext(())
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .destructive)
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        self.window?.rootViewController?.present(alert, animated: true)
+    }
+    
+}
 
+// MARK: - UIGestureRecognizerDelegate
+extension MOITStudyPreview: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UIPanGestureRecognizer {
+            return otherGestureRecognizer is UITapGestureRecognizer
+        }
+        return false
+    }
+}
+
+// MARK: - Reactive
+public extension Reactive where Base: MOITStudyPreview {
+    
+    var didConfirmDelete: Observable<Void> {
+        return base.deleteConfirmSubject.asObservable()
+    }
+
+    var didTap: Observable<Void> {
+        return base.didTapSubject.asObservable()
+    }
 }
