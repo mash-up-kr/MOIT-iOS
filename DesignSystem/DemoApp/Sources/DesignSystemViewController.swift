@@ -19,6 +19,7 @@ fileprivate enum DesignSystemType: String,
     case modal
 	case chip
     case studyPreview
+    case alarmView
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -65,12 +66,8 @@ final class DesignSystemViewController: UITableViewController {
         case .navigation:
             let viewController = MOITNavigationDemoViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
-			  case .input:
+        case .input:
           self.navigationController?.pushViewController(MOITTextFieldDemoViewController(), animated: true)
-            // TODO: 여기에서 각자 화면 만드시오 !
-        case .navigation:
-            let viewController = MOITNavigationDemoViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
         case .controlTab:
             let viewController = MOITTapPagerDemoViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
