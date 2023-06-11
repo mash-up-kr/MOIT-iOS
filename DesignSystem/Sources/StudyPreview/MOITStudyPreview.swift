@@ -18,7 +18,7 @@ import RxGesture
 public final class MOITStudyPreview: UIView {
     
     // MARK: - UI
-    private let flexRootView = UIView()
+    fileprivate let flexRootView = TouchThroughView()
     
     private var remainingDateLabel: MOITChip?
     private let profileImageView = UIImageView()
@@ -36,14 +36,18 @@ public final class MOITStudyPreview: UIView {
         return label
     }()
     
-    private let deleteButton: UIButton = {
+    private lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setImage(ResourceKitAsset.Icon.trash.image.withTintColor(.white), for: .normal)
+        button.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
         return button
     }()
-   
+    
     // MARK: - Properties
     private var disposebag = DisposeBag()
+    
+    fileprivate let deleteConfirmSubject = PublishSubject<Void>()
+    fileprivate let didTapSubject = PublishSubject<Void>()
     
     // MARK: - Initializers
     public init(remainingDate: Int,
@@ -86,58 +90,63 @@ public final class MOITStudyPreview: UIView {
         
         self.addSubview(flexRootView)
         self.flexRootView.pin.all()
-        self.flexRootView.flex.layout(mode: .fitContainer)
+        self.flexRootView.flex.layout()
+        self.clipsToBounds = true
     }
     
     private func configureLayout() {
         
-        
         self.flexRootView.flex
             .direction(.row)
             .define { (flex) in
-                flex.addItem()
-//                    .marginVertical(19.5)
+                flex.addItem() // 보이는 뷰
                     .paddingLeft(16)
                     .marginRight(10)
                     .width(100%)
-                    .backgroundColor(.green)
-//                    .alignItems(.center) // 얘 하면 왜 iamge 사라짐..?
+                    .height(100)
+                    .cornerRadius(30)
+                    .backgroundColor(.white)
+                    .alignItems(.center)
                     .direction(.row)
                     .define { flex in
                         flex.addItem(profileImageView)
-//                            .marginLeft(16)
-                            .marginVertical(19.5)
-                            .aspectRatio(1.0)
+                            .size(60)
                             .marginRight(10)
                         
                         flex.addItem()
                             .direction(.column)
                             .marginVertical(14)
-                            .justifyContent(.spaceBetween)
+                            .paddingRight(16)
+                            .height(71)
                             .alignItems(.start)
-//                            .alignSelf(.start)
                             .define { flex in
-                                flex.addItem(remainingDateLabel ?? UILabel())
-                                flex.addItem(studyNameLabel)
+                                flex.addOptionalItem(remainingDateLabel).marginBottom(4)
+                                flex.addItem(studyNameLabel).marginBottom(0)
                                 flex.addItem(studyDescriptionLabel)
                             }
                     }
-                    
                 
-                flex.addItem(deleteButton)
-                    .backgroundColor(.orange)
+                
+                flex.addItem(deleteButton) // 옆에 버튼
+                    .backgroundColor(ResourceKitAsset.Color.orange100.color)
                     .aspectRatio(0.77)
-                    .cornerRadius(self.deleteButton.bounds.height / 2)
+                    .cornerRadius(20)
             }
     }
     
     private func configureAttributes(remainingDate: Int, profileURL: URL, studyName: String, studyProgressDescription: String?) {
+        deleteButton.setImage(ResourceKitAsset.Icon.trash.image.withTintColor(.white), for: .normal)
         deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
         flexRootView.button = deleteButton
         
         remainingDateLabel = MOITChip(type: .dueDate(date: remainingDate))
-        profileImageView.kf.setImage(with: profileURL)
+        
+        profileImageView.kf.setImage(
+            with: profileURL,
+            options: [.processor(RoundCornerImageProcessor(cornerRadius: 20))]
+        )
         studyNameLabel.text = studyName
+        
         studyDescriptionLabel.text = studyProgressDescription
         self.flexRootView.flex.markDirty()
         self.layoutIfNeeded()
