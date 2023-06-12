@@ -157,28 +157,34 @@ public final class MOITStudyPreview: UIView {
         self.flexRootView.flex.markDirty()
         self.layoutIfNeeded()
     }
-    
+
     @objc private func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        var originalTransform: CGAffineTransform?
+
         let translation = gestureRecognizer.translation(in: flexRootView)
         let velocity = gestureRecognizer.velocity(in: flexRootView)
-        
+
         switch gestureRecognizer.state {
-        case .began, .changed:
-            if translation.x < 0 {
-                flexRootView.transform = CGAffineTransform(translationX: translation.x, y: 0)
+        case .began:
+            originalTransform = flexRootView.transform
+        case .changed:
+            if let originalTransform = originalTransform {
+                let totalTranslationX = originalTransform.tx + translation.x
+                if totalTranslationX < 0 && totalTranslationX > -(self.deleteButton.frame.width + 10) {
+                    flexRootView.transform = CGAffineTransform(translationX: totalTranslationX, y: 0)
+                }
             }
         case .ended:
             if velocity.x < 0 {
                 UIView.animate(withDuration: 0.2) {
-                    // Fully reveal the backView
                     self.flexRootView.transform = CGAffineTransform(translationX: -(self.deleteButton.frame.width + 10), y: 0)
                 }
             } else {
                 UIView.animate(withDuration: 0.2) {
-                    // Hide the backView
                     self.flexRootView.transform = CGAffineTransform.identity
                 }
             }
+            originalTransform = nil
         default:
             break
         }
@@ -210,7 +216,7 @@ extension MOITStudyPreview: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
     }
-
+    
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer is UIPanGestureRecognizer {
             return otherGestureRecognizer is UITapGestureRecognizer
@@ -225,7 +231,7 @@ public extension Reactive where Base: MOITStudyPreview {
     var didConfirmDelete: Observable<Void> {
         return base.deleteConfirmSubject.asObservable()
     }
-
+    
     var didTap: Observable<Void> {
         return base.didTapSubject.asObservable()
     }
