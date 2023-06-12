@@ -111,6 +111,7 @@ public extension TargetDependency.ThirdParty {
 public extension TargetScript {
     static let swiftLintScript = TargetScript.pre(
         path: .relativeToRoot("Scripts/SwiftLintRunScript.sh"),
-        name: "SwiftLint"
+        name: "SwiftLint",
+        basedOnDependencyAnalysis: false
     )
 }

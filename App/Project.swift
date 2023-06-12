@@ -42,6 +42,7 @@ let project = Project(
             resources: ["Resources/**"],
             
             entitlements: "../MOIT.entitlements",
+            scripts: [.swiftLintScript],
             dependencies: [
                 .ThirdParty.RIBs,
                 .ThirdParty.SkeletonView,
