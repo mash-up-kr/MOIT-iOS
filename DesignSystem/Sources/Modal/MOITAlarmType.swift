@@ -9,7 +9,6 @@
 import Foundation
 
 public enum MOITAlarmType: Equatable {
-
     case attendanceCheck(remainSeconds: Int)
     case penalty(amount: String) // TODO: 서버에서 어떻게 내려줄지 합의봐야됨 (int로 내려주는지 string으로 내려주는지?)
     case attendanceRating(percent: String)
@@ -25,15 +24,15 @@ public enum MOITAlarmType: Equatable {
     var descriptionTitle: String {
         switch self {
         case .attendanceCheck: return "남은 시간"
-        case .penalty: return "쌓인 penalty"
-        case .attendanceRating: return "스터디 attendanceRating"
+        case .penalty: return "쌓인 벌금"
+        case .attendanceRating: return "스터디 출석률"
         }
     }
     
     var buttonTitle: String {
         switch self {
-        case .attendanceCheck: return "attendanceCheck하기"
-        case .penalty: return "penalty 납부하기"
+        case .attendanceCheck: return "출석체크하기"
+        case .penalty: return "벌금 납부하기"
         case .attendanceRating: return "내 출결 확인하기"
         }
     }
