@@ -90,9 +90,9 @@ final class MOITListDemoViewController: UIViewController {
 	private func sendMoneyList() -> MOITList {
 		let sendMoneyList = MOITList(
 			type: .sendMoney,
-			image: DesignSystemDemoAppAsset.profileImage.image,
 			title: "가나다라마바사아자차카타",
 			detail: "15,000원",
+			chipType: .late,
 			button: MOITButton(
 				type: .mini,
 				title: "납부 인증하기",
@@ -119,9 +119,9 @@ final class MOITListDemoViewController: UIViewController {
 	private func sendMoneyListWithoutButton() -> MOITList {
 		MOITList(
 			type: .sendMoney,
-			image: DesignSystemDemoAppAsset.profileImage.image,
 			title: "가나다라마바사아자차카타",
-			detail: "15,000원"
+			detail: "15,000원",
+			chipType: .late
 		)
 	}
 	

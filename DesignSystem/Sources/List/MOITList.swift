@@ -122,7 +122,7 @@ public final class MOITList: UIView {
 					flex.addItem(profileImageView).width(40).height(40).marginRight(10)
 				}
 				
-				if type == .myMoney {
+				if [.sendMoney, .myMoney].contains(where: { $0 == type }) {
 					if let chip {
 						flex.addItem(chip).marginRight(10)
 					}
