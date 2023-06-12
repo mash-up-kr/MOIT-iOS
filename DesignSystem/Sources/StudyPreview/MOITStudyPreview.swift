@@ -115,17 +115,18 @@ public final class MOITStudyPreview: UIView {
                         
                         flex.addItem()
                             .direction(.column)
-                            .marginVertical(14)
-                            .paddingRight(16)
-                            .height(71)
+                            .height(66)
                             .alignItems(.start)
+                            .justifyContent(.spaceBetween)
                             .define { flex in
-                                flex.addOptionalItem(remainingDateLabel).marginBottom(4)
-                                flex.addItem(studyNameLabel).marginBottom(0)
-                                flex.addItem(studyDescriptionLabel)
+                                flex.addOptionalItem(remainingDateLabel)
+                                flex.addItem()
+                                    .define { flex in
+                                        flex.addItem(studyNameLabel)
+                                        flex.addItem(studyDescriptionLabel)
+                                    }
                             }
                     }
-                
                 
                 flex.addItem(deleteButton) // 옆에 버튼
                     .backgroundColor(ResourceKitAsset.Color.orange100.color)
@@ -134,7 +135,12 @@ public final class MOITStudyPreview: UIView {
             }
     }
     
-    private func configureAttributes(remainingDate: Int, profileURL: URL, studyName: String, studyProgressDescription: String?) {
+    private func configureAttributes(
+        remainingDate: Int,
+        profileURL: URL,
+        studyName: String,
+        studyProgressDescription: String?
+    ) {
         deleteButton.setImage(ResourceKitAsset.Icon.trash.image.withTintColor(.white), for: .normal)
         deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
         flexRootView.button = deleteButton
@@ -179,7 +185,6 @@ public final class MOITStudyPreview: UIView {
     }
     
     @objc private func didTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        // didTap 이벤트를 방출
         self.didTapSubject.onNext(())
     }
     
