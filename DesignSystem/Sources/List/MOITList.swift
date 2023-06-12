@@ -139,24 +139,27 @@ public final class MOITList: UIView {
 					}
 				}
 				
-				switch type {
-				case .allAttend, .myAttend:
-					if let chip {
-						flex.addItem(chip)
-					}
-				case .sendMoney:
-					if let button {
-						flex.addItem(button)
-					}
-				case .myMoney:
-					if let fineLabel {
-						flex.addItem(fineLabel)
-					}
-				case .people:
-					break
+				if let additionalView = selectAdditionalView(type: type) {
+					flex.addItem(additionalView)
 				}
 			}
 			.height(type.height)
+	}
+	
+	private func selectAdditionalView(type: MOITListType) -> UIView? {
+		let targetView: UIView?
+
+		switch type {
+		case .allAttend, .myAttend:
+			targetView = chip
+		case .sendMoney:
+			targetView = button
+		case .myMoney:
+			targetView = fineLabel
+		case .people:
+			targetView = nil
+		}
+		return targetView
 	}
 }
 
