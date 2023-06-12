@@ -44,6 +44,7 @@ let project = Project(
             entitlements: "../MOIT.entitlements",
             dependencies: [
                 .ThirdParty.RIBs,
+                .ThirdParty.SkeletonView,
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
