@@ -50,6 +50,10 @@ final class ButtonDemoViewController: UIViewController {
                 
                 flex.addItem(self.appleButton())
                     .marginTop(10)
+                flex.addItem(self.defaultButton())
+                    .marginTop(10)
+                flex.addItem(self.configureButton())
+                    .marginTop(10)
             }
     }
     
@@ -102,5 +106,17 @@ final class ButtonDemoViewController: UIViewController {
             titleColor: .white,
             backgroundColor: .black
         )
+    }
+    
+    private func defaultButton() -> MOITButton {
+        MOITButton()
+    }
+    
+    private func configureButton() -> MOITButton {
+        MOITButton()
+            .type(.medium)
+            .title("테스트")
+            .titleColor(ResourceKitAsset.Color.white.color)
+            .backgroundColor(ResourceKitAsset.Color.blue400.color)
     }
 }

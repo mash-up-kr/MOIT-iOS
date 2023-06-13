@@ -26,11 +26,11 @@ public final class MOITButton: UIView {
     
     // MARK: - Properties
     
-    private let type: MOITButtonType
-    private let title: String
-    private let titleColor: UIColor
-    private let image: UIImage?
-    private let _backgroundColor: UIColor
+    private var type: MOITButtonType
+    private var title: String
+    private var titleColor: UIColor
+    private var image: UIImage?
+    private var _backgroundColor: UIColor
     
     // MARK: - Initializers
     
@@ -54,6 +54,51 @@ public final class MOITButton: UIView {
             color: self.titleColor
         )
         self.configureLayouts()
+    }
+    
+    /// MOIT Button convenience init
+    ///
+    /// default value
+    /// - type = .large
+    /// - title = ""
+    /// - titleColor = .white
+    /// - image = nil
+    /// - backgroundColor = .blue100
+    public convenience init() {
+        self.init(
+            type: .large,
+            title: "",
+            titleColor: .white,
+            backgroundColor: ResourceKitAsset.Color.blue100.color
+        )
+    }
+    
+    @discardableResult
+    public func type(_ type: MOITButtonType) -> Self {
+        self.type = type
+        self.flex.markDirty()
+        self.setNeedsLayout()
+        return self
+    }
+    
+    @discardableResult
+    public func title(_ title: String) -> Self {
+        self.titleLabel.text = title
+        self.flex.markDirty()
+        self.setNeedsLayout()
+        return self
+    }
+    
+    @discardableResult
+    public func titleColor(_ color: UIColor) -> Self {
+        self.titleLabel.textColor = color
+        return self
+    }
+    
+    @discardableResult
+    public func backgroundColor(_ color: UIColor) -> Self {
+        self.flexRootView.backgroundColor = color
+        return self
     }
     
     @available(*, unavailable)
