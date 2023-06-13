@@ -17,12 +17,16 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-open class BottomSheetViewController: UIViewController {
+public final class BottomSheetViewController: UIViewController {
+    
+    // MARK: - UIComponents
     
     private let flexRootView = UIView()
     private let contentRootView = UIView()
     private let contentView: UIView
     fileprivate let dimmedView = UIView()
+    
+    // MARK: - LifeCycles
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -53,6 +57,11 @@ open class BottomSheetViewController: UIViewController {
         self.contentRootView.clipsToBounds = true
         self.contentRootView.backgroundColor = .white
     }
+}
+
+// MARK: - Private functions
+
+extension BottomSheetViewController {
     
     private func configureLayouts() {
         self.view.addSubview(self.flexRootView)
@@ -83,7 +92,11 @@ extension Reactive where Base: BottomSheetViewController {
     public var didTapDimmedView: Observable<Void> {
         self.base.dimmedView.rx.tapGesture()
             .when(.recognized)
-            .throttle(.milliseconds(400), latest: false, scheduler: MainScheduler.instance)
+            .throttle(
+                .milliseconds(400),
+                latest: false,
+                scheduler: MainScheduler.instance
+            )
             .map { _ in return }
     }
 }

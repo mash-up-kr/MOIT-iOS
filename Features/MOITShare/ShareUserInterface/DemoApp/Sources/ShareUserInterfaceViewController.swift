@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ShareImpl
+import MOITShareImpl
 
 final class ShareUserInterfaceViewController: UIViewController {
 
