@@ -20,4 +20,3 @@ final class DesignSystemAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
-

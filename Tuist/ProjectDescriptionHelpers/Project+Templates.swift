@@ -104,14 +104,13 @@ extension Project {
     ///
     public static func invertedDualTargetProjectWithDemoApp(
         name: String,
-        platform: Platform,
-        iOSTargetVersion: String,
+        platform: Platform = .iOS,
+        iOSTargetVersion: String = "15.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
-        demoApp: Bool = true,
         useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default,
-        isUserInterface: Bool = false
+        isUserInterface: Bool = true
     ) -> Project {
 
         let interfaceTarget = makeInterfaceDynamicFrameworkTarget(
@@ -221,7 +220,6 @@ private extension Project {
         return testTarget
     }
 
-    
     static func makeImplementStaticLibraryTarget(
         name: String,
         platform: Platform,
