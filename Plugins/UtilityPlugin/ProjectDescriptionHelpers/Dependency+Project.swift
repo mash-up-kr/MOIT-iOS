@@ -18,8 +18,15 @@ extension TargetDependency {
     
     public struct MOITNetwork {}
     
-    public static let ResourceKit = TargetDependency.project(target: "ResourceKit",
-                                   path: .relativeToRoot("ResourceKit"))
+    public static let ResourceKit = TargetDependency.project(
+        target: "ResourceKit",
+        path: .relativeToRoot("ResourceKit")
+    )
+    
+    public static let DesignSystem = TargetDependency.project(
+        target: "DesignSystem",
+        path: .relativeToRoot("DesignSystem")
+    )
 
     public struct ThirdParty {}
 }
@@ -87,6 +94,7 @@ public extension TargetDependency.ThirdParty {
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
+    static let SkeletonView = TargetDependency.external(name: "SkeletonView")
 }
 
 public extension TargetDependency.ThirdParty {
@@ -103,6 +111,7 @@ public extension TargetDependency.ThirdParty {
 public extension TargetScript {
     static let swiftLintScript = TargetScript.pre(
         path: .relativeToRoot("Scripts/SwiftLintRunScript.sh"),
-        name: "SwiftLint"
+        name: "SwiftLint",
+        basedOnDependencyAnalysis: false
     )
 }

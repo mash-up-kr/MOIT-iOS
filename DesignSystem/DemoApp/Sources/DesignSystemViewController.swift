@@ -79,7 +79,8 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(AlarmViewDemoViewController(), animated: true)
         case .studyPreview:
             self.navigationController?.pushViewController(StudyPreviewDemoViewController(), animated: true)
-            
+    		case .list:
+		      	self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
         default: return
         }
     }

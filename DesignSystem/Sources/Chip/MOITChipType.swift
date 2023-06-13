@@ -46,10 +46,9 @@ public enum MOITChipType {
 		case .attend:
 			return ResourceKitAsset.Color.blue800.color
 		case .late:
-			return ResourceKitAsset.Color.blue200.color
+			return ResourceKitAsset.Color.orange200.color
 		case .absent:
-			// TODO: Secondary Color 확정된 후 수정 필요
-			return ResourceKitAsset.Color.blue200.color
+			return ResourceKitAsset.Color.orange100.color
 		case .dueDate, .finish:
 			return ResourceKitAsset.Color.gray200.color
 		}
@@ -57,11 +56,9 @@ public enum MOITChipType {
 	
 	var textColor: UIColor {
 		switch self {
-		case .attend:
+		case .attend, .absent, .late:
 			return ResourceKitAsset.Color.white.color
-		case .absent:
-			return ResourceKitAsset.Color.white.color
-		case .late, .dueDate(_), .finish:
+		case .dueDate(_), .finish:
 			return ResourceKitAsset.Color.gray900.color
 		}
 	}
