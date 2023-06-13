@@ -73,6 +73,22 @@ public final class MOITButton: UIView {
         )
     }
     
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("can not init from coder")
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.flexRootView.pin.all()
+        self.flexRootView.flex.layout()
+    }
+}
+
+// MARK: - Configure
+extension MOITButton {
+    
     @discardableResult
     public func type(_ type: MOITButtonType) -> Self {
         self.type = type
@@ -99,18 +115,6 @@ public final class MOITButton: UIView {
     public func backgroundColor(_ color: UIColor) -> Self {
         self.flexRootView.backgroundColor = color
         return self
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("can not init from coder")
-    }
-    
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.flexRootView.pin.all()
-        self.flexRootView.flex.layout()
     }
 }
 
