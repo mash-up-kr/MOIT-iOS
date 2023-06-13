@@ -42,10 +42,10 @@ let project = Project(
             resources: ["Resources/**"],
             
             entitlements: "../MOIT.entitlements",
+            scripts: [.swiftLintScript],
             dependencies: [
                 .ThirdParty.RIBs,
-                .Feature.MOITWeb.Implement,
-                .Feature.MOITWeb.Interface
+                .ThirdParty.SkeletonView,
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),

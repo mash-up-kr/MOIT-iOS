@@ -18,13 +18,17 @@ extension TargetDependency {
     
     public struct MOITNetwork {}
     
-    public struct ResourceKit {}
+    public static let ResourceKit = TargetDependency.project(
+        target: "ResourceKit",
+        path: .relativeToRoot("ResourceKit")
+    )
+    
+    public static let DesignSystem = TargetDependency.project(
+        target: "DesignSystem",
+        path: .relativeToRoot("DesignSystem")
+    )
 
     public struct ThirdParty {}
-}
-
-public extension Package {
-    public struct SPM {}
 }
 
 public extension TargetDependency.Core {
@@ -35,17 +39,7 @@ public extension TargetDependency.Core {
                         path: .relativeToRoot("\(folderName)"))
     }
     
-//    static let RIBsUtil = project(name: "RIBsUtil", isInterface: true)
-}
-
-public extension TargetDependency.ResourceKit {
-    static let folderName = "ResourceKit"
-    static func project(name: String) -> TargetDependency {
-        return .project(target: "\(name)",
-                        path: .relativeToRoot("\(folderName)"))
-    }
-
-    static let Implement = project(name: "ResourceKit")
+    static let CSLogger = project(name: "CSLogger", isInterface: true)
 }
 
 // MARK: - Features/Home
@@ -100,6 +94,7 @@ public extension TargetDependency.ThirdParty {
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
+    static let SkeletonView = TargetDependency.external(name: "SkeletonView")
 }
 
 public extension TargetDependency.ThirdParty {
@@ -116,7 +111,8 @@ public extension TargetDependency.ThirdParty {
 public extension TargetScript {
     static let swiftLintScript = TargetScript.pre(
         path: .relativeToRoot("Scripts/SwiftLintRunScript.sh"),
-        name: "SwiftLint"
+        name: "SwiftLint",
+        basedOnDependencyAnalysis: false
     )
 }
 

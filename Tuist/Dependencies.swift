@@ -21,12 +21,13 @@ let carthageDep = CarthageDependencies([
 let spm = SwiftPackageManagerDependencies(
     [
         .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .upToNextMajor(from:"6.0.0")),
+        .remote(url: "https://github.com/RxSwiftCommunity/RxGesture", requirement: .upToNextMinor(from: "4.0.0")),
         .remote(url: "https://github.com/uber/RIBs", requirement: .upToNextMajor(from: "0.14.0")),
         .remote(url: "https://github.com/onevcat/Kingfisher", requirement: .upToNextMajor(from: "7.2.0")),
         .remote(url: "https://github.com/airbnb/lottie-ios", requirement: .upToNextMajor(from: "4.2.0")),
         .remote(url: "https://github.com/Quick/Nimble", requirement: .upToNextMajor(from: "9.2.0")),
         .remote(url: "https://github.com/Quick/Quick", requirement: .upToNextMajor(from: "5.0.0")),
-        
+        .remote(url: "https://github.com/Juanpe/SkeletonView", requirement: .upToNextMajor(from: "1.30.0"))
     ],
     productTypes: [
         "RIBs": .framework,
@@ -38,6 +39,7 @@ let spm = SwiftPackageManagerDependencies(
         "Nimble": .framework,
         "Quick": .framework,
         "Lottie": .framework,
+        "SkeletonView": .framework
     ]
 )
 

@@ -17,8 +17,8 @@ final class MOITWebDemoRootViewController: UITableViewController {
     // MARK: - Properties
     
     private let items: [MOITWebPath] = [
-        .스터디생성1,
-        .스터디생성2,
+        .tv,
+        .movie,
     ]
     
     private var webRouter: ViewableRouting?

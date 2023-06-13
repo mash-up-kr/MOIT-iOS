@@ -33,7 +33,7 @@ extension Project {
                                                   platform: platform,
                                                   iOSTargetVersion: iOSTargetVersion,
                                                   infoPlist: infoPlist,
-                                                  dependencies: [.target(name: name)]))
+                                                  dependencies: [.target(name: name)] + dependencies))
         return Project(name: name,
                        organizationName: organizationName,
                        targets: targets)
@@ -181,7 +181,7 @@ extension Project {
         return Target(name: name,
                platform: .iOS,
                product: .framework,
-               bundleId: "team.io.\(name)",
+               bundleId: "chansoo.io.\(name)",
                deploymentTarget: .iOS(targetVersion: iOSTargetVersion, devices: [.iphone]),
                infoPlist: .default,
                sources: ["./\(name)/**"],

@@ -10,6 +10,6 @@ import Foundation
 
 public enum MOITWebPath: String {
     // TODO: 추후 삭제 해야됩니다.
-    case 스터디생성1 = "/tv"
-    case 스터디생성2 = "/movie"
+    case tv = "/tv"
+    case movie = "/movie"
 }
