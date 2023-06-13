@@ -10,7 +10,6 @@ import Foundation
 
 let name: Template.Attribute = .required("name")
 let author: Template.Attribute = .required("author")
-//let currentDate: Template.Attribute = .required("currentDate")
 let currentDate: Template.Attribute = .optional("currentDate", default: DateFormatter().string(from: Date()))
 let appName: Template.Attribute = .optional("appName", default: "MyApp")
 

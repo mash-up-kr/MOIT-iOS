@@ -155,7 +155,6 @@ public final class MOITStudyPreview: UIView {
         
         studyDescriptionLabel.text = studyProgressDescription
         self.flexRootView.flex.markDirty()
-        self.layoutIfNeeded()
     }
 
     @objc private func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {

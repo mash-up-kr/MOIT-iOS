@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TouchThroughView: UIView {
+final class TouchThroughView: UIView {
     var button: UIButton? = nil
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if let button = self.button {
