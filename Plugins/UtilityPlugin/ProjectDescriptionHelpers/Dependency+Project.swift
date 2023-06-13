@@ -115,3 +115,21 @@ public extension TargetScript {
         basedOnDependencyAnalysis: false
     )
 }
+
+
+// MARK: - MOITWeb
+extension TargetDependency.Feature {
+    public struct MOITWeb {
+    }
+}
+
+extension TargetDependency.Feature.MOITWeb {
+    static func project(isInterface: Bool) -> TargetDependency {
+        let postfix: String = isInterface ? "" : "Impl"
+        return .project(target: "MOITWeb\(postfix)",
+                        path: .relativeToRoot("Features/MOITWeb"))
+    }
+    
+    public static let Interface = Self.project(isInterface: true)
+    public static let Implement = Self.project(isInterface: false)
+}
