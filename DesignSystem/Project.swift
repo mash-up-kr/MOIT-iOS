@@ -36,6 +36,7 @@ let project = Project(
                 .ThirdParty.RxCocoa,
                 .ThirdParty.RxSwift,
                 .ThirdParty.RxGesture,
+                .ThirdParty.Kingfisher,
                ]),
         Target(
             name: "DesignSystemDemoApp",
