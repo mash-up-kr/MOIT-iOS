@@ -20,6 +20,7 @@ fileprivate enum DesignSystemType: String,
 	case chip
     case studyPreview
     case alarmView
+    case profile
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -79,6 +80,8 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(AlarmViewDemoViewController(), animated: true)
         case .studyPreview:
             self.navigationController?.pushViewController(StudyPreviewDemoViewController(), animated: true)
+        case .profile:
+            self.navigationController?.pushViewController(ProfileDemoViewController(), animated: true)
             
         default: return
         }
