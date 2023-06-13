@@ -17,7 +17,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-public final class BottomSheetViewController: UIViewController {
+open class BottomSheetViewController: UIViewController {
     
     // MARK: - UIComponents
     
