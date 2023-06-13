@@ -9,6 +9,7 @@
 import RIBs
 import RxSwift
 import MOITDetail
+import Foundation
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance()
@@ -16,7 +17,7 @@ protocol MOITDetailRouting: ViewableRouting {
 
 protocol MOITDetailPresentable: Presentable {
     var listener: MOITDetailPresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
+    func configure(_ viewModel: MOITDetailViewModel)
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
@@ -44,11 +45,24 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     override func didBecomeActive() {
         super.didBecomeActive()
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.presenter.configure(
+                MOITDetailViewModel(
+                    moitImage: "",
+                    moitName: "전자군단 스터디",
+                    moitDescription: "매시업 IT 개발 동아리 WEB&iOS 팀 !!",
+                    moitInfos: .init(
+                buttonType: .fold,
+                infos: [
+                    .init(title: "일정", description: "격주 금요일 17:00-20:00"),
+                    .init(title: "규칙", description: "지각 15분부터 5,000원")
+                ]
+            )))
+        }
     }
 
     override func willResignActive() {
         super.willResignActive()
-        // TODO: Pause any business logic.
     }
     
     func viewDidLoad() {
@@ -59,4 +73,5 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
             }
         }
     }
+    
 }

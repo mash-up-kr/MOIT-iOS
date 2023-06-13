@@ -11,6 +11,7 @@ import FlexLayout
 import PinLayout
 import DesignSystem
 import ResourceKit
+import SkeletonView
 
 struct MOITDetailInfoViewModel {
     let title: String
@@ -26,6 +27,7 @@ final class MOITDetailInfoView: UIView {
         let label = UILabel()
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray800.color
+        label.isSkeletonable = true
         return label
     }()
     
@@ -34,6 +36,7 @@ final class MOITDetailInfoView: UIView {
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray600.color
         label.numberOfLines = 0
+        label.isSkeletonable = true
         return label
     }()
     
@@ -56,6 +59,8 @@ final class MOITDetailInfoView: UIView {
     
     private func configureLayouts() {
         self.addSubview(self.flexRootView)
+        self.isSkeletonable = true
+        self.flexRootView.isSkeletonable = true
         self.flexRootView.flex
             .direction(.row)
             .alignItems(.start)

@@ -13,10 +13,18 @@ import ResourceKit
 import DesignSystem
 import FlexLayout
 import PinLayout
+import SkeletonView
 
 protocol MOITDetailPresentableListener: AnyObject {
     func didTapInfoButton(type: MOITDetailInfoViewButtonType)
     func viewDidLoad()
+}
+
+struct MOITDetailViewModel {
+    let moitImage: String
+    let moitName: String
+    let moitDescription: String
+    let moitInfos: MOITDetailInfosViewModel
 }
 
 final class MOITDetailViewController: UIViewController,
@@ -36,11 +44,13 @@ final class MOITDetailViewController: UIViewController,
         view.backgroundColor = .clear
         return view
     }()
+    
     private let navigationBar: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
         return view
     }()
+    
     private let backButton: UIButton = {
         let button = UIButton()
         let image = ResourceKitAsset.Icon.arrowLeft.image.withRenderingMode(.alwaysTemplate)
@@ -48,6 +58,7 @@ final class MOITDetailViewController: UIViewController,
         button.tintColor = .white
         return button
     }()
+    
     private let moitNameNavigationTitleLabel: UILabel = {
         let label = UILabel()
         label.font = ResourceKitFontFamily.h6
@@ -56,6 +67,7 @@ final class MOITDetailViewController: UIViewController,
         label.text = "전자군단 스터디"
         return label
     }()
+    
     private let participantsButton: UIButton = {
         let button = UIButton()
         let image = ResourceKitAsset.Icon.user.image.withRenderingMode(.alwaysTemplate)
@@ -63,6 +75,7 @@ final class MOITDetailViewController: UIViewController,
         button.tintColor = .white
         return button
     }()
+    
     private let shareButton: UIButton = {
         let button = UIButton()
         let image = ResourceKitAsset.Icon.share.image.withRenderingMode(.alwaysTemplate)
@@ -75,12 +88,14 @@ final class MOITDetailViewController: UIViewController,
         let view = UIScrollView()
         view.backgroundColor = .white
         view.contentInsetAdjustmentBehavior = .never
+        view.isSkeletonable = true
         return view
     }()
     
     private let contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.isSkeletonable = true
         return view
     }()
     
@@ -90,6 +105,7 @@ final class MOITDetailViewController: UIViewController,
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
+        view.isSkeletonable = true
         return view
     }()
     
@@ -97,6 +113,7 @@ final class MOITDetailViewController: UIViewController,
         let label = UILabel()
         label.font = ResourceKitFontFamily.h3
         label.textColor = ResourceKitAsset.Color.gray900.color
+        label.isSkeletonable = true
         label.text = "전자군단 스터디"
         return label
     }()
@@ -105,7 +122,8 @@ final class MOITDetailViewController: UIViewController,
         let label = UILabel()
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray500.color
-        label.text = "매시업 IT 개발 동아리 WEB&iOS팀!!"
+        label.isSkeletonable = true
+        label.text = "예시예시예시예시예시"
         return label
     }()
     
@@ -123,6 +141,7 @@ final class MOITDetailViewController: UIViewController,
     override func loadView() {
         super.loadView()
         self.view = self.flexRootView
+        self.flexRootView.isSkeletonable = true
     }
     
     override func viewDidLoad() {
@@ -130,16 +149,8 @@ final class MOITDetailViewController: UIViewController,
         print(#function)
         self.configureLayouts()
         self.bind()
-        self.infoView.configure(viewModel:
-                .init(
-                    buttonType: .canEdit,
-                    infos: [
-                        .init(title: "일정", description: "격주 금요일 17:00-20:00"),
-                        .init(title: "규칙", description: "지각 15분부터 5,000원\n결석 30분 부터 8,000원")
-                    ]
-                )
-        )
         self.listener?.viewDidLoad()
+        self.flexRootView.showAnimatedSkeleton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -215,6 +226,7 @@ final class MOITDetailViewController: UIViewController,
                 flex.addItem(self.infoView)
                     .marginHorizontal(20)
                     .marginTop(20)
+//                    .minHeight(93)
                 
                 flex.addItem(self.tapPageView)
                     .marginTop(20)
@@ -334,5 +346,22 @@ extension MOITDetailViewController {
         print(self.childViewControllerContainer.frame)
         viewController.uiviewController.view.frame = self.childViewControllerContainer.frame
         viewController.uiviewController.willMove(toParent: self)
+    }
+}
+
+// MARK: - MOITDetailPresentable
+
+extension MOITDetailViewController {
+    func configure(_ viewModel: MOITDetailViewModel) {
+//        self.moitImageView.image = viewModel.moitImage
+        self.moitNameLabel.text = viewModel.moitName
+        self.moitDescriptionLabel.text = viewModel.moitDescription
+        self.infoView.configure(viewModel: viewModel.moitInfos)
+        print(viewModel)
+        self.moitNameLabel.flex.markDirty()
+        self.moitDescriptionLabel.flex.markDirty()
+        self.infoView.flex.markDirty()
+        self.flexRootView.setNeedsLayout()
+        self.flexRootView.hideSkeleton()
     }
 }

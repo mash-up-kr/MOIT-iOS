@@ -13,6 +13,7 @@ import DesignSystem
 import ResourceKit
 import RxSwift
 import RxCocoa
+import SkeletonView
 
 enum MOITDetailInfoViewButtonType {
     /// 닫힘
@@ -59,6 +60,9 @@ final class MOITDetailInfosView: UIView {
         self.flexRootView.backgroundColor = ResourceKitAsset.Color.gray50.color
         self.flexRootView.layer.cornerRadius = 20
         self.flexRootView.clipsToBounds = true
+        self.isSkeletonable = true
+        self.flexRootView.isSkeletonable = true
+        self.skeletonCornerRadius = 20
     }
     
     required init?(coder: NSCoder) {
