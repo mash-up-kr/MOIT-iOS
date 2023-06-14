@@ -21,6 +21,9 @@ let project = Project(
             dependencies: [
                 .DesignSystem,
                 .ResourceKit,
+                
+                .ThirdParty.PinLayout,
+                .ThirdParty.FlexLayout,
             ]
         ),
     ]
