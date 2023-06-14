@@ -10,20 +10,20 @@ import SignUpUserInterface
 
 import RIBs
 
-final class SignUpComponent: Component<SignUpDependency> {
+public final class SignUpComponent: Component<SignUpDependency> {
 
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
 // MARK: - Builder
 
-final class SignUpBuilder: Builder<SignUpDependency>, SignUpBuildable {
+public final class SignUpBuilder: Builder<SignUpDependency>, SignUpBuildable {
 
     override init(dependency: SignUpDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: SignUpListener) -> ViewableRouting {
+    public func build(withListener listener: SignUpListener) -> ViewableRouting {
         let component = SignUpComponent(dependency: dependency)
         let viewController = SignUpViewController()
         let interactor = SignUpInteractor(presenter: viewController)
