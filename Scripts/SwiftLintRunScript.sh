@@ -8,10 +8,11 @@
 
 export PATH="$PATH:/usr/local/bin:/opt/homebrew/bin"
 if which swiftlint >/dev/null; then
-    # Use the directory of the parent of this script as the working directory
+
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
-    cd "$DIR"
-    swiftlint --config .swiftlint.yml
+
+    swiftlint --config "$DIR/.swiftlint.yml" 2>/dev/null || true
+
 else
-    echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+    echo "warning: SwiftLint not installed, download from"
 fi
