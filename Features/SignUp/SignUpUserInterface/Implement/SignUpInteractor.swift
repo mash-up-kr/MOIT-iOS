@@ -21,7 +21,7 @@ protocol SignUpPresentable: Presentable {
 }
 
 final class SignUpInteractor: PresentableInteractor<SignUpPresentable>, SignUpInteractable, SignUpPresentableListener {
-
+    
     weak var router: SignUpRouting?
     weak var listener: SignUpListener?
 
@@ -41,4 +41,9 @@ final class SignUpInteractor: PresentableInteractor<SignUpPresentable>, SignUpIn
         super.willResignActive()
         // TODO: Pause any business logic.
     }
+    
+    func didSwipeBack() {
+        
+    }
+
 }

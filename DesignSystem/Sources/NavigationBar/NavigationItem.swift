@@ -14,7 +14,7 @@ import RxSwift
 
 public final class NavigationItem: UIButton {
     
-    let type: NavigationItemType
+    public let type: NavigationItemType
     
     public init(type: NavigationItemType) {
         self.type = type

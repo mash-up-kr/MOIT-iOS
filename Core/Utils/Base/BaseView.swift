@@ -8,8 +8,10 @@
 import UIKit
 
 import RxSwift
+import FlexLayout
+import PinLayout
 
-class BaseView: UIView {
+open class BaseView: UIView {
     
     // MARK: - Properties
     var disposeBag = DisposeBag()
@@ -31,7 +33,7 @@ class BaseView: UIView {
     func bind() {}
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) is called.")
     }
 }
