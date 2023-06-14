@@ -50,11 +50,12 @@ public final class MOITStudyPreview: UIView {
     fileprivate let didTapSubject = PublishSubject<Void>()
     
     // MARK: - Initializers
-    public init(remainingDate: Int,
-                profileURL: URL,
-                studyName: String,
-                studyProgressDescription: String?
-    ){
+    public init(
+        remainingDate: Int,
+        profileURL: URL,
+        studyName: String,
+        studyProgressDescription: String?
+    ) {
         super.init(frame: .zero)
         
         configureAttributes(
@@ -156,13 +157,13 @@ public final class MOITStudyPreview: UIView {
         studyDescriptionLabel.text = studyProgressDescription
         self.flexRootView.flex.markDirty()
     }
-
+    
     @objc private func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
         var originalTransform: CGAffineTransform?
-
+        
         let translation = gestureRecognizer.translation(in: flexRootView)
         let velocity = gestureRecognizer.velocity(in: flexRootView)
-
+        
         switch gestureRecognizer.state {
         case .began:
             originalTransform = flexRootView.transform
