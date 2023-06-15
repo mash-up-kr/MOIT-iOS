@@ -31,5 +31,4 @@ public enum NavigationItemType {
             return ResourceKitAsset.Icon.bell.image
         }
     }
-    
 }

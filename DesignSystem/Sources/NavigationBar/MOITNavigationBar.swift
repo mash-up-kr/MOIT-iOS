@@ -44,8 +44,8 @@ public final class MOITNavigationBar: UIView {
         rightItems: [NavigationItemType],
         colorType: NavigationColorType = .normal
     ) {
-        self.leftItems = leftItems.map { NavigationItem(type: $0)}
-        self.rightItems = rightItems.map { NavigationItem(type: $0)}
+        self.leftItems = leftItems.map { NavigationItem(type: $0) }
+        self.rightItems = rightItems.map { NavigationItem(type: $0) }
         self.colorType = colorType
         
         super.init(frame: .zero)
@@ -53,7 +53,6 @@ public final class MOITNavigationBar: UIView {
         self.configureTitle(title)
         self.configureLayout()
         self.configureColor()
-        
     }
     
     @available(*, unavailable)
@@ -99,7 +98,7 @@ extension MOITNavigationBar {
                     .width(80)
                     .justifyContent(.start)
                     .define { flex in
-                        self.leftItems.forEach { flex.addItem($0).size(24)}
+                        self.leftItems.forEach { flex.addItem($0).size(24) }
                     }
                     .marginLeft(16)
                 
@@ -112,7 +111,7 @@ extension MOITNavigationBar {
                     .width(80)
                     .justifyContent(.end)
                     .define { flex in
-                        self.rightItems.forEach { flex.addItem($0).size(24).marginLeft(20)}
+                        self.rightItems.forEach { flex.addItem($0).size(24).marginLeft(20) }
                     }
                     .marginRight(16)
             }
@@ -121,15 +120,14 @@ extension MOITNavigationBar {
     private func configureColor() {
         
         
-        leftItems.forEach { $0.tintColor = self.colorType.tintColor}
-        rightItems.forEach { $0.tintColor = self.colorType.tintColor}
+        leftItems.forEach { $0.tintColor = self.colorType.tintColor }
+        rightItems.forEach { $0.tintColor = self.colorType.tintColor }
         titleLabel.textColor = colorType.tintColor
         
-        leftItems.forEach { $0.backgroundColor = self.colorType.backgroundColor}
-        rightItems.forEach { $0.backgroundColor = self.colorType.backgroundColor}
+        leftItems.forEach { $0.backgroundColor = self.colorType.backgroundColor }
+        rightItems.forEach { $0.backgroundColor = self.colorType.backgroundColor }
         titleLabel.backgroundColor = colorType.backgroundColor
         
         self.backgroundColor = colorType.backgroundColor
     }
-
 }

@@ -33,6 +33,5 @@ public enum ProfileType {
         case .small:
             return 40
         }
-    
     }
 }

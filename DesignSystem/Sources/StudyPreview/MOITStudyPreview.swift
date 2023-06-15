@@ -198,7 +198,10 @@ public final class MOITStudyPreview: UIView {
         case .ended:
             if velocity.x < 0 {
                 UIView.animate(withDuration: 0.2) {
-                    self.flexRootView.transform = CGAffineTransform(translationX: -(self.deleteButton.frame.width + 10), y: 0)
+                    self.flexRootView.transform = CGAffineTransform(
+                        translationX: -(self.deleteButton.frame.width + 10),
+                        y: 0
+                    )
                 }
             } else {
                 UIView.animate(withDuration: 0.2) {
@@ -221,7 +224,7 @@ public final class MOITStudyPreview: UIView {
             message: "스터디를 삭제하면 해당 데이터도 모두 삭제됩니다.",
             preferredStyle: .alert
         )
-        let confirmAction = UIAlertAction(title: "확인", style: .default) { action in
+        let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
             self.deleteConfirmSubject.onNext(())
         }
         let cancelAction = UIAlertAction(title: "취소", style: .destructive)
@@ -229,7 +232,6 @@ public final class MOITStudyPreview: UIView {
         alert.addAction(cancelAction)
         self.window?.rootViewController?.present(alert, animated: true)
     }
-    
 }
 
 // MARK: - UIGestureRecognizerDelegate
