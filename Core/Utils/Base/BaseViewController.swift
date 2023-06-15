@@ -45,6 +45,18 @@ open class BaseViewController: UIViewController {
         configureHierarchy()
         configureConstraints()
         bind()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = UIEdgeInsets.zero
     }
     
     open override func viewDidLayoutSubviews() {
@@ -62,9 +74,11 @@ open class BaseViewController: UIViewController {
     }
     /// layout 잡는 함수
     open func configureConstraints() {}
-    /// 값 설정하는 함수
-    open func configureAttributes() {}
-    /// bind하는 함수. (ribs라 필요한지 모르겠음)
+    /// function to set the value
+    open func configureAttributes() {
+        hideKeyboardWhenTapped()
+    }
+    /// Function to bind. (I don't know if it's necessary because it's ribs)
     open func bind() {}
     
     /// navigationBar 사용하면 flexRootView에 추가해주는 함수
