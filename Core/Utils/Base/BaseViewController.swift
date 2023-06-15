@@ -16,17 +16,12 @@ import FlexLayout
 open class BaseViewController: UIViewController {
     
     // MARK: - UI
+    public let scrollView = UIScrollView()
     public let flexRootView = UIView()
+    public lazy var navigationBar = MOITNavigationBar()
     
-    // TODO: - MOITNavigationBar optional로 만들고 configureNavigationBar에서 설정
-    public lazy var navigationBar = MOITNavigationBar(
-        leftItems: [.back],
-        title: "야야야",
-        rightItems: [.alarm, .setting]
-    )
-    
-    // MARK: - Properties
-    var disposeBag = DisposeBag()
+    // MARK: -Properties
+    public var disposebag = DisposeBag()
     
     private var indicator: UIActivityIndicatorView?
     
@@ -54,15 +49,16 @@ open class BaseViewController: UIViewController {
     
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.flexRootView.pin.all(self.view.pin.safeArea)
-        self.flexRootView.flex.layout()
-        self.flexRootView.backgroundColor = .red
+        scrollView.pin.all(view.pin.safeArea)
+        flexRootView.pin.all()
+        flexRootView.flex.layout(mode: .adjustHeight)
+        scrollView.contentSize = flexRootView.frame.size
     }
-    
     // MARK: - Methods
     /// addSubView 하는 함수
     public func configureHierarchy() {
-        self.view.addSubview(flexRootView)
+        self.scrollView.addSubview(flexRootView)
+        self.view.addSubview(scrollView)
     }
     /// layout 잡는 함수
     open func configureConstraints() {}
@@ -78,29 +74,31 @@ open class BaseViewController: UIViewController {
         title: String?,
         rightItems: [NavigationItemType]
     ) {
+        navigationBar.configure(
+            leftItems: leftItems,
+            title: title,
+            rightItems: rightItems
+        )
         
-        // TODO: - configure함수 만들어주기
-//        navigationBar.configure(
-//            leftItems: leftItems,
-//            title: title,
-//            rightItems: rightItems
-//        )
         view.addSubview(navigationBar)
         
         navigationBar.pin.top(self.view.pin.safeArea.top).horizontally()
         configureRootView()
         
-        guard let back = navigationBar.leftItems.first(where: { $0.type == .back }) else { return }
+        guard let back = navigationBar.leftItems?.first(where: { $0.type == .back }) else { return }
         back.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             })
-            .disposed(by: disposeBag)
+            .disposed(by: disposebag)
     }
     
     private func configureRootView() {
-        self.flexRootView.pin.below(of: navigationBar).marginTop(10).left().right().bottom()
+        self.scrollView.pin.top(self.view.pin.safeArea.top + 56).left().right().bottom() // How to solve it other than absolute value..?
+        // scrollview에 딱 맞게 flexRootView를 pinlayout으로 설정
+        self.flexRootView.pin.all()
+//        flexRootView.backgroundColor = .red
         self.flexRootView.flex.layout()
-//        self.flexRootView.flex.markDirty()
+        self.flexRootView.flex.markDirty()
     }
 }
