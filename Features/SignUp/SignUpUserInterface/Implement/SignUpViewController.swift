@@ -52,9 +52,20 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
         return profileView
     }()
     
-    private let nameTextField = MOITTextField(title: "이름 (필수)", placeHolder: "이름을 입력해주세요.")
-    
-    private let inviteCodeTextField = MOITTextField(title: "스터디 초대 코드 (선택)", placeHolder: "공유받은 스터디 초대코드를 입력하세요.")
+    private let nameTextField = MOITTextField(
+        title: "이름 (필수)",
+        placeHolder: "이름을 입력해주세요."
+    )
+    private let inviteCodeTextField = MOITTextField(
+        title: "스터디 초대 코드 (선택)",
+        placeHolder: "공유받은 스터디 초대코드를 입력하세요."
+    )
+    private let nextButton = MOITButton(
+        type: .large,
+        title: "다음",
+        titleColor: ResourceKitAsset.Color.white.color,
+        backgroundColor: ResourceKitAsset.Color.blue800.color
+    )
     
     // MARK: - Properties
     weak var listener: SignUpPresentableListener?
@@ -93,7 +104,6 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
             .define { flex in
                 flex.addItem(titleLabel)
                     .marginTop(20)
-//                    .height(64)
                 flex.addItem(profileView)
                     .marginTop(20)
                     .alignSelf(.center)
@@ -103,10 +113,21 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
                 flex.addItem(inviteCodeTextField)
                     .marginTop(20)
                     .width(100%)
+                flex.addItem()
+                    .grow(1)
+                flex.addItem(nextButton)
+                    .width(100%)
+                    .marginBottom(36)
             }
     }
     
     public override func bind() {
+        profileView.rx.tap
+            .subscribe(onNext: {
+                print("profileTapped")
+            })
+            .disposed(by: disposebag)
+        
         nameTextField.rx.text
             .subscribe(onNext: { name in
                 print(name)
@@ -116,6 +137,12 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
         inviteCodeTextField.rx.text
             .subscribe(onNext: { inviteCode in
                 print(inviteCode)
+            })
+            .disposed(by: disposebag)
+        
+        nextButton.rx.tap
+            .subscribe(onNext: {
+                print("nextButtonTapped")
             })
             .disposed(by: disposebag)
     }
