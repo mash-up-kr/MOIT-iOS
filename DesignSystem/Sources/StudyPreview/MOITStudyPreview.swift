@@ -50,33 +50,51 @@ public final class MOITStudyPreview: UIView {
     fileprivate let didTapSubject = PublishSubject<Void>()
     
     // MARK: - Initializers
+    public init() {
+        super.init(frame: .zero)
+    }
+    
     public init(
         remainingDate: Int,
-        profileURL: URL,
+        profileURLString: String,
         studyName: String,
         studyProgressDescription: String?
     ) {
         super.init(frame: .zero)
-        
-        configureAttributes(
+        configure(
             remainingDate: remainingDate,
-            profileURL: profileURL,
+            profileURL: profileURLString,
             studyName: studyName,
             studyProgressDescription: studyProgressDescription
         )
-        configureLayout()
-        setupGesture()
     }
     
     @available (*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError()
+        fatalError("required init called")
     }
     
     
     // MARK: - Lifecycle
     
     // MARK: - Methods
+    public func configure(
+        remainingDate: Int,
+        profileURL: String,
+        studyName: String,
+        studyProgressDescription: String?
+    ) {
+        
+        configureAttributes(
+            remainingDate: remainingDate,
+            profileURLString: profileURL,
+            studyName: studyName,
+            studyProgressDescription: studyProgressDescription
+        )
+        configureLayout()
+        setupGesture()
+    }
+
     private func setupGesture() {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
@@ -99,7 +117,7 @@ public final class MOITStudyPreview: UIView {
         
         self.flexRootView.flex
             .direction(.row)
-            .define { (flex) in
+            .define { flex in
                 flex.addItem() // 보이는 뷰
                     .paddingLeft(16)
                     .marginRight(10)
@@ -138,7 +156,7 @@ public final class MOITStudyPreview: UIView {
     
     private func configureAttributes(
         remainingDate: Int,
-        profileURL: URL,
+        profileURLString: String,
         studyName: String,
         studyProgressDescription: String?
     ) {
@@ -148,10 +166,13 @@ public final class MOITStudyPreview: UIView {
         
         remainingDateLabel = MOITChip(type: .dueDate(date: remainingDate))
         
-        profileImageView.kf.setImage(
-            with: profileURL,
-            options: [.processor(RoundCornerImageProcessor(cornerRadius: 20))]
-        )
+        if let url = URL(string: profileURLString) {
+            profileImageView.kf.setImage(
+                with: url,
+                options: [.processor(RoundCornerImageProcessor(cornerRadius: 20))]
+            )
+        }
+        
         studyNameLabel.text = studyName
         
         studyDescriptionLabel.text = studyProgressDescription
