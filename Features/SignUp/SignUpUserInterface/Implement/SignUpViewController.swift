@@ -10,6 +10,7 @@ import UIKit
 import SignUpUserInterface
 import DesignSystem
 import Utils
+import ResourceKit
 
 import RIBs
 import RxSwift
@@ -24,8 +25,36 @@ protocol SignUpPresentableListener: AnyObject {
 public final class SignUpViewController: BaseViewController, SignUpPresentable, SignUpViewControllable {
     
     // MARK: - UI
-    //    private let navigationBar: MOITNavigationBar
-    private let tempView = UIView()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.font = ResourceKitFontFamily.h4
+        label.textColor = ResourceKitAsset.Color.black.color
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.34
+        label.attributedText = NSMutableAttributedString(
+            string: "모잇에서 사용할\n프로필을 만들어 주세요.",
+            attributes: [
+                NSAttributedString.Key.paragraphStyle: paragraphStyle
+            ]
+        )
+        return label
+    }()
+    
+    private let profileView: MOITProfileView = {
+        // TODO: - url 아니라 int형으로 이미지 에셋 받으면 설정
+        // 랜덤으로 띄워주기로 했었나..
+        let profileView = MOITProfileView(
+            urlString: "https://avatars.githubusercontent.com/u/37873745?s=96&v=4",
+            profileType: .large,
+            addButton: true
+        )
+        return profileView
+    }()
+    
+    private let nameTextField = MOITTextField(title: "이름 (필수)", placeHolder: "이름을 입력해주세요.")
+    
+    private let inviteCodeTextField = MOITTextField(title: "스터디 초대 코드 (선택)", placeHolder: "공유받은 스터디 초대코드를 입력하세요.")
     
     // MARK: - Properties
     weak var listener: SignUpPresentableListener?
@@ -33,19 +62,12 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
     // MARK: - Initializers
     public override init() {
         super.init()
-        
     }
     
     // MARK: - Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
-        
-    }
-    
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
@@ -58,7 +80,7 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // TODO: - 꼭 여기에 들어가야 할까?
-        configureNavigationBar(leftItems: [], title: "hi", rightItems: [])
+        configureNavigationBar(leftItems: [.back], title: "", rightItems: [])
     }
     
     deinit { debugPrint("\(self) deinit") }
@@ -66,13 +88,35 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
     // MARK: - Functions
     public override func configureConstraints() {
         flexRootView.flex
-            .alignItems(.center)
-            .justifyContent(.center)
+            .alignItems(.start)
+            .paddingHorizontal(20)
             .define { flex in
-                flex.addItem(tempView)
+                flex.addItem(titleLabel)
+                    .marginTop(20)
+//                    .height(64)
+                flex.addItem(profileView)
+                    .marginTop(20)
+                    .alignSelf(.center)
+                flex.addItem(nameTextField)
+                    .marginTop(20)
                     .width(100%)
-                    .height(50)
-                    .backgroundColor(.orange)
+                flex.addItem(inviteCodeTextField)
+                    .marginTop(20)
+                    .width(100%)
             }
+    }
+    
+    public override func bind() {
+        nameTextField.rx.text
+            .subscribe(onNext: { name in
+                print(name)
+            })
+            .disposed(by: disposebag)
+        
+        inviteCodeTextField.rx.text
+            .subscribe(onNext: { inviteCode in
+                print(inviteCode)
+            })
+            .disposed(by: disposebag)
     }
 }
