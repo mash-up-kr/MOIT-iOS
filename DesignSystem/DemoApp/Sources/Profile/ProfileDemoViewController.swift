@@ -32,6 +32,8 @@ final class ProfileDemoViewController: UIViewController {
         profileType: .small
     )
     
+    private lazy var lazyProfileView = MOITProfileView(profileType: .large)
+    
     private let flexRootView = UIView()
     
     // MARK: - Properties
@@ -40,6 +42,7 @@ final class ProfileDemoViewController: UIViewController {
     // MARK: - Initializers
     public init() {
         super.init(nibName: nil, bundle: nil)
+        lazyProfileView.configureImage(with: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4")
     }
     
     @available(*, unavailable)
@@ -75,6 +78,7 @@ final class ProfileDemoViewController: UIViewController {
                 flex.addItem(largeProfileView)
                 flex.addItem(mediumProfileView)
                 flex.addItem(smallProfileView)
+                flex.addItem(lazyProfileView)
             }
     }
     

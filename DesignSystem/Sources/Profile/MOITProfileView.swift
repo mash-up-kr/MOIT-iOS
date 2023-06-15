@@ -28,11 +28,25 @@ public final class MOITProfileView: UIView {
     }()
     
     // MARK: - Properties
-    private let urlString: String
+    private let urlString: String?
     private let profileType: ProfileType
     fileprivate let containAddButton: Bool
     
     // MARK: - Initializers
+    
+    public init (
+        profileType: ProfileType,
+        addButton: Bool = false
+    ) {
+        self.profileType = profileType
+        self.containAddButton = addButton
+        urlString = nil
+        
+        super.init(frame: .zero)
+        
+        configureLayout()
+    }
+    
     public init (
         urlString: String,
         profileType: ProfileType,
@@ -44,7 +58,7 @@ public final class MOITProfileView: UIView {
         
         super.init(frame: .zero)
         
-        configureAttributes()
+        configureImage(with: urlString)
         configureLayout()
     }
     
@@ -67,9 +81,11 @@ public final class MOITProfileView: UIView {
     
     // MARK: - Functions
     
-    private func configureAttributes() {
+    public func configureImage(with urlString: String) {
+        guard let url = URL(string: urlString)
+        else { return }
         profileImageView.kf.setImage(
-            with: URL(string: urlString),
+            with: url,
             placeholder: nil
         )
     }
