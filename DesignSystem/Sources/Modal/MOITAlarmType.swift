@@ -15,8 +15,8 @@ public enum MOITAlarmType: Equatable {
 
     func alarmTitle(with studyName: String) -> String {
         switch self {
-        case .attendanceCheck: return "\(studyName) 스터디\nattendanceCheck를 시작해보세요!"
-        case .penalty: return "\(studyName) 스터디\npenalty을 납부하고 인증하세요!"
+        case .attendanceCheck: return "\(studyName) 스터디\n출석체크를 시작해보세요!"
+        case .penalty: return "\(studyName) 스터디\n벌금을 납부하고 인증하세요!"
         case .attendanceRating: return "더 열심히 \(studyName) 스터디\n참여해보세요!"
         }
     }

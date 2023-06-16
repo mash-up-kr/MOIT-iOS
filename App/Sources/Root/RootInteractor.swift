@@ -19,20 +19,20 @@ protocol RootListener: AnyObject {
 }
 
 final class RootInteractor: PresentableInteractor<RootPresentable>,
-                                RootInteractable,
-                                RootPresentableListener {
-
+                            RootInteractable,
+                            RootPresentableListener {
+    
     weak var router: RootRouting?
-
+    
     override init(presenter: RootPresentable) {
         super.init(presenter: presenter)
         presenter.listener = self
     }
-
+    
     override func didBecomeActive() {
         super.didBecomeActive()
     }
-
+    
     override func willResignActive() {
         super.willResignActive()
     }
