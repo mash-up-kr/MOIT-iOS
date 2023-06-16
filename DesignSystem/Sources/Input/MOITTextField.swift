@@ -24,7 +24,7 @@ public final class MOITTextField: UIView {
 		label.font = ResourceKitFontFamily.p2
 		return label
 	}()
-	fileprivate var textField: UITextField = {
+	public var textField: UITextField = {
 		let textField = UITextField()
 		textField.layer.cornerRadius = 12
 		textField.clipsToBounds = true
