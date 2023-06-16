@@ -10,11 +10,18 @@ extension TargetDependency {
             public struct Domain {}
             public struct UserInterface {}
         }
+		
         public struct MOITShare {
             public struct Data {}
             public struct Domain {}
             public struct UserInterface {}
         }
+		
+		public struct MOITParticipate {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
     }
     
     public struct Core {
