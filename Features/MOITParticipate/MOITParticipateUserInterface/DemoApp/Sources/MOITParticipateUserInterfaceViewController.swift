@@ -59,7 +59,7 @@ final class MOITParticipateUserInterfaceViewController: UITableViewController {
 		case .inputCode:
 			self.navigationController?.pushViewController(InputParticipateCodeViewController(), animated: true)
 		case .particiaptionSuccess:
-			break
+			self.navigationController?.pushViewController(ParticipationSuccessViewController(), animated: true)
 		}
 	}
 }
