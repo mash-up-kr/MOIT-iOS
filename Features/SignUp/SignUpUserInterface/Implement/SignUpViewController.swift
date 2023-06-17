@@ -45,7 +45,7 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
         // TODO: - url 아니라 int형으로 이미지 에셋 받으면 설정
         // 랜덤으로 띄워주기로 했었나..
         let profileView = MOITProfileView(
-            urlString: "https://avatars.githubusercontent.com/u/37873745?s=96&v=4",
+            profileImageType: .one,
             profileType: .large,
             addButton: true
         )

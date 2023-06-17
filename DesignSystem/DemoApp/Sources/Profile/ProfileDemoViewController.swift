@@ -17,18 +17,18 @@ final class ProfileDemoViewController: UIViewController {
     
     // MARK: - UI
     private let largeProfileView = MOITProfileView(
-        urlString: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4",
+        profileImageType: .one,
         profileType: .large,
         addButton: true
     )
     
     private let mediumProfileView = MOITProfileView(
-        urlString: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4",
+        profileImageType: .one,
         profileType: .medium
     )
     
     private let smallProfileView = MOITProfileView(
-        urlString: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4",
+        profileImageType: .one,
         profileType: .small
     )
     
@@ -42,7 +42,7 @@ final class ProfileDemoViewController: UIViewController {
     // MARK: - Initializers
     public init() {
         super.init(nibName: nil, bundle: nil)
-        lazyProfileView.configureImage(with: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4")
+        lazyProfileView.configureImage(with: .one)
     }
     
     @available(*, unavailable)
