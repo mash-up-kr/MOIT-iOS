@@ -91,7 +91,11 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // TODO: - 꼭 여기에 들어가야 할까?
-        configureNavigationBar(leftItems: [.back], title: "", rightItems: [])
+        configureNavigationBar(
+            leftItems: [.back],
+            title: "",
+            rightItems: []
+        )
     }
     
     deinit { debugPrint("\(self) deinit") }

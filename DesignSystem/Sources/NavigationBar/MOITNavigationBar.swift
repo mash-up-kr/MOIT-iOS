@@ -117,7 +117,17 @@ extension MOITNavigationBar {
                     .width(80)
                     .justifyContent(.start)
                     .define { flex in
-                        self.leftItems?.forEach { flex.addItem($0).size(24) }
+                        self.leftItems?.forEach { item in
+                            switch item.type {
+                            case .logo:
+                                flex.addItem(item)
+                                    .width(72)
+                                    .height(24)
+                            default:
+                                flex.addItem(item)
+                                    .size(24)
+                            }
+                        }
                     }
                     .marginLeft(16)
                 

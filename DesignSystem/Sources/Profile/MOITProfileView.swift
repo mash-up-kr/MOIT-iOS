@@ -87,7 +87,6 @@ public final class MOITProfileView: UIView {
         addSubview(profileImageView)
         profileImageView.layer.cornerRadius = profileType.radius
         profileImageView.clipsToBounds = true
-        profileImageView.backgroundColor = ResourceKitAsset.Color.blue700.color
         
         profileImageView.flex.size(profileType.size)
     }
