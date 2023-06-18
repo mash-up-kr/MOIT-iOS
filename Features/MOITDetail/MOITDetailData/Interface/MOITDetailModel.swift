@@ -10,35 +10,35 @@ import Foundation
 
 // TODO: Decodable 채택 필요
 public struct MOITDetailModel {
-    let moitID: String
+    public let moitID: String
     /// moit이름
-    let name: String
+    public let name: String
     /// moit장아이디
-    let masterID: String
+    public let masterID: String
     /// moit 설명 (optional)
-    let description: String
+    public let description: String
     /// moit 이미지
-    let imageURL: String
+    public let imageURL: String
     /// moit 반복 요일
-    let scheduleDayOfWeek: [String]
+    public let scheduleDayOfWeek: [String]
     /// moit 반복 주기
-    let scheduleRepeatCycle: String
+    public let scheduleRepeatCycle: String
     /// moit 시작 시간 (HH:mm)
-    let scheduleStartTime: String
+    public let scheduleStartTime: String
     /// moit 종료 시간 (HH:mm)
-    let scheduleEndTime: String
+    public let scheduleEndTime: String
     /// moit 지각 시간 (분)
-    let fineLateTime: Int
+    public let fineLateTime: Int
     /// moit 지각 벌금
-    let fineLateAmount: Int
+    public let fineLateAmount: Int
     /// moit 결석 시간
-    let fineAbsenceTime: Int
+    public let fineAbsenceTime: Int
     /// moit 결석 벌금
-    let fineAbsenceAmount: Int
+    public let fineAbsenceAmount: Int
     /// moit 시작 일자 (YYYY-MM-dd)
-    let startDate: String
+    public let startDate: String
     /// moit 종료 일자 (YYYY-MM-dd)
-    let endDate: String
+    public let endDate: String
     
     // 지우기 필요
     public init(moitID: String, name: String, masterID: String, description: String, imageURL: String, scheduleDayOfWeek: [String], scheduleRepeatCycle: String, scheduleStartTime: String, scheduleEndTime: String, fineLateTime: Int, fineLateAmount: Int, fineAbsenceTime: Int, fineAbsenceAmount: Int, startDate: String, endDate: String) {
