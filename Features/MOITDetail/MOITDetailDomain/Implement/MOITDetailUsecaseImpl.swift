@@ -22,34 +22,36 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
         return self.repository.fetchDetail(moitID: ID)
             .compactMap { [weak self] response -> MOITDetailEntity? in
                 guard let self = self else { return nil }
+                let scheduleDescription = self.moitScheduleDescription(
+                    scheduleDayOfWeek: response.scheduleDayOfWeek,
+                    scheduleRepeatCycle: response.scheduleRepeatCycle,
+                    scheduleStartTime: response.scheduleStartTime,
+                    scheduleEndTime: response.scheduleEndTime
+                )
+                let ruleShortDescription = self.ruleShortDescription(
+                    fineLateTime: response.fineLateTime,
+                    fineAbsenceTime: response.fineAbsenceTime
+                )
+                let ruleLongDescription = self.ruleLongDescription(
+                    fineLateTime: response.fineLateTime,
+                    fineLateAmount: response.fineLateAmount,
+                    fineAbsenceTime: response.fineAbsenceTime,
+                    fineAbsenceAmount: response.fineAbsenceAmount
+                )
+                let periodDescription = self.periodDescription(
+                    startDate: response.startDate,
+                    endDate: response.endDate
+                )
                 return MOITDetailEntity(
                     moitID: response.moitID,
                     moitName: response.name,
                     masterID: response.masterID,
                     description: self.moitDescription(response.description),
                     imageURL: response.imageURL,
-                    scheduleDescription: self.moitScheduleDescription(
-                        scheduleDayOfWeek: response.scheduleDayOfWeek,
-                        scheduleRepeatCycle: response.scheduleRepeatCycle,
-                        scheduleStartTime: response.scheduleStartTime,
-                        scheduleEndTime: response.scheduleEndTime
-                    ),
-                    ruleShortDescription: self.ruleShortDescription(
-                        fineLateTime: response.fineLateTime,
-                        fineLateAmount: response.fineLateAmount,
-                        fineAbsenceTime: response.fineAbsenceTime,
-                        fineAbsenceAmount: response.fineAbsenceAmount
-                    ),
-                    ruleLoneDescription: self.ruleLongDescription(
-                        fineLateTime: response.fineLateTime,
-                        fineLateAmount: response.fineLateAmount,
-                        fineAbsenceTime: response.fineAbsenceTime,
-                        fineAbsenceAmount: response.fineAbsenceAmount
-                    ),
-                    periodDescription: self.periodDescription(
-                        startDate: response.startDate,
-                        endDate: response.endDate
-                    )
+                    scheduleDescription: scheduleDescription,
+                    ruleShortDescription: ruleShortDescription,
+                    ruleLoneDescription: ruleLongDescription,
+                    periodDescription: periodDescription
                 )
             }.asObservable()
             .asSingle()
@@ -65,16 +67,24 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
         scheduleStartTime: String,
         scheduleEndTime: String
     ) -> String {
-        return "테스트일정"
+        var days = ""
+        
+        scheduleDayOfWeek.forEach { dayOfWeek in
+            if !days.isEmpty { days += ", " }
+            guard let day = DayOfWeeks(rawValue: dayOfWeek)
+            else { return }
+            days += "\(day)"
+        }
+        guard let repeatCycle = RepeatCycle(rawValue: scheduleRepeatCycle)
+        else { return "" }
+        return "\(repeatCycle) \(days) \(scheduleStartTime) - \(scheduleEndTime)"
     }
     
     private func ruleShortDescription(
         fineLateTime: Int,
-        fineLateAmount: Int,
-        fineAbsenceTime: Int,
-        fineAbsenceAmount: Int
+        fineAbsenceTime: Int
     ) -> String {
-        return "테스트짧은규칙"
+        return "지각 \(fineLateTime)분 부터, 결석 \(fineAbsenceTime)분 부터"
     }
     
     private func ruleLongDescription(
@@ -83,7 +93,10 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
         fineAbsenceTime: Int,
         fineAbsenceAmount: Int
     ) -> String {
-        return "테스트긴규칙"
+        return """
+        지각 \(fineLateTime)분 부터 \(fineAbsenceAmount)원
+        결석 \(fineAbsenceTime)분 부터 \(fineAbsenceAmount)원
+        """
     }
     
     private func periodDescription(

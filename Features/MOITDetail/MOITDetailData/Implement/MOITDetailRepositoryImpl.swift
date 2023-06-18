@@ -19,11 +19,11 @@ public final class MOITDetailRepositoryImpl: MOITDetailRepository {
         return Observable.create { observer in
            let mockData = MOITDetailModel(
             moitID: "",
-            name: "전자군단 스터디🤖",
+            name: "전자군단 스터디🤖ee",
             masterID: "ㅇ",
             description: "전자군단인데엽",
             imageURL: "image",
-            scheduleDayOfWeek: ["MONDAY"],
+            scheduleDayOfWeek: ["MONDAY", "TUESDAY"],
             scheduleRepeatCycle: "ONE_WEEK",
             scheduleStartTime: "17:00",
             scheduleEndTime: "20:00",

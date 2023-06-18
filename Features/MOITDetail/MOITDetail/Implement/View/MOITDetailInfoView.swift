@@ -19,10 +19,13 @@ struct MOITDetailInfoViewModel {
 }
 
 final class MOITDetailInfoView: UIView {
+      
+    private let flexRootView: UIView = {
+        let view = UIView()
+//        view.isSkeletonable = true
+        return view
+    }()
     
-    
-    
-    private let flexRootView = UIView()
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = ResourceKitFontFamily.p3
@@ -31,7 +34,7 @@ final class MOITDetailInfoView: UIView {
         return label
     }()
     
-    private let descriptionLabel : UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray600.color
@@ -44,6 +47,7 @@ final class MOITDetailInfoView: UIView {
         super.init(frame: .zero)
         self.confifugre(viewModel: viewModel)
         self.configureLayouts()
+        self.flexRootView.showAnimatedGradientSkeleton()
     }
     
     @available(*, unavailable)
@@ -59,20 +63,26 @@ final class MOITDetailInfoView: UIView {
     
     private func configureLayouts() {
         self.addSubview(self.flexRootView)
-        self.isSkeletonable = true
-        self.flexRootView.isSkeletonable = true
+//        self.isSkeletonable = true
         self.flexRootView.flex
             .direction(.row)
             .alignItems(.start)
             .define { flex in
                 flex.addItem(self.titleLabel)
+                
                 flex.addItem(self.descriptionLabel)
                     .marginLeft(12)
             }
     }
     
     func confifugre(viewModel: MOITDetailInfoViewModel) {
+        self.hideSkeleton()
+        
         self.titleLabel.text = viewModel.title
         self.descriptionLabel.text = viewModel.description
+        self.titleLabel.flex.markDirty()
+        self.descriptionLabel.flex.markDirty()
+        self.setNeedsLayout()
+        
     }
 }

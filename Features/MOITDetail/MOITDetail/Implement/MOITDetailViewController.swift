@@ -41,7 +41,7 @@ final class MOITDetailViewController: UIViewController,
     }()
     private let moitImageView = UIImageView()
     private let navigationTopView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = .clear
         return view
     }()
@@ -65,7 +65,6 @@ final class MOITDetailViewController: UIViewController,
         label.font = ResourceKitFontFamily.h6
         label.textColor = .white
         label.numberOfLines = 1
-        label.text = "전자군단 스터디"
         return label
     }()
     
@@ -115,7 +114,6 @@ final class MOITDetailViewController: UIViewController,
         label.font = ResourceKitFontFamily.h3
         label.textColor = ResourceKitAsset.Color.gray900.color
         label.isSkeletonable = true
-        label.text = "전자군단 스터디"
         return label
     }()
     
@@ -124,23 +122,21 @@ final class MOITDetailViewController: UIViewController,
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray500.color
         label.isSkeletonable = true
-        label.text = "예시예시예시예시예시"
         return label
     }()
     
     private let infoView = MOITDetailInfosView()
-    
     private let tapPageView = MOITTabPager(pages: ["출결", "벌금"])
     private let childViewControllerContainer = UIView()
-
+    
     // MARK: - Properties
     
     weak var listener: MOITDetailPresentableListener?
     private let disposeBag = DisposeBag()
-
+    
+    // MARK: - LifeCycles
     
     override func loadView() {
-        super.loadView()
         self.view = self.flexRootView
         self.flexRootView.isSkeletonable = true
     }
@@ -151,31 +147,38 @@ final class MOITDetailViewController: UIViewController,
         self.configureLayouts()
         self.bind()
         self.listener?.viewDidLoad()
-        self.flexRootView.showAnimatedSkeleton()
+        
+        self.flexRootView.showAnimatedGradientSkeleton()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print(#function)
+        
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
+        
         self.navigationTopView.pin.top()
             .left()
             .right()
             .height(self.view.pin.safeArea.top)
+        
         self.navigationBar.pin.top(self.view.pin.safeArea)
             .left()
             .right()
             .height(56)
-        
         self.navigationBar.flex.layout()
         
         self.moitNameNavigationTitleLabel.pin.center(to: self.navigationBar.anchor.center)
+        self.moitNameNavigationTitleLabel.flex.layout()
         
         self.scrollView.pin.all()
-//        self.scrollView.contentSize = self.contentView.frame.size
+        //        self.scrollView.contentSize = self.contentView.frame.size
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 2000)
         print("scrollView contentSize = \(self.contentView.frame.size)")
+        
+        self.scrollView.flex.layout()
+        self.contentView.flex.layout()
         
         self.sheetContentView.pin.top(to: self.moitImageView.edge.top).marginTop(240)
             .right()
@@ -185,6 +188,10 @@ final class MOITDetailViewController: UIViewController,
         
         self.listener?.viewDidLayoutSubViews()
     }
+}
+
+// MARK: - Private functions
+extension MOITDetailViewController {
     
     private func configureLayouts() {
         
@@ -200,7 +207,6 @@ final class MOITDetailViewController: UIViewController,
                 flex.addItem(self.moitNameNavigationTitleLabel)
                     .position(.absolute)
                     
-             
                 flex.addItem()
                     .grow(1)
                 
@@ -229,7 +235,7 @@ final class MOITDetailViewController: UIViewController,
                 flex.addItem(self.infoView)
                     .marginTop(20)
                     .marginHorizontal(20)
-//                    .minHeight(93)
+                    .minHeight(93)
                 
                 flex.addItem(self.tapPageView)
                     .marginTop(20)
@@ -357,15 +363,25 @@ extension MOITDetailViewController {
 
 extension MOITDetailViewController {
     func configure(_ viewModel: MOITDetailViewModel) {
+        self.flexRootView.hideSkeleton()
+        print("👀", viewModel)
 //        self.moitImageView.image = viewModel.moitImage
         self.moitNameLabel.text = viewModel.moitName
-        self.moitDescriptionLabel.text = viewModel.moitDescription
+        self.moitNameNavigationTitleLabel.text = viewModel.moitName
+        self.navigationBar.flex.markDirty()
+        if viewModel.moitDescription == nil {
+            self.moitDescriptionLabel.flex.display(.none)
+            self.moitDescriptionLabel.isHidden = true
+        } else {
+            self.moitDescriptionLabel.text = viewModel.moitDescription
+        }
+        
         self.infoView.configure(viewModel: viewModel.moitInfos)
-        print(viewModel)
+        
         self.moitNameLabel.flex.markDirty()
         self.moitDescriptionLabel.flex.markDirty()
         self.infoView.flex.markDirty()
+        
         self.flexRootView.setNeedsLayout()
-        self.flexRootView.hideSkeleton()
     }
 }

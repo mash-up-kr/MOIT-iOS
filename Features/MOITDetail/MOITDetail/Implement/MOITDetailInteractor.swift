@@ -67,7 +67,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                         moitDescription: response.description,
                         moitInfos: self.moitInfosViewModel(
                             scheduleDescription: response.scheduleDescription,
-                            ruleDescription: response.ruleShortDescription,
+                            ruleDescription: response.ruleLongDescription,
                             periodDescription: response.periodDescription
                         )
                     )
