@@ -18,6 +18,7 @@ import SkeletonView
 protocol MOITDetailPresentableListener: AnyObject {
     func didTapInfoButton(type: MOITDetailInfoViewButtonType)
     func viewDidLoad()
+    func viewDidLayoutSubViews()
 }
 
 struct MOITDetailViewModel {
@@ -181,6 +182,8 @@ final class MOITDetailViewController: UIViewController,
             .left()
             .bottom()
         self.sheetContentView.flex.layout()
+        
+        self.listener?.viewDidLayoutSubViews()
     }
     
     private func configureLayouts() {
@@ -214,9 +217,9 @@ final class MOITDetailViewController: UIViewController,
             .alignItems(.stretch)
             .define { flex in
                 flex.addItem(self.moitNameLabel)
-                    .marginHorizontal(20)
                     .marginTop(30)
                     .height(36)
+                    .marginHorizontal(20)
                 
                 flex.addItem(self.moitDescriptionLabel)
                     .marginHorizontal(20)
@@ -224,16 +227,18 @@ final class MOITDetailViewController: UIViewController,
                     .height(22)
                 
                 flex.addItem(self.infoView)
-                    .marginHorizontal(20)
                     .marginTop(20)
+                    .marginHorizontal(20)
 //                    .minHeight(93)
                 
                 flex.addItem(self.tapPageView)
                     .marginTop(20)
                 
                 flex.addItem(self.childViewControllerContainer)
+                    .marginTop(0)
                     .backgroundColor(.orange)
                     .marginBottom(0)
+                    .grow(1)
             }
             
         self.contentView.flex
@@ -343,8 +348,7 @@ final class MOITDetailViewController: UIViewController,
 extension MOITDetailViewController {
     func addChild(viewController: ViewControllable) {
         self.addChild(viewController.uiviewController)
-        print(self.childViewControllerContainer.frame)
-        viewController.uiviewController.view.frame = self.childViewControllerContainer.frame
+        self.childViewControllerContainer.addSubview(viewController.uiviewController.view)
         viewController.uiviewController.willMove(toParent: self)
     }
 }

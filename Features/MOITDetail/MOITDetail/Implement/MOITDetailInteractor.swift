@@ -66,6 +66,9 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     }
     
     func viewDidLoad() {
+       
+    }
+    func viewDidLayoutSubViews() {
         self.tabTypes.forEach { type  in
             switch type {
             case .attendance: self.router?.attachAttendance()
@@ -73,5 +76,4 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
             }
         }
     }
-    
 }
