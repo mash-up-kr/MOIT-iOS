@@ -21,8 +21,7 @@ public protocol MOITDetailAttendancePresentableListener: AnyObject {
     // interactor class.
 }
 
-// TODO: 임시로 public
-public final class MOITDetailAttendanceViewController: UIViewController,
+final class MOITDetailAttendanceViewController: UIViewController,
                                                 MOITDetailAttendancePresentable,
                                                 MOITDetailAttendanceViewControllable {
     private let flexRootView = UIView()
@@ -65,7 +64,6 @@ public final class MOITDetailAttendanceViewController: UIViewController,
                 flex.addItem(self.seminarView)
                     .marginHorizontal(20)
                     .backgroundColor(.yellow)
-                    
                 
             }
     }
