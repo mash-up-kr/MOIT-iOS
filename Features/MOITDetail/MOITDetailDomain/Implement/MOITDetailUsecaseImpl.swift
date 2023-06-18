@@ -104,6 +104,6 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
         startDate: String,
         endDate: String
     ) -> String {
-        return "테스트기간"
+        return "\(startDate.dateString) - \(endDate.dateString)"
     }
 }
