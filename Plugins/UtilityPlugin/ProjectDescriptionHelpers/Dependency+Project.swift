@@ -15,6 +15,10 @@ extension TargetDependency {
             public struct Domain {}
             public struct UserInterface {}
         }
+        public struct MOITDetail {
+            public struct Data {}
+            public struct Domain {}
+        }
     }
     
     public struct Core {
@@ -137,4 +141,35 @@ extension TargetDependency.Feature.MOITWeb {
     
     public static let Interface = Self.project(isInterface: true)
     public static let Implement = Self.project(isInterface: false)
+}
+
+// MARK: - MOITDetail
+
+extension TargetDependency.Feature.MOITDetail {
+    static func project(moduleName: String, isInterface: Bool) -> TargetDependency {
+        let postfix: String = isInterface ? "" : "Impl"
+        return .project(
+            target: "\(moduleName)\(postfix)",
+            path: .relativeToRoot("Features/MOITDetail/\(moduleName)")
+        )
+    }
+    
+    public static let Interface: TargetDependency = .project(
+        target: "MOITDetail",
+        path: .relativeToRoot("Features/MOITDetail")
+    )
+    public static let Implement: TargetDependency = .project(
+        target: "MOITDetailImpl",
+        path: .relativeToRoot("Features/MOITDetail")
+    )
+}
+
+public extension TargetDependency.Feature.MOITDetail.Data {
+    static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailData", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailData", isInterface: false)
+}
+
+public extension TargetDependency.Feature.MOITDetail.Domain {
+    static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: false)
 }
