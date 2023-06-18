@@ -42,13 +42,14 @@ extension TargetDependency {
 
 public extension TargetDependency.Core {
     static let folderName = "Core"
-    static func project(name: String, isInterface: Bool) -> TargetDependency {
+    static func project(name: String, isInterface: Bool = true) -> TargetDependency {
         let postfix: String = isInterface ? "" : "Impl"
         return .project(target: "\(name)\(postfix)",
                         path: .relativeToRoot("\(folderName)"))
     }
     
-    static let CSLogger = project(name: "CSLogger", isInterface: true)
+    static let CSLogger = project(name: "CSLogger")
+    static let MOITFoundation = project(name: "MOITFoundation")
 }
 
 // MARK: - Features/Home

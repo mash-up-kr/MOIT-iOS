@@ -10,6 +10,7 @@ import Foundation
 import MOITDetailDomain
 import MOITDetailData
 import RxSwift
+import MOITFoundation
 
 public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
     private let repository: MOITDetailRepository
@@ -94,8 +95,8 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
         fineAbsenceAmount: Int
     ) -> String {
         return """
-        지각 \(fineLateTime)분 부터 \(fineAbsenceAmount)원
-        결석 \(fineAbsenceTime)분 부터 \(fineAbsenceAmount)원
+        지각 \(fineLateTime)분 부터 \(fineAbsenceAmount.toDecimalString)원
+        결석 \(fineAbsenceTime)분 부터 \(fineAbsenceAmount.toDecimalString)원
         """
     }
     
