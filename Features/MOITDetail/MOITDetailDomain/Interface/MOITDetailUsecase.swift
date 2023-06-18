@@ -10,15 +10,15 @@ import Foundation
 import RxSwift
 
 public struct MOITDetailEntity {
-    let moitID: String
-    let moitName: String
-    let masterID: String
-    let description: String?
-    let imageURL: String
-    let scheduleDescription: String
-    let ruleShortDescription: String
-    let ruleLoneDescription: String
-    let periodDescription: String
+    public let moitID: String
+    public let moitName: String
+    public let masterID: String
+    public let description: String?
+    public let imageURL: String
+    public let scheduleDescription: String
+    public let ruleShortDescription: String
+    public let ruleLoneDescription: String
+    public let periodDescription: String
     
     public init(moitID: String, moitName: String, masterID: String, description: String?, imageURL: String, scheduleDescription: String, ruleShortDescription: String, ruleLoneDescription: String, periodDescription: String) {
         self.moitID = moitID

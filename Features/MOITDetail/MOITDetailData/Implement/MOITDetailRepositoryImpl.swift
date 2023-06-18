@@ -11,6 +11,10 @@ import MOITDetailData
 import RxSwift
 
 public final class MOITDetailRepositoryImpl: MOITDetailRepository {
+    
+    public init() {
+        
+    }
     public func fetchDetail(moitID: String) -> Single<MOITDetailModel> {
         return Observable.create { observer in
            let mockData = MOITDetailModel(

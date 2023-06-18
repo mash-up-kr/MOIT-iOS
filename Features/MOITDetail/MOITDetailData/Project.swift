@@ -18,7 +18,6 @@ let project = Project.invertedDualTargetProject(
         .ThirdParty.RxSwift,
     ],
     implementDependencies: [
-        .ThirdParty.RxSwift,
     ]
 )
 

@@ -29,8 +29,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.SkeletonView,
         .ResourceKit,
         .DesignSystem,
-        .Feature.MOITDetail.Data.Interface,
-        .Feature.MOITDetail.Domain.Interface,
+        .Feature.MOITDetail.Domain.Implement,
     ],
     isUserInterface: true
 )

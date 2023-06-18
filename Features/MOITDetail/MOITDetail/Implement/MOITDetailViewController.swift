@@ -24,7 +24,7 @@ protocol MOITDetailPresentableListener: AnyObject {
 struct MOITDetailViewModel {
     let moitImage: String
     let moitName: String
-    let moitDescription: String
+    let moitDescription: String?
     let moitInfos: MOITDetailInfosViewModel
 }
 

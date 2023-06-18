@@ -8,6 +8,8 @@
 
 import RIBs
 import MOITDetail
+import MOITDetailDomainImpl
+import MOITDetailDataImpl
 
 final class MOITDetailComponent: Component<MOITDetailDependency> {
 }
@@ -33,7 +35,8 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         let viewController = MOITDetailViewController()
         let interactor = MOITDetailInteractor(
             tabTypes: [.attendance, .fine],
-            presenter: viewController
+            presenter: viewController,
+            detailUsecase: MOITDetailUsecaseImpl(repository: MOITDetailRepositoryImpl())
         )
         interactor.listener = listener
         
