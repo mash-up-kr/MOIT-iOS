@@ -18,25 +18,27 @@ let project = Project(
         .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
     ]),
     targets: [
-        Target(name: "DesignSystem",
-               platform: .iOS,
-               product: .framework,
-               bundleId: "team.io.DesignSystem",
-               deploymentTarget: .iOS(
+        Target(
+            name: "DesignSystem",
+            platform: .iOS,
+            product: .framework,
+            bundleId: "team.io.DesignSystem",
+            deploymentTarget: .iOS(
                 targetVersion: "15.0.0",
                 devices: [.iphone]
-               ),
-               infoPlist: .default,
-               sources: ["Sources/**"],
-               scripts: [.swiftLintScript],
-               dependencies: [
+            ),
+            infoPlist: .default,
+            sources: ["Sources/**"],
+            scripts: [.swiftLintScript],
+            dependencies: [
                 .ThirdParty.PinLayout,
                 .ThirdParty.FlexLayout,
                 .ResourceKit,
                 .ThirdParty.RxCocoa,
                 .ThirdParty.RxSwift,
                 .ThirdParty.RxGesture,
-               ]),
+                .ThirdParty.Kingfisher,
+            ]),
         Target(
             name: "DesignSystemDemoApp",
             platform: .iOS,

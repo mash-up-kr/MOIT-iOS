@@ -141,24 +141,21 @@ extension MOITAlarmView {
         .take(while: { [weak self] second in
             guard let self = self else { return true }
             switch self.type {
-            case .
-attendanceCheck(let remainSeconds): return (remainSeconds + 1) != second
+            case .attendanceCheck(let remainSeconds): return (remainSeconds + 1) != second
             default: return true
             }
         })
         .filter { [weak self] second in
             guard let self = self else { return false }
             switch self.type {
-            case .
-attendanceCheck(let remainSeconds): return remainSeconds >= second
+            case .attendanceCheck(let remainSeconds): return remainSeconds >= second
             default: return false
             }
         }
         .compactMap { [weak self] second -> String? in
             guard let self = self else { return nil }
             switch self.type {
-            case .
-attendanceCheck(let remainSeconds): return self.generateTimerString(remainSeconds: remainSeconds, second: second)
+            case .attendanceCheck(let remainSeconds): return self.generateTimerString(remainSeconds: remainSeconds, second: second)
             default: return nil
             }
         }
@@ -205,13 +202,12 @@ attendanceCheck(let remainSeconds): return self.generateTimerString(remainSecond
     
     private func configureMainLabel() {
         switch self.type {
-        case .
-attendanceCheck(let remainSeconds):
+        case .attendanceCheck(let remainSeconds):
             self.subscribeRemainTimer()
             self.mainLabel.text = self.generateTimerString(remainSeconds: remainSeconds, second: 0)
-        case .fine(let amount):
+        case .penalty(let amount):
             self.mainLabel.text = amount
-        case .attendanceRate(let percent):
+        case .attendanceRating(let percent):
             self.mainLabel.text = percent
         }
     

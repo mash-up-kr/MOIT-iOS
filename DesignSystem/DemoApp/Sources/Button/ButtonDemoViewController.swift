@@ -27,11 +27,12 @@ final class ButtonDemoViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.flexRootView.pin.all(self.view.pin.safeArea)
-        self.flexRootView.flex.layout(mode: .adjustWidth)
+        self.flexRootView.flex.layout()
     }
     
     private func configureLayouts() {
         self.flexRootView.flex
+            .alignItems(.start)
             .define { flex in
                 flex.addItem(self.miniButton())
                 

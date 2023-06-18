@@ -41,7 +41,7 @@ final class AlarmViewDemoViewController: UIViewController {
                 
                 flex.addItem(self.attendanceView())
                 
-                flex.addItem(self.attendanceRate())
+                flex.addItem(self.attendanceRating())
                     .marginTop(10)
                 
                 flex.addItem(self.penaltyView())
@@ -62,29 +62,28 @@ final class AlarmViewDemoViewController: UIViewController {
     
     private func attendanceView() -> MOITAlarmView {
         return MOITAlarmView(
-            type: .
-attendanceCheck(remainSeconds: 5),
+            type: .attendanceCheck(remainSeconds: 5),
             studyName: "전자군단🤖"
         )
     }
     
     private func penaltyView() -> MOITAlarmView {
         MOITAlarmView(
-            type: .fine(amount: "9,999,999원"),
+            type: .penalty(amount: "9,999,999원"),
             studyName: "전자군단🤖✨☘️🗯️"
         )
     }
     
     private func penaltyView2() -> MOITAlarmView {
         MOITAlarmView(
-            type: .fine(amount: "12,000원"),
+            type: .penalty(amount: "12,000원"),
             studyName: "전자군단🤖✨☘️🗯️"
         )
     }
     
-    private func attendanceRate() -> MOITAlarmView {
+    private func attendanceRating() -> MOITAlarmView {
         MOITAlarmView(
-            type: .attendanceRate(percent: "99%"),
+            type: .attendanceRating(percent: "99%"),
             studyName: "영일이삼사오육칠팔구십"
         )
     }
