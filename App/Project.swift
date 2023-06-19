@@ -50,6 +50,7 @@ let project = Project(
             dependencies: [
                 .ThirdParty.RIBs,
                 .ThirdParty.SkeletonView,
+				.ThirdParty.RxKakaoSDKCommon
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
