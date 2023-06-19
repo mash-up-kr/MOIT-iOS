@@ -9,14 +9,14 @@
 import RIBs
 import RxSwift
 
+import CSLogger
+import SignInUserInterface
+
 protocol LoggedOutRouting: ViewableRouting {
 }
 
 protocol LoggedOutPresentable: Presentable {
     var listener: LoggedOutPresentableListener? { get set }
-}
-
-protocol LoggedOutListener: AnyObject {
 }
 
 final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, LoggedOutInteractable, LoggedOutPresentableListener {
@@ -38,10 +38,10 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
     }
 	
 	func kakaoSignInButtonDidTap() {
-		
+		CSLogger.Logger.debug("kakaoSignIn")
 	}
 	
 	func appleSignInButtonDidTap() {
-		
+		CSLogger.Logger.debug("appleSignIn")
 	}
 }

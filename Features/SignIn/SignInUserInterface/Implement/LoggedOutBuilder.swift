@@ -6,31 +6,25 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import SignInUserInterface
+
 import RIBs
 
-protocol LoggedOutDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
+public protocol LoggedOutDependency: Dependency {
 }
 
 final class LoggedOutComponent: Component<LoggedOutDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
 // MARK: - Builder
 
-protocol LoggedOutBuildable: Buildable {
-    func build(withListener listener: LoggedOutListener) -> LoggedOutRouting
-}
+public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuildable {
 
-final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuildable {
-
-    override init(dependency: LoggedOutDependency) {
+    override public init(dependency: LoggedOutDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: LoggedOutListener) -> LoggedOutRouting {
+	public func build(withListener listener: LoggedOutListener) -> ViewableRouting {
         let component = LoggedOutComponent(dependency: dependency)
         let viewController = LoggedOutViewController()
         let interactor = LoggedOutInteractor(presenter: viewController)
