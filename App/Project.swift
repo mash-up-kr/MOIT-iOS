@@ -36,6 +36,10 @@ let project = Project(
                             "remote-notification",
                             "remove-notification"
                         ],
+						"LSApplicationQueriesSchemes": [
+							"kakaokompassauth",
+							"kakaolink"
+						]
                     ]
             ),
             sources: ["Sources/**"],
