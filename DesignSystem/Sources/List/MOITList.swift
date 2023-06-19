@@ -16,20 +16,22 @@ import RxSwift
 
 public final class MOITList: UIView {
 	
+// MARK: - UI
+	
 	private let flexRootView = UIView()
-	private lazy var profileImageView: UIImageView? = {
-		if let image {
-			let imageView = UIImageView()
-			imageView.image = image
-			imageView.layer.cornerRadius = 16
-			imageView.clipsToBounds = true
-			imageView.layer.borderColor = ResourceKitAsset.Color.gray100.color.cgColor
-			imageView.layer.borderWidth = 1
+	
+	private lazy var profileImageView: MOITProfileView? = {
+		if let imageUrlString {
+			let imageView = MOITProfileView(
+				urlString: imageUrlString,
+				profileType: .small
+			)
 			return imageView
 		}
 		
 		return nil
 	}()
+	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.text = title
@@ -37,6 +39,7 @@ public final class MOITList: UIView {
 		label.textColor = ResourceKitAsset.Color.gray900.color
 		return label
 	}()
+	
 	private lazy var detailLabel: UILabel? = {
 		if let detail {
 			let label = UILabel()
@@ -48,6 +51,7 @@ public final class MOITList: UIView {
 		
 		return nil
 	}()
+	
 	private lazy var fineLabel: UILabel? = {
 		if let fine {
 			let label = UILabel()
@@ -59,6 +63,7 @@ public final class MOITList: UIView {
 		
 		return nil
 	}()
+	
 	private lazy var chip: MOITChip? = {
 		if let chipType {
 			return MOITChip(type: chipType)
@@ -66,10 +71,13 @@ public final class MOITList: UIView {
 		
 		return nil
 	}()
+	
 	fileprivate let button: MOITButton?
 	
+// MARK: - property
+	
 	private let type: MOITListType
-	private let image: UIImage?
+	private let imageUrlString: String?
 	private let title: String
 	private let detail: String?
 	private let chipType: MOITChipType?
@@ -78,7 +86,7 @@ public final class MOITList: UIView {
 // MARK: - init
 	public init(
 		type: MOITListType,
-		image: UIImage? = nil,
+		imageUrlString: String? = nil,
 		title: String,
 		detail: String? = nil,
 		chipType: MOITChipType? = nil,
@@ -86,7 +94,7 @@ public final class MOITList: UIView {
 		button: MOITButton? = nil
 	) {
 		self.type = type
-		self.image = image
+		self.imageUrlString = imageUrlString
 		self.title = title
 		self.detail = detail
 		self.chipType = chipType
@@ -117,9 +125,10 @@ public final class MOITList: UIView {
 		flexRootView.flex
 			.direction(.row)
 			.alignItems(.center)
+			.height(type.height)
 			.define { flex in
 				if let profileImageView {
-					flex.addItem(profileImageView).width(40).height(40).marginRight(10)
+					flex.addItem(profileImageView).marginRight(10)
 				}
 				
 				if [.sendMoney, .myMoney].contains(where: { $0 == type }) {
@@ -143,7 +152,6 @@ public final class MOITList: UIView {
 					flex.addItem(additionalView)
 				}
 			}
-			.height(type.height)
 	}
 	
 	private func selectAdditionalView(type: MOITListType) -> UIView? {

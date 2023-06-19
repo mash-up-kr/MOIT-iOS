@@ -23,7 +23,7 @@ final class MOITListDemoViewController: UIViewController {
 		label.text = "0번 탭 됐음!"
 		return label
 	}()
-	
+
 	private let disposeBag = DisposeBag()
 	
 	override func viewDidLoad() {
@@ -71,7 +71,7 @@ final class MOITListDemoViewController: UIViewController {
 	private func allAttendList() -> MOITList {
 		MOITList(
 			type: .allAttend,
-			image: DesignSystemDemoAppAsset.profileImage.image,
+			imageUrlString: "https://github.com/hope1053.png",
 			title: "가나다라마바사아자차카타",
 			detail: "17:02",
 			chipType: .attend
@@ -138,7 +138,7 @@ final class MOITListDemoViewController: UIViewController {
 	private func peopleList() -> MOITList {
 		MOITList(
 			type: .people,
-			image:DesignSystemDemoAppAsset.profileImage.image,
+			imageUrlString: "https://github.com/hope1053.png",
 			title: "가나다라마바사아자차카타"
 		)
 	}
