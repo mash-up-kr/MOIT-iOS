@@ -11,5 +11,5 @@ import UIKit
 import RIBs
 
 public protocol SignUpListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    
 }

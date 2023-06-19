@@ -8,11 +8,14 @@
 
 import SignUpUserInterface
 
+import SignUpDomain
+
 import RIBs
 
-public final class SignUpComponent: Component<SignUpDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+public final class SignUpComponent: Component<SignUpDependency>, SignUpInteractorDependency {
+    
+    var fetchRandomNumberUseCase: FetchRandomNumberUseCase { dependency.fetchRandomNumberUseCase }
+    var postJoinInfoUseCase: PostJoinInfoUseCase { dependency.postJoinInfoUseCase }
 }
 
 // MARK: - Builder

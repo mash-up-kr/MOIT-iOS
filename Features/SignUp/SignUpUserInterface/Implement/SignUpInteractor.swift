@@ -20,7 +20,12 @@ protocol SignUpPresentable: Presentable {
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
-final class SignUpInteractor: PresentableInteractor<SignUpPresentable>, SignUpInteractable, SignUpPresentableListener {
+protocol SignUpInteractorDependency {
+    var fetchRandomNumberUseCase: FetchRandomNumberUseCase { get }
+    var postJoinInfoUseCase: PostJoinInfoUseCase { get }
+}
+
+final class SignUpInteractor: PresentableInteractor<SignUpPresentable>, SignUpInteractable {
     
     weak var router: SignUpRouting?
     weak var listener: SignUpListener?
