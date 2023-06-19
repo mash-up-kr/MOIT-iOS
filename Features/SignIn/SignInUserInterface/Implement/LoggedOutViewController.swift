@@ -17,6 +17,8 @@ import RIBs
 import RxSwift
 
 protocol LoggedOutPresentableListener: AnyObject {
+	func kakaoSignInButtonDidTap()
+	func appleSignInButtonDidTap()
 }
 
 public final class LoggedOutViewController: UIViewController, LoggedOutPresentable, LoggedOutViewControllable {
@@ -44,12 +46,17 @@ public final class LoggedOutViewController: UIViewController, LoggedOutPresentab
 		backgroundColor: .black
 	)
 	
+// MARK: - property
+	
+	private let disposeBag = DisposeBag()
+	
 // MARK: - override
 	
 	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configureLayout()
+		bind()
 	}
 	
 	override public func viewDidLayoutSubviews() {
@@ -70,5 +77,23 @@ public final class LoggedOutViewController: UIViewController, LoggedOutPresentab
 			flex.addItem(appleSignInButton).marginTop(12)
 			flex.addItem(kakaoSignInButton)
 		}
+	}
+	
+	private func bind() {
+		kakaoSignInButton.rx.tap
+			.subscribe(
+				onNext: { [weak self] _ in
+					self?.listener?.kakaoSignInButtonDidTap()
+				}
+			)
+			.disposed(by: dispoeBag)
+		
+		appleSignInButton.rx.tap
+			.subscribe(
+				onNext: { [weak self] _ in
+					self?.listener?.appleSignInButtonDidTap()
+				}
+			)
+			.disposed(by: dispoeBag)
 	}
 }
