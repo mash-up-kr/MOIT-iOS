@@ -20,10 +20,24 @@ protocol SignUpViewControllable: ViewControllable {
 }
 
 final class SignUpRouter: ViewableRouter<SignUpInteractable, SignUpViewControllable>, SignUpRouting {
-
+    
+    // MARK: - UI
+    
+    // MARK: - Properties
+    
+    // MARK: - Initializers
     // TODO: Constructor inject child builder protocols to allow building children.
     override init(interactor: SignUpInteractable, viewController: SignUpViewControllable) {
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
+    }
+    
+    // MARK: - Functions
+    func attachMOITList() {
+        print(#function)
+    }
+    
+    func attachProfileSelect() {
+        print(#function)
     }
 }

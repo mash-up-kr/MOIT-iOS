@@ -12,6 +12,9 @@ import SignUpDomain
 
 public final class FetchRandomNumberUseCaseImpl: FetchRandomNumberUseCase {
     
+    public init() {
+    }
+    
     public func execute(with range: Range<Int>) -> Int {
         return Int.random(in: range)
     }

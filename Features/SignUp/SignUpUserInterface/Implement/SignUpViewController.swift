@@ -20,10 +20,14 @@ import PinLayout
 protocol SignUpPresentableListener: AnyObject {
     
     func didSwipeBack()
+    func didTapNextButton()
+    func didTapProfileView()
+    func didTypeName(name: String)
+    func didTypeInviteCode(inviteCode: String)
 }
 
-public final class SignUpViewController: BaseViewController, SignUpPresentable, SignUpViewControllable {
-    
+public final class SignUpViewController: BaseViewController, SignUpViewControllable {
+        
     // MARK: - UI
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -98,7 +102,10 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
         )
     }
     
-    deinit { debugPrint("\(self) deinit") }
+    deinit {
+        disposebag = DisposeBag()
+        debugPrint("\(self) deinit")
+    }
     
     // MARK: - Functions
     public override func configureConstraints() {
@@ -149,5 +156,12 @@ public final class SignUpViewController: BaseViewController, SignUpPresentable, 
                 print("nextButtonTapped")
             })
             .disposed(by: disposebag)
+    }
+}
+
+extension SignUpViewController: SignUpPresentable {
+    
+    func updateProfileIndex(index: Int) {
+        // 뷰 업데이트
     }
 }

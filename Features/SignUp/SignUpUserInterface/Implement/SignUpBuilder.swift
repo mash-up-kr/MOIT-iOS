@@ -22,14 +22,14 @@ public final class SignUpComponent: Component<SignUpDependency>, SignUpInteracto
 
 public final class SignUpBuilder: Builder<SignUpDependency>, SignUpBuildable {
 
-    override init(dependency: SignUpDependency) {
+    public override init(dependency: SignUpDependency) {
         super.init(dependency: dependency)
     }
 
     public func build(withListener listener: SignUpListener) -> ViewableRouting {
         let component = SignUpComponent(dependency: dependency)
         let viewController = SignUpViewController()
-        let interactor = SignUpInteractor(presenter: viewController)
+        let interactor = SignUpInteractor(presenter: viewController, dependency: component)
         interactor.listener = listener
         return SignUpRouter(interactor: interactor, viewController: viewController)
     }
