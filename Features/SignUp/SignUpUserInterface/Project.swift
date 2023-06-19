@@ -31,5 +31,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.SignUp.Domain.Interface,
         .Feature.SignUp.Data.Interface,
     ],
+    demoAppDependencies: [
+        .Feature.SignUp.Domain.Implement,
+        .Feature.SignUp.Data.Implement,
+    ],
     isUserInterface: true
 )
