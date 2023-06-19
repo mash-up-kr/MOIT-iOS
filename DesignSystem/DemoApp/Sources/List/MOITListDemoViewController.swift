@@ -93,6 +93,7 @@ final class MOITListDemoViewController: UIViewController {
 			title: "가나다라마바사아자차카타",
 			detail: "15,000원",
 			chipType: .late,
+			studyOrder: 3,
 			button: MOITButton(
 				type: .mini,
 				title: "납부 인증하기",
@@ -121,17 +122,18 @@ final class MOITListDemoViewController: UIViewController {
 			type: .sendMoney,
 			title: "가나다라마바사아자차카타",
 			detail: "15,000원",
-			chipType: .late
+			chipType: .late,
+			studyOrder: 3
 		)
 	}
 	
 	private func myMoneyList() -> MOITList {
 		MOITList(
 			type: .myMoney,
-			title: "3차스터디",
 			detail: "2023.04.21 17:02",
 			chipType: .late,
-			fine: "+ 12,000원"
+			studyOrder: 3,
+			fine: 12000
 		)
 	}
 	

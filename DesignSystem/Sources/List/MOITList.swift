@@ -32,7 +32,7 @@ public final class MOITList: UIView {
 		return nil
 	}()
 	
-	private lazy var titleLabel: UILabel = {
+	private lazy var titleLabel: UILabel? = {
 		let label = UILabel()
 		label.text = title
 		label.font = ResourceKitFontFamily.h6
@@ -52,10 +52,29 @@ public final class MOITList: UIView {
 		return nil
 	}()
 	
+	private lazy var studyOrderLabel: UILabel? = {
+		if let studyOrder {
+			let label = UILabel()
+			label.text = "\(studyOrder)차 스터디"
+			return label
+		}
+		
+		return nil
+	}()
+	
+	private lazy var separtaorLabel: UILabel = {
+		let label = UILabel()
+		label.text = "|"
+		label.textColor = ResourceKitAsset.Color.gray600.color
+		label.font = ResourceKitFontFamily.caption
+		return label
+	}()
+	
 	private lazy var fineLabel: UILabel? = {
 		if let fine {
 			let label = UILabel()
-			label.text = fine
+			let formattedFine = Formatter.fineFormatter.string(from: NSNumber(value: fine)) ?? ""
+			label.text = "+ \(formattedFine) 원"
 			label.textColor = ResourceKitAsset.Color.gray900.color
 			label.font = ResourceKitFontFamily.h5
 			return label
@@ -78,19 +97,21 @@ public final class MOITList: UIView {
 	
 	private let type: MOITListType
 	private let imageUrlString: String?
-	private let title: String
+	private let title: String?
 	private let detail: String?
 	private let chipType: MOITChipType?
-	private let fine: String? // TODO: 이부분도 서버에서 String, Int 중 어떤 형식으로 내려줄지?
+	private let studyOrder: Int?
+	private let fine: Int?
 	
 // MARK: - init
 	public init(
 		type: MOITListType,
 		imageUrlString: String? = nil,
-		title: String,
+		title: String? = nil,
 		detail: String? = nil,
 		chipType: MOITChipType? = nil,
-		fine: String? = nil,
+		studyOrder: Int? = nil,
+		fine: Int? = nil,
 		button: MOITButton? = nil
 	) {
 		self.type = type
@@ -98,6 +119,7 @@ public final class MOITList: UIView {
 		self.title = title
 		self.detail = detail
 		self.chipType = chipType
+		self.studyOrder = studyOrder
 		self.fine = fine
 		self.button = button
 		
@@ -132,20 +154,30 @@ public final class MOITList: UIView {
 				}
 				
 				if [.sendMoney, .myMoney].contains(where: { $0 == type }) {
-					if let chip {
-						flex.addItem(chip).marginRight(10)
-					}
+					flex.addOptionalItem(chip, marginRight: 10)
 				}
 
 				flex.addItem().direction(.column)
 					.grow(1)
 					.justifyContent(.center)
 					.define { flex in
-					flex.addItem(titleLabel)
-					
-					if let detailLabel {
-						flex.addItem(detailLabel)
-					}
+						
+						if let studyOrderLabel, type == .myMoney {
+							studyOrderLabel.setTitleStyle()
+							flex.addItem(studyOrderLabel)
+						} else {
+							flex.addOptionalItem(titleLabel)
+						}
+						
+						flex.addItem().direction(.row).define { flex in
+								flex.addOptionalItem(detailLabel)
+									
+								if let studyOrderLabel, type == .sendMoney {
+									studyOrderLabel.setDetailLabelStyle()
+									flex.addItem(separtaorLabel).marginHorizontal(3)
+									flex.addItem(studyOrderLabel)
+								}
+							}
 				}
 				
 				if let additionalView = selectAdditionalView(type: type) {
@@ -178,3 +210,22 @@ extension Reactive where Base: MOITList {
 	}
 }
 
+extension UILabel {
+	func setDetailLabelStyle() {
+		self.textColor = ResourceKitAsset.Color.gray600.color
+		self.font = ResourceKitFontFamily.caption
+	}
+	
+	func setTitleStyle() {
+		self.font = ResourceKitFontFamily.h6
+		self.textColor = ResourceKitAsset.Color.gray900.color
+	}
+}
+
+struct Formatter {
+	static let fineFormatter: NumberFormatter = {
+		let formatter = NumberFormatter()
+		formatter.numberStyle = .decimal
+		return formatter
+	}()
+}

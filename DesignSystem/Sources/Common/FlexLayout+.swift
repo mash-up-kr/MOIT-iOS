@@ -15,10 +15,11 @@ public extension FlexLayout.Flex {
 	func addOptionalItem(
 		_ view: UIView?,
 		height: CGFloat? = nil,
+		marginRight: CGFloat = 0,
 		marginBottom: CGFloat = 0
 	) -> Flex {
         if let view {
-			self.addItem(view).height(height).marginBottom(marginBottom)
+			self.addItem(view).height(height).marginRight(marginRight).marginBottom(marginBottom)
         }
         
         return self
