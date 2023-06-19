@@ -100,6 +100,9 @@ public extension TargetDependency.ThirdParty {
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
     static let SkeletonView = TargetDependency.external(name: "SkeletonView")
+	static let RxKakaoSDKCommon = TargetDependency.external(name: "RxKakaoSDKCommon")
+	static let RxKakaoSDKAuth = TargetDependency.external(name: "RxKakaoSDKAuth")
+	static let RxKakaoSDKUser = TargetDependency.external(name: "RxKakaoSDKUser")
 }
 
 public extension TargetDependency.ThirdParty {
