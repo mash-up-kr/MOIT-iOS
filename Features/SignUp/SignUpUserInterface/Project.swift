@@ -27,6 +27,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ResourceKit,
         .DesignSystem,
         .Core.Utils,
+        
+        .Feature.SignUp.Domain.Interface,
+        .Feature.SignUp.Data.Interface,
     ],
     isUserInterface: true
 )
