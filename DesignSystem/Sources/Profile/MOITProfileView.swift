@@ -14,7 +14,6 @@ import FlexLayout
 import PinLayout
 import RxSwift
 import RxGesture
-import Kingfisher
 
 public final class MOITProfileView: UIView {
     
@@ -28,7 +27,7 @@ public final class MOITProfileView: UIView {
     }()
     
     // MARK: - Properties
-    private let urlString: String?
+    private var profileImageType: ProfileImageType?
     private let profileType: ProfileType
     fileprivate let containAddButton: Bool
     
@@ -40,7 +39,6 @@ public final class MOITProfileView: UIView {
     ) {
         self.profileType = profileType
         self.containAddButton = addButton
-        urlString = nil
         
         super.init(frame: .zero)
         
@@ -48,17 +46,17 @@ public final class MOITProfileView: UIView {
     }
     
     public init (
-        urlString: String,
+        profileImageType: ProfileImageType,
         profileType: ProfileType,
         addButton: Bool = false
     ) {
-        self.urlString = urlString
+        self.profileImageType = profileImageType
         self.profileType = profileType
         self.containAddButton = addButton
         
         super.init(frame: .zero)
         
-        configureImage(with: urlString)
+        configureImage(with: profileImageType)
         configureLayout()
     }
     
@@ -81,20 +79,14 @@ public final class MOITProfileView: UIView {
     
     // MARK: - Functions
     
-    public func configureImage(with urlString: String) {
-        guard let url = URL(string: urlString)
-        else { return }
-        profileImageView.kf.setImage(
-            with: url,
-            placeholder: nil
-        )
+    public func configureImage(with profileImageType: ProfileImageType) {
+        profileImageView.image = profileImageType.image
     }
     
     private func configureLayout() {
         addSubview(profileImageView)
         profileImageView.layer.cornerRadius = profileType.radius
         profileImageView.clipsToBounds = true
-        profileImageView.backgroundColor = ResourceKitAsset.Color.blue700.color
         
         profileImageView.flex.size(profileType.size)
     }

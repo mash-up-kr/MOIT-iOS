@@ -11,6 +11,7 @@ import UIKit
 import ResourceKit
 
 public enum NavigationItemType {
+    case logo
     case close
     case back
     case share
@@ -19,6 +20,8 @@ public enum NavigationItemType {
     
     var icon: UIImage? {
         switch self {
+        case .logo:
+            return ResourceKitAsset.Icon.logo.image
         case .close:
             return ResourceKitAsset.Icon.x.image
         case .back:
