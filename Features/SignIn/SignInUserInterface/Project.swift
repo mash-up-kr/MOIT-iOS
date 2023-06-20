@@ -21,6 +21,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ThirdParty.RIBs,
 		.ThirdParty.FlexLayout,
 		.ThirdParty.PinLayout,
+		.ThirdParty.KakaoSDKUser,
+		.ThirdParty.RxKakaoSDKUser,
 		.ResourceKit,
 		.DesignSystem
     ],
