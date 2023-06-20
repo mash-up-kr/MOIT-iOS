@@ -9,26 +9,24 @@
 import RIBs
 import RxSwift
 
+import MOITParticipateUserInterface
+
 protocol InputParticipateCodeRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+	func attachPariticipationSuccess()
+	func detachPariticipationSuccess()
 }
 
 protocol InputParticipateCodePresentable: Presentable {
     var listener: InputParticipateCodePresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
-protocol InputParticipateCodeListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-}
-
-final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipateCodePresentable>, InputParticipateCodeInteractable, InputParticipateCodePresentableListener {
+final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipateCodePresentable>,
+											InputParticipateCodeInteractable,
+											InputParticipateCodePresentableListener {
 
     weak var router: InputParticipateCodeRouting?
     weak var listener: InputParticipateCodeListener?
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
     override init(presenter: InputParticipateCodePresentable) {
         super.init(presenter: presenter)
         presenter.listener = self
@@ -36,11 +34,13 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        // TODO: Implement business logic here.
     }
 
     override func willResignActive() {
         super.willResignActive()
-        // TODO: Pause any business logic.
     }
+	
+	func joinMOITButtonDidTap(code: String) {
+		router?.attachPariticipationSuccess()
+	}
 }

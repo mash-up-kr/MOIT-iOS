@@ -16,10 +16,12 @@ import RxCocoa
 import RxSwift
 
 protocol InputParticipateCodePresentableListener: AnyObject {
-    
+	func joinMOITButtonDidTap(code: String)
 }
 
-public final class InputParticipateCodeViewController: UIViewController, InputParticipateCodePresentable, InputParticipateCodeViewControllable {
+public final class InputParticipateCodeViewController: UIViewController,
+													   InputParticipateCodePresentable,
+													   InputParticipateCodeViewControllable {
 
     weak var listener: InputParticipateCodePresentableListener?
 	
@@ -43,9 +45,12 @@ public final class InputParticipateCodeViewController: UIViewController, InputPa
 	}()
 	
 	// TODO: TextField title 옵셔널로 수정 필요
-	private let codeTextField = MOITTextField(title: "", placeHolder: StringResource.placeHolder.value)
+	private let codeTextField = MOITTextField(
+		title: "",
+		placeHolder: StringResource.placeHolder.value
+	)
 	
-	private let completeButton: UIButton = {
+	private let joinMOITButton: UIButton = {
 		let button = UIButton()
 		button.setTitle(StringResource.buttonTitle.value, for: .normal)
 		
@@ -111,7 +116,7 @@ public final class InputParticipateCodeViewController: UIViewController, InputPa
 			}
 				.grow(1)
 			
-			flex.addItem(completeButton).height(56)
+			flex.addItem(joinMOITButton).height(56)
 		}
 	}
 	
@@ -142,8 +147,16 @@ public final class InputParticipateCodeViewController: UIViewController, InputPa
 			.map { $0.isEmpty }
 			.subscribe(
 				onNext: { [weak self] isEmpty in
-					self?.completeButton.isEnabled = !isEmpty
-					self?.completeButton.backgroundColor = isEmpty ? CTAButtonResource.disabled.backgroundColor : CTAButtonResource.normal.backgroundColor
+					self?.joinMOITButton.isEnabled = !isEmpty
+					self?.joinMOITButton.backgroundColor = isEmpty ? CTAButtonResource.disabled.backgroundColor : CTAButtonResource.normal.backgroundColor
+				}
+			)
+			.disposed(by: disposeBag)
+		
+		joinMOITButton.rx.tap
+			.subscribe(
+				onNext: { [weak self] _ in
+					self?.listener?.joinMOITButtonDidTap(code: "")
 				}
 			)
 			.disposed(by: disposeBag)
@@ -155,8 +168,8 @@ public final class InputParticipateCodeViewController: UIViewController, InputPa
 		if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 			let keyboardHeight = keyboardFrame.cgRectValue.height - UIDevice.safeAreaBottomPadding
 
-			completeButton.flex.marginBottom(keyboardHeight)
-			completeButton.flex.markDirty()
+			joinMOITButton.flex.marginBottom(keyboardHeight)
+			joinMOITButton.flex.markDirty()
 			view.setNeedsLayout()
 		}
 	}

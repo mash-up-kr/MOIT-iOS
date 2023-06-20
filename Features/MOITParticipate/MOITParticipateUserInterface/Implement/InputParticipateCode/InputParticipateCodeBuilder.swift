@@ -8,33 +8,34 @@
 
 import RIBs
 
-protocol InputParticipateCodeDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
+import MOITParticipateUserInterface
 
-final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency> {
+public protocol InputParticipateCodeDependency: Dependency { }
 
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
+										   ParticipationSuccessDependency {
 }
 
 // MARK: - Builder
 
-protocol InputParticipateCodeBuildable: Buildable {
-    func build(withListener listener: InputParticipateCodeListener) -> InputParticipateCodeRouting
-}
+public final class InputParticipateCodeBuilder: Builder<InputParticipateCodeDependency>, InputParticipateCodeBuildable {
 
-final class InputParticipateCodeBuilder: Builder<InputParticipateCodeDependency>, InputParticipateCodeBuildable {
-
-    override init(dependency: InputParticipateCodeDependency) {
+    override public init(dependency: InputParticipateCodeDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: InputParticipateCodeListener) -> InputParticipateCodeRouting {
+    public func build(withListener listener: InputParticipateCodeListener) -> ViewableRouting {
         let component = InputParticipateCodeComponent(dependency: dependency)
         let viewController = InputParticipateCodeViewController()
         let interactor = InputParticipateCodeInteractor(presenter: viewController)
         interactor.listener = listener
-        return InputParticipateCodeRouter(interactor: interactor, viewController: viewController)
+		
+		let participationSuccessBuildable = ParticipationSuccessBuilder(dependency: component)
+		
+		return InputParticipateCodeRouter(
+			interactor: interactor,
+			viewController: viewController,
+			participationSuccessBuildable: participationSuccessBuildable
+		)
     }
 }
