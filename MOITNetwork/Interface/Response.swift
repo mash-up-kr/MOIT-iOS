@@ -15,6 +15,6 @@ public struct MOITErrorResponse: Decodable {
 
 public struct MOITResponse<R>: Decodable where R: Decodable {
 	public let success: Bool
-	public let data: R
-	public let error: MOITErrorResponse
+	public let data: R?
+	public let error: MOITErrorResponse?
 }
