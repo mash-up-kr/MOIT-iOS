@@ -22,6 +22,7 @@ fileprivate enum DesignSystemType: String,
     case bottomSheet
     case alarmView
     case profile
+	case studyInfoCard
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -85,8 +86,10 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(StudyPreviewDemoViewController(), animated: true)
         case .profile:
             self.navigationController?.pushViewController(ProfileDemoViewController(), animated: true)
-    		case .list:
-		      	self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
+		case .list:
+			self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
+		case .studyInfoCard:
+			self.navigationController?.pushViewController(StudyInfoCardDemoViewController(), animated: true)
         default: return
         }
     }
