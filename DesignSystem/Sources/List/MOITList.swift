@@ -222,7 +222,7 @@ extension UILabel {
 	}
 }
 
-struct Formatter {
+enum Formatter {
 	static let fineFormatter: NumberFormatter = {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal
