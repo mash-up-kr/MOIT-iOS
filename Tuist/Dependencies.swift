@@ -29,8 +29,7 @@ let spm = SwiftPackageManagerDependencies(
         .remote(url: "https://github.com/Quick/Quick", requirement: .upToNextMajor(from: "5.0.0")),
         .remote(url: "https://github.com/Juanpe/SkeletonView", requirement: .upToNextMajor(from: "1.30.0")),
 		.remote(url: "https://github.com/kakao/kakao-ios-sdk-rx", requirement: .branch("master")),
-		.remote(url: "https://github.com/kakao/kakao-ios-sdk-rx", requirement: .branch("master")),
-		.remote(url: "https://github.com/kakao/kakao-ios-sdk-rx", requirement: .branch("master"))
+		.remote(url: "https://github.com/kakao/kakao-ios-sdk", requirement: .branch("master"))
     ],
     productTypes: [
         "RIBs": .framework,
@@ -45,7 +44,10 @@ let spm = SwiftPackageManagerDependencies(
         "SkeletonView": .framework,
 		"RxKakaoSDKCommon": .framework,
 		"RxKakaoSDKAuth": .framework,
-		"RxKakaoSDKUser": .framework
+		"RxKakaoSDKUser": .framework,
+		"KakaoSDKCommon": .framework,
+		"KakaoSDKAuth": .framework,
+		"KakaoSDKUser": .framework
     ]
 )
 

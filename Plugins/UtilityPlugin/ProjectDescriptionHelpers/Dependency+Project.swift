@@ -103,6 +103,9 @@ public extension TargetDependency.ThirdParty {
 	static let RxKakaoSDKCommon = TargetDependency.external(name: "RxKakaoSDKCommon")
 	static let RxKakaoSDKAuth = TargetDependency.external(name: "RxKakaoSDKAuth")
 	static let RxKakaoSDKUser = TargetDependency.external(name: "RxKakaoSDKUser")
+	static let KakaoSDKCommon = TargetDependency.external(name: "KakaoSDKCommon")
+	static let KakaoSDKAuth = TargetDependency.external(name: "KakaoSDKAuth")
+	static let KakaoSDKUser = TargetDependency.external(name: "KakaoSDKUser")
 }
 
 public extension TargetDependency.ThirdParty {
