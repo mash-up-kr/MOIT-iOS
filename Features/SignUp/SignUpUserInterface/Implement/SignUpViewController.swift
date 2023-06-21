@@ -103,7 +103,6 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     }
     
     deinit {
-        disposebag = DisposeBag()
         debugPrint("\(self) deinit")
     }
     
@@ -134,26 +133,30 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     
     public override func bind() {
         profileView.rx.tap
-            .subscribe(onNext: {
-                print("profileTapped")
+            .withUnretained(self)
+            .bind(onNext: { owner, _ in
+                owner.listener?.didTapProfileView()
             })
             .disposed(by: disposebag)
         
         nameTextField.rx.text
-            .subscribe(onNext: { name in
-                print(name)
+            .withUnretained(self)
+            .bind(onNext: { owner, name in
+                owner.listener?.didTypeName(name: name)
             })
             .disposed(by: disposebag)
         
         inviteCodeTextField.rx.text
-            .subscribe(onNext: { inviteCode in
-                print(inviteCode)
+            .withUnretained(self)
+            .bind(onNext: { owner, inviteCode in
+                owner.listener?.didTypeInviteCode(inviteCode: inviteCode)
             })
             .disposed(by: disposebag)
         
         nextButton.rx.tap
-            .subscribe(onNext: {
-                print("nextButtonTapped")
+            .withUnretained(self)
+            .bind(onNext: { owner, _ in
+                owner.listener?.didTapNextButton()
             })
             .disposed(by: disposebag)
     }

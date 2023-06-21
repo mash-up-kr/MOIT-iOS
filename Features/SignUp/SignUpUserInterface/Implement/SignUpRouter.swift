@@ -21,8 +21,6 @@ protocol SignUpViewControllable: ViewControllable {
 
 final class SignUpRouter: ViewableRouter<SignUpInteractable, SignUpViewControllable>, SignUpRouting {
     
-    // MARK: - UI
-    
     // MARK: - Properties
     
     // MARK: - Initializers

@@ -43,6 +43,7 @@ final class SignUpInteractor: PresentableInteractor<SignUpPresentable>, SignUpIn
     private let nickName = PublishRelay<String>()
     private let inviteCode = PublishRelay<String>()
     private let nextButtonTapped = PublishRelay<Void>()
+    private let profileViewTapped = PublishRelay<Void>()
     
     // MARK: - Initializers
     public init(
@@ -72,25 +73,37 @@ final class SignUpInteractor: PresentableInteractor<SignUpPresentable>, SignUpIn
         // nextButtonTapped가 발동 시 nickname과 inviteCode 스트림을 합쳐서 postJoinInfoUseCase에 전달
         nextButtonTapped
             .withLatestFrom(Observable.combineLatest(nickName, inviteCode))
-            .flatMap { [weak self] nickName, inviteCode -> Single<Int> in
-                guard let self = self else { return }
-                // id 반환
-                print("nickname: \(nickName)")
-                print("inviteCode: \(inviteCode)")
-                // TODO: - 받은 내 ID 저장
-                return self.dependency.postJoinInfoUseCase.execute(name: nickName, inviteCode: inviteCode)
+            .distinctUntilChanged({ old, new in
+                return old.0 == new.0 && old.1 == new.1
+            })
+            .flatMap { [weak self] nickName, inviteCode -> Observable<Int> in
+                guard let self = self else { return .empty() }
+                return self.dependency.postJoinInfoUseCase.execute(
+                    name: nickName,
+                    inviteCode: inviteCode
+                )
+                .asObservable()
             }
-            .subscribe(onNext: {})
-//            .subscribe(onNext: { [weak self] nickName, inviteCode in
-//                guard let self = self else { return }
-//                // id 반환
-//                print("nickname: \(nickName)")
-//                print("inviteCode: \(inviteCode)")
-//                // TODO: - 받은 내 ID 저장
-//                self.dependency.postJoinInfoUseCase.execute(name: nickName, inviteCode: inviteCode)
-//            })
+        // 성공하면 화면 moitlist로, 실패하면 처리 따로
+            .subscribe(
+                onNext: { [weak self] code in
+                    // 코드 저장
+                    
+                    // 뷰 옮기기
+                    self?.router?.attachMOITList()
+                },
+                onError: { error in
+                    // 토스트?!
+                    print(error)
+                })
             .disposeOnDeactivate(interactor: self)
-            
+        
+        profileViewTapped
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.router?.attachProfileSelect()
+            })
+            .disposeOnDeactivate(interactor: self)
     }
 }
 
@@ -106,7 +119,7 @@ extension SignUpInteractor: SignUpPresentableListener {
     }
     
     func didTapProfileView() {
-        router?.attachProfileSelect()
+        profileViewTapped.accept(())
     }
     
     func didTypeName(name: String) {
