@@ -16,4 +16,9 @@ let project = Project(name: "Core",
                             dependencies: [
                             ]
                         ),
+						Project.makeTarget(
+							name: "MOITFoundation",
+							dependencies: [
+							]
+						),
                       ])

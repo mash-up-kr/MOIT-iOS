@@ -52,6 +52,7 @@ public extension TargetDependency.Core {
     }
     
     static let CSLogger = project(name: "CSLogger", isInterface: true)
+	static let MOITFoundation = project(name: "MOITFoundation", isInterface: true)
 }
 
 // MARK: - Features/Home
