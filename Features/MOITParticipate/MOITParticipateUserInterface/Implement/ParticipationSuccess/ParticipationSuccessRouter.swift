@@ -13,13 +13,10 @@ protocol ParticipationSuccessInteractable: Interactable {
     var listener: ParticipationSuccessListener? { get set }
 }
 
-protocol ParticipationSuccessViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
-}
+protocol ParticipationSuccessViewControllable: ViewControllable { }
 
 final class ParticipationSuccessRouter: ViewableRouter<ParticipationSuccessInteractable, ParticipationSuccessViewControllable>, ParticipationSuccessRouting {
 
-    // TODO: Constructor inject child builder protocols to allow building children.
     override init(interactor: ParticipationSuccessInteractable, viewController: ParticipationSuccessViewControllable) {
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
