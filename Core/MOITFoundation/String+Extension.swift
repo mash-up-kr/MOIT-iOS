@@ -20,8 +20,8 @@ extension String {
 		paragraphStyle.lineSpacing = lineSpacing
 		paragraphStyle.alignment = alignment
 		
-		let attributes: [NSAttributedString.Key : Any] = [
-			.paragraphStyle : paragraphStyle,
+		let attributes: [NSAttributedString.Key: Any] = [
+			.paragraphStyle: paragraphStyle,
 			.font: font,
 			.foregroundColor: textColor
 		]

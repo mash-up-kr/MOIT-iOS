@@ -9,6 +9,8 @@
 import RIBs
 import RxSwift
 
+import MOITParticipateUserInterface
+
 protocol ParticipationSuccessRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
@@ -16,10 +18,6 @@ protocol ParticipationSuccessRouting: ViewableRouting {
 protocol ParticipationSuccessPresentable: Presentable {
     var listener: ParticipationSuccessPresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
-
-protocol ParticipationSuccessListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
 final class ParticipationSuccessInteractor: PresentableInteractor<ParticipationSuccessPresentable>, ParticipationSuccessInteractable, ParticipationSuccessPresentableListener {

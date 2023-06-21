@@ -8,6 +8,8 @@
 
 import RIBs
 
+import MOITParticipateUserInterface
+
 protocol ParticipationSuccessInteractable: Interactable {
     var router: ParticipationSuccessRouting? { get set }
     var listener: ParticipationSuccessListener? { get set }

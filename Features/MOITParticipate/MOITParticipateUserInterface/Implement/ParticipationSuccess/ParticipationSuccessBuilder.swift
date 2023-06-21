@@ -8,21 +8,13 @@
 
 import RIBs
 
-protocol ParticipationSuccessDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
+import MOITParticipateUserInterface
 
-final class ParticipationSuccessComponent: Component<ParticipationSuccessDependency> {
+protocol ParticipationSuccessDependency: Dependency { }
 
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-}
+final class ParticipationSuccessComponent: Component<ParticipationSuccessDependency> { }
 
 // MARK: - Builder
-
-protocol ParticipationSuccessBuildable: Buildable {
-    func build(withListener listener: ParticipationSuccessListener) -> ParticipationSuccessRouting
-}
 
 final class ParticipationSuccessBuilder: Builder<ParticipationSuccessDependency>, ParticipationSuccessBuildable {
 
@@ -30,7 +22,7 @@ final class ParticipationSuccessBuilder: Builder<ParticipationSuccessDependency>
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: ParticipationSuccessListener) -> ParticipationSuccessRouting {
+    func build(withListener listener: ParticipationSuccessListener) -> ViewableRouting {
         let component = ParticipationSuccessComponent(dependency: dependency)
         let viewController = ParticipationSuccessViewController()
         let interactor = ParticipationSuccessInteractor(presenter: viewController)
