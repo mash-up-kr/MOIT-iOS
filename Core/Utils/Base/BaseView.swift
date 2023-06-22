@@ -13,11 +13,14 @@ import PinLayout
 
 open class BaseView: UIView {
     
+    // MARK: - UI
+    public let flexRootView = UIView()
+    
     // MARK: - Properties
-    var disposeBag = DisposeBag()
+    public var disposebag = DisposeBag()
     
     // MARK: - Methods
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = .white
@@ -27,10 +30,17 @@ open class BaseView: UIView {
         bind()
     }
     
-    func configureHierarchy() {}
-    func configureConstraints() {}
-    func configureAttributes() {}
-    func bind() {}
+    open func configureHierarchy() {
+        self.addSubview(flexRootView)
+    }
+    open func configureConstraints() {}
+    open func configureAttributes() {}
+    open func bind() {}
+    
+    open override func layoutSubviews() {
+        flexRootView.pin.all()
+        flexRootView.flex.layout(mode: .adjustHeight)
+    }
     
     @available(*, unavailable)
     required public init?(coder: NSCoder) {

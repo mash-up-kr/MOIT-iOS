@@ -20,7 +20,7 @@ open class BaseViewController: UIViewController {
     public let flexRootView = UIView()
     public lazy var navigationBar = MOITNavigationBar()
     
-    // MARK: -Properties
+    // MARK: - Properties
     public var disposebag = DisposeBag()
     
     private var indicator: UIActivityIndicatorView?
@@ -111,7 +111,6 @@ open class BaseViewController: UIViewController {
         self.scrollView.pin.top(self.view.pin.safeArea.top + 56).left().right().bottom() // How to solve it other than absolute value..?
         // scrollview에 딱 맞게 flexRootView를 pinlayout으로 설정
         self.flexRootView.pin.all()
-//        flexRootView.backgroundColor = .red
         self.flexRootView.flex.layout()
         self.flexRootView.flex.markDirty()
     }
