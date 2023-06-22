@@ -27,7 +27,7 @@ public final class MOITProfileView: UIView {
     }()
     
     // MARK: - Properties
-    private var profileImageType: ProfileImageType?
+    public private(set) var profileImageType: ProfileImageType?
     private let profileType: ProfileType
     fileprivate let containAddButton: Bool
     
