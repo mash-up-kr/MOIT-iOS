@@ -10,19 +10,19 @@ import RIBs
 
 import FineUserInterface
 
-protocol FineListDependency: Dependency { }
+public protocol FineListDependency: Dependency { }
 
 final class FineListComponent: Component<FineListDependency> { }
 
 // MARK: - Builder
 
-final class FineListBuilder: Builder<FineListDependency>, FineListBuildable {
+public final class FineListBuilder: Builder<FineListDependency>, FineListBuildable {
 
-    override init(dependency: FineListDependency) {
+    override public init(dependency: FineListDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: FineListListener) -> ViewableRouting {
+	public func build(withListener listener: FineListListener) -> ViewableRouting {
         let component = FineListComponent(dependency: dependency)
         let viewController = FineListViewController()
         let interactor = FineListInteractor(presenter: viewController)
