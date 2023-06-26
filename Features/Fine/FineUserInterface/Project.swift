@@ -15,8 +15,16 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     platform: .iOS,
     iOSTargetVersion: "15.0.0",
     interfaceDependencies: [
+		.ThirdParty.RIBs
     ],
     implementDependencies: [
+		.ThirdParty.RIBs,
+		.ThirdParty.FlexLayout,
+		.ThirdParty.PinLayout,
+		.ThirdParty.RxCocoa,
+		.ThirdParty.RxSwift,
+		.DesignSystem,
+		.ResourceKit
     ],
     isUserInterface: true
 )
