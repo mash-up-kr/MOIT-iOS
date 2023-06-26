@@ -58,7 +58,7 @@ public enum MOITChipType {
 		switch self {
 		case .attend, .absent, .late:
 			return ResourceKitAsset.Color.white.color
-		case .dueDate(_), .finish:
+		case .dueDate, .finish:
 			return ResourceKitAsset.Color.gray900.color
 		}
 	}
