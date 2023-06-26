@@ -19,4 +19,15 @@ extension ResourceKitFontFamily {
     public static let p2 = Pretendard.medium.font(size: 14)
     public static let p3 = Pretendard.regular.font(size: 14)
     public static let caption = Pretendard.medium.font(size: 12)
+	
+	public static func lineHeight(of font: ResourceKitFontConvertible.Font) -> CGFloat {
+		if font == h1 { return 50 }
+		else if [h2, h4].contains(where: { $0 == font }) { return 32 }
+		else if font == h3 { return 36 }
+		else if font == h5 { return 27}
+		else if [h6, p1].contains(where: { $0 == font }) { return 23 }
+		else if [p2, p3].contains(where: { $0 == font }) { return 22 }
+		else if font == caption { return 18 }
+		else { return 0 }
+	}
 }
