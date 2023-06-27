@@ -51,6 +51,7 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		pages: [StringResource.defaulter.value, StringResource.paymentList.value]
 	)
 	
+	private let fineListScrollView = FineListScrollView()
 	
 // MARK: - property
 	
@@ -92,6 +93,7 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 					}
 					
 					flex.addItem(segmentPager).marginTop(20)
+					flex.addItem(fineListScrollView).marginTop(20).grow(1)
 				}
 		}
 	}
