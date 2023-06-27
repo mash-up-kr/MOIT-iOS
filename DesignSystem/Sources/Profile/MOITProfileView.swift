@@ -80,6 +80,7 @@ public final class MOITProfileView: UIView {
     // MARK: - Functions
     
     public func configureImage(with profileImageType: ProfileImageType) {
+        self.profileImageType = profileImageType
         profileImageView.image = profileImageType.image
     }
     
@@ -96,9 +97,6 @@ public final class MOITProfileView: UIView {
 public extension Reactive where Base: MOITProfileView {
     
     var tap: Observable<Void> {
-        if base.containAddButton {
-            return base.rx.tapGesture().when(.recognized).map { _ in }
-        }
-        return .empty()
+        base.rx.tapGesture().when(.recognized).map { _ in }
     }
 }
