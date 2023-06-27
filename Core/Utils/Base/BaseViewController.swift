@@ -78,7 +78,7 @@ open class BaseViewController: UIViewController {
     open func configureAttributes() {
         hideKeyboardWhenTapped()
     }
-    /// Function to bind. (I don't know if it's necessary because it's ribs)
+    /// Function to bind.
     open func bind() {}
     
     /// navigationBar 사용하면 flexRootView에 추가해주는 함수
