@@ -9,5 +9,5 @@
 import RIBs
 
 public protocol ProfileSelectBuildable: Buildable {
-    func build(withListener listener: ProfileSelectListener) -> ViewableRouting
+    func build(withListener listener: ProfileSelectListener, currentImageIndex: Int?) -> ViewableRouting
 }
