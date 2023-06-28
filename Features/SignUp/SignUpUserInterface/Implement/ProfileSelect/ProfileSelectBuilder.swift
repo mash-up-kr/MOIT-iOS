@@ -16,16 +16,16 @@ final class ProfileSelectComponent: Component<ProfileSelectDependency> {
 
 // MARK: - Builder
 
-final class ProfileSelectBuilder: Builder<ProfileSelectDependency>, ProfileSelectBuildable {
+public final class ProfileSelectBuilder: Builder<ProfileSelectDependency>, ProfileSelectBuildable {
 
-    override init(dependency: ProfileSelectDependency) {
+    public override init(dependency: ProfileSelectDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: ProfileSelectListener) -> ViewableRouting {
+    public func build(withListener listener: ProfileSelectListener, currentImageIndex: Int?) -> ViewableRouting {
         let component = ProfileSelectComponent(dependency: dependency)
-        let viewController = ProfileSelectViewController()
-        let interactor = ProfileSelectInteractor(presenter: viewController)
+        let viewController = ProfileSelectViewContoller()
+        let interactor = ProfileSelectInteractor(presenter: viewController, currentImageIndex: currentImageIndex)
         interactor.listener = listener
         return ProfileSelectRouter(interactor: interactor, viewController: viewController)
     }
