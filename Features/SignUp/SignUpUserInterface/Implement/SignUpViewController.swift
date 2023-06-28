@@ -46,7 +46,6 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     }()
     
     private let profileView: MOITProfileView = {
-        // TODO: - url 아니라 int형으로 이미지 에셋 받으면 설정
         // 랜덤으로 띄워주기로 했었나..
         let profileView = MOITProfileView(
             profileImageType: .one,
@@ -94,7 +93,6 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // TODO: - 꼭 여기에 들어가야 할까?
         configureNavigationBar(
             leftItems: [.back],
             title: "",
@@ -165,6 +163,8 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
 extension SignUpViewController: SignUpPresentable {
     
     func updateProfileIndex(index: Int) {
-        // 뷰 업데이트
+        guard let imageType = ProfileImageType(rawValue: index) else { return }
+//        print("updated index: \(imageType)")
+        self.profileView.configureImage(with: imageType)
     }
 }
