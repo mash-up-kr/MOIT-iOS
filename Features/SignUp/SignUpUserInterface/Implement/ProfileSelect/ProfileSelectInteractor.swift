@@ -11,12 +11,13 @@ import RIBs
 import RxSwift
 
 protocol ProfileSelectRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    
 }
 
 protocol ProfileSelectPresentable: Presentable {
     var listener: ProfileSelectPresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
+    
+    func updateProfileIndex(index: Int?)
 }
 
 final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresentable>, ProfileSelectInteractable, ProfileSelectPresentableListener {
@@ -24,11 +25,14 @@ final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresenta
     weak var router: ProfileSelectRouting?
     weak var listener: ProfileSelectListener?
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init(presenter: ProfileSelectPresentable) {
+    init(presenter: ProfileSelectPresentable, currentImageIndex: Int?) {
         super.init(presenter: presenter)
         presenter.listener = self
+        presenter.updateProfileIndex(index: currentImageIndex)
+    }
+
+    deinit {
+        debugPrint("\(self) deinit")
     }
 
     override func didBecomeActive() {
@@ -38,6 +42,19 @@ final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresenta
 
     override func willResignActive() {
         super.willResignActive()
+        print(#function, "resign active")
         // TODO: Pause any business logic.
+    }
+}
+
+extension ProfileSelectInteractor {
+    
+    func didTapSelectButton(with profileTypeIdx: Int) {
+        print(#function)
+        listener?.profileSelectDidFinish(imageTypeIdx: profileTypeIdx)
+    }
+    
+    func didTapDimmedView() {
+        listener?.profileSelectDidClose()
     }
 }
