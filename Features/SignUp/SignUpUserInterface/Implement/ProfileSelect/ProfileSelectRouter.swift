@@ -16,12 +16,11 @@ protocol ProfileSelectInteractable: Interactable {
 }
 
 protocol ProfileSelectViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
+
 }
 
 final class ProfileSelectRouter: ViewableRouter<ProfileSelectInteractable, ProfileSelectViewControllable>, ProfileSelectRouting {
 
-    // TODO: Constructor inject child builder protocols to allow building children.
     override init(interactor: ProfileSelectInteractable, viewController: ProfileSelectViewControllable) {
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self

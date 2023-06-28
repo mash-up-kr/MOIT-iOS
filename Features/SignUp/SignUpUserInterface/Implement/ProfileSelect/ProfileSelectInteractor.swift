@@ -37,13 +37,11 @@ final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresenta
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        // TODO: Implement business logic here.
     }
 
     override func willResignActive() {
         super.willResignActive()
         print(#function, "resign active")
-        // TODO: Pause any business logic.
     }
 }
 
