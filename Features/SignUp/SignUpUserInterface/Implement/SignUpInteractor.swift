@@ -89,6 +89,7 @@ final class SignUpInteractor: PresentableInteractor<SignUpPresentable>,
                 guard let self = self else { return .empty() }
                 print("profileImageIndex, nickName, inviteCode: ", profileImageIndex, nickName, inviteCode)
                 return self.dependency.postJoinInfoUseCase.execute(
+                    imageIndex: profileImageIndex,
                     name: nickName,
                     inviteCode: inviteCode
                 )
