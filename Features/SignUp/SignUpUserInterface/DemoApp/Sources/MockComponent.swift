@@ -18,8 +18,9 @@ import SignUpDataImpl
 import RIBs
 import RxSwift
 
-final class MOCKSignUpComponent: Component<EmptyDependency>, SignUpDependency {
-    
+final class MOCKSignUpComponent: Component<EmptyDependency>,
+                                 SignUpDependency,
+                                 ProfileSelectDependency {
     
     init() {
         super.init(dependency: EmptyComponent())
@@ -27,12 +28,15 @@ final class MOCKSignUpComponent: Component<EmptyDependency>, SignUpDependency {
     
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
     
-    var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: JoinRepositoryMock())
+    var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
+    lazy var profileSelectBuildable: ProfileSelectBuildable = {
+        return ProfileSelectBuilder(dependency: self)
+    }()
 }
 
-final class JoinRepositoryMock: JoinRepository {
+final class MockJoinRepository: JoinRepository {
     
-    func post(name: String, inviteCode: String?) -> Single<Int> {
+    func post(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int> {
         Single.just(3)
     }
 }
