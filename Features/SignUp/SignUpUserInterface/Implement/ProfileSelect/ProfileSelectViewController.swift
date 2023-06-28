@@ -2,97 +2,87 @@
 //  ProfileSelectViewController.swift
 //  SignUpUserInterfaceImpl
 //
-//  Created by 김찬수 on 2023/06/21.
+//  Created by 김찬수 on 2023/06/22.
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
 import UIKit
 
-import SignUpUserInterface
-import Utils
-import ResourceKit
 import DesignSystem
 
-import RIBs
-import RxSwift
 import FlexLayout
 import PinLayout
+import RxSwift
+import RIBs
 
 public protocol ProfileSelectPresentableListener: AnyObject {
-    // TODO: Declare properties and methods that the view controller can invoke to perform
-    // business logic, such as signIn(). This protocol is implemented by the corresponding
-    // interactor class.
+    
+    func didTapSelectButton(with: Int)
+    func didTapDimmedView()
 }
 
-public final class ProfileSelectViewController: BaseViewController, ProfileSelectPresentable, ProfileSelectViewControllable {
+public final class ProfileSelectViewContoller: BottomSheetViewController,
+                                               ProfileSelectPresentable,
+                                               ProfileSelectViewControllable {
 
     // MARK: - UI
-    private let titleLabel: UILabel = {
-       let label = UILabel()
-        label.font = ResourceKitFontFamily.h5
-        label.textColor = ResourceKitAsset.Color.gray900.color
-        label.text = "프로필 이미지 선택하기"
-        return label
-    }()
-    
-    private let currentProfileImage = MOITProfileView(profileType: .large)
-    
-    private var profileImageList: [MOITProfileView] = []
-    
-    private let selectButton = MOITButton(
-        type: .large,
-        title: "선택하기",
-        titleColor: ResourceKitAsset.Color.white.color,
-        backgroundColor: ResourceKitAsset.Color.blue800.color
-    )
+    public let profileView = ProfileSelectView()
     
     // MARK: - Properties
     weak var listener: ProfileSelectPresentableListener?
     
+    private var disposebag = DisposeBag()
+    
     // MARK: - Initializers
-    public override init() {
-        super.init()
+    public init() {
+        super.init(contentView: profileView)
+        bind()
     }
+    
+    @available (*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
     // MARK: - Lifecycle
     
-    
     // MARK: - Functions
-    public override func configureAttributes() {
-        let profileRange = 0...10
-        self.profileImageList = profileRange
-            .compactMap { ProfileImageType(rawValue: $0) }
-            .map {
-                return MOITProfileView(
-                    profileImageType: $0,
-                    profileType: .medium
-                )
-            }
+    
+    private func bind() {
+        profileView.rx.imageTapped
+            .withUnretained(self)
+            .subscribe(onNext: { owner, idx in
+                print("profileTap: \(idx)")
+                guard let profileImageType = ProfileImageType(rawValue: idx) else { return }
+                owner.profileView.currentProfileImage.configureImage(with: profileImageType)
+            })
+            .disposed(by: disposebag)
+                
+        profileView.rx.selectButtonTapped
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                print("selectButton")
+                print(owner.profileView.currentProfileImage.profileImageType)
+                guard let imageType = owner.profileView.currentProfileImage.profileImageType else { return }
+                owner.listener?.didTapSelectButton(with: imageType.rawValue)
+            })
+            .disposed(by: disposebag)
+        
+        self.rx.didTapDimmedView
+            .subscribe(onNext: { [weak self] _ in
+
+                self?.listener?.didTapDimmedView()
+            })
+            .disposed(by: disposebag)
     }
     
-    public override func configureConstraints() {
-        flexRootView.flex
-            .alignItems(.center)
-            .define { flex in
-                flex.addItem(titleLabel)
-                    .alignSelf(.start)
-                    .marginBottom(20)
-                
-                flex.addItem(currentProfileImage)
-                    .marginBottom(20)
-                
-                flex.addItem()
-                    .alignContent(.spaceBetween)
-                    .direction(.row)
-                    .wrap(.wrap)
-                    .define({ flex in
-                        self.profileImageList.forEach { flex.addItem($0).marginRight(10) }
-                    })
-                    .marginBottom(20)
-                    
-                flex.addItem(selectButton)
-                    .marginBottom(36)
-                
-                
-            }
+    func updateProfileIndex(index: Int?) {
+        guard let index = index,
+              let imageType = ProfileImageType(rawValue: index) else { return }
+        profileView.configureProfileImage(with: imageType)
     }
 }
