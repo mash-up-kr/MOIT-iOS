@@ -40,11 +40,9 @@ final class SignUpRouter: ViewableRouter<SignUpInteractable, SignUpViewControlla
     
     // MARK: - Functions
     func attachMOITList() {
-        print(#function)
     }
         
     func attachProfileSelect(currentImageIndex: Int?) {
-        print(#function)
         if profileSelectRouting != nil { return }
         
         let router = profileSelectBuildable.build(withListener: interactor, currentImageIndex: currentImageIndex)

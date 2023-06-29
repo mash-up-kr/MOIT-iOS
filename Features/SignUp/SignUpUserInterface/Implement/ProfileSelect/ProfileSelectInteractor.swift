@@ -41,14 +41,12 @@ final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresenta
 
     override func willResignActive() {
         super.willResignActive()
-        print(#function, "resign active")
     }
 }
 
 extension ProfileSelectInteractor {
     
     func didTapSelectButton(with profileTypeIdx: Int) {
-        print(#function)
         listener?.profileSelectDidFinish(imageTypeIdx: profileTypeIdx)
     }
     

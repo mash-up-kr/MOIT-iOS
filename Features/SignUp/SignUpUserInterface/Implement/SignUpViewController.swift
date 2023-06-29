@@ -164,7 +164,6 @@ extension SignUpViewController: SignUpPresentable {
     
     func updateProfileIndex(index: Int) {
         guard let imageType = ProfileImageType(rawValue: index) else { return }
-//        print("updated index: \(imageType)")
         self.profileView.configureImage(with: imageType)
     }
 }

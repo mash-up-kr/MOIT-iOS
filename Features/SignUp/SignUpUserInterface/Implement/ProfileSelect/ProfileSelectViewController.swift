@@ -56,7 +56,6 @@ public final class ProfileSelectViewContoller: BottomSheetViewController,
         profileView.rx.imageTapped
             .withUnretained(self)
             .subscribe(onNext: { owner, idx in
-                print("profileTap: \(idx)")
                 guard let profileImageType = ProfileImageType(rawValue: idx) else { return }
                 owner.profileView.currentProfileImage.configureImage(with: profileImageType)
             })
@@ -65,8 +64,6 @@ public final class ProfileSelectViewContoller: BottomSheetViewController,
         profileView.rx.selectButtonTapped
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                print("selectButton")
-                print(owner.profileView.currentProfileImage.profileImageType)
                 guard let imageType = owner.profileView.currentProfileImage.profileImageType else { return }
                 owner.listener?.didTapSelectButton(with: imageType.rawValue)
             })
