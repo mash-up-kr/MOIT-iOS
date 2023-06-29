@@ -40,5 +40,4 @@ public enum PagerType {
             return ResourceKitFontFamily.p2
         }
     }
-    
 }

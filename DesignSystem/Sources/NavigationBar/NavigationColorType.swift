@@ -31,5 +31,4 @@ public enum NavigationColorType {
             return ResourceKitAsset.Color.gray500.color
         }
     }
-    
 }
