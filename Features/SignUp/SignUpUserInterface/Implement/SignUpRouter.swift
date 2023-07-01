@@ -9,35 +9,60 @@
 import SignUpUserInterface
 
 import RIBs
+import Utils
 
-protocol SignUpInteractable: Interactable {
+protocol SignUpInteractable: Interactable, ProfileSelectListener {
+    
     var router: SignUpRouting? { get set }
     var listener: SignUpListener? { get set }
 }
 
 protocol SignUpViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
+    
 }
 
 final class SignUpRouter: ViewableRouter<SignUpInteractable, SignUpViewControllable>, SignUpRouting {
     
-    // MARK: - UI
-    
     // MARK: - Properties
+    private let profileSelectBuildable: ProfileSelectBuildable
+    private var profileSelectRouting: Routing?
     
     // MARK: - Initializers
-    // TODO: Constructor inject child builder protocols to allow building children.
-    override init(interactor: SignUpInteractable, viewController: SignUpViewControllable) {
+    public init(
+        interactor: SignUpInteractable,
+        viewController: SignUpViewControllable,
+        profileSelectBuildable: ProfileSelectBuildable
+    ) {
+        self.profileSelectBuildable = profileSelectBuildable
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
     
     // MARK: - Functions
     func attachMOITList() {
-        print(#function)
     }
-    
-    func attachProfileSelect() {
-        print(#function)
+        
+    func attachProfileSelect(currentImageIndex: Int?) {
+        if profileSelectRouting != nil { return }
+        
+        let router = profileSelectBuildable.build(withListener: interactor, currentImageIndex: currentImageIndex)
+
+        self.viewControllable.present(router.viewControllable, animated: true, completion: nil)
+        
+        self.profileSelectRouting = router
+        attachChild(router)
     }
+
+    func detachProfileSelect() {
+        guard let router = profileSelectRouting else {
+            print("profileSelectRouting is nil")
+            return
+        }
+        
+        viewControllable.dismiss(completion: nil)
+        self.profileSelectRouting = nil
+
+        detachChild(router)
+    }
+
 }

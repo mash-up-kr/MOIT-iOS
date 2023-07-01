@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol PostJoinInfoUseCase {
-    func execute(name: String, inviteCode: String?) -> Single<Int>
+    func execute(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int>
 }

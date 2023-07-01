@@ -20,7 +20,7 @@ open class BaseViewController: UIViewController {
     public let flexRootView = UIView()
     public lazy var navigationBar = MOITNavigationBar()
     
-    // MARK: -Properties
+    // MARK: - Properties
     public var disposebag = DisposeBag()
     
     private var indicator: UIActivityIndicatorView?
@@ -47,6 +47,11 @@ open class BaseViewController: UIViewController {
         bind()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -78,7 +83,7 @@ open class BaseViewController: UIViewController {
     open func configureAttributes() {
         hideKeyboardWhenTapped()
     }
-    /// Function to bind. (I don't know if it's necessary because it's ribs)
+    /// Function to bind.
     open func bind() {}
     
     /// navigationBar 사용하면 flexRootView에 추가해주는 함수
@@ -111,7 +116,6 @@ open class BaseViewController: UIViewController {
         self.scrollView.pin.top(self.view.pin.safeArea.top + 56).left().right().bottom() // How to solve it other than absolute value..?
         // scrollview에 딱 맞게 flexRootView를 pinlayout으로 설정
         self.flexRootView.pin.all()
-//        flexRootView.backgroundColor = .red
         self.flexRootView.flex.layout()
         self.flexRootView.flex.markDirty()
     }

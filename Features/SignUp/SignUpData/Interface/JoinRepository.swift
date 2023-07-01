@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol JoinRepository {
-    func post(name: String, inviteCode: String?) -> Single<Int>
+    func post(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int>
 }

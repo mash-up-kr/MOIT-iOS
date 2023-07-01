@@ -46,7 +46,6 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     }()
     
     private let profileView: MOITProfileView = {
-        // TODO: - url 아니라 int형으로 이미지 에셋 받으면 설정
         // 랜덤으로 띄워주기로 했었나..
         let profileView = MOITProfileView(
             profileImageType: .one,
@@ -94,7 +93,6 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // TODO: - 꼭 여기에 들어가야 할까?
         configureNavigationBar(
             leftItems: [.back],
             title: "",
@@ -103,7 +101,6 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     }
     
     deinit {
-        disposebag = DisposeBag()
         debugPrint("\(self) deinit")
     }
     
@@ -134,26 +131,30 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     
     public override func bind() {
         profileView.rx.tap
-            .subscribe(onNext: {
-                print("profileTapped")
+            .withUnretained(self)
+            .bind(onNext: { owner, _ in
+                owner.listener?.didTapProfileView()
             })
             .disposed(by: disposebag)
         
         nameTextField.rx.text
-            .subscribe(onNext: { name in
-                print(name)
+            .withUnretained(self)
+            .bind(onNext: { owner, name in
+                owner.listener?.didTypeName(name: name)
             })
             .disposed(by: disposebag)
         
         inviteCodeTextField.rx.text
-            .subscribe(onNext: { inviteCode in
-                print(inviteCode)
+            .withUnretained(self)
+            .bind(onNext: { owner, inviteCode in
+                owner.listener?.didTypeInviteCode(inviteCode: inviteCode)
             })
             .disposed(by: disposebag)
         
         nextButton.rx.tap
-            .subscribe(onNext: {
-                print("nextButtonTapped")
+            .withUnretained(self)
+            .bind(onNext: { owner, _ in
+                owner.listener?.didTapNextButton()
             })
             .disposed(by: disposebag)
     }
@@ -162,6 +163,7 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
 extension SignUpViewController: SignUpPresentable {
     
     func updateProfileIndex(index: Int) {
-        // 뷰 업데이트
+        guard let imageType = ProfileImageType(rawValue: index) else { return }
+        self.profileView.configureImage(with: imageType)
     }
 }

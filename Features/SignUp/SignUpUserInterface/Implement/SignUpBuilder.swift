@@ -16,21 +16,29 @@ public final class SignUpComponent: Component<SignUpDependency>, SignUpInteracto
     
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { dependency.fetchRandomNumberUseCase }
     var postJoinInfoUseCase: PostJoinInfoUseCase { dependency.postJoinInfoUseCase }
+    var profileSelectBuildable: ProfileSelectBuildable { dependency.profileSelectBuildable }
 }
 
 // MARK: - Builder
 
 public final class SignUpBuilder: Builder<SignUpDependency>, SignUpBuildable {
-
+    
     public override init(dependency: SignUpDependency) {
         super.init(dependency: dependency)
     }
-
+    
     public func build(withListener listener: SignUpListener) -> ViewableRouting {
         let component = SignUpComponent(dependency: dependency)
         let viewController = SignUpViewController()
-        let interactor = SignUpInteractor(presenter: viewController, dependency: component)
+        let interactor = SignUpInteractor(
+            presenter: viewController,
+            dependency: component
+        )
         interactor.listener = listener
-        return SignUpRouter(interactor: interactor, viewController: viewController)
+        return SignUpRouter(
+            interactor: interactor,
+            viewController: viewController,
+            profileSelectBuildable: dependency.profileSelectBuildable
+        )
     }
 }

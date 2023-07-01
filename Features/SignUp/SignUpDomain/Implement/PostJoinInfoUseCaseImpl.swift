@@ -25,7 +25,7 @@ public final class PostJoinInfoUseCaseImpl: PostJoinInfoUseCase {
     }
     
     // MARK: - Functions
-    public func execute(name: String, inviteCode: String?) -> Single<Int> {
-        return joinRepository.post(name: name, inviteCode: inviteCode)
+    public func execute(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int> {
+        return joinRepository.post(imageIndex: imageIndex, name: name, inviteCode: inviteCode)
     }
 }

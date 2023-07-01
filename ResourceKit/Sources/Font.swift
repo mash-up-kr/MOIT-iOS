@@ -6,7 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
+// TODO: extension 메서드 위치 이동 후 Foundation으로 변경 필요
+import UIKit
 
 extension ResourceKitFontFamily {
     public static let h1 = Pretendard.bold.font(size: 36)
@@ -19,4 +20,46 @@ extension ResourceKitFontFamily {
     public static let p2 = Pretendard.medium.font(size: 14)
     public static let p3 = Pretendard.regular.font(size: 14)
     public static let caption = Pretendard.medium.font(size: 12)
+	
+	public static func lineHeight(of font: ResourceKitFontConvertible.Font) -> CGFloat {
+		if font == h1 { return 50 }
+		else if [h2, h4].contains(where: { $0 == font }) { return 32 }
+		else if font == h3 { return 36 }
+		else if font == h5 { return 27}
+		else if [h6, p1].contains(where: { $0 == font }) { return 23 }
+		else if [p2, p3].contains(where: { $0 == font }) { return 22 }
+		else if font == caption { return 18 }
+		else { return 0 }
+	}
 }
+
+// TODO: 추후 Utils로 위치 이동 필요
+public extension UILabel {
+	func setTextWithParagraphStyle(
+		text: String,
+		alignment: NSTextAlignment = .left,
+		font: ResourceKitFontConvertible.Font,
+		textColor: UIColor
+	) {
+		let paragraphStyle = NSMutableParagraphStyle()
+		paragraphStyle.alignment = alignment
+		
+		let fontHeight = ResourceKitFontFamily.lineHeight(of: font)
+		paragraphStyle.maximumLineHeight = fontHeight
+		paragraphStyle.minimumLineHeight = fontHeight
+		
+		let attributes: [NSAttributedString.Key : Any] = [
+			.paragraphStyle : paragraphStyle,
+			.font: font,
+			.foregroundColor: textColor,
+			.baselineOffset: (fontHeight - font.lineHeight) / 4
+		]
+		
+		debugPrint(font.lineHeight)
+		
+		let attrString = NSAttributedString(string: text,
+											attributes: attributes)
+		self.attributedText = attrString
+	}
+}
+
