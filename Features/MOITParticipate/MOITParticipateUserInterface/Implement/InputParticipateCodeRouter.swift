@@ -15,13 +15,10 @@ protocol InputParticipateCodeInteractable: Interactable {
     var listener: InputParticipateCodeListener? { get set }
 }
 
-protocol InputParticipateCodeViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
-}
+protocol InputParticipateCodeViewControllable: ViewControllable { }
 
 final class InputParticipateCodeRouter: ViewableRouter<InputParticipateCodeInteractable, InputParticipateCodeViewControllable>, InputParticipateCodeRouting {
 
-    // TODO: Constructor inject child builder protocols to allow building children.
     override init(interactor: InputParticipateCodeInteractable, viewController: InputParticipateCodeViewControllable) {
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
