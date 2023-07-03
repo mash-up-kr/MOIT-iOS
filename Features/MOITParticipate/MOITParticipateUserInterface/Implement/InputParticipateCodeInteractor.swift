@@ -9,6 +9,8 @@
 import RIBs
 import RxSwift
 
+import MOITParticipateUserInterface
+
 protocol InputParticipateCodeRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
@@ -16,10 +18,6 @@ protocol InputParticipateCodeRouting: ViewableRouting {
 protocol InputParticipateCodePresentable: Presentable {
     var listener: InputParticipateCodePresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
-
-protocol InputParticipateCodeListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
 final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipateCodePresentable>, InputParticipateCodeInteractable, InputParticipateCodePresentableListener {
