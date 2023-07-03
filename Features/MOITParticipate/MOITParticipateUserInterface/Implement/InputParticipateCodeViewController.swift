@@ -42,8 +42,10 @@ public final class InputParticipateCodeViewController: UIViewController, InputPa
 		return label
 	}()
 	
-	// TODO: TextField title 옵셔널로 수정 필요
-	private let codeTextField = MOITTextField(title: "", placeHolder: StringResource.placeHolder.value)
+	private let codeTextField = MOITTextField(
+		title: nil,
+		placeHolder: StringResource.placeHolder.value
+	)
 	
 	private let completeButton: UIButton = {
 		let button = UIButton()
@@ -116,8 +118,7 @@ public final class InputParticipateCodeViewController: UIViewController, InputPa
 	}
 	
 	private func activateFirstResponder() {
-		// ???: 이것보다 좋은 방법이 없을까...?
-		codeTextField.textField.becomeFirstResponder()
+		codeTextField.textFieldBecomeFirstResponse()
 	}
 	
 	private func addKeyboardNotification() {

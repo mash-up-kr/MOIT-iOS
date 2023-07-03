@@ -104,6 +104,12 @@ public final class MOITTextField: UIView {
 			]
 		)
 	}
+	
+// MARK: - public
+	
+	public func textFieldBecomeFirstResponse() {
+		textField.becomeFirstResponder()
+	}
 }
 
 // MARK: - UITextField Extension
