@@ -14,7 +14,7 @@ import RxSwift
 
 public final class NavigationItem: UIButton {
     
-    let type: NavigationItemType
+    public let type: NavigationItemType
     
     public init(type: NavigationItemType) {
         self.type = type
@@ -28,7 +28,9 @@ public final class NavigationItem: UIButton {
     }
     
     private func configureIcon(icon: UIImage?) {
-        guard let tintedImage = type.icon?.withRenderingMode(.alwaysTemplate) else {
+        guard let tintedImage = type.icon?.withRenderingMode(.alwaysTemplate),
+              self.type != .logo
+        else {
             self.setImage(type.icon, for: .normal)
             return 
         }

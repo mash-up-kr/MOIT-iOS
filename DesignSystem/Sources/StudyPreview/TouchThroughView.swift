@@ -9,7 +9,9 @@
 import UIKit
 
 final class TouchThroughView: UIView {
-    var button: UIButton? = nil
+    
+    var button: UIButton?
+    
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if let button = self.button {
             return self.bounds.contains(point) || button.frame.contains(point)
