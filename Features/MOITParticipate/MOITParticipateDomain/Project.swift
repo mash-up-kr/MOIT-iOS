@@ -13,7 +13,7 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProject(
     name: "MOITParticipateDomain",
     platform: .iOS,
-    iOSTargetVersion: "15.0.0",
+    iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
     ],
     implementDependencies: [
