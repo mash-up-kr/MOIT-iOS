@@ -19,7 +19,9 @@ protocol InputParticipateCodePresentableListener: AnyObject {
     
 }
 
-public final class InputParticipateCodeViewController: UIViewController, InputParticipateCodePresentable, InputParticipateCodeViewControllable {
+public final class InputParticipateCodeViewController: UIViewController,
+													   InputParticipateCodePresentable,
+													   InputParticipateCodeViewControllable {
 
     weak var listener: InputParticipateCodePresentableListener?
 	
@@ -205,17 +207,5 @@ extension InputParticipateCodeViewController {
 				return ResourceKitAsset.Color.white.color
 			}
 		}
-	}
-}
-
-extension UIDevice {
-	static var safeAreaBottomPadding: CGFloat {
-		guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-		   let window = windowScene.windows.first else {
-			return 0
-		}
-		
-		let bottomPadding = window.safeAreaInsets.bottom
-		return bottomPadding
 	}
 }
