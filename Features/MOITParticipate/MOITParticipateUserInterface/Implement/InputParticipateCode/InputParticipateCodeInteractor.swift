@@ -8,6 +8,7 @@
 
 
 import MOITParticipateUserInterface
+import MOITParticipateDomain
 
 import RIBs
 import RxSwift
@@ -22,8 +23,14 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 
     weak var router: InputParticipateCodeRouting?
     weak var listener: InputParticipateCodeListener?
+	
+	private let dependency: InputParticipateCodeDependency
 
-    override init(presenter: InputParticipateCodePresentable) {
+    init(
+		presenter: InputParticipateCodePresentable,
+		dependency: InputParticipateCodeDependency
+	) {
+		self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -38,5 +45,9 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	
 	func completeButtonDidTap(with code: String) {
 		debugPrint(code)
+//		let _ = dependency.participateUseCase.execute(
+//			with: .init(userId: 0,
+//			invitationCode: code)
+//		)
 	}
 }

@@ -9,10 +9,17 @@
 import RIBs
 
 import MOITParticipateUserInterface
+import MOITParticipateData
+import MOITParticipateDomain
 
-public protocol InputParticipateCodeDependency: Dependency { }
+public protocol InputParticipateCodeDependency: Dependency {
+	var participateUseCase: ParticipateUseCase { get }
+}
 
-final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency> { }
+final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
+										   InputParticipateCodeDependency {
+	var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
+}
 
 // MARK: - Builder
 
@@ -25,7 +32,10 @@ public final class InputParticipateCodeBuilder: Builder<InputParticipateCodeDepe
     public func build(withListener listener: InputParticipateCodeListener) -> ViewableRouting {
         let component = InputParticipateCodeComponent(dependency: dependency)
         let viewController = InputParticipateCodeViewController()
-        let interactor = InputParticipateCodeInteractor(presenter: viewController)
+		let interactor = InputParticipateCodeInteractor(
+			presenter: viewController,
+			dependency: component
+		)
         interactor.listener = listener
         return InputParticipateCodeRouter(interactor: interactor, viewController: viewController)
     }
