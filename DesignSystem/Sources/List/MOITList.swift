@@ -21,9 +21,9 @@ public final class MOITList: UIView {
 	private let flexRootView = UIView()
 	
 	private lazy var profileImageView: MOITProfileView? = {
-		if let imageUrlString {
+		if let imageType {
 			let imageView = MOITProfileView(
-				urlString: imageUrlString,
+				profileImageType: imageType,
 				profileType: .small
 			)
 			return imageView
@@ -96,7 +96,7 @@ public final class MOITList: UIView {
 // MARK: - property
 	
 	private let type: MOITListType
-	private let imageUrlString: String?
+	private let imageType: ProfileImageType?
 	private let title: String?
 	private let detail: String?
 	private let chipType: MOITChipType?
@@ -106,7 +106,7 @@ public final class MOITList: UIView {
 // MARK: - init
 	public init(
 		type: MOITListType,
-		imageUrlString: String? = nil,
+		imageType: ProfileImageType? = nil,
 		title: String? = nil,
 		detail: String? = nil,
 		chipType: MOITChipType? = nil,
@@ -115,7 +115,7 @@ public final class MOITList: UIView {
 		button: MOITButton? = nil
 	) {
 		self.type = type
-		self.imageUrlString = imageUrlString
+		self.imageType = imageType
 		self.title = title
 		self.detail = detail
 		self.chipType = chipType
