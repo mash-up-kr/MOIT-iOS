@@ -34,6 +34,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         let component = MOITDetailComponent(dependency: dependency)
         let viewController = MOITDetailViewController()
         let interactor = MOITDetailInteractor(
+            moitID: "testID",
             tabTypes: [.attendance, .fine],
             presenter: viewController,
             detailUsecase: MOITDetailUsecaseImpl(repository: MOITDetailRepositoryImpl())

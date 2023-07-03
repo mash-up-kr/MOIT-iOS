@@ -22,7 +22,6 @@ final class MOITDetailInfoView: UIView {
       
     private let flexRootView: UIView = {
         let view = UIView()
-//        view.isSkeletonable = true
         return view
     }()
     
@@ -63,7 +62,7 @@ final class MOITDetailInfoView: UIView {
     
     private func configureLayouts() {
         self.addSubview(self.flexRootView)
-//        self.isSkeletonable = true
+
         self.flexRootView.flex
             .direction(.row)
             .alignItems(.start)
@@ -82,7 +81,6 @@ final class MOITDetailInfoView: UIView {
         self.descriptionLabel.text = viewModel.description
         self.titleLabel.flex.markDirty()
         self.descriptionLabel.flex.markDirty()
-        self.setNeedsLayout()
-        
+        self.setNeedsLayout() 
     }
 }

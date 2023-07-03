@@ -52,7 +52,30 @@ final class MOITDetailInfosView: UIView {
         self.infoViews = viewModel.infos.map { infoViewModel in
             MOITDetailInfoView(viewModel: infoViewModel)
         }
+        if viewModel.buttonType == .fold {
+            self.infoViews.last?.isHidden = true
+            self.infoViews.last?.flex.display(.none)
+        }
         self.configureLayouts()
+    }
+    
+    func update(viewModel: MOITDetailInfosViewModel) {
+        print("업데이트할 viewModel", viewModel)
+        self.buttonType = viewModel.buttonType
+        let buttonImage = viewModel.buttonType.buttonImage
+            .withTintColor(ResourceKitAsset.Color.gray500.color)
+        self.button.setImage(buttonImage, for: .normal)
+        if viewModel.buttonType == .unfold {
+            self.infoViews.last?.isHidden = false
+            self.infoViews.last?.flex.display(.flex)
+            self.infoViews.last?.flex.markDirty()
+        }
+        if viewModel.buttonType == .fold {
+            self.infoViews.last?.isHidden = true
+            self.infoViews.last?.flex.display(.none)
+            self.infoViews.last?.flex.markDirty()
+        }
+        self.setNeedsLayout()
     }
     
     init() {
@@ -60,11 +83,11 @@ final class MOITDetailInfosView: UIView {
         self.flexRootView.backgroundColor = ResourceKitAsset.Color.gray50.color
         self.flexRootView.layer.cornerRadius = 20
         self.flexRootView.clipsToBounds = true
-        self.isSkeletonable = true
-        self.flexRootView.isSkeletonable = true
         self.skeletonCornerRadius = 20
+        self.button.isUserInteractionDisabledWhenSkeletonIsActive = false
+
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -109,7 +132,6 @@ final class MOITDetailInfosView: UIView {
 extension Reactive where Base: MOITDetailInfosView {
     var didTapButton: Observable<MOITDetailInfoViewButtonType> {
         self.base.button.rx.tap
-            .debug()
             .throttle(
                 .milliseconds(400),
                 latest: false,
