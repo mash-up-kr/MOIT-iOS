@@ -10,4 +10,8 @@ import Foundation
 
 public struct MOITParticipateDTO: Decodable {
 	public let moitId: Int
+	
+	public init(moitId: Int) {
+		self.moitId = moitId
+	}
 }

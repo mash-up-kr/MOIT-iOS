@@ -30,6 +30,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.MOITParticipate.Domain.Interface,
 		.Feature.MOITParticipate.Data.Interface,
     ],
+	demoAppDependencies: [
+		.Feature.MOITParticipate.Domain.Implement,
+		.Feature.MOITParticipate.Data.Implement,
+	],
     isUserInterface: true
 )
 
