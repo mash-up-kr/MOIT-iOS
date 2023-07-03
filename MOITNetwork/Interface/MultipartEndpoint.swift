@@ -1,13 +1,12 @@
 //
 //  MultipartEndpoint.swift
-//  MOITNetworkImpl
+//  MOITNetwork
 //
 //  Created by 최혜린 on 2023/05/25.
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
 import Foundation
-import MOITNetwork
 
 public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 
