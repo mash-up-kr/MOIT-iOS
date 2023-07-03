@@ -26,6 +26,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Core.Utils,
 		.ResourceKit,
 		.DesignSystem,
+		
+		.Feature.MOITParticipate.Domain.Interface,
+		.Feature.MOITParticipate.Data.Interface,
     ],
     isUserInterface: true
 )
