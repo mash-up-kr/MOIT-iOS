@@ -10,13 +10,14 @@ import UIKit
 
 import DesignSystem
 import ResourceKit
+import Utils
 
 import RIBs
 import RxCocoa
 import RxSwift
 
 protocol InputParticipateCodePresentableListener: AnyObject {
-    
+	func completeButtonDidTap(with code: String)
 }
 
 public final class InputParticipateCodeViewController: UIViewController,
@@ -119,6 +120,24 @@ public final class InputParticipateCodeViewController: UIViewController,
 		}
 	}
 	
+	private func bind() {
+		codeTextField.rx.text
+			.map { $0.isEmpty }
+			.bind(onNext: { [weak self] isEmpty in
+				self?.completeButton.isEnabled = !isEmpty
+				self?.completeButton.backgroundColor = isEmpty ? CTAButtonResource.disabled.backgroundColor : CTAButtonResource.normal.backgroundColor
+			})
+			.disposed(by: disposeBag)
+		
+		completeButton.rx.tap
+			.bind(onNext: { [weak self] _ in
+				guard let self else { return }
+				
+				self.listener?.completeButtonDidTap(with: self.codeTextField.text)
+			})
+			.disposed(by: disposeBag)
+	}
+	
 	private func activateFirstResponder() {
 		codeTextField.textFieldBecomeFirstResponse()
 	}
@@ -138,18 +157,6 @@ public final class InputParticipateCodeViewController: UIViewController,
 			name: UIResponder.keyboardWillShowNotification,
 			object: nil
 		)
-	}
-	
-	private func bind() {
-		codeTextField.rx.text
-			.map { $0.isEmpty }
-			.subscribe(
-				onNext: { [weak self] isEmpty in
-					self?.completeButton.isEnabled = !isEmpty
-					self?.completeButton.backgroundColor = isEmpty ? CTAButtonResource.disabled.backgroundColor : CTAButtonResource.normal.backgroundColor
-				}
-			)
-			.disposed(by: disposeBag)
 	}
 	
 // MARK: - objc

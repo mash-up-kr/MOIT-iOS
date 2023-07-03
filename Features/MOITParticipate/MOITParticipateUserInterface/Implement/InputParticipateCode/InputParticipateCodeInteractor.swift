@@ -6,10 +6,11 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
-import RxSwift
 
 import MOITParticipateUserInterface
+
+import RIBs
+import RxSwift
 
 protocol InputParticipateCodeRouting: ViewableRouting { }
 
@@ -34,4 +35,8 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
     override func willResignActive() {
         super.willResignActive()
     }
+	
+	func completeButtonDidTap(with code: String) {
+		debugPrint(code)
+	}
 }

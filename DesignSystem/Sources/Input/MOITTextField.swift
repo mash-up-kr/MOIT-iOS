@@ -110,6 +110,10 @@ public final class MOITTextField: UIView {
 	public func textFieldBecomeFirstResponse() {
 		textField.becomeFirstResponder()
 	}
+	
+	public var text: String {
+		textField.text ?? ""
+	}
 }
 
 // MARK: - UITextField Extension

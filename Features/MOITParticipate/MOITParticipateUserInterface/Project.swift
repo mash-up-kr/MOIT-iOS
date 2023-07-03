@@ -22,6 +22,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ThirdParty.FlexLayout,
 		.ThirdParty.RxCocoa,
 		.ThirdParty.RxSwift,
+		
+		.Core.Utils,
 		.ResourceKit,
 		.DesignSystem,
     ],
