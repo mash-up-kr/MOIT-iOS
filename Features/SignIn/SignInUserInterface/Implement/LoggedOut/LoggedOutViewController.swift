@@ -26,9 +26,20 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
     weak var listener: LoggedOutPresentableListener?
 	
 // MARK: - UI
-
-	// TODO: 디자인 확정 시 반영 필요
+	
 	private let flexRootContainer = UIView()
+	
+	private let ghostImageView = UIImageView(image: ResourceKitAsset.Icon.ghost.image)
+	private let mainCharacterImageView = UIImageView(image: ResourceKitAsset.Icon.mainCharacter.image)
+	private let logoImageView = UIImageView(image: ResourceKitAsset.Icon.logo.image)
+	
+	private let titleDescriptionLabel: UILabel = {
+		let label = UILabel()
+		label.text = StringResource.titleDescription.value
+		label.font = ResourceKitFontFamily.p2
+		label.textColor = ResourceKitAsset.Color.whiteTransparent06.color
+		return label
+	}()
 	
 	private let kakaoSignInButton = MOITButton(
 		type: .large,
@@ -65,6 +76,7 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		configureView()
 		configureLayout()
 		bind()
 	}
@@ -72,20 +84,26 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		flexRootContainer.pin.all(view.pin.safeArea).marginHorizontal(20).marginBottom(48)
+		flexRootContainer.pin.all(view.pin.safeArea).marginHorizontal(0).marginBottom(48)
 		flexRootContainer.flex.layout()
+		
+		mainCharacterImageView.pin.horizontally().bottom(124)
 	}
 	
 // MARK: - private
 	
+	private func configureView() {
+		view.backgroundColor = ResourceKitAsset.Color.gray900.color
+		addGradientLayer()
+	}
+	
 	private func configureLayout() {
-		view.backgroundColor = ResourceKitAsset.Color.blue100.color
-		
 		view.addSubview(flexRootContainer)
 		
 		flexRootContainer.flex.direction(.columnReverse).define { flex in
-			flex.addItem(appleSignInButton).marginTop(12)
-			flex.addItem(kakaoSignInButton)
+			flex.addItem(mainCharacterImageView).position(.absolute)
+			flex.addItem(appleSignInButton).marginTop(12).marginHorizontal(20)
+			flex.addItem(kakaoSignInButton).marginHorizontal(20)
 		}
 	}
 	
@@ -105,5 +123,33 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 				}
 			)
 			.disposed(by: disposeBag)
+	}
+	
+	private func addGradientLayer() {
+		let gradientLayer = CAGradientLayer()
+		gradientLayer.frame = view.bounds
+		
+		gradientLayer.locations = [0.4, 0.7]
+		
+		gradientLayer.colors = [
+			ResourceKitAsset.Color.blue800.color.withAlphaComponent(0).cgColor,
+			ResourceKitAsset.Color.blue800.color.withAlphaComponent(0.4).cgColor,
+			UIColor(red: 236 / 255, green: 236 / 255, blue: 239 / 255, alpha: 1).cgColor
+		]
+		
+		view.layer.addSublayer(gradientLayer)
+	}
+}
+
+extension LoggedOutViewController {
+	enum StringResource {
+		case titleDescription
+		
+		var value: String {
+			switch self {
+			case .titleDescription:
+				return "스터디 출결 관리 서비스 모잇!"
+			}
+		}
 	}
 }
