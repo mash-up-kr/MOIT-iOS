@@ -16,27 +16,29 @@ import RxSwift
 
 public final class MOITList: UIView {
 	
+// MARK: - UI
+	
 	private let flexRootView = UIView()
-	private lazy var profileImageView: UIImageView? = {
-		if let image {
-			let imageView = UIImageView()
-			imageView.image = image
-			imageView.layer.cornerRadius = 16
-			imageView.clipsToBounds = true
-			imageView.layer.borderColor = ResourceKitAsset.Color.gray100.color.cgColor
-			imageView.layer.borderWidth = 1
+	
+	private lazy var profileImageView: MOITProfileView? = {
+		if let imageUrlString {
+			let imageView = MOITProfileView(
+				profileType: .small
+			)
 			return imageView
 		}
 		
 		return nil
 	}()
-	private lazy var titleLabel: UILabel = {
+	
+	private lazy var titleLabel: UILabel? = {
 		let label = UILabel()
 		label.text = title
 		label.font = ResourceKitFontFamily.h6
 		label.textColor = ResourceKitAsset.Color.gray900.color
 		return label
 	}()
+	
 	private lazy var detailLabel: UILabel? = {
 		if let detail {
 			let label = UILabel()
@@ -48,10 +50,30 @@ public final class MOITList: UIView {
 		
 		return nil
 	}()
+	
+	private lazy var studyOrderLabel: UILabel? = {
+		if let studyOrder {
+			let label = UILabel()
+			label.text = "\(studyOrder)차 스터디"
+			return label
+		}
+		
+		return nil
+	}()
+	
+	private lazy var separtaorLabel: UILabel = {
+		let label = UILabel()
+		label.text = "|"
+		label.textColor = ResourceKitAsset.Color.gray600.color
+		label.font = ResourceKitFontFamily.caption
+		return label
+	}()
+	
 	private lazy var fineLabel: UILabel? = {
 		if let fine {
 			let label = UILabel()
-			label.text = fine
+			let formattedFine = Formatter.fineFormatter.string(from: NSNumber(value: fine)) ?? ""
+			label.text = "+ \(formattedFine) 원"
 			label.textColor = ResourceKitAsset.Color.gray900.color
 			label.font = ResourceKitFontFamily.h5
 			return label
@@ -59,6 +81,7 @@ public final class MOITList: UIView {
 		
 		return nil
 	}()
+	
 	private lazy var chip: MOITChip? = {
 		if let chipType {
 			return MOITChip(type: chipType)
@@ -66,30 +89,36 @@ public final class MOITList: UIView {
 		
 		return nil
 	}()
+	
 	fileprivate let button: MOITButton?
 	
+// MARK: - property
+	
 	private let type: MOITListType
-	private let image: UIImage?
-	private let title: String
+	private let imageUrlString: String?
+	private let title: String?
 	private let detail: String?
 	private let chipType: MOITChipType?
-	private let fine: String? // TODO: 이부분도 서버에서 String, Int 중 어떤 형식으로 내려줄지?
+	private let studyOrder: Int?
+	private let fine: Int?
 	
 // MARK: - init
 	public init(
 		type: MOITListType,
-		image: UIImage? = nil,
-		title: String,
+		imageUrlString: String? = nil,
+		title: String? = nil,
 		detail: String? = nil,
 		chipType: MOITChipType? = nil,
-		fine: String? = nil,
+		studyOrder: Int? = nil,
+		fine: Int? = nil,
 		button: MOITButton? = nil
 	) {
 		self.type = type
-		self.image = image
+		self.imageUrlString = imageUrlString
 		self.title = title
 		self.detail = detail
 		self.chipType = chipType
+		self.studyOrder = studyOrder
 		self.fine = fine
 		self.button = button
 		
@@ -117,33 +146,43 @@ public final class MOITList: UIView {
 		flexRootView.flex
 			.direction(.row)
 			.alignItems(.center)
+			.height(type.height)
 			.define { flex in
 				if let profileImageView {
-					flex.addItem(profileImageView).width(40).height(40).marginRight(10)
+					flex.addItem(profileImageView).marginRight(10)
 				}
 				
 				if [.sendMoney, .myMoney].contains(where: { $0 == type }) {
-					if let chip {
-						flex.addItem(chip).marginRight(10)
-					}
+					flex.addOptionalItem(chip, marginRight: 10)
 				}
 
 				flex.addItem().direction(.column)
 					.grow(1)
 					.justifyContent(.center)
 					.define { flex in
-					flex.addItem(titleLabel)
-					
-					if let detailLabel {
-						flex.addItem(detailLabel)
-					}
+						
+						if let studyOrderLabel, type == .myMoney {
+							studyOrderLabel.setTitleStyle()
+							flex.addItem(studyOrderLabel)
+						} else {
+							flex.addOptionalItem(titleLabel)
+						}
+						
+						flex.addItem().direction(.row).define { flex in
+								flex.addOptionalItem(detailLabel)
+									
+								if let studyOrderLabel, type == .sendMoney {
+									studyOrderLabel.setDetailLabelStyle()
+									flex.addItem(separtaorLabel).marginHorizontal(3)
+									flex.addItem(studyOrderLabel)
+								}
+							}
 				}
 				
 				if let additionalView = selectAdditionalView(type: type) {
 					flex.addItem(additionalView)
 				}
 			}
-			.height(type.height)
 	}
 	
 	private func selectAdditionalView(type: MOITListType) -> UIView? {
@@ -170,3 +209,22 @@ extension Reactive where Base: MOITList {
 	}
 }
 
+extension UILabel {
+	func setDetailLabelStyle() {
+		self.textColor = ResourceKitAsset.Color.gray600.color
+		self.font = ResourceKitFontFamily.caption
+	}
+	
+	func setTitleStyle() {
+		self.font = ResourceKitFontFamily.h6
+		self.textColor = ResourceKitAsset.Color.gray900.color
+	}
+}
+
+enum Formatter {
+	static let fineFormatter: NumberFormatter = {
+		let formatter = NumberFormatter()
+		formatter.numberStyle = .decimal
+		return formatter
+	}()
+}

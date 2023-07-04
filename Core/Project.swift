@@ -12,13 +12,23 @@ import UtilityPlugin
 let project = Project(
     name: "Core",
     targets: [
-    Project.makeTarget(
-        name: "CSLogger",
-        dependencies: []
-    ),
+        Project.makeTarget(
+            name: "CSLogger",
+            dependencies: []
+        ),
+        Project.makeTarget(
+            name: "Utils",
+            dependencies: [
+                .DesignSystem,
+                .ResourceKit,
+                
+                .ThirdParty.PinLayout,
+                .ThirdParty.FlexLayout,
+            ]
+        ),
     Project.makeTarget(
         name: "MOITFoundation",
         dependencies: []
-    )
+    ),
     ]
 )
