@@ -20,10 +20,12 @@ final class StudyPreviewDemoViewController: UIViewController {
     // MARK: - UI
     private let studyPreview = MOITStudyPreview(
         remainingDate: 19,
-        profileURL: URL(string: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4")!,
+        profileURLString: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4",
         studyName: "공부스터디",
         studyProgressDescription: "격주 금요일 17:00 - 20:00"
     )
+    
+    private let studyPreview2 = MOITStudyPreview()
     
     private let flexRootView = UIView()
 
@@ -33,6 +35,12 @@ final class StudyPreviewDemoViewController: UIViewController {
     // MARK: - Initializers
     public init() {
         super.init(nibName: nil, bundle: nil)
+        studyPreview2.configure(
+            remainingDate: 20,
+            profileURL: "https://avatars.githubusercontent.com/u/15011638?s=64&v=4",
+            studyName: "스터디스터디",
+            studyProgressDescription: "3주마다 토요일 15:00 - 23:00"
+        )
     }
     
     @available(*, unavailable)
@@ -67,6 +75,11 @@ final class StudyPreviewDemoViewController: UIViewController {
                     .marginTop(40)
                     .width(80%)
                     .height(100)
+                flex.addItem(self.studyPreview2)
+                    .marginTop(40)
+                    .width(80%)
+                    .height(100)
+                
             }
     }
 

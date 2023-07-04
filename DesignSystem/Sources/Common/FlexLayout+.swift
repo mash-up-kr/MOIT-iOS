@@ -12,9 +12,14 @@ import FlexLayout
 public extension FlexLayout.Flex {
     
     @discardableResult
-    func addOptionalItem(_ view: UIView?) -> Flex {
+	func addOptionalItem(
+		_ view: UIView?,
+		height: CGFloat? = nil,
+		marginRight: CGFloat = 0,
+		marginBottom: CGFloat = 0
+	) -> Flex {
         if let view {
-            self.addItem(view)
+			self.addItem(view).height(height).marginRight(marginRight).marginBottom(marginBottom)
         }
         
         return self

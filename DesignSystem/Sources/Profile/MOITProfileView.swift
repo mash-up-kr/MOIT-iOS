@@ -14,7 +14,6 @@ import FlexLayout
 import PinLayout
 import RxSwift
 import RxGesture
-import Kingfisher
 
 public final class MOITProfileView: UIView {
     
@@ -28,23 +27,36 @@ public final class MOITProfileView: UIView {
     }()
     
     // MARK: - Properties
-    private let urlString: String
+    public private(set) var profileImageType: ProfileImageType?
     private let profileType: ProfileType
     fileprivate let containAddButton: Bool
     
     // MARK: - Initializers
+    
     public init (
-        urlString: String,
         profileType: ProfileType,
         addButton: Bool = false
     ) {
-        self.urlString = urlString
         self.profileType = profileType
         self.containAddButton = addButton
         
         super.init(frame: .zero)
         
-        configureAttributes()
+        configureLayout()
+    }
+    
+    public init (
+        profileImageType: ProfileImageType,
+        profileType: ProfileType,
+        addButton: Bool = false
+    ) {
+        self.profileImageType = profileImageType
+        self.profileType = profileType
+        self.containAddButton = addButton
+        
+        super.init(frame: .zero)
+        
+        configureImage(with: profileImageType)
         configureLayout()
     }
     
@@ -52,7 +64,7 @@ public final class MOITProfileView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Lifecycle
     public override func layoutSubviews() {
         super.layoutSubviews()
@@ -67,19 +79,17 @@ public final class MOITProfileView: UIView {
     
     // MARK: - Functions
     
-    private func configureAttributes() {
-        profileImageView.kf.setImage(
-            with: URL(string: urlString),
-            placeholder: nil
-        )
+    public func configureImage(with profileImageType: ProfileImageType) {
+        self.profileImageType = profileImageType
+        profileImageView.image = profileImageType.image
     }
     
     private func configureLayout() {
         addSubview(profileImageView)
         profileImageView.layer.cornerRadius = profileType.radius
         profileImageView.clipsToBounds = true
-        profileImageView.backgroundColor = ResourceKitAsset.Color.blue700.color
-        
+        profileImageView.layer.borderWidth = 1
+        profileImageView.layer.borderColor = ResourceKitAsset.Color.gray100.color.cgColor
         profileImageView.flex.size(profileType.size)
     }
 }
@@ -87,9 +97,6 @@ public final class MOITProfileView: UIView {
 public extension Reactive where Base: MOITProfileView {
     
     var tap: Observable<Void> {
-        if base.containAddButton {
-            return base.rx.tapGesture().when(.recognized).map { _ in }
-        }
-        return .empty()
+        base.rx.tapGesture().when(.recognized).map { _ in }
     }
 }
