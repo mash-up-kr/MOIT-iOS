@@ -8,10 +8,8 @@
 
 import Foundation
 
-import MOITNetwork
-
 import RxSwift
 
 public protocol ParticipateRepository {
-	func postParticipateCode(with endpoint: Endpoint<MOITParticipateDTO>) -> Single<MOITParticipateDTO>
+	func postParticipateCode(with request: MOITParticipateRequest) -> Single<MOITParticipateDTO>
 }

@@ -11,6 +11,8 @@ import Foundation
 import MOITParticipateData
 import MOITParticipateDomain
 
+import RxSwift
+
 public final class ParticipateUseCaseImpl: ParticipateUseCase {
 	
 // MARK: - properties
@@ -24,7 +26,7 @@ public final class ParticipateUseCaseImpl: ParticipateUseCase {
 	}
 	
 // MARK: - public
-//	public func execute(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int> {
-//		return participateRepository.postParticipateCode(with: )
-//	}
+	public func execute(with request: MOITParticipateRequest) -> Single<MOITParticipateDTO> {
+		participateRepository.postParticipateCode(with: request)
+	}
 }

@@ -45,9 +45,8 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	
 	func completeButtonDidTap(with code: String) {
 		debugPrint(code)
-//		let _ = dependency.participateUseCase.execute(
-//			with: .init(userId: 0,
-//			invitationCode: code)
+//		dependency.participateUseCase.execute(
+//			with: .init(userId: 0, invitationCode: code)
 //		)
 	}
 }
