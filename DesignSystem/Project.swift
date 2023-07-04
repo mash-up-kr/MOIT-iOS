@@ -24,7 +24,7 @@ let project = Project(
             product: .framework,
             bundleId: "team.io.DesignSystem",
             deploymentTarget: .iOS(
-                targetVersion: "15.0.0",
+                targetVersion: "16.0.0",
                 devices: [.iphone]
             ),
             infoPlist: .default,
@@ -45,7 +45,7 @@ let project = Project(
             product: .app,
             bundleId: "com.chansoo.DesignSystemDemoApp",
             deploymentTarget: .iOS(
-                targetVersion: "15.0.0",
+                targetVersion: "16.0.0",
                 devices: [.iphone]
             ),
             infoPlist: InfoPlist.extendingDefault(
