@@ -78,23 +78,22 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	private func configureView() {
 		view.backgroundColor = .white
 		view.addSubview(flexRootContainer)
+		
+		// TODO: 추후 삭제
+		fineAmountLabel.text = "50,000"
 	}
 	
 	private func configureLayout() {
 		flexRootContainer.flex.define { flex in
+			flex.addItem(fineTitleLabel).marginTop(20)
 			
-			flex.addItem()
-				.marginTop(20)
-				.define { flex in
-					flex.addItem(fineTitleLabel)
-					flex.addItem().direction(.row).define { flex in
-						flex.addItem(fineAmountLabel)
-						flex.addItem(fineUnitLabel)
-					}
-					
-					flex.addItem(segmentPager).marginTop(20)
-					flex.addItem(fineListScrollView).marginTop(20).grow(1)
-				}
+			flex.addItem().direction(.row).define { flex in
+				flex.addItem(fineAmountLabel)
+				flex.addItem(fineUnitLabel)
+			}
+			
+			flex.addItem(segmentPager).marginTop(20)
+			flex.addItem(fineListScrollView).marginTop(20).grow(1)
 		}
 	}
 }
