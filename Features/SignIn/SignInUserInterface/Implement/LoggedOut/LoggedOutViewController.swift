@@ -31,7 +31,7 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	
 	private let ghostImageView = UIImageView(image: ResourceKitAsset.Icon.ghost.image)
 	private let mainCharacterImageView = UIImageView(image: ResourceKitAsset.Icon.mainCharacter.image)
-	private let logoImageView = UIImageView(image: ResourceKitAsset.Icon.logo.image)
+	private let logoImageView = UIImageView(image: ResourceKitAsset.Icon.signinLogo.image)
 	
 	private let titleDescriptionLabel: UILabel = {
 		let label = UILabel()
@@ -60,6 +60,7 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
+	private let lastGradientColor = UIColor(red: 236 / 255, green: 236 / 255, blue: 239 / 255, alpha: 1)
 	
 // MARK: - init
 	
@@ -84,7 +85,7 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		flexRootContainer.pin.all(view.pin.safeArea).marginHorizontal(0).marginBottom(48)
+		flexRootContainer.pin.all()
 		flexRootContainer.flex.layout()
 		
 		mainCharacterImageView.pin.horizontally().bottom(124)
@@ -100,28 +101,53 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	private func configureLayout() {
 		view.addSubview(flexRootContainer)
 		
-		flexRootContainer.flex.direction(.columnReverse).define { flex in
+		flexRootContainer.flex.define { flex in
+
+			flex.addItem()
+				.alignItems(.end)
+				.marginRight(22)
+				.marginTop(52)
+				.define { flex in
+					flex.addItem(ghostImageView)
+						.width(142)
+						.height(137)
+				}
+			
+			flex.addItem()
+				.marginTop(26)
+				.alignItems(.center)
+				.grow(1)
+				.define { flex in
+					flex.addItem(titleDescriptionLabel)
+					flex.addItem(logoImageView)
+						.width(238)
+						.height(102)
+						.marginTop(6)
+				}
+			
 			flex.addItem(mainCharacterImageView).position(.absolute)
-			flex.addItem(appleSignInButton).marginTop(12).marginHorizontal(20)
-			flex.addItem(kakaoSignInButton).marginHorizontal(20)
+			
+			flex.addItem()
+				.marginHorizontal(20)
+				.marginBottom(48)
+				.define { flex in
+					flex.addItem(kakaoSignInButton)
+					flex.addItem(appleSignInButton).marginTop(12)
+			}
 		}
 	}
 	
 	private func bind() {
 		kakaoSignInButton.rx.tap
-			.subscribe(
-				onNext: { [weak self] _ in
-					self?.listener?.kakaoSignInButtonDidTap()
-				}
-			)
+			.bind(onNext: { [weak self] _ in
+				self?.listener?.kakaoSignInButtonDidTap()
+			})
 			.disposed(by: disposeBag)
 		
 		appleSignInButton.rx.tap
-			.subscribe(
-				onNext: { [weak self] _ in
-					self?.listener?.appleSignInButtonDidTap()
-				}
-			)
+			.bind(onNext: { [weak self] _ in
+				self?.listener?.appleSignInButtonDidTap()
+			})
 			.disposed(by: disposeBag)
 	}
 	
@@ -129,12 +155,12 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 		let gradientLayer = CAGradientLayer()
 		gradientLayer.frame = view.bounds
 		
-		gradientLayer.locations = [0.4, 0.7]
+		gradientLayer.locations = [0.3, 0.6, 0.8]
 		
 		gradientLayer.colors = [
 			ResourceKitAsset.Color.blue800.color.withAlphaComponent(0).cgColor,
 			ResourceKitAsset.Color.blue800.color.withAlphaComponent(0.4).cgColor,
-			UIColor(red: 236 / 255, green: 236 / 255, blue: 239 / 255, alpha: 1).cgColor
+			lastGradientColor.cgColor
 		]
 		
 		view.layer.addSublayer(gradientLayer)
