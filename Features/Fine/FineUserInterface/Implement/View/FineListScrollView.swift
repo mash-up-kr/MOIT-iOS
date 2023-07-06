@@ -18,10 +18,13 @@ final class FineListScrollView: UIView {
 	
 // MARK: - UI
 	
+	private let flexRootContainer = UIView()
+	
 	private let scrollView: UIScrollView = {
 		let scrollView = UIScrollView()
 		scrollView.isPagingEnabled = true
 		scrollView.showsHorizontalScrollIndicator = false
+		scrollView.showsVerticalScrollIndicator = false
 		scrollView.backgroundColor = .systemPink
 		return scrollView
 	}()
@@ -29,6 +32,10 @@ final class FineListScrollView: UIView {
 	private let contentView = UIView()
 	private let defaulterListView = UIView()
 	private let paymentListView = UIView()
+	
+	private let segmentPager = MOITSegmentPager(
+		pages: [StringResource.defaulter.value, StringResource.paymentList.value]
+	)
 
 	private let paymentListEmtpyLabel: UILabel = {
 		let label = UILabel()
@@ -63,14 +70,13 @@ final class FineListScrollView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 
-		scrollView.pin.all()
-		contentView.pin.vertically().horizontally()
-		
-		defaulterListView.pin.width(100%)
-		paymentListView.pin.width(100%)
+		flexRootContainer.pin.all()
+		flexRootContainer.flex.layout()
 		
 		contentView.flex.layout(mode: .adjustWidth)
+		
 		scrollView.contentSize = contentView.frame.size
+		scrollView.flex.layout()
 		
 		defaulterListView.backgroundColor = .red
 		paymentListView.backgroundColor = .blue
@@ -79,25 +85,40 @@ final class FineListScrollView: UIView {
 // MARK: - private
 	
 	private func configureView() {
-		addSubview(scrollView)
-		scrollView.addSubview(contentView)
+		
+		addSubview(flexRootContainer)
+		
+		flexRootContainer.flex
+			.define { flex in
+				flex.addItem(segmentPager).marginBottom(20)
+				flex.addItem(scrollView).grow(1)
+			}
+		
+		scrollView.flex
+			.define { flex in
+				flex.addItem(contentView).grow(1)
+			}
 
 		contentView.flex
 			.direction(.row)
 			.define { flex in
-				flex.addItem(defaulterListView)
-				flex.addItem(paymentListView)
+				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width)
+				flex.addItem(paymentListView).width(UIScreen.main.bounds.width)
 			}
 		
-//		defaulterListView.flex
-//			.define { flex in
-//				flex.addItem(defaulterListEmptyLabel).position(.absolute)
-//			}
-//
-//		paymentListView.flex
-//			.define { flex in
-//				flex.addItem(paymentListEmtpyLabel).position(.absolute)
-//			}
+		defaulterListView.flex
+			.justifyContent(.center)
+			.alignItems(.center)
+			.define { flex in
+				flex.addItem(defaulterListEmptyLabel)
+			}
+
+		paymentListView.flex
+			.justifyContent(.center)
+			.alignItems(.center)
+			.define { flex in
+				flex.addItem(paymentListEmtpyLabel)
+			}
 	}
 }
 
@@ -105,9 +126,15 @@ extension FineListScrollView {
 	enum StringResource {
 		case paymentEmpty
 		case defaulterEmpty
+		case defaulter
+		case paymentList
 		
 		var value: String {
 			switch self {
+			case .defaulter:
+				return "벌금미납자"
+			case .paymentList:
+				return "납부 내역"
 			case .paymentEmpty:
 				return "벌금 내역이 없어요"
 			case .defaulterEmpty:
