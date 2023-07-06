@@ -13,6 +13,8 @@ import ResourceKit
 
 import FlexLayout
 import PinLayout
+import RxSwift
+import RxCocoa
 
 final class FineListScrollView: UIView {
 	
@@ -25,7 +27,7 @@ final class FineListScrollView: UIView {
 		scrollView.isPagingEnabled = true
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.showsVerticalScrollIndicator = false
-		scrollView.backgroundColor = .systemPink
+		scrollView.isUserInteractionEnabled = false
 		return scrollView
 	}()
 	
@@ -53,11 +55,17 @@ final class FineListScrollView: UIView {
 		return label
 	}()
 	
+// MARK: - property
+	
+	private let disposeBag = DisposeBag()
+	
 // MARK: - init
 	
 	init() {
 		super.init(frame: .zero)
+		
 		configureView()
+		bind()
 	}
 	
 	@available(*, unavailable)
@@ -77,9 +85,6 @@ final class FineListScrollView: UIView {
 		
 		scrollView.contentSize = contentView.frame.size
 		scrollView.flex.layout()
-		
-		defaulterListView.backgroundColor = .red
-		paymentListView.backgroundColor = .blue
 	}
 	
 // MARK: - private
@@ -120,6 +125,18 @@ final class FineListScrollView: UIView {
 				flex.addItem(paymentListEmtpyLabel)
 			}
 	}
+	
+	private func bind() {
+		segmentPager.rx.tapIndex
+			.bind(onNext: { [weak self] index in
+				if index == 0 {
+					self?.scrollView.scrollToLeft()
+				} else {
+					self?.scrollView.scrollToRight()
+				}
+			})
+			.disposed(by: disposeBag)
+	}
 }
 
 extension FineListScrollView {
@@ -141,5 +158,18 @@ extension FineListScrollView {
 				return "아직 벌금 미납자가 없어요"
 			}
 		}
+	}
+}
+
+// TODO: 추후 Utils로 이동
+extension UIScrollView {
+	func scrollToRight() {
+		let rightOffset = CGPoint(x: contentInset.right + bounds.width, y: 0)
+		setContentOffset(rightOffset, animated: true)
+	}
+	
+	func scrollToLeft() {
+		let leftOffset = CGPoint(x: -contentInset.left, y: 0)
+		setContentOffset(leftOffset, animated: true)
 	}
 }
