@@ -24,7 +24,7 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
             .compactMap { [weak self] response -> MOITDetailEntity? in
                 guard let self = self else { return nil }
                 let scheduleDescription = self.moitScheduleDescription(
-                    scheduleDayOfWeek: response.scheduleDayOfWeek,
+                    scheduleDayOfWeeks: response.scheduleDayOfWeeks,
                     scheduleRepeatCycle: response.scheduleRepeatCycle,
                     scheduleStartTime: response.scheduleStartTime,
                     scheduleEndTime: response.scheduleEndTime
@@ -44,9 +44,9 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
                     endDate: response.endDate
                 )
                 return MOITDetailEntity(
-                    moitID: response.moitID,
+                    moitID: "\(response.moitID)",
                     moitName: response.name,
-                    masterID: response.masterID,
+                    masterID: "\(response.masterID)",
                     description: self.moitDescription(response.description),
                     imageURL: response.imageURL,
                     scheduleDescription: scheduleDescription,
@@ -63,16 +63,16 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
     }
     
     private func moitScheduleDescription(
-        scheduleDayOfWeek: [String],
+        scheduleDayOfWeeks: [String],
         scheduleRepeatCycle: String,
         scheduleStartTime: String,
         scheduleEndTime: String
     ) -> String {
         var days = ""
         
-        scheduleDayOfWeek.forEach { dayOfWeek in
+        scheduleDayOfWeeks.forEach { dayOfWeek in
             if !days.isEmpty { days += ", " }
-            guard let day = DayOfWeeks(rawValue: dayOfWeek)
+            guard let day = DayOfWeeks(rawValue: dayOfWeek)?.toKor
             else { return }
             days += "\(day)"
         }

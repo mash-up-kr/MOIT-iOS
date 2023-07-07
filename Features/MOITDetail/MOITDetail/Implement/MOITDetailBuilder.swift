@@ -10,12 +10,11 @@ import RIBs
 import MOITDetail
 import MOITDetailDomainImpl
 import MOITDetailDataImpl
+import MOITDetailData
 
-final class MOITDetailComponent: Component<MOITDetailDependency> {
-}
-
-extension MOITDetailComponent: MOITDetailAttendanceDependency {
-    
+final class MOITDetailComponent: Component<MOITDetailDependency>,
+                                 MOITDetailAttendanceDependency {
+    lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: dependency.network)
 }
 
 // MARK: - Builder
@@ -28,16 +27,19 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
     }
 
     public func build(
-        withListener listener: MOITDetailListener
+        withListener listener: MOITDetailListener,
+        moitID: String
     ) -> ViewableRouting {
         
         let component = MOITDetailComponent(dependency: dependency)
         let viewController = MOITDetailViewController()
+        let detailUsecase = MOITDetailUsecaseImpl(repository: component.moitDetailRepository)
+        
         let interactor = MOITDetailInteractor(
-            moitID: "testID",
+            moitID: moitID,
             tabTypes: [.attendance, .fine],
             presenter: viewController,
-            detailUsecase: MOITDetailUsecaseImpl(repository: MOITDetailRepositoryImpl())
+            detailUsecase: detailUsecase
         )
         interactor.listener = listener
         

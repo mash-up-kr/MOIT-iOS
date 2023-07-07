@@ -41,6 +41,8 @@ public extension Requestable {
 	func makeURL() -> URL? {
 		self.baseURL.append(path: path).append(queries: parameters)
 	}
+    
+    var baseURL: URL { URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com") ?? URL(fileReferenceLiteralResourceName: "") }
 }
 
 extension URLRequest {
@@ -72,7 +74,12 @@ extension URLRequest {
 
 extension URL {
 	func append(path: String) -> URL {
-		return self.appending(path: path)
+        if #available(iOS 16.0, *) {
+            return self.appending(path: path)
+        } else {
+            // TODO: 혜린언니 여기 수정 ~~ 부탁드립니다
+            return URL.init(fileReferenceLiteralResourceName: "")
+        }
 	}
 
 	func append(queries parameter: HTTPRequestParameter?) -> URL? {

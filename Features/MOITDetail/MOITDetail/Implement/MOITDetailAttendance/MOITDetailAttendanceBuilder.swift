@@ -7,10 +7,11 @@
 //
 
 import RIBs
+import MOITDetailData
+import MOITDetailDomainImpl
 
 protocol MOITDetailAttendanceDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
+    var moitDetailRepository: MOITDetailRepository { get }
 }
 
 final class MOITDetailAttendanceComponent: Component<MOITDetailAttendanceDependency> {
@@ -21,20 +22,36 @@ final class MOITDetailAttendanceComponent: Component<MOITDetailAttendanceDepende
 // MARK: - Builder
 
 protocol MOITDetailAttendanceBuildable: Buildable {
-    func build(withListener listener: MOITDetailAttendanceListener) -> MOITDetailAttendanceRouting
+    func build(
+        withListener listener: MOITDetailAttendanceListener,
+               moitID: String
+    ) -> MOITDetailAttendanceRouting
 }
 
-final class MOITDetailAttendanceBuilder: Builder<MOITDetailAttendanceDependency>, MOITDetailAttendanceBuildable {
+final class MOITDetailAttendanceBuilder: Builder<MOITDetailAttendanceDependency>,
+                                         MOITDetailAttendanceBuildable {
 
     override init(dependency: MOITDetailAttendanceDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: MOITDetailAttendanceListener) -> MOITDetailAttendanceRouting {
+    func build(
+        withListener listener: MOITDetailAttendanceListener,
+        moitID: String
+    ) -> MOITDetailAttendanceRouting {
         let component = MOITDetailAttendanceComponent(dependency: dependency)
         let viewController = MOITDetailAttendanceViewController()
-        let interactor = MOITDetailAttendanceInteractor(presenter: viewController)
+        let usecase = MOITAllAttendanceUsecaseImpl(repository: self.dependency.moitDetailRepository)
+        let interactor = MOITDetailAttendanceInteractor(
+            presenter: viewController,
+            moitID: moitID,
+            moitAllAttendanceUsecase: usecase
+        )
         interactor.listener = listener
-        return MOITDetailAttendanceRouter(interactor: interactor, viewController: viewController)
+        
+        return MOITDetailAttendanceRouter(
+            interactor: interactor,
+            viewController: viewController
+        )
     }
 }

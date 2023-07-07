@@ -61,7 +61,7 @@ extension Project {
     public static func invertedDualTargetProject(
         name: String,
         platform: Platform,
-        iOSTargetVersion: String,
+        iOSTargetVersion: String = "15.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         useTestTarget: Bool = true,

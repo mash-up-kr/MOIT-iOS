@@ -19,7 +19,8 @@ protocol MOITDetailViewControllable: ViewControllable {
     func addChild(viewController: ViewControllable)
 }
 
-final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailViewControllable>, MOITDetailRouting {
+final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailViewControllable>,
+                              MOITDetailRouting {
 
     private let attendanceBuiler: MOITDetailAttendanceBuildable
     private var attendacneRouter: ViewableRouting?
@@ -34,9 +35,12 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         interactor.router = self
     }
     
-    func attachAttendance() {
+    func attachAttendance(moitID: String) {
         guard attendacneRouter == nil else { return }
-        let router = self.attendanceBuiler.build(withListener: self.interactor)
+        let router = self.attendanceBuiler.build(
+            withListener: self.interactor,
+            moitID: moitID
+        )
         self.attendacneRouter = router
         self.attachChild(router)
         self.viewController.addChild(viewController: router.viewControllable)

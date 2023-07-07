@@ -9,34 +9,24 @@
 import Foundation
 import MOITDetailData
 import RxSwift
+import MOITNetwork
 
 public final class MOITDetailRepositoryImpl: MOITDetailRepository {
     
-    public init() {
-        
+    private let network: Network
+    
+    public init(network: Network) {
+        self.network = network
+        print("init", String(describing: self))
     }
+    
+    deinit { debugPrint("\(self) deinit") }
+    
     public func fetchDetail(moitID: String) -> Single<MOITDetailModel> {
-        return Observable.create { observer in
-           let mockData = MOITDetailModel(
-            moitID: "",
-            name: "전자군단 스터디🤖ee",
-            masterID: "ㅇ",
-            description: "전자군단인데엽",
-            imageURL: "image",
-            scheduleDayOfWeek: ["MONDAY", "TUESDAY"],
-            scheduleRepeatCycle: "ONE_WEEK",
-            scheduleStartTime: "17:00",
-            scheduleEndTime: "20:00",
-            fineLateTime: 15,
-            fineLateAmount: 2000,
-            fineAbsenceTime: 30,
-            fineAbsenceAmount: 5000,
-            startDate: "2023-06-18",
-            endDate: "2023-10-23"
-           )
-            observer.onNext(mockData)
-            observer.onCompleted()
-            return Disposables.create()
-        }.asSingle()
+        network.request(with: MOITDetailRequestable(moitID: moitID))
+    }
+    
+    public func fetchAttendance(moitID: String) -> Single<MOITAllAttendanceModel> {
+        network.request(with: MOITAttendanceRequestable(moitID: moitID))
     }
 }

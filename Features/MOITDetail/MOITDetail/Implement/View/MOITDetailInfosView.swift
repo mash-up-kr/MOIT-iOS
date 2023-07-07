@@ -14,6 +14,7 @@ import ResourceKit
 import RxSwift
 import RxCocoa
 import SkeletonView
+import MOITFoundation
 
 enum MOITDetailInfoViewButtonType {
     /// 닫힘
@@ -56,15 +57,17 @@ final class MOITDetailInfosView: UIView {
             self.infoViews.last?.isHidden = true
             self.infoViews.last?.flex.display(.none)
         }
+
         self.configureLayouts()
     }
     
     func update(viewModel: MOITDetailInfosViewModel) {
-        print("업데이트할 viewModel", viewModel)
+        
         self.buttonType = viewModel.buttonType
         let buttonImage = viewModel.buttonType.buttonImage
             .withTintColor(ResourceKitAsset.Color.gray500.color)
         self.button.setImage(buttonImage, for: .normal)
+        
         if viewModel.buttonType == .unfold {
             self.infoViews.last?.isHidden = false
             self.infoViews.last?.flex.display(.flex)
@@ -75,17 +78,22 @@ final class MOITDetailInfosView: UIView {
             self.infoViews.last?.flex.display(.none)
             self.infoViews.last?.flex.markDirty()
         }
+        
+        self.infoViews.enumerated().forEach { index, infoView in
+            guard let updateModel = viewModel.infos[safe: index] else { return }
+            infoView.confifugre(viewModel: updateModel)
+        }
         self.setNeedsLayout()
     }
     
     init() {
         super.init(frame: .zero)
+        self.isSkeletonable = true
         self.flexRootView.backgroundColor = ResourceKitAsset.Color.gray50.color
         self.flexRootView.layer.cornerRadius = 20
         self.flexRootView.clipsToBounds = true
+        self.flexRootView.isSkeletonable = true
         self.skeletonCornerRadius = 20
-        self.button.isUserInteractionDisabledWhenSkeletonIsActive = false
-
     }
 
     required init?(coder: NSCoder) {

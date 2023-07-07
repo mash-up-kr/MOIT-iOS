@@ -29,7 +29,6 @@ final class MOITDetailInfoView: UIView {
         let label = UILabel()
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray800.color
-        label.isSkeletonable = true
         return label
     }()
     
@@ -38,7 +37,6 @@ final class MOITDetailInfoView: UIView {
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray600.color
         label.numberOfLines = 0
-        label.isSkeletonable = true
         return label
     }()
     
@@ -46,7 +44,6 @@ final class MOITDetailInfoView: UIView {
         super.init(frame: .zero)
         self.confifugre(viewModel: viewModel)
         self.configureLayouts()
-        self.flexRootView.showAnimatedGradientSkeleton()
     }
     
     @available(*, unavailable)
@@ -75,8 +72,6 @@ final class MOITDetailInfoView: UIView {
     }
     
     func confifugre(viewModel: MOITDetailInfoViewModel) {
-        self.hideSkeleton()
-        
         self.titleLabel.text = viewModel.title
         self.descriptionLabel.text = viewModel.description
         self.titleLabel.flex.markDirty()

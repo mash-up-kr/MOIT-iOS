@@ -14,6 +14,7 @@ import DesignSystem
 import FlexLayout
 import PinLayout
 import SkeletonView
+import Kingfisher
 
 protocol MOITDetailPresentableListener: AnyObject {
     func didTapInfoButton(type: MOITDetailInfoViewButtonType)
@@ -22,10 +23,11 @@ protocol MOITDetailPresentableListener: AnyObject {
     func didTapParticipantsButton()
     func didTapShareButton()
     func didTapPager(at index: Int)
+    func didRefresh()
 }
 
 struct MOITDetailViewModel {
-    let moitImage: String
+    let moitImage: String?
     let moitName: String
     let moitDescription: String?
     let moitInfos: MOITDetailInfosViewModel
@@ -34,12 +36,6 @@ struct MOITDetailViewModel {
 final class MOITDetailViewController: UIViewController,
                                       MOITDetailPresentable,
                                       MOITDetailViewControllable {
-    func update(infoViewModel: MOITDetailInfosViewModel) {
-        self.infoView.update(viewModel: infoViewModel)
-        self.infoView.flex.markDirty()
-        self.view.setNeedsLayout()
-    }
-    
     
     // MARK: - UIComponents
     
@@ -99,14 +95,14 @@ final class MOITDetailViewController: UIViewController,
         view.contentInsetAdjustmentBehavior = .never
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
-//        view.isSkeletonable = true
+        view.isSkeletonable = true
         return view
     }()
     
     private let contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-//        view.isSkeletonable = true
+        view.isSkeletonable = true
         return view
     }()
     
@@ -116,7 +112,7 @@ final class MOITDetailViewController: UIViewController,
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
-//        view.isSkeletonable = true
+        view.isSkeletonable = true
         return view
     }()
     
@@ -124,7 +120,7 @@ final class MOITDetailViewController: UIViewController,
         let label = UILabel()
         label.font = ResourceKitFontFamily.h3
         label.textColor = ResourceKitAsset.Color.gray900.color
-//        label.isSkeletonable = true
+        label.isSkeletonable = true
         return label
     }()
     
@@ -132,13 +128,14 @@ final class MOITDetailViewController: UIViewController,
         let label = UILabel()
         label.font = ResourceKitFontFamily.p3
         label.textColor = ResourceKitAsset.Color.gray500.color
-//        label.isSkeletonable = true
+        label.isSkeletonable = true
         return label
     }()
     
     private let infoView = MOITDetailInfosView()
     private let tapPageView = MOITTabPager(pages: ["출결", "벌금"])
     private let childViewControllerContainer = UIView()
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - Properties
     
@@ -149,18 +146,18 @@ final class MOITDetailViewController: UIViewController,
     
     override func loadView() {
         self.view = self.flexRootView
-//        self.flexRootView.isSkeletonable = true
-//        self.flexRootView.isUserInteractionDisabledWhenSkeletonIsActive = false
+        self.flexRootView.isSkeletonable = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
+        self.configureRefreshControl()
         self.configureLayouts()
         self.bind()
         self.listener?.viewDidLoad()
         
-//        self.flexRootView.showAnimatedGradientSkeleton()
+        self.flexRootView.showAnimatedGradientSkeleton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -183,6 +180,9 @@ final class MOITDetailViewController: UIViewController,
 // MARK: - Private functions
 extension MOITDetailViewController {
     
+    private func configureRefreshControl() {
+    }
+    
     private func configureLayouts() {
         
         self.flexRootView.flex
@@ -192,7 +192,6 @@ extension MOITDetailViewController {
             .define { flex in
                 flex.addItem(self.scrollView)
                     .position(.absolute)
-                    .backgroundColor(.cyan)
                     .grow(1)
                 
                 flex.addItem(self.navigationTopView)
@@ -238,7 +237,6 @@ extension MOITDetailViewController {
     self.contentView.flex
         .define { flex in
             flex.addItem(self.moitImageView)
-                .backgroundColor(.brown)
                 .height(285)
             
             flex.addItem(self.sheetContentView)
@@ -306,12 +304,7 @@ extension MOITDetailViewController {
             })
             .disposed(by: self.disposeBag)
         
-//        let didTapButton = self.infoView.rx.didTapButton
-//            .share(replay: 1)
-//            .debug("😲")
-        
         self.infoView.rx.didTapButton
-            .debug("😲")
             .bind(onNext: { [weak self] in
                 self?.listener?.didTapInfoButton(type: $0)
             })
@@ -343,7 +336,6 @@ extension MOITDetailViewController {
             }
             .distinctUntilChanged()
             .bind(onNext: { [weak self] isSticky in
-                print(isSticky, "isSticky")
                 guard let self = self else { return }
                 if isSticky {
                     self.sheetContentView.layer.cornerRadius = .zero
@@ -396,6 +388,8 @@ extension MOITDetailViewController {
     }
 }
 
+// MARK: - MOITDetailViewControllable
+
 extension MOITDetailViewController {
     func addChild(viewController: ViewControllable) {
         self.addChild(viewController.uiviewController)
@@ -407,11 +401,16 @@ extension MOITDetailViewController {
 // MARK: - MOITDetailPresentable
 
 extension MOITDetailViewController {
+    
     func configure(_ viewModel: MOITDetailViewModel) {
+        if let url = URL(string: viewModel.moitImage ?? "") {
+            self.moitImageView.kf.setImage(with: url)
+        } else {
+            self.moitImageView.image = ResourceKitAsset.Icon.studyBackground.image
+        }
         
-//        self.flexRootView.hideSkeleton()
-        print("👀", viewModel)
-//        self.moitImageView.image = viewModel.moitImage
+        self.flexRootView.hideSkeleton()
+        
         self.moitNameLabel.text = viewModel.moitName
         self.moitNameNavigationTitleLabel.text = viewModel.moitName
         self.navigationBar.flex.markDirty()
@@ -425,10 +424,17 @@ extension MOITDetailViewController {
         
         self.infoView.configure(viewModel: viewModel.moitInfos)
         
+        self.moitImageView.flex.markDirty()
         self.moitNameLabel.flex.markDirty()
         self.moitDescriptionLabel.flex.markDirty()
         self.infoView.flex.markDirty()
 
+        self.view.setNeedsLayout()
+    }
+    
+    func update(infoViewModel: MOITDetailInfosViewModel) {
+        self.infoView.update(viewModel: infoViewModel)
+        self.infoView.flex.markDirty()
         self.view.setNeedsLayout()
     }
 }

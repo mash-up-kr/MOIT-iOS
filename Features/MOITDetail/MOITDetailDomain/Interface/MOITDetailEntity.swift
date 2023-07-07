@@ -13,7 +13,7 @@ public struct MOITDetailEntity {
     public let moitName: String
     public let masterID: String
     public let description: String?
-    public let imageURL: String
+    public let imageURL: String?
     public let scheduleDescription: String
     public let ruleShortDescription: String
     public let ruleLongDescription: String
@@ -24,7 +24,7 @@ public struct MOITDetailEntity {
         moitName: String,
         masterID: String,
         description: String?,
-        imageURL: String,
+        imageURL: String?,
         scheduleDescription: String,
         ruleShortDescription: String,
         ruleLoneDescription: String,

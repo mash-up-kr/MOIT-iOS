@@ -8,6 +8,7 @@
 
 import RIBs
 import RxSwift
+import MOITDetailDomain
 
 protocol MOITDetailAttendanceRouting: ViewableRouting {
 }
@@ -27,14 +28,29 @@ final class MOITDetailAttendanceInteractor: PresentableInteractor<MOITDetailAtte
     weak var router: MOITDetailAttendanceRouting?
     weak var listener: MOITDetailAttendanceListener?
 
-    override init(presenter: MOITDetailAttendancePresentable) {
+    private let moitID: String
+    private let moitAllAttendanceUsecase: MOITAllAttendanceUsecase
+    
+    init(
+        presenter: MOITDetailAttendancePresentable,
+        moitID: String,
+        moitAllAttendanceUsecase: MOITAllAttendanceUsecase
+    ) {
+        self.moitID = moitID
+        self.moitAllAttendanceUsecase = moitAllAttendanceUsecase
         super.init(presenter: presenter)
         presenter.listener = self
     }
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        print(#function)
+        moitAllAttendanceUsecase.fetchAllAttendance(moitID: self.moitID)
+            .subscribe (onSuccess: { attendances in
+                print(attendances)
+            }, onError: { error in
+                print(error, "error를 잡았따.")
+            })
+            .disposeOnDeactivate(interactor: self)
     }
 
     override func willResignActive() {

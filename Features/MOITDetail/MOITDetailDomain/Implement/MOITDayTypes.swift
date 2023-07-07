@@ -9,13 +9,25 @@
 import Foundation
 
 enum DayOfWeeks: String {
-    case 월요일 = "MONDAY"
-    case 화요일 = "TUESDAY"
-    case 수요일 = "WEDNESDAY"
-    case 목요일 = "THURSDAY"
-    case 금요일 = "FRIDAY"
-    case 토요일 = "SATURDAY"
-    case 일요일 = "SUNDAY"
+    case MONDAY
+    case TUESDAY
+    case WEDNESDAY
+    case THURSDAY
+    case FRIDAY
+    case SATURDAY
+    case SUNDAY
+    
+    var toKor: String {
+        switch self {
+        case .MONDAY: return "월요일"
+        case .TUESDAY: return "화요일"
+        case .WEDNESDAY: return "수요일"
+        case .THURSDAY: return "목요일"
+        case .FRIDAY: return "금요일"
+        case .SATURDAY: return "토요일"
+        case .SUNDAY: return "일요일"
+        }
+    }
 }
 
 enum RepeatCycle: String {

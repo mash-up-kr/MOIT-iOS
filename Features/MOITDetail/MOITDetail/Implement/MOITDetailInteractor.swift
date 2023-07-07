@@ -14,7 +14,7 @@ import MOITDetailDomain
 import RxRelay
 
 protocol MOITDetailRouting: ViewableRouting {
-    func attachAttendance()
+    func attachAttendance(moitID: String)
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -35,7 +35,6 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
             guard let scheduleDescription,
                   let longRuleDescription,
                   let periodDescription else { return }
-            
             let infosViewModel = self.moitInfosViewModel(
                 buttonType: .unfold,
                 scheduleDescription: scheduleDescription,
@@ -47,7 +46,6 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
             guard let scheduleDescription,
                   let shortRuleDescription,
                   let periodDescription else { return }
-            
             let infosViewModel = self.moitInfosViewModel(
                 buttonType: .fold,
                 scheduleDescription: scheduleDescription,
@@ -90,11 +88,10 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     override func willResignActive() {
         super.willResignActive()
     }
-    
-    func viewDidLoad() {
-        self.detailUsecase.moitDetail(with: self.moitID)
+    private func fetchMOITDetail(with id: String) {
+        self.detailUsecase.moitDetail(with: id)
             .delay(
-                .seconds(1),
+                .seconds(3),
                 scheduler: MainScheduler.instance
             )
             .do(onSuccess: { [weak self] in
@@ -113,6 +110,13 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                 print(error)
             })
             .disposeOnDeactivate(interactor: self)
+    }
+    func viewDidLoad() {
+        self.fetchMOITDetail(with: self.moitID)
+    }
+    
+    func didRefresh() {
+        self.fetchMOITDetail(with: self.moitID)
     }
     
     private func isMOITMasterUser(_ moitMasterID: String) -> Bool {
@@ -163,7 +167,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     func viewDidLayoutSubViews() {
         self.tabTypes.forEach { type  in
             switch type {
-            case .attendance: self.router?.attachAttendance()
+            case .attendance: self.router?.attachAttendance(moitID: self.moitID)
                 // TODO: 혜린언니 TODO입니당 !
             case .fine: print("벌금 붙이는 작업 해야됨")
             }
