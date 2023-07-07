@@ -7,7 +7,10 @@
 //
 
 import Foundation
+
 import MOITNetwork
+import CSLogger
+
 import RxSwift
 
 public final class NetworkImpl: Network {
@@ -21,6 +24,8 @@ public final class NetworkImpl: Network {
 	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
+			
+			Logger.debug(urlRequest.url)
 
 			return Single.create { [weak self] single in
 				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
