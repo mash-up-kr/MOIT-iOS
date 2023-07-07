@@ -15,7 +15,9 @@ import ResourceKit
 import RIBs
 import RxSwift
 
-protocol ParticipationSuccessPresentableListener: AnyObject { }
+protocol ParticipationSuccessPresentableListener: AnyObject {
+	func dismissButtonDidTap()
+}
 
 public final class ParticipationSuccessViewController: UIViewController,
 													   ParticipationSuccessPresentable,
@@ -53,9 +55,12 @@ public final class ParticipationSuccessViewController: UIViewController,
 	
 	private let moitNameLabel: UILabel = {
 		let label = UILabel()
-		label.font = ResourceKitFontFamily.h3
-		label.textColor = ResourceKitAsset.Color.gray900.color
-		label.text = "전자군단"
+		label.setTextWithParagraphStyle(
+			text: "전자군단",
+			alignment: .center,
+			font: ResourceKitFontFamily.h3,
+			textColor: ResourceKitAsset.Color.gray900.color
+		)
 		return label
 	}()
 	
@@ -68,6 +73,10 @@ public final class ParticipationSuccessViewController: UIViewController,
 		backgroundColor: ResourceKitAsset.Color.blue800.color
 	)
 	
+// MARK: - property
+	
+	private let disposeBag = DisposeBag()
+	
 // MARK: - override
 	
 	override public func viewDidLoad() {
@@ -75,7 +84,9 @@ public final class ParticipationSuccessViewController: UIViewController,
 		
 		configureView()
 		configureLayout()
+		bind()
 		
+		// TODO: 추후 삭제
 		moitDetailCardView.configure(
 			viewModel: [
 				MOITDetailInfoViewModel(
@@ -125,18 +136,35 @@ public final class ParticipationSuccessViewController: UIViewController,
 				
 				flex.addItem()
 					.marginTop(33.4)
-					.alignItems(.center)
+					.marginHorizontal(20)
 					.grow(1)
 					.define { flex in
-						flex.addItem(titleLabel)
-						flex.addItem(profileImageView).marginTop(60)
-						flex.addItem(moitNameLabel).marginTop(10).height(36)
-						flex.addItem(moitDetailCardView).marginTop(60)
+						flex.addItem()
+							.alignItems(.center)
+							.define { flex in
+								flex.addItem(titleLabel)
+								flex.addItem(profileImageView).marginTop(60)
+								flex.addItem(moitNameLabel).marginTop(10).height(36)
+							}
+						
+						flex.addItem()
+							.define { flex in
+								flex.addItem(moitDetailCardView).marginTop(60)
+							}
 					}
 				
 				flex.addItem(showStudyDetailButton)
+					.marginBottom(36)
+					.marginHorizontal(20)
 			}
-		
+	}
+	
+	private func bind() {
+		closeButton.rx.tap
+			.bind(onNext: { [weak self] _ in
+				self?.listener?.dismissButtonDidTap()
+			})
+			.disposed(by: disposeBag)
 	}
 	
 // MARK: - public

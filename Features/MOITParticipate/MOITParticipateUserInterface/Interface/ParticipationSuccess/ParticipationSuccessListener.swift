@@ -8,4 +8,6 @@
 
 import RIBs
 
-public protocol ParticipationSuccessListener: AnyObject { }
+public protocol ParticipationSuccessListener: AnyObject {
+	func participationSuccessDismissButtonDidTap()
+}
