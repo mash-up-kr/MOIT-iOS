@@ -23,7 +23,7 @@ final class MOITListDemoViewController: UIViewController {
 		label.text = "0번 탭 됐음!"
 		return label
 	}()
-	
+
 	private let disposeBag = DisposeBag()
 	
 	override func viewDidLoad() {
@@ -71,7 +71,7 @@ final class MOITListDemoViewController: UIViewController {
 	private func allAttendList() -> MOITList {
 		MOITList(
 			type: .allAttend,
-			image: DesignSystemDemoAppAsset.profileImage.image,
+			imageType: .one,
 			title: "가나다라마바사아자차카타",
 			detail: "17:02",
 			chipType: .attend
@@ -93,6 +93,7 @@ final class MOITListDemoViewController: UIViewController {
 			title: "가나다라마바사아자차카타",
 			detail: "15,000원",
 			chipType: .late,
+			studyOrder: 3,
 			button: MOITButton(
 				type: .mini,
 				title: "납부 인증하기",
@@ -121,24 +122,25 @@ final class MOITListDemoViewController: UIViewController {
 			type: .sendMoney,
 			title: "가나다라마바사아자차카타",
 			detail: "15,000원",
-			chipType: .late
+			chipType: .late,
+			studyOrder: 3
 		)
 	}
 	
 	private func myMoneyList() -> MOITList {
 		MOITList(
 			type: .myMoney,
-			title: "3차스터디",
 			detail: "2023.04.21 17:02",
 			chipType: .late,
-			fine: "+ 12,000원"
+			studyOrder: 3,
+			fine: 12000
 		)
 	}
 	
 	private func peopleList() -> MOITList {
 		MOITList(
 			type: .people,
-			image:DesignSystemDemoAppAsset.profileImage.image,
+			imageType: .one,
 			title: "가나다라마바사아자차카타"
 		)
 	}

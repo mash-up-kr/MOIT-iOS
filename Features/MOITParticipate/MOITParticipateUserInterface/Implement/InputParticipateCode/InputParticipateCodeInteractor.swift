@@ -20,14 +20,18 @@ protocol InputParticipateCodePresentable: Presentable {
     var listener: InputParticipateCodePresentableListener? { get set }
 }
 
-final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipateCodePresentable>,
-											InputParticipateCodeInteractable,
-											InputParticipateCodePresentableListener {
+final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipateCodePresentable>, InputParticipateCodeInteractable, InputParticipateCodePresentableListener {
 
     weak var router: InputParticipateCodeRouting?
     weak var listener: InputParticipateCodeListener?
+	
+	private let dependency: InputParticipateCodeDependency
 
-    override init(presenter: InputParticipateCodePresentable) {
+    init(
+		presenter: InputParticipateCodePresentable,
+		dependency: InputParticipateCodeDependency
+	) {
+		self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -40,7 +44,10 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
         super.willResignActive()
     }
 	
-	func joinMOITButtonDidTap(code: String) {
-		router?.attachPariticipationSuccess()
+	func completeButtonDidTap(with code: String) {
+		debugPrint(code)
+//		dependency.participateUseCase.execute(
+//			with: .init(userId: 0, invitationCode: code)
+//		)
 	}
 }

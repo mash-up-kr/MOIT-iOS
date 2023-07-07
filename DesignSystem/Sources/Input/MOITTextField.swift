@@ -17,14 +17,23 @@ import RxSwift
 
 public final class MOITTextField: UIView {
 
+// MARK: - UI
+	
 	private let flexRootView = UIView()
-	private var titleLabel: UILabel = {
-		let label = UILabel()
-		label.textColor = ResourceKitAsset.Color.gray700.color
-		label.font = ResourceKitFontFamily.p2
-		return label
+	
+	private lazy var titleLabel: UILabel? = {
+		if let title {
+			let label = UILabel()
+			label.textColor = ResourceKitAsset.Color.gray700.color
+			label.font = ResourceKitFontFamily.p2
+			label.text = title
+			return label
+		}
+		
+		return nil
 	}()
-	public var textField: UITextField = {
+	
+	fileprivate var textField: UITextField = {
 		let textField = UITextField()
 		textField.layer.cornerRadius = 12
 		textField.clipsToBounds = true
@@ -37,14 +46,17 @@ public final class MOITTextField: UIView {
 		textField.addHorizontalPadding()
 		return textField
 	}()
+	
+// MARK: - property
 
 	private let disposeBag = DisposeBag()
-	private let title: String
+	private let title: String?
 	private let placeHolder: String
 
 // MARK: - init
+	
 	public init(
-		title: String,
+		title: String?,
 		placeHolder: String
 	) {
 		self.title = title
@@ -69,23 +81,21 @@ public final class MOITTextField: UIView {
 	}
 
 // MARK: - private func
+
 	private func configureLayout() {
 		self.addSubview(flexRootView)
 
 		flexRootView.flex
 			.direction(.column)
 			.define { flex in
-				flex.addItem(titleLabel)
-					.height(22)
 				
-				flex.addItem(textField)
-					.height(53)
-					.marginTop(10)
+				flex.addOptionalItem(titleLabel, height: 22, marginBottom: 10)
+				
+				flex.addItem(textField).height(53)
 		 }
 	}
 
 	private func configureComponent() {
-		titleLabel.text = title
 		textField.attributedPlaceholder = NSAttributedString(
 			string: placeHolder,
 			attributes: [
@@ -93,6 +103,16 @@ public final class MOITTextField: UIView {
 				NSAttributedString.Key.font: ResourceKitFontFamily.p1
 			]
 		)
+	}
+	
+// MARK: - public
+	
+	public func textFieldBecomeFirstResponse() {
+		textField.becomeFirstResponder()
+	}
+	
+	public var text: String {
+		textField.text ?? ""
 	}
 }
 

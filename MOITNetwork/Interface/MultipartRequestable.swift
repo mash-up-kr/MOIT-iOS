@@ -12,8 +12,8 @@ public protocol MultipartRequestable: Requestable {
 	var formData: MultipartFormData { get }
 }
 
-extension MultipartRequestable {
-	public var method: HTTPMethod {
+public extension MultipartRequestable {
+	var method: HTTPMethod {
 		.post
 	}
 

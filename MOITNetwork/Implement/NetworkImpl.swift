@@ -7,7 +7,10 @@
 //
 
 import Foundation
+
 import MOITNetwork
+import CSLogger
+
 import RxSwift
 
 public final class NetworkImpl: Network {
@@ -21,21 +24,18 @@ public final class NetworkImpl: Network {
 	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
+			
+			Logger.debug(urlRequest.url)
 
 			return Single.create { [weak self] single in
 				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
 					guard let self else { return }
 
-					let result = self.checkError(with: data, response, error)
+					let result = self.checkError(with: data, response, error, E.Response.self)
 
 					switch result {
-					case .success(let data):
-						do {
-							let response = try JSONDecoder().decode(E.Response.self, from: data)
-							single(.success(response))
-						} catch {
-							single(.failure(NetworkError.decodingError))
-						}
+					case .success(let response):
+						single(.success(response))
 					case .failure(let error):
 						single(.failure(error))
 					}
@@ -47,11 +47,12 @@ public final class NetworkImpl: Network {
 		}
 	}
 
-	private func checkError(
+	private func checkError<M: Decodable>(
 		with data: Data?,
 		_ response: URLResponse?,
-		_ error: Error?
-	) -> Result<Data, Error> {
+		_ error: Error?,
+		_ model: M.Type
+	) -> Result<M, Error> {
 		if let error = error {
 			return .failure(error)
 		}
@@ -59,16 +60,22 @@ public final class NetworkImpl: Network {
 		guard let response = response as? HTTPURLResponse else {
 			return .failure(NetworkError.unknownError)
 		}
-
-		guard (200...299).contains(response.statusCode) else {
-			let serverError = ServerError(fromRawValue: response.statusCode)
-			return .failure(NetworkError.serverError(serverError))
-		}
-
+		
 		guard let data = data else {
 			return .failure(NetworkError.emptyData)
 		}
 
-		return .success(data)
+		do {
+			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
+			
+			if responseModel.success, let data = responseModel.data {
+				return .success(data)
+			} else {
+				let serverError = ServerError(fromRawValue: response.statusCode)
+				return .failure(NetworkError.serverError(serverError))
+			}
+		} catch {
+			return .failure(NetworkError.decodingError)
+		}
 	}
 }

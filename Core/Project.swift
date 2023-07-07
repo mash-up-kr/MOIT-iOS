@@ -9,16 +9,22 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import UtilityPlugin
 
-let project = Project(name: "Core",
-                      targets: [
-                        Project.makeTarget(
-                            name: "CSLogger",
-                            dependencies: [
-                            ]
-                        ),
-						Project.makeTarget(
-							name: "MOITFoundation",
-							dependencies: [
-							]
-						),
-                      ])
+let project = Project(
+    name: "Core",
+    targets: [
+        Project.makeTarget(
+            name: "CSLogger",
+            dependencies: []
+        ),
+        Project.makeTarget(
+            name: "Utils",
+            dependencies: [
+                .DesignSystem,
+                .ResourceKit,
+                
+                .ThirdParty.PinLayout,
+                .ThirdParty.FlexLayout,
+            ]
+        ),
+    ]
+)

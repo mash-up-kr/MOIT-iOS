@@ -13,7 +13,7 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITParticipateUserInterface",
     platform: .iOS,
-    iOSTargetVersion: "15.0.0",
+    iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
     ],
     implementDependencies: [
@@ -22,10 +22,18 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ThirdParty.FlexLayout,
 		.ThirdParty.RxCocoa,
 		.ThirdParty.RxSwift,
-		.Core.MOITFoundation,
+		
+		.Core.Utils,
 		.ResourceKit,
-		.DesignSystem
+		.DesignSystem,
+		
+		.Feature.MOITParticipate.Domain.Interface,
+		.Feature.MOITParticipate.Data.Interface,
     ],
+	demoAppDependencies: [
+		.Feature.MOITParticipate.Domain.Implement,
+		.Feature.MOITParticipate.Data.Implement,
+	],
     isUserInterface: true
 )
 

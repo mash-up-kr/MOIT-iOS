@@ -10,13 +10,14 @@ import UIKit
 
 import DesignSystem
 import ResourceKit
+import Utils
 
 import RIBs
 import RxCocoa
 import RxSwift
 
 protocol InputParticipateCodePresentableListener: AnyObject {
-	func joinMOITButtonDidTap(code: String)
+	func completeButtonDidTap(with code: String)
 }
 
 public final class InputParticipateCodeViewController: UIViewController,
@@ -44,13 +45,12 @@ public final class InputParticipateCodeViewController: UIViewController,
 		return label
 	}()
 	
-	// TODO: TextField title 옵셔널로 수정 필요
 	private let codeTextField = MOITTextField(
-		title: "",
+		title: nil,
 		placeHolder: StringResource.placeHolder.value
 	)
 	
-	private let joinMOITButton: UIButton = {
+	private let completeButton: UIButton = {
 		let button = UIButton()
 		button.setTitle(StringResource.buttonTitle.value, for: .normal)
 		
@@ -116,13 +116,30 @@ public final class InputParticipateCodeViewController: UIViewController,
 			}
 				.grow(1)
 			
-			flex.addItem(joinMOITButton).height(56)
+			flex.addItem(completeButton).height(56)
 		}
 	}
 	
+	private func bind() {
+		codeTextField.rx.text
+			.map { $0.isEmpty }
+			.bind(onNext: { [weak self] isEmpty in
+				self?.completeButton.isEnabled = !isEmpty
+				self?.completeButton.backgroundColor = isEmpty ? CTAButtonResource.disabled.backgroundColor : CTAButtonResource.normal.backgroundColor
+			})
+			.disposed(by: disposeBag)
+		
+		completeButton.rx.tap
+			.bind(onNext: { [weak self] _ in
+				guard let self else { return }
+				
+				self.listener?.completeButtonDidTap(with: self.codeTextField.text)
+			})
+			.disposed(by: disposeBag)
+	}
+	
 	private func activateFirstResponder() {
-		// ???: 이것보다 좋은 방법이 없을까...?
-		codeTextField.textField.becomeFirstResponder()
+		codeTextField.textFieldBecomeFirstResponse()
 	}
 	
 	private func addKeyboardNotification() {
@@ -142,34 +159,14 @@ public final class InputParticipateCodeViewController: UIViewController,
 		)
 	}
 	
-	private func bind() {
-		codeTextField.rx.text
-			.map { $0.isEmpty }
-			.subscribe(
-				onNext: { [weak self] isEmpty in
-					self?.joinMOITButton.isEnabled = !isEmpty
-					self?.joinMOITButton.backgroundColor = isEmpty ? CTAButtonResource.disabled.backgroundColor : CTAButtonResource.normal.backgroundColor
-				}
-			)
-			.disposed(by: disposeBag)
-		
-		joinMOITButton.rx.tap
-			.subscribe(
-				onNext: { [weak self] _ in
-					self?.listener?.joinMOITButtonDidTap(code: "")
-				}
-			)
-			.disposed(by: disposeBag)
-	}
-	
 // MARK: - objc
 	
 	@objc private func keyboardWillShow(_ notification: Notification) {
 		if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 			let keyboardHeight = keyboardFrame.cgRectValue.height - UIDevice.safeAreaBottomPadding
 
-			joinMOITButton.flex.marginBottom(keyboardHeight)
-			joinMOITButton.flex.markDirty()
+			completeButton.flex.marginBottom(keyboardHeight)
+			completeButton.flex.markDirty()
 			view.setNeedsLayout()
 		}
 	}
@@ -217,17 +214,5 @@ extension InputParticipateCodeViewController {
 				return ResourceKitAsset.Color.white.color
 			}
 		}
-	}
-}
-
-extension UIDevice {
-	static var safeAreaBottomPadding: CGFloat {
-		guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-		   let window = windowScene.windows.first else {
-			return 0
-		}
-		
-		let bottomPadding = window.safeAreaInsets.bottom
-		return bottomPadding
 	}
 }

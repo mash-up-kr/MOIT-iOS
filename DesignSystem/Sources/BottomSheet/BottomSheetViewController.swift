@@ -33,10 +33,6 @@ open class BottomSheetViewController: UIViewController {
         self.view.addSubview(self.flexRootView)
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
-        self.contentView.pin.top(20)
-            .left()
-            .right()
-            .bottom()
     }
     
     public init(contentView: UIView) {
@@ -65,23 +61,22 @@ extension BottomSheetViewController {
     
     private func configureLayouts() {
         self.view.addSubview(self.flexRootView)
-        self.dimmedView.backgroundColor = UIColor(red: 24/255, green: 24/255, blue: 24/255, alpha: 0.5)
+        self.flexRootView.backgroundColor = UIColor(red: 24/255, green: 24/255, blue: 24/255, alpha: 0.5)
         
-        self.flexRootView.backgroundColor = .clear
         self.flexRootView.flex
+//            .backgroundColor(.clear)
             .define { flex in
-                flex.addItem(self.dimmedView)
+                flex.addItem()
                     .define { flex in
-                        flex.addItem()
+                        flex.addItem(dimmedView)
                             .grow(1)
-                        
-                        flex.addItem(self.contentRootView)
+                
+                        flex.addItem(contentRootView)
+                            .paddingVertical(20)
+                            .paddingTop(20)
                             .define { flex in
-                                flex.addItem(self.contentView)
-                                    .position(.absolute)
+                                flex.addItem(contentView)
                             }
-                            .grow(1)
-                            .marginBottom(0)
                     }
                     .grow(1)
             }

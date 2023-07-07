@@ -21,6 +21,11 @@ final class MOITTextFieldDemoViewController: UIViewController {
 		placeHolder: "비어있는 텍스트 필드 테스트입니다"
 	)
 	private let label = UILabel()
+	
+	private let noTitleTextField = MOITTextField(
+		title: nil,
+		placeHolder: "제목이 없는 텍스트 필드 테스트입니다."
+	)
 
 	private let disposeBag = DisposeBag()
 
@@ -49,6 +54,7 @@ final class MOITTextFieldDemoViewController: UIViewController {
 			.define { flex in
 				flex.addItem(emptyTextField)
 				flex.addItem(label).height(20).marginTop(30)
+				flex.addItem(noTitleTextField).marginTop(30)
 			}
 	}
 
