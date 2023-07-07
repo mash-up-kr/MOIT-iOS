@@ -35,11 +35,7 @@ let project = Project(
                             "fetch",
                             "remote-notification",
                             "remove-notification"
-                        ],
-						"LSApplicationQueriesSchemes": [
-							"kakaokompassauth",
-							"kakaolink"
-						]
+                        ]
                     ]
             ),
             sources: ["Sources/**"],
@@ -50,9 +46,6 @@ let project = Project(
             dependencies: [
                 .ThirdParty.RIBs,
                 .ThirdParty.SkeletonView,
-				.ThirdParty.RxKakaoSDKCommon,
-				.ThirdParty.KakaoSDKAuth,
-				.ThirdParty.RxKakaoSDKAuth
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),

@@ -9,7 +9,6 @@
 import UIKit
 
 import RIBs
-import RxKakaoSDKCommon
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -25,8 +24,6 @@ final class AppDelegate: UIResponder,
         self.window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = self.window
         else { return false }
-		
-		RxKakaoSDK.initSDK(appKey: "${NATIVE_APP_KEY}")
         
         let router = RootBuilder(dependency: EmptyComponent()).build()
         self.launchRouter = router

@@ -68,7 +68,8 @@ public extension TargetDependency.Feature.StudyList {
         let postfix: String = isInterface ? "" : "Impl"
         return .project(target: "\(folderName)\(name)\(postfix)",
                         path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
-    }}
+    }
+}
 
 public extension TargetDependency.Feature.StudyList.UserInterface {
     static let Interface = TargetDependency.Feature.StudyList.project(name: "UserInterface", isInterface: true)
@@ -92,7 +93,8 @@ public extension TargetDependency.Feature.SignUp {
         let postfix: String = isInterface ? "" : "Impl"
         return .project(target: "\(folderName)\(name)\(postfix)",
                         path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
-    }}
+    }
+}
 
 public extension TargetDependency.Feature.SignUp.UserInterface {
     static let Interface = TargetDependency.Feature.SignUp.project(name: "UserInterface", isInterface: true)
@@ -116,7 +118,8 @@ public extension TargetDependency.Feature.MOITParticipate {
 		let postfix: String = isInterface ? "" : "Impl"
 		return .project(target: "\(folderName)\(name)\(postfix)",
 						path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
-	}}
+	}
+}
 
 public extension TargetDependency.Feature.MOITParticipate.UserInterface {
 	static let Interface = TargetDependency.Feature.MOITParticipate.project(name: "UserInterface", isInterface: true)
@@ -162,12 +165,6 @@ public extension TargetDependency.ThirdParty {
     static let Quick = TargetDependency.external(name: "Quick")
     static let Nimble = TargetDependency.external(name: "Nimble")
     static let SkeletonView = TargetDependency.external(name: "SkeletonView")
-	static let RxKakaoSDKCommon = TargetDependency.external(name: "RxKakaoSDKCommon")
-	static let RxKakaoSDKAuth = TargetDependency.external(name: "RxKakaoSDKAuth")
-	static let RxKakaoSDKUser = TargetDependency.external(name: "RxKakaoSDKUser")
-	static let KakaoSDKCommon = TargetDependency.external(name: "KakaoSDKCommon")
-	static let KakaoSDKAuth = TargetDependency.external(name: "KakaoSDKAuth")
-	static let KakaoSDKUser = TargetDependency.external(name: "KakaoSDKUser")
 }
 
 public extension TargetDependency.ThirdParty {
