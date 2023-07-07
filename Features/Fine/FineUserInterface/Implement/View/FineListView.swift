@@ -9,11 +9,28 @@
 import UIKit
 
 import ResourceKit
+import Utils
 
 import FlexLayout
 import PinLayout
 
+enum FineListViewType {
+	case defaulter
+	case paymentList
+	
+	var emptyText: String {
+		switch self {
+		case .defaulter:
+			return "아직 벌금 미납자가 없어요"
+		case .paymentList:
+			return "벌금 내역이 없어요"
+		}
+	}
+}
+
 final class FineListView: UIView {
+	
+// MARK: - UI
 	
 	private let scrollView: UIScrollView = {
 		let scrollView = UIScrollView()
@@ -24,17 +41,26 @@ final class FineListView: UIView {
 	
 	private let contentView = UIView()
 	
-	private let paymentListEmtpyLabel: UILabel = {
+	private lazy var emptyLabel: UILabel = {
 		let label = UILabel()
-		label.text = "아직 벌금 미납자가 없어요"
-		label.font = ResourceKitFontFamily.p3
-		label.textColor = ResourceKitAsset.Color.gray600.color
+		label.setTextWithParagraphStyle(
+			text: type.emptyText,
+			alignment: .center,
+			font: ResourceKitFontFamily.p3,
+			textColor: ResourceKitAsset.Color.gray600.color
+		)
 		return label
 	}()
 	
-	init() {
+// MARK: - property
+	
+	private let type: FineListViewType
+	
+	init(
+		type: FineListViewType
+	) {
+		self.type = type
 		super.init(frame: .zero)
-		
 		configureLayout()
 	}
 	
@@ -44,48 +70,36 @@ final class FineListView: UIView {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		
-
+	
 		scrollView.pin.all()
 		contentView.pin.top().horizontally()
 		contentView.flex.layout(mode: .adjustHeight)
 		scrollView.contentSize = contentView.frame.size
-//		scrollView.flex.layout()
 	}
 	
 	private func configureLayout() {
-		scrollView.backgroundColor = .blue
-		contentView.backgroundColor = .green
 		addSubview(scrollView)
 		scrollView.addSubview(contentView)
-		
-//		scrollView.flex.define { flex in
-//			flex.addItem(contentView).grow(1)
-//		}
 	}
 	
 	func configureView(with fineItems: [FineList]) {
-		contentView.flex
-//			.justifyContent(.center)
-//			.alignItems(.center)
-			.define { flex in
-//				flex.addItem(defaulterListEmptyLabel)
-				for (index, list) in fineItems.enumerated() {
-					if index == 0 {
-						flex.addItem(list)
-					} else {
-						flex.addItem(list).marginTop(20)
+		if fineItems.isEmpty {
+			contentView.flex
+				.alignSelf(.center)
+				.define { flex in
+					flex.addItem(emptyLabel).marginVertical(43)
+				}
+		} else {
+			contentView.flex
+				.define { flex in
+					for (index, list) in fineItems.enumerated() {
+						if index == 0 {
+							flex.addItem(list)
+						} else {
+							flex.addItem(list).marginTop(20)
+						}
 					}
 				}
-			}
-	}
-	
-	func configureEmptyView() {
-		contentView.flex
-			.justifyContent(.center)
-			.alignItems(.center)
-			.define { flex in
-				flex.addItem(paymentListEmtpyLabel)
-			}
+		}
 	}
 }

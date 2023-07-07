@@ -34,10 +34,10 @@ final class FineList: MOITList {
 	
 	private let button = MOITButton(
 		type: .mini,
-	  title: "납부 인증하기",
-	  titleColor: ResourceKitAsset.Color.white.color,
-	  backgroundColor: ResourceKitAsset.Color.black.color
-  )
+		title: "납부 인증하기",
+		titleColor: ResourceKitAsset.Color.white.color,
+		backgroundColor: ResourceKitAsset.Color.black.color
+	)
 	
 	init(fineItem: FineItem) {
 		self.fineItem = fineItem
@@ -72,32 +72,17 @@ final class FineListScrollView: UIView {
 	}()
 	
 	private let contentView = UIView()
-	private let defaulterListView = FineListView()
-	private let paymentListView = FineListView()
+	private let defaulterListView = FineListView(type: .defaulter)
+	private let paymentListView = FineListView(type: .paymentList)
 	
 	private let segmentPager = MOITSegmentPager(
 		pages: [StringResource.defaulter.value, StringResource.paymentList.value]
 	)
 
-	private let paymentListEmtpyLabel: UILabel = {
-		let label = UILabel()
-		label.text = StringResource.paymentEmpty.value
-		label.font = ResourceKitFontFamily.p3
-		label.textColor = ResourceKitAsset.Color.gray600.color
-		return label
-	}()
-	
-	private let defaulterListEmptyLabel: UILabel = {
-		let label = UILabel()
-		label.text = StringResource.defaulterEmpty.value
-		label.font = ResourceKitFontFamily.p3
-		label.textColor = ResourceKitAsset.Color.gray600.color
-		return label
-	}()
-	
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
+	// TODO: 추후 삭제
 	fileprivate let myDefaulterList = [
 		FineList(
 			fineItem: FineItem(
@@ -158,7 +143,8 @@ final class FineListScrollView: UIView {
 				isApproved: false,
 				approveAt: ""
 			)
-		),FineList(
+		),
+		FineList(
 			fineItem: FineItem(
 				id: 0,
 				fineAmount: 20000,
@@ -287,8 +273,6 @@ final class FineListScrollView: UIView {
 // MARK: - private
 	
 	private func configureView() {
-		scrollView.backgroundColor = .systemPink
-		
 		addSubview(flexRootContainer)
 		
 		flexRootContainer.flex
@@ -309,28 +293,9 @@ final class FineListScrollView: UIView {
 				flex.addItem(paymentListView).width(UIScreen.main.bounds.width)
 			}
 		
+		// TODO: 추후 삭제
 		defaulterListView.configureView(with: myDefaulterList)
-
-//		defaulterListView.flex
-////			.justifyContent(.center)
-////			.alignItems(.center)
-//			.define { flex in
-////				flex.addItem(defaulterListEmptyLabel)
-//				for (index, list) in myDefaulterList.enumerated() {
-//					if index == 0 {
-//						flex.addItem(list)
-//					} else {
-//						flex.addItem(list).marginTop(20)
-//					}
-//				}
-//			}
-//
-//		paymentListView.flex
-//			.justifyContent(.center)
-//			.alignItems(.center)
-//			.define { flex in
-//				flex.addItem(paymentListEmtpyLabel)
-//			}
+		paymentListView.configureView(with: [])
 	}
 	
 	private func bind() {
@@ -348,8 +313,6 @@ final class FineListScrollView: UIView {
 
 extension FineListScrollView {
 	enum StringResource {
-		case paymentEmpty
-		case defaulterEmpty
 		case defaulter
 		case paymentList
 		
@@ -359,25 +322,8 @@ extension FineListScrollView {
 				return "벌금미납자"
 			case .paymentList:
 				return "납부 내역"
-			case .paymentEmpty:
-				return "벌금 내역이 없어요"
-			case .defaulterEmpty:
-				return "아직 벌금 미납자가 없어요"
 			}
 		}
-	}
-}
-
-// TODO: 추후 Utils로 이동
-extension UIScrollView {
-	func scrollToRight() {
-		let rightOffset = CGPoint(x: contentInset.right + bounds.width, y: 0)
-		setContentOffset(rightOffset, animated: true)
-	}
-	
-	func scrollToLeft() {
-		let leftOffset = CGPoint(x: -contentInset.left, y: 0)
-		setContentOffset(leftOffset, animated: true)
 	}
 }
 
@@ -386,7 +332,7 @@ extension Reactive where Base: FineListScrollView {
 	
 	var tappedListItem: Observable<FineItem> {
 		
-		let observables = base.myDefaulterList.enumerated().map { index, list in
+		let observables = base.myDefaulterList.map { list in
 			list.rx.tap
 				.map { _ in list.item }
 		}

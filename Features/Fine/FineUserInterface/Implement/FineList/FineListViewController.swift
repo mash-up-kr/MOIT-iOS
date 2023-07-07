@@ -28,24 +28,23 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	
 	private let fineTitleLabel: UILabel = {
 		let label = UILabel()
-		label.text = StringResource.title.value
-		label.font = ResourceKitFontFamily.h5
-		label.textColor = ResourceKitAsset.Color.gray700.color
+		label.setTextWithParagraphStyle(
+			text: StringResource.title.value,
+			font: ResourceKitFontFamily.h5,
+			textColor: ResourceKitAsset.Color.gray700.color
+		)
 		return label
 	}()
 	
-	private let fineAmountLabel: UILabel = {
-		let label = UILabel()
-		label.font = ResourceKitFontFamily.h2
-		label.textColor = ResourceKitAsset.Color.gray900.color
-		return label
-	}()
+	private let fineAmountLabel = UILabel()
 	
 	private let fineUnitLabel: UILabel = {
 		let label = UILabel()
-		label.text = StringResource.unit.value
-		label.font = ResourceKitFontFamily.h3
-		label.textColor = ResourceKitAsset.Color.gray900.color
+		label.setTextWithParagraphStyle(
+			text: StringResource.unit.value,
+			font: ResourceKitFontFamily.h3,
+			textColor: ResourceKitAsset.Color.gray900.color
+		)
 		return label
 	}()
 
@@ -80,12 +79,16 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		view.addSubview(flexRootContainer)
 		
 		// TODO: 추후 삭제
-		fineAmountLabel.text = "50,000"
+		fineAmountLabel.setTextWithParagraphStyle(
+			text: "50,000",
+			font: ResourceKitFontFamily.h2,
+			textColor: ResourceKitAsset.Color.gray900.color
+		)
 	}
 	
 	private func configureLayout() {
 		flexRootContainer.flex.define { flex in
-			flex.addItem(fineTitleLabel).marginTop(20)
+			flex.addItem(fineTitleLabel).marginTop(300)
 			
 			flex.addItem().direction(.row).define { flex in
 				flex.addItem(fineAmountLabel)
