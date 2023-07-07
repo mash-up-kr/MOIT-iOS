@@ -6,10 +6,10 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import MOITParticipateUserInterface
+
 import RIBs
 import RxSwift
-
-import MOITParticipateUserInterface
 
 protocol InputParticipateCodeRouting: ViewableRouting {
 	func attachPariticipationSuccess()

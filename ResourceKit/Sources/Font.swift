@@ -32,4 +32,3 @@ extension ResourceKitFontFamily {
 		else { return 0 }
 	}
 }
-
