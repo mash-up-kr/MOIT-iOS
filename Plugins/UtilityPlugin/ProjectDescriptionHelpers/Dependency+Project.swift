@@ -3,31 +3,32 @@ import ProjectDescription
 
 // MARK: Project
 extension TargetDependency {
-    public struct Feature {
-        
-        public struct StudyList {
-            public struct Data {}
-            public struct Domain {}
-            public struct UserInterface {}
-        }
-        
-        public struct SignUp {
-            public struct Data {}
-            public struct Domain {}
-            public struct UserInterface {}
-        }
-      
-        public struct MOITShare {
-            public struct Data {}
-            public struct Domain {}
-            public struct UserInterface {}
-        }
-      
+	public struct Feature {
+		
+		public struct StudyList {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
+		public struct SignUp {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
+		public struct MOITShare {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
 		public struct MOITParticipate {
 			public struct Data {}
 			public struct Domain {}
 			public struct UserInterface {}
 		}
+	}
     
     public struct Core {
         
