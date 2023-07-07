@@ -35,7 +35,7 @@ let project = Project(
                             "fetch",
                             "remote-notification",
                             "remove-notification"
-                        ],
+                        ]
                     ]
             ),
             sources: ["Sources/**"],

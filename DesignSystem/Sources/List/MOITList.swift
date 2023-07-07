@@ -18,6 +18,8 @@ open class MOITList: UIView {
 	
 // MARK: - UI
 	
+// MARK: - UI
+	
 	private let flexRootView = UIView()
 	
 	private lazy var profileImageView: MOITProfileView? = {
