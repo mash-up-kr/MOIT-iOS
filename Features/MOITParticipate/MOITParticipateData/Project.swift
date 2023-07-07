@@ -1,9 +1,9 @@
 //
-//  MOITShareAppDelegate.swift
+//  MOITParticipateAppDelegate.swift
 //
-//  MOITShare
+//  MOITParticipate
 //
-//  Created by 송서영
+//  Created by hyerin
 //
 
 import ProjectDescription
@@ -11,12 +11,16 @@ import ProjectDescriptionHelpers
 import UtilityPlugin
 
 let project = Project.invertedDualTargetProject(
-    name: "MOITShareData",
+    name: "MOITParticipateData",
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
+		.MOITNetwork.Interface,
+		.ThirdParty.RxSwift
     ],
     implementDependencies: [
+		.MOITNetwork.Interface,
+		.ThirdParty.RxSwift
     ]
 )
 

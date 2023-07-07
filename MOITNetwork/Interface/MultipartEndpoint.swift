@@ -1,19 +1,18 @@
 //
 //  MultipartEndpoint.swift
-//  MOITNetworkImpl
+//  MOITNetwork
 //
 //  Created by 최혜린 on 2023/05/25.
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
 import Foundation
-import MOITNetwork
 
 public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 
 	public typealias Response = R
 
-	public let baseURL: URL
+	public let baseURL: URL?
 	public let path: String
 	public let method: HTTPMethod
 	public let headers: HTTPHeaders
@@ -21,7 +20,7 @@ public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 	public let formData: MultipartFormData
 
 	public init(
-		baseURL: URL,
+		baseURL: URL? = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/"),
 		path: String,
 		method: HTTPMethod,
 		headers: HTTPHeaders,
