@@ -36,8 +36,8 @@ public final class ParticipationSuccessViewController: UIViewController,
 	private let titleLabel: UILabel = {
 		let label = UILabel()
 		label.numberOfLines = 0
-		label.attributedText = StringResource.title.value.addParagraphStyle(
-			lineSpacing: 10,
+		label.setTextWithParagraphStyle(
+			text: StringResource.title.value,
 			alignment: .center,
 			font: ResourceKitFontFamily.h4,
 			textColor: ResourceKitAsset.Color.gray900.color
@@ -46,7 +46,7 @@ public final class ParticipationSuccessViewController: UIViewController,
 	}()
 	
 	private let profileImageView = MOITProfileView(
-		urlString: "https://github.com/hope1053.png",
+		profileImageType: .one,
 		profileType: .large,
 		addButton: false
 	)
