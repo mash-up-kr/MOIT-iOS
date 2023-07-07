@@ -13,17 +13,17 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "FineUserInterface",
     platform: .iOS,
-    iOSTargetVersion: "15.0.0",
+    iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
 		.ThirdParty.RIBs
     ],
     implementDependencies: [
-		.ThirdParty.RIBs,
 		.ThirdParty.FlexLayout,
 		.ThirdParty.PinLayout,
 		.ThirdParty.RxCocoa,
 		.ThirdParty.RxSwift,
 		.ThirdParty.Kingfisher,
+		.Core.Utils,
 		.DesignSystem,
 		.ResourceKit
     ],
