@@ -16,7 +16,9 @@ import RxSwift
 import FlexLayout
 import PinLayout
 
-protocol FineListPresentableListener: AnyObject { }
+protocol FineListPresentableListener: AnyObject {
+	func fineListDidTap(with fineItem: FineItem)
+}
 
 final class FineListViewController: UIViewController, FineListPresentable, FineListViewControllable {
 
@@ -52,6 +54,7 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 // MARK: - property
 	
     weak var listener: FineListPresentableListener?
+	private let disposeBag = DisposeBag()
 	
 // MARK: - override
 	
@@ -60,6 +63,7 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		
 		configureView()
 		configureLayout()
+		bind()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -90,6 +94,14 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 
 			flex.addItem(fineListScrollView).marginTop(20).grow(1)
 		}
+	}
+	
+	private func bind() {
+		fineListScrollView.rx.tappedListItem
+			.bind(onNext: { [weak self] item in
+				self?.listener?.fineListDidTap(with: item)
+			})
+			.disposed(by: disposeBag)
 	}
 }
 

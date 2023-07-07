@@ -12,7 +12,7 @@ import FineUserInterface
 
 public protocol FineListDependency: Dependency { }
 
-final class FineListComponent: Component<FineListDependency> { }
+final class FineListComponent: Component<FineListDependency>, AuthorizePaymentDependency { }
 
 // MARK: - Builder
 
@@ -27,6 +27,12 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
         let viewController = FineListViewController()
         let interactor = FineListInteractor(presenter: viewController)
         interactor.listener = listener
-        return FineListRouter(interactor: interactor, viewController: viewController)
+		
+		let authorizePaymentBuildable = AuthorizePaymentBuilder(dependency: component)
+		return FineListRouter(
+			authorizePaymentBuildable: authorizePaymentBuildable,
+			interactor: interactor,
+			viewController: viewController
+		)
     }
 }

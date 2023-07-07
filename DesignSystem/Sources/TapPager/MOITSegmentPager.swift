@@ -126,7 +126,7 @@ public final class MOITSegmentPager: UIView {
                 flex.marginLeft(xPosition)
                     .width(width)
                     .height(height)
-                    .cornerRadius(height/2)
+                    .cornerRadius(height / 2)
             }
     }
 }

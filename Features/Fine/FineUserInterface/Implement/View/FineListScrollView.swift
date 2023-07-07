@@ -16,6 +16,46 @@ import PinLayout
 import RxSwift
 import RxCocoa
 
+struct FineItem {
+	let id, fineAmount, userID: Int
+	let userNickname: String
+	let attendanceStatus: MOITChipType
+	let studyOrder: Int
+	let isApproved: Bool
+	let approveAt: String
+}
+
+final class FineList: MOITList {
+	var item: FineItem {
+		self.fineItem
+	}
+	
+	private let fineItem: FineItem
+	
+	private let button = MOITButton(
+		type: .mini,
+	  title: "납부 인증하기",
+	  titleColor: ResourceKitAsset.Color.white.color,
+	  backgroundColor: ResourceKitAsset.Color.black.color
+  )
+	
+	init(fineItem: FineItem) {
+		self.fineItem = fineItem
+		super.init(
+			type: .sendMoney,
+			title: fineItem.userNickname,
+			detail: "\(fineItem.fineAmount)원",
+			chipType: fineItem.attendanceStatus,
+			studyOrder: fineItem.studyOrder,
+			button: button
+		)
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+}
+
 final class FineListScrollView: UIView {
 	
 // MARK: - UI
@@ -27,13 +67,13 @@ final class FineListScrollView: UIView {
 		scrollView.isPagingEnabled = true
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.showsVerticalScrollIndicator = false
-		scrollView.isUserInteractionEnabled = false
+		scrollView.isScrollEnabled = false
 		return scrollView
 	}()
 	
 	private let contentView = UIView()
-	private let defaulterListView = UIView()
-	private let paymentListView = UIView()
+	private let defaulterListView = FineListView()
+	private let paymentListView = FineListView()
 	
 	private let segmentPager = MOITSegmentPager(
 		pages: [StringResource.defaulter.value, StringResource.paymentList.value]
@@ -58,6 +98,163 @@ final class FineListScrollView: UIView {
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
+	fileprivate let myDefaulterList = [
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 15000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .late,
+				studyOrder: 3,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 20000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .absent,
+				studyOrder: 4,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 15000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .late,
+				studyOrder: 3,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 15000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .late,
+				studyOrder: 3,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 15000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .late,
+				studyOrder: 3,
+				isApproved: false,
+				approveAt: ""
+			)
+		),
+		FineList(
+			fineItem: FineItem(
+				id: 0,
+				fineAmount: 15000,
+				userID: 0,
+				userNickname: "전자군단대장",
+				attendanceStatus: .late,
+				studyOrder: 3,
+				isApproved: false,
+				approveAt: ""
+			)
+		)
+	]
 	
 // MARK: - init
 	
@@ -90,6 +287,7 @@ final class FineListScrollView: UIView {
 // MARK: - private
 	
 	private func configureView() {
+		scrollView.backgroundColor = .systemPink
 		
 		addSubview(flexRootContainer)
 		
@@ -111,19 +309,28 @@ final class FineListScrollView: UIView {
 				flex.addItem(paymentListView).width(UIScreen.main.bounds.width)
 			}
 		
-		defaulterListView.flex
-			.justifyContent(.center)
-			.alignItems(.center)
-			.define { flex in
-				flex.addItem(defaulterListEmptyLabel)
-			}
+		defaulterListView.configureView(with: myDefaulterList)
 
-		paymentListView.flex
-			.justifyContent(.center)
-			.alignItems(.center)
-			.define { flex in
-				flex.addItem(paymentListEmtpyLabel)
-			}
+//		defaulterListView.flex
+////			.justifyContent(.center)
+////			.alignItems(.center)
+//			.define { flex in
+////				flex.addItem(defaulterListEmptyLabel)
+//				for (index, list) in myDefaulterList.enumerated() {
+//					if index == 0 {
+//						flex.addItem(list)
+//					} else {
+//						flex.addItem(list).marginTop(20)
+//					}
+//				}
+//			}
+//
+//		paymentListView.flex
+//			.justifyContent(.center)
+//			.alignItems(.center)
+//			.define { flex in
+//				flex.addItem(paymentListEmtpyLabel)
+//			}
 	}
 	
 	private func bind() {
@@ -171,5 +378,19 @@ extension UIScrollView {
 	func scrollToLeft() {
 		let leftOffset = CGPoint(x: -contentInset.left, y: 0)
 		setContentOffset(leftOffset, animated: true)
+	}
+}
+
+// MARK: - Reactive
+extension Reactive where Base: FineListScrollView {
+	
+	var tappedListItem: Observable<FineItem> {
+		
+		let observables = base.myDefaulterList.enumerated().map { index, list in
+			list.rx.tap
+				.map { _ in list.item }
+		}
+
+		return Observable.merge(observables)
 	}
 }

@@ -72,7 +72,7 @@ public final class MOITTabPager: UIView {
                 flex.addItem()
                     .direction(.row)
                     .define { flex in
-                        self.pages.forEach { flex.addItem($0).marginHorizontal(12)}
+                        self.pages.forEach { flex.addItem($0).marginHorizontal(12) }
                     }
                     .marginBottom(5)
                 

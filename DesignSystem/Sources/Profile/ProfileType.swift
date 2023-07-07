@@ -6,7 +6,9 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+import ResourceKit
 
 public enum ProfileType {
     case large
@@ -33,6 +35,35 @@ public enum ProfileType {
         case .small:
             return 40
         }
-    
+    }
+}
+
+public enum ProfileImageType: Int {
+    case zero = 0
+    case one, two, three, four, five, six, seven, eight, nine
+    // TODO: - 프로필 이미지 시안 나오면 변경
+    var image: UIImage {
+        switch self {
+        case .zero:
+            return ResourceKitAsset.Icon.apple.image
+        case .one:
+            return ResourceKitAsset.Icon.apple.image
+        case .two:
+            return ResourceKitAsset.Icon.apple.image
+        case .three:
+            return ResourceKitAsset.Icon.apple.image
+        case .four:
+            return ResourceKitAsset.Icon.apple.image
+        case .five:
+            return ResourceKitAsset.Icon.apple.image
+        case .six:
+            return ResourceKitAsset.Icon.apple.image
+        case .seven:
+            return ResourceKitAsset.Icon.apple.image
+        case .eight:
+            return ResourceKitAsset.Icon.apple.image
+        case .nine:
+            return ResourceKitAsset.Icon.apple.image
+        }
     }
 }

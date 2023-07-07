@@ -108,6 +108,7 @@ extension Project {
         iOSTargetVersion: String = "15.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
+        demoAppDependencies: [TargetDependency] = [],
         useTestTarget: Bool = true,
         infoPlist: InfoPlist = .default,
         isUserInterface: Bool = true
@@ -153,7 +154,7 @@ extension Project {
             [
                 .target(name: name),
                 .target(name: "\(name)Impl"),
-            ]
+            ] + demoAppDependencies
         )
         
         let testTarget = makeTestTarget(name: name,

@@ -16,6 +16,8 @@ import PinLayout
 public final class MOITChipDemoViewController: UIViewController {
 	
 	private let flexRootContainer = UIView()
+	private let defaultChip = MOITChip()
+	private let secondDefaultChip = MOITChip()
 	
 	override public func viewDidLoad() {
 		super.viewDidLoad()
@@ -28,6 +30,17 @@ public final class MOITChipDemoViewController: UIViewController {
 		
 		flexRootContainer.pin.all(view.pin.safeArea)
 		flexRootContainer.flex.layout(mode: .adjustWidth)
+	}
+	
+	override public func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+			self?.defaultChip.setType(to: .dueDate(date: 10))
+			self?.secondDefaultChip.setType(to: .attend)
+			self?.view.flex.markDirty()
+			self?.view.setNeedsLayout()
+		}
 	}
 	
 	private func configure() {
@@ -55,6 +68,12 @@ public final class MOITChipDemoViewController: UIViewController {
 				.margin(10)
 			
 			flex.addItem(finishChip())
+				.margin(10)
+			
+			flex.addItem(defaultChip)
+				.margin(10)
+			
+			flex.addItem(secondDefaultChip)
 				.margin(10)
 		}
 	}

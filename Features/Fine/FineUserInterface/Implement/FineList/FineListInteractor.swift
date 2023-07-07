@@ -11,7 +11,10 @@ import RxSwift
 
 import FineUserInterface
 
-protocol FineListRouting: ViewableRouting { }
+protocol FineListRouting: ViewableRouting {
+	func attachAuthorizePayment()
+	func detachAuthorizePayment()
+}
 
 protocol FineListPresentable: Presentable {
     var listener: FineListPresentableListener? { get set }
@@ -34,4 +37,12 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
     override func willResignActive() {
         super.willResignActive()
     }
+	
+	func fineListDidTap(with fineItem: FineItem) {
+		router?.attachAuthorizePayment()
+	}
+	
+	func authorizePaymentDismissButtonDidTap() {
+		router?.detachAuthorizePayment()
+	}
 }
