@@ -17,7 +17,8 @@ public protocol InputParticipateCodeDependency: Dependency {
 }
 
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
-										   InputParticipateCodeDependency {
+										   InputParticipateCodeDependency,
+										   ParticipationSuccessDependency {
 	var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
 }
 
@@ -32,11 +33,18 @@ public final class InputParticipateCodeBuilder: Builder<InputParticipateCodeDepe
     public func build(withListener listener: InputParticipateCodeListener) -> ViewableRouting {
         let component = InputParticipateCodeComponent(dependency: dependency)
         let viewController = InputParticipateCodeViewController()
-		let interactor = InputParticipateCodeInteractor(
-			presenter: viewController,
-			dependency: component
-		)
+        let interactor = InputParticipateCodeInteractor(
+          presenter: viewController,
+          dependency: component
+        )
         interactor.listener = listener
-        return InputParticipateCodeRouter(interactor: interactor, viewController: viewController)
+
+        let participationSuccessBuildable = ParticipationSuccessBuilder(dependency: component)
+
+        return InputParticipateCodeRouter(
+          interactor: interactor,
+          viewController: viewController,
+          participationSuccessBuildable: participationSuccessBuildable
+        )
     }
 }

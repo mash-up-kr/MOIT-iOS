@@ -6,14 +6,15 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-
 import MOITParticipateUserInterface
-import MOITParticipateDomain
 
 import RIBs
 import RxSwift
 
-protocol InputParticipateCodeRouting: ViewableRouting { }
+protocol InputParticipateCodeRouting: ViewableRouting {
+	func attachPariticipationSuccess()
+	func detachPariticipationSuccess()
+}
 
 protocol InputParticipateCodePresentable: Presentable {
     var listener: InputParticipateCodePresentableListener? { get set }
@@ -44,9 +45,10 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
     }
 	
 	func completeButtonDidTap(with code: String) {
-		debugPrint(code)
-//		dependency.participateUseCase.execute(
-//			with: .init(userId: 0, invitationCode: code)
-//		)
+		router?.attachPariticipationSuccess()
+	}
+	
+	func participationSuccessDismissButtonDidTap() {
+		router?.detachPariticipationSuccess()
 	}
 }
