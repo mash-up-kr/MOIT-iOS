@@ -101,8 +101,8 @@ final class FineImageView: UIImageView {
 	}
 	
 	private func hideGuideComponents() {
-		uploadIconImageView.flex.isIncludedInLayout(false).markDirty()
-		uploadGuideLabel.flex.isIncludedInLayout(false).markDirty()
+		uploadIconImageView.flex.display(.none).markDirty()
+		uploadGuideLabel.flex.display(.none).markDirty()
 	}
 	
 // MARK: - internal
