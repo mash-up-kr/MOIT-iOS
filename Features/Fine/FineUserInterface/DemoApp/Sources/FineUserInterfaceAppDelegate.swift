@@ -29,8 +29,8 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
         
 		router = FineListBuilder(dependency: MockFineDependency())
 			.build(withListener: MockFineListener())
-		router?.load()
 		router?.interactable.activate()
+		router?.load()
 
 		window.rootViewController = self.router?.viewControllable.uiviewController
 		window.makeKeyAndVisible()
