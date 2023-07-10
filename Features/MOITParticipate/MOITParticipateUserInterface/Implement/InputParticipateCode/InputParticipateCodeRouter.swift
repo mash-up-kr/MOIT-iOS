@@ -46,15 +46,15 @@ final class InputParticipateCodeRouter: ViewableRouter<InputParticipateCodeInter
 		let participationSuccessViewController = router.viewControllable.uiviewController
 		participationSuccessViewController.modalPresentationStyle = .fullScreen
 		viewController.uiviewController.present(participationSuccessViewController, animated: true)
-		attachChild(router)
 		participationSuccessRouting = router
+		attachChild(router)
 	}
 	
 	func detachPariticipationSuccess() {
 		guard let router = participationSuccessRouting else { return }
 		
 		viewController.uiviewController.dismiss(animated: true)
-		detachChild(router)
 		participationSuccessRouting = nil
+		detachChild(router)
 	}
 }
