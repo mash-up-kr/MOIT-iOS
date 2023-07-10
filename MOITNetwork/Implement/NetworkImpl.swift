@@ -25,7 +25,13 @@ public final class NetworkImpl: Network {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
 			
-			Logger.debug(urlRequest.url)
+			Logger.debug("requested url: \(urlRequest.url)")
+			Logger.debug(
+				"header: \(urlRequest.value(forHTTPHeaderField: "authorization") ?? "")"
+			)
+			Logger.debug(
+				"requested httpBody: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))"
+			)
 
 			return Single.create { [weak self] single in
 				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
@@ -35,8 +41,12 @@ public final class NetworkImpl: Network {
 
 					switch result {
 					case .success(let response):
+						Logger.debug(response)
+						
 						single(.success(response))
 					case .failure(let error):
+						Logger.debug(error)
+						
 						single(.failure(error))
 					}
 				}.resume()
@@ -64,6 +74,9 @@ public final class NetworkImpl: Network {
 		guard let data = data else {
 			return .failure(NetworkError.emptyData)
 		}
+		
+		Logger.debug(String(decoding: data, as: UTF8.self))
+		Logger.debug("statusCode: \(response.statusCode)")
 
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
