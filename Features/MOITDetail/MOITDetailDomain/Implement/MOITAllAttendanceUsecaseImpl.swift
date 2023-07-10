@@ -10,6 +10,7 @@ import Foundation
 import MOITDetailDomain
 import MOITDetailData
 import RxSwift
+import MOITFoundation
 
 public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase {
     
@@ -25,8 +26,9 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase {
                 let studies = response.studies.map { study in
                     MOITAllAttendanceEntity.Study(
                         studyID: "\(study.studyID)",
-                        attendances: self.convertAttendanceEntities(study.attendances),
-                        studyDate: "2020-02-02"
+                        studyName: self.createStudyName(order: study.order),
+                        studyDate: study.date.dateString,
+                        attendances: self.convertAttendanceEntities(study.attendances)
                     )
                 }
                 return MOITAllAttendanceEntity(studies: studies)
@@ -40,8 +42,12 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase {
                 nickname: attendance.nickname,
                 profileImage: "attendance.profileImage",
                 status: AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED,
-                attendanceAt: "2020-02-02"
+                attendanceAt: attendance.attendanceAt.dateString
             )
         }
+    }
+    
+    private func createStudyName(order: Int) -> String {
+        "\(order+1)차 스터디"
     }
 }

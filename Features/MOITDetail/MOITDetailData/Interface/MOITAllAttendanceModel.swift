@@ -17,11 +17,13 @@ public struct MOITAllAttendanceModel: Decodable {
     
     public struct Study: Decodable {
         public let studyID: Int
+        public let date: String
+        public let order: Int
         public let attendances: [Attendance]
         
         enum CodingKeys: String, CodingKey {
             case studyID = "studyId"
-            case attendances
+            case attendances, date, order
         }
         
         public struct Attendance: Decodable {

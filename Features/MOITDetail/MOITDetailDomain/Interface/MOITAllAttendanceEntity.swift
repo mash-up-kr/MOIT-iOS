@@ -21,12 +21,15 @@ extension MOITAllAttendanceEntity {
         public let studyID: String
         public let attendances: [Attendance]
         public let studyDate: String
+        public let studyName: String
         
         public init(
             studyID: String,
-            attendances: [Attendance],
-            studyDate: String
+            studyName: String,
+            studyDate: String,
+            attendances: [Attendance]
         ) {
+            self.studyName = studyName
             self.studyID = studyID
             self.attendances = attendances
             self.studyDate = studyDate

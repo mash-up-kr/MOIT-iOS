@@ -1,5 +1,5 @@
 //
-//  MOITAttendanceSeminarView.swift
+//  MOITAttendanceStudyView.swift
 //  MOITDetailImpl
 //
 //  Created by 송서영 on 2023/06/18.
@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 import ResourceKit
 
-struct MOITAttendanceSeminarViewModel {
+struct MOITAttendanceStudyViewModel {
     
     enum SeminarFold {
         case unfold   /// 닫힘
@@ -33,12 +33,20 @@ struct MOITAttendanceSeminarViewModel {
         }
     }
     
+    let studyID: String
     let name: String
     let date: String
     var isFold: SeminarFold = .fold
+    
+    mutating func toggleFold() {
+        switch self.isFold {
+        case .fold: self.isFold = .unfold
+        case .unfold: self.isFold = .fold
+        }
+    }
 }
 
-final class MOITAttendanceSeminarView: UIView {
+final class MOITAttendanceStudyView: UIView {
     
     private let flexRootView = UIView()
     private let seminarNameLabel: UILabel = {
@@ -69,6 +77,7 @@ final class MOITAttendanceSeminarView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        print("🙇‍♀️", #function, String(describing: self))
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
     }
@@ -96,7 +105,7 @@ final class MOITAttendanceSeminarView: UIView {
             }
     }
     
-    func configure(viewModel: MOITAttendanceSeminarViewModel) {
+    func configure(viewModel: MOITAttendanceStudyViewModel) {
         self.seminarNameLabel.text = viewModel.name
         self.seminarNameLabel.flex.markDirty()
         

@@ -31,6 +31,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .DesignSystem,
         .Feature.MOITDetail.Domain.Implement,
         .Feature.MOITDetail.Data.Implement,
+        .ThirdParty.Collections,
     ],
     isUserInterface: true
 )

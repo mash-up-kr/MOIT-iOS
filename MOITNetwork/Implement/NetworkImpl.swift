@@ -21,7 +21,17 @@ public final class NetworkImpl: Network {
 
 	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
 		do {
-			let urlRequest = try endpoint.toURLRequest()
+			var urlRequest = try endpoint.toURLRequest()
+            let token = """
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1
+"""
+            let token2 = """
+rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY
+"""
+            let token3 = """
+29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc
+"""
+            urlRequest.setValue("Bearer \(token)\(token2)\(token3)", forHTTPHeaderField: "Authorization")
             print("---------urlRequest---------")
             print(urlRequest)
             print("----------------------------")
