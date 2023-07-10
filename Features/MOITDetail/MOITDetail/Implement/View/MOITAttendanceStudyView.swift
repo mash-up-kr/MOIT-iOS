@@ -53,12 +53,14 @@ final class MOITAttendanceStudyView: UIView {
         let label = UILabel()
         label.textColor = ResourceKitAsset.Color.gray900.color
         label.numberOfLines = 1
+        label.font = ResourceKitFontFamily.h6
         return label
     }()
     private let seminarDateLabel: UILabel = {
         let label = UILabel()
         label.textColor = ResourceKitAsset.Color.gray400.color
         label.numberOfLines = 1
+        label.font = ResourceKitFontFamily.p2
         return label
     }()
     private let foldButton: UIButton = {
@@ -77,7 +79,6 @@ final class MOITAttendanceStudyView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        print("🙇‍♀️", #function, String(describing: self))
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
     }

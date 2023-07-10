@@ -121,7 +121,7 @@ extension MOITDetailAttendanceInteractor {
         }
     }
     
-    private func convertToChip(_ attendance: AttendanceStatus) ->  AttendanceType {
+    private func convertToChip(_ attendance: AttendanceStatus) -> AttendanceType {
         switch attendance {
         case .ABSENCE: return .absent
         case .ATTENDANCE: return .attend

@@ -53,10 +53,13 @@ final class MOITDetailAttendanceViewController: UIViewController,
     private let disposeBag = DisposeBag()
     private let flexRootView = UIView()
     private let attendanceSegmentView = MOITSegmentPager(pages: ["전체출결", "내출결"])
-    private let attendanceRatingView = UIView()
+    private let attendanceRatingView = MOITDetailAttendanceRatingView()
     private var seminarViews: OrderedDictionary<StudyID, MOITAttendanceStudyView> = .init()
     private var attendanceViews: OrderedDictionary<StudyID, [MOITList]> = .init()
     public weak var listener: MOITDetailAttendancePresentableListener?
+    private var attendanceRating: CGFloat = 0.7
+    private var lateRating: CGFloat = 0.2
+    private var absentRating: CGFloat = 0.1
     
     override func loadView() {
         self.view = flexRootView
@@ -68,6 +71,7 @@ final class MOITDetailAttendanceViewController: UIViewController,
         
         self.configureLayouts()
         self.listener?.viewDidLoad()
+       
     }
     
     override func viewDidLayoutSubviews() {
@@ -75,7 +79,7 @@ final class MOITDetailAttendanceViewController: UIViewController,
         
         print("🙇‍♀️", #function, #file)
         self.flexRootView.pin.all(self.view.pin.safeArea)
-        self.flexRootView.flex.layout(mode: .adjustWidth)
+        self.flexRootView.flex.layout()
     }
 }
 
@@ -94,7 +98,6 @@ extension MOITDetailAttendanceViewController {
                     .marginHorizontal(20)
                     .height(78)
                     .marginTop(20)
-                    .backgroundColor(.alizarin)
                 
                 self.seminarViews.elements.forEach { key, seminarView in
                     flex.addItem(seminarView)
@@ -170,6 +173,13 @@ extension MOITDetailAttendanceViewController {
             }
             self.attendanceViews[studyID] = views
         }
+        
+        self.attendanceRatingView.absentRating = self.absentRating
+        self.attendanceRatingView.attendanceRating = self.attendanceRating
+        self.attendanceRatingView.lateRating = self.lateRating
+        
+        self.attendanceRatingView.flex.markDirty()
+        
         self.configureLayouts()
         self.bind()
     }

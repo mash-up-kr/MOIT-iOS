@@ -48,6 +48,6 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase {
     }
     
     private func createStudyName(order: Int) -> String {
-        "\(order+1)차 스터디"
+        "\(order + 1)차 스터디"
     }
 }
