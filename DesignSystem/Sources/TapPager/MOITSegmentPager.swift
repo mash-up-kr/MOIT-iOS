@@ -66,7 +66,7 @@ public final class MOITSegmentPager: UIView {
             .alignItems(.center)
             .justifyContent(.spaceAround)
             .direction(.row)
-            .backgroundColor(ResourceKitAsset.Color.gray300.color)
+            .backgroundColor(ResourceKitAsset.Color.gray100.color)
             .define { flex in
                 flex.addItem(self.selectedCircle)
                     .position(.absolute)

@@ -9,7 +9,7 @@ import UIKit
 
 import ResourceKit
 
-extension UILabel {
+public extension UILabel {
 	func setTextWithParagraphStyle(
 		text: String,
 		alignment: NSTextAlignment = .left,

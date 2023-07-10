@@ -14,7 +14,11 @@ import FlexLayout
 import PinLayout
 import RxSwift
 
-public final class MOITList: UIView {
+open class MOITList: UIView {
+	
+// MARK: - UI
+	
+// MARK: - UI
 	
 // MARK: - UI
 	
@@ -128,7 +132,7 @@ public final class MOITList: UIView {
 		configureLayout()
 	}
 	
-	required init?(coder: NSCoder) {
+	required public init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
