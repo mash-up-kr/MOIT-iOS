@@ -21,7 +21,10 @@ public struct Endpoint<R>: Requestable where R: Decodable {
 		baseURL: URL? = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/"),
 		path: String,
 		method: HTTPMethod,
-		headers: HTTPHeaders,
+		headers: HTTPHeaders = [
+			"authorization" : "",
+			"Content-Type": "application/json"
+		],
 		parameters: HTTPRequestParameter? = nil
 	) {
 		self.baseURL = baseURL

@@ -18,7 +18,6 @@ enum ParticipateEndpoint {
 		return Endpoint(
 			path: "moit/join",
 			method: .post,
-			headers: [:],
 			parameters: .body(request)
 		)
 	}
