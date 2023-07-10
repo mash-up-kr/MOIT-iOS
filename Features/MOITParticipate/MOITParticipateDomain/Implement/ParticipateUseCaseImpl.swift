@@ -26,7 +26,12 @@ public final class ParticipateUseCaseImpl: ParticipateUseCase {
 	}
 	
 // MARK: - public
-	public func execute(with request: MOITParticipateRequest) -> Single<MOITParticipateDTO> {
-		participateRepository.postParticipateCode(with: request)
+	public func execute(with code: String) -> Single<MOITParticipateDTO> {
+		// ???: 이걸 여기서 만드는게 맞나?! 만드는 위치에 대한 고민...
+		let request = MOITParticipateRequest(
+			userId: 0,
+			invitationCode: code
+		)
+		return participateRepository.postParticipateCode(with: request)
 	}
 }

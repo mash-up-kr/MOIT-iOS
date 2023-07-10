@@ -8,7 +8,7 @@
 
 import UIKit
 
-import MOITFoundation
+import Utils
 import DesignSystem
 import ResourceKit
 

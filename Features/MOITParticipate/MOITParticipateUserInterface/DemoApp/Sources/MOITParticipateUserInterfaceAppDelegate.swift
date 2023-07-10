@@ -11,22 +11,14 @@ import UIKit
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
 import MOITParticipateData
+import MOITParticipateDataImpl
 import MOITParticipateDomain
 import MOITParticipateDomainImpl
 import MOITNetwork
+import MOITNetworkImpl
 
 import RxSwift
 import RIBs
-
-final class MockParticipateRepository: ParticipateRepository {
-	func postParticipateCode(
-		with request: MOITParticipateRequest
-	) -> Single<MOITParticipateDTO> {
-		
-		let response = MOITParticipateDTO(moitId: 0)
-		return Observable.just(response).asSingle()
-	}
-}
 
 final class MockMOITParticipateDependency: InputParticipateCodeDependency {
 	var participateUseCase: ParticipateUseCase
@@ -52,15 +44,17 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 	) -> Bool {
 		let window = UIWindow(frame: UIScreen.main.bounds)
 		
+		let participateRepository = ParticipateRepositoryImpl(network: NetworkImpl())
+		
 		let participateUseCase = ParticipateUseCaseImpl(
-			participateRepository: MockParticipateRepository()
+			participateRepository: participateRepository
 		)
 		
 		router = InputParticipateCodeBuilder(
 			dependency: MockMOITParticipateDependency(participateUseCase: participateUseCase)
 		).build(withListener: MockMOITPariticipateListener())
-		router?.load()
 		router?.interactable.activate()
+		router?.load()
 
 		window.rootViewController = self.router?.viewControllable.uiviewController
 		window.makeKeyAndVisible()

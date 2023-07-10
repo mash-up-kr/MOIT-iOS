@@ -13,5 +13,5 @@ import MOITParticipateData
 import RxSwift
 
 public protocol ParticipateUseCase {
-	func execute(with request: MOITParticipateRequest) -> Single<MOITParticipateDTO>
+	func execute(with code: String) -> Single<MOITParticipateDTO>
 }

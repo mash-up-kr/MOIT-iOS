@@ -17,7 +17,7 @@ public protocol InputParticipateCodeDependency: Dependency {
 }
 
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
-										   InputParticipateCodeDependency,
+										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {
 	var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
 }
