@@ -21,12 +21,12 @@ import RxSwift
 import RIBs
 
 final class MockMOITParticipateDependency: InputParticipateCodeDependency {
-	var participateUseCase: ParticipateUseCase
+	var network: Network
 	
 	init(
-		participateUseCase: ParticipateUseCase
+		network: Network
 	) {
-		self.participateUseCase = participateUseCase
+		self.network = network
 	}
 }
 
@@ -43,15 +43,9 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
 		let window = UIWindow(frame: UIScreen.main.bounds)
-		
-		let participateRepository = ParticipateRepositoryImpl(network: NetworkImpl())
-		
-		let participateUseCase = ParticipateUseCaseImpl(
-			participateRepository: participateRepository
-		)
-		
+
 		router = InputParticipateCodeBuilder(
-			dependency: MockMOITParticipateDependency(participateUseCase: participateUseCase)
+			dependency: MockMOITParticipateDependency(network: NetworkImpl())
 		).build(withListener: MockMOITPariticipateListener())
 		router?.interactable.activate()
 		router?.load()
