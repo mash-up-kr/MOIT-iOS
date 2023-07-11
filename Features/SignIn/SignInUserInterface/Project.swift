@@ -18,12 +18,17 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ThirdParty.RIBs
     ],
     implementDependencies: [
-		.ThirdParty.RIBs,
 		.ThirdParty.FlexLayout,
 		.ThirdParty.PinLayout,
+		
 		.ResourceKit,
-		.DesignSystem
+		.DesignSystem,
+		
+		.Feature.MOITWeb.Interface
     ],
+	demoAppDependencies: [
+		
+	],
     isUserInterface: true
 )
 
