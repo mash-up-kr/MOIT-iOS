@@ -24,7 +24,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ResourceKit,
 		.DesignSystem,
 		
-		.Feature.MOITWeb.Interface
+		.Core.Utils,
+		
+		.Feature.MOITWeb.Interface,
+		.Feature.MOITWeb.Implement,
     ],
 	demoAppDependencies: [
 		

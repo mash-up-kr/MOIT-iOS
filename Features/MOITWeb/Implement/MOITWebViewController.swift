@@ -24,7 +24,7 @@ final class MOITWebViewController: UIViewController,
         static let messageName = "MOIT"
         
         // TODO: 합의 후 수정 필요
-        static let domain = "https://entertain.naver.com"
+        static let domain = "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/"
     }
     
     weak var listener: MOITWebPresentableListener?

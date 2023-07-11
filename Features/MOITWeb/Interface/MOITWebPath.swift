@@ -12,4 +12,5 @@ public enum MOITWebPath: String {
     // TODO: 추후 삭제 해야됩니다.
     case tv = "/tv"
     case movie = "/movie"
+	case signIn = "auth/sign-in"
 }

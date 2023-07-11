@@ -6,15 +6,17 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import Foundation
+
 import SignInUserInterface
+import MOITWeb
+import MOITWebImpl
 
 import RIBs
 
-public protocol LoggedOutDependency: Dependency {
-}
+public protocol LoggedOutDependency: Dependency { }
 
-final class LoggedOutComponent: Component<LoggedOutDependency> {
-}
+final class LoggedOutComponent: Component<LoggedOutDependency>, MOITWebDependency { }
 
 // MARK: - Builder
 
@@ -29,6 +31,14 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
         let viewController = LoggedOutViewController()
         let interactor = LoggedOutInteractor(presenter: viewController)
         interactor.listener = listener
-        return LoggedOutRouter(interactor: interactor, viewController: viewController)
+		
+		// TODO: 추후 수정
+		let signInWebBuildable = MOITWebBuilder(dependency: component)
+		
+        return LoggedOutRouter(
+			interactor: interactor,
+			viewController: viewController,
+			signInWebBuildable: signInWebBuildable
+		)
     }
 }

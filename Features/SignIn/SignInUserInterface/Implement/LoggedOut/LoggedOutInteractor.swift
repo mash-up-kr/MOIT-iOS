@@ -9,10 +9,11 @@
 import RIBs
 import RxSwift
 
-import CSLogger
 import SignInUserInterface
 
 protocol LoggedOutRouting: ViewableRouting {
+	func attachSignInWeb()
+	func detachSignInWeb()
 }
 
 protocol LoggedOutPresentable: Presentable {
@@ -38,10 +39,14 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
     }
 	
 	func kakaoSignInButtonDidTap() {
-		CSLogger.Logger.debug("kakaoSignIn")
+		router?.attachSignInWeb()
 	}
 	
 	func appleSignInButtonDidTap() {
-		CSLogger.Logger.debug("appleSignIn")
+//		CSLogger.Logger.debug("appleSignIn")
+	}
+	
+	func shouldDetach(withPop: Bool) {
+		router?.detachSignInWeb()
 	}
 }
