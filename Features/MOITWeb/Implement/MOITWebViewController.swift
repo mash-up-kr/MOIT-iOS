@@ -6,14 +6,16 @@
 //  Copyright © 2023 chansoo.io. All rights reserved.
 //
 
-import RIBs
-import RxSwift
 import UIKit
 import WebKit
 
+import RIBs
+import RxSwift
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
+	func notRegisteredMemeberDidSignIn(with cookies: [String: String])
+	func registeredMemberDidSignIn(with token: String)
 }
 
 final class MOITWebViewController: UIViewController,
@@ -54,6 +56,7 @@ extension MOITWebViewController {
         let configuration = self.setWebConfiguration(with: cookie)
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
+		webView.navigationDelegate = self
         self.view.addSubview(webView)
 
         guard let url = URL(string: "\(Self.Constant.domain)\(path)") else { return }
@@ -116,4 +119,45 @@ extension MOITWebViewController: WKUIDelegate {
 // MARK: - WKNavigationDelegate
 
 extension MOITWebViewController: WKNavigationDelegate {
+	func webView(
+		_ webView: WKWebView,
+		decidePolicyFor navigationResponse: WKNavigationResponse,
+		decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+	) {
+		let path = navigationResponse.response.url?.path() ?? ""
+		
+		debugPrint("here url is...\(path)")
+		
+		// success -> header에서 token 뽑아서 저장
+		// 401 -> 받은 response 데이터 signUp RIB에 전달
+		
+		if let response = navigationResponse.response as? HTTPURLResponse {
+			print("webview response status code: \(response.statusCode)")
+			
+			switch response.statusCode {
+			case (200...299):
+			// header에 Jwt 토큰 넘어오는 경우 사용할 수 있지않을까...?!
+				let authorizationToken = response.allHeaderFields["authroziation"] as? String ?? ""
+				listener?.registeredMemberDidSignIn(with: authorizationToken)
+				
+				print("success")
+				decisionHandler(.allow)
+			case (400...499):
+				print("clientError")
+					
+				let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+				cookieStore.getAllCookies { [weak self] cookies in
+					let cookieList: [String: String] = Dictionary(cookies.map { ($0.name, $0.value) }, uniquingKeysWith: { (first, _) in first })
+					self?.listener?.notRegisteredMemeberDidSignIn(with: cookieList)
+				}
+					
+				decisionHandler(.cancel)
+			default:
+				print("unknown")
+				decisionHandler(.cancel)
+			}
+			
+			
+		}
+	}
 }
