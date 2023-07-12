@@ -10,10 +10,13 @@ import RIBs
 import RxSwift
 
 import SignInUserInterface
+import MOITWeb
 
 protocol LoggedOutRouting: ViewableRouting {
 	func attachSignInWeb()
 	func detachSignInWeb()
+	func attachSignUp()
+	func detachSignUp()
 }
 
 protocol LoggedOutPresentable: Presentable {
@@ -48,5 +51,14 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	
 	func shouldDetach(withPop: Bool) {
 		router?.detachSignInWeb()
+	}
+	
+// MARK: - MOITWeb
+	func attachSignUp(with signInResponse: MOITSignInResponse) {
+		router?.attachSignUp()
+	}
+	
+	func attachStudyList() {
+		router.
 	}
 }
