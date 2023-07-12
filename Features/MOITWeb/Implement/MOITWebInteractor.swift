@@ -8,10 +8,10 @@
 
 import RIBs
 import RxSwift
+
 import MOITWeb
 
-protocol MOITWebRouting: ViewableRouting {
-}
+protocol MOITWebRouting: ViewableRouting { }
 
 protocol MOITWebPresentable: Presentable {
     var listener: MOITWebPresentableListener? { get set }
@@ -20,8 +20,8 @@ protocol MOITWebPresentable: Presentable {
 
 final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
                                 MOITWebInteractable,
-                                MOITWebPresentableListener {
-
+							   MOITWebPresentableListener {
+	
     // MARK: - Properties
     
     weak var router: MOITWebRouting?
@@ -58,4 +58,14 @@ extension MOITWebInteractor {
     func didSwipeBack() {
         self.listener?.shouldDetach(withPop: false)
     }
+	
+	func notRegisteredMemeberDidSignIn(with cookies: [String: String]) {
+		let signInResponse = MOITSignInResponse(cookieList: cookies)
+		listener?.attachSignUp(with: signInResponse)
+	}
+	
+	func registeredMemberDidSignIn(with token: String) {
+		// TODO: 이 토큰을 어디서 저장할 것 인가...
+		listener?.attachStudyList()
+	}
 }
