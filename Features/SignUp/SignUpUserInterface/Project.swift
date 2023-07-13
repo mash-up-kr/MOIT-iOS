@@ -17,9 +17,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     interfaceDependencies: [
         .ThirdParty.RIBs,
         .ThirdParty.RxSwift,
-		.ThirdParty.RxRelay,
-		
-		.Feature.SignIn.UserInterface.Interface
+		.ThirdParty.RxRelay
     ],
     implementDependencies: [
         .ThirdParty.RxGesture,

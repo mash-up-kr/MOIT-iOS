@@ -8,7 +8,7 @@
 
 import Foundation
 
-import SignInUserInterface
+import SignInDomain
 
 public protocol MOITWebListener: AnyObject {
     func shouldDetach(withPop: Bool)

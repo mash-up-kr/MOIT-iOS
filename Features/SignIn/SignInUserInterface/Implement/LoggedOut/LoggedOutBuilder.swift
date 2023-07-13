@@ -14,8 +14,6 @@ import MOITWebImpl
 
 import RIBs
 
-public protocol LoggedOutDependency: Dependency { }
-
 final class LoggedOutComponent: Component<LoggedOutDependency>, MOITWebDependency { }
 
 // MARK: - Builder
@@ -38,7 +36,8 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
         return LoggedOutRouter(
 			interactor: interactor,
 			viewController: viewController,
-			signInWebBuildable: signInWebBuildable
+			signInWebBuildable: signInWebBuildable,
+			signUpBuildable: dependency.signUpBuildable
 		)
     }
 }

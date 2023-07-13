@@ -6,11 +6,12 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import SignInUserInterface
+import SignInDomain
+import MOITWeb
+
 import RIBs
 import RxSwift
-
-import SignInUserInterface
-import MOITWeb
 
 protocol LoggedOutRouting: ViewableRouting {
 	func attachSignInWeb()
@@ -56,7 +57,6 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	}
 
 	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
-		// TODO: ? 이게 맞나 . . . ...?
 		router?.routeToSignUp(with: signInResponse)
 	}
 //

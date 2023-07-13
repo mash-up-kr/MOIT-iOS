@@ -15,7 +15,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     interfaceDependencies: [
         .ThirdParty.RIBs,
 		
-		.Feature.SignIn.UserInterface.Interface
+		.Feature.SignIn.Domain.Interface
     ],
     implementDependencies: [
         .ThirdParty.RIBs,

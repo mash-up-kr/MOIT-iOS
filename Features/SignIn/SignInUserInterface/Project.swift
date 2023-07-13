@@ -15,7 +15,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
-		.ThirdParty.RIBs
+		.ThirdParty.RIBs,
+		
+		.Feature.SignUp.UserInterface.Interface
     ],
     implementDependencies: [
 		.ThirdParty.FlexLayout,
@@ -29,7 +31,6 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.MOITWeb.Interface,
 		.Feature.MOITWeb.Implement,
 		
-		.Feature.SignUp.UserInterface.Interface,
 		.Feature.SignUp.UserInterface.Implement,
     ],
 	demoAppDependencies: [

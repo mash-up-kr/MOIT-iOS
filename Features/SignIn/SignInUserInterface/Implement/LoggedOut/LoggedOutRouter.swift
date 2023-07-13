@@ -9,6 +9,7 @@
 import RIBs
 
 import SignInUserInterface
+import SignInDomain
 import SignUpUserInterface
 import Utils
 import MOITWeb
@@ -77,11 +78,11 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 	}
 	
 	private func attachSignUp(with response: MOITSignInResponse) {
+		// TODO: 자식한테 MOITSignResponse 넘겨줘야함~
 		if signUpRouting != nil { return }
 		
 		let router = signUpBuildable.build(
-			withListener: interactor,
-			authorizationResponseRelay: BehaviorRelay(value: response)
+			withListener: interactor
 		)
 		let viewController = router.viewControllable
 		router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen

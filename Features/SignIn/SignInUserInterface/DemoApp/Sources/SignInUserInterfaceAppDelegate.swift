@@ -10,18 +10,51 @@ import UIKit
 
 import SignInUserInterface
 import SignInUserInterfaceImpl
+import SignUpUserInterface
+import SignUpUserInterfaceImpl
+import SignUpDomain
+import SignUpDomainImpl
+import SignUpData
 import MOITWeb
 import MOITWebImpl
 
 import RIBs
+import RxSwift
 
 @main
 final class SignInAppDelegate: UIResponder, UIApplicationDelegate {
 	
-	private final class MockSignInDependency: LoggedOutDependency {
-		
-	}
 	
+	final class MockJoinRepository: JoinRepository {
+	 
+		 func post(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int> {
+			 Single.just(3)
+		 }
+	 }
+
+	
+	private final class MockSignInComponent: Component<EmptyDependency>,
+											 LoggedOutDependency,
+											 SignUpDependency,
+											 ProfileSelectDependency {
+		
+		init() {
+			super.init(dependency: EmptyComponent())
+		}
+		
+		lazy var signUpBuildable: SignUpBuildable = {
+			return SignUpBuilder(dependency: self)
+		}()
+		
+		var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
+		
+		var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
+		
+		lazy var profileSelectBuildable: ProfileSelectBuildable = {
+			return ProfileSelectBuilder(dependency: self)
+		}()
+	}
+
 	private final class MockSignInListener: LoggedOutListener {
 		
 	}
@@ -36,7 +69,7 @@ final class SignInAppDelegate: UIResponder, UIApplicationDelegate {
 	) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
 		
-		router = LoggedOutBuilder(dependency: MockSignInDependency())
+		router = LoggedOutBuilder(dependency: MockSignInComponent())
 			.build(withListener: MockSignInListener())
 		router?.load()
 		router?.interactable.activate()
