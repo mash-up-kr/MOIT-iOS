@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WebKit
 
 public struct MOITSignInResponse {
 	let providerUniqueKey: String
@@ -14,10 +15,10 @@ public struct MOITSignInResponse {
 	let email: String
 	
 	public init(
-		cookieList: [String: String]
+		headerFields: [AnyHashable : Any]
 	) {
-		self.providerUniqueKey = cookieList["providerUniqueKey"] ?? ""
-		self.nickname = cookieList["nickname"] ?? ""
-		self.email = cookieList["email"] ?? ""
+		self.providerUniqueKey = headerFields["X-MOIT-User-Provider"] as? String ?? ""
+		self.nickname = headerFields["X-MOIT-User-Nickname"]  as? String ?? ""
+		self.email = headerFields["X-MOIT-User-Email"]  as? String ?? ""
 	}
 }

@@ -6,10 +6,13 @@
 //  Copyright © 2023 chansoo.io. All rights reserved.
 //
 
+import WebKit
+
+import MOITWeb
+
 import RIBs
 import RxSwift
 
-import MOITWeb
 
 protocol MOITWebRouting: ViewableRouting { }
 
@@ -59,13 +62,13 @@ extension MOITWebInteractor {
         self.listener?.shouldDetach(withPop: false)
     }
 	
-	func notRegisteredMemeberDidSignIn(with cookies: [String: String]) {
-		let signInResponse = MOITSignInResponse(cookieList: cookies)
-		listener?.attachSignUp(with: signInResponse)
+	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable : Any]) {
+		let signInResponse = MOITSignInResponse(headerFields: headerFields)
+//		listener?.attachSignUp(with: signInResponse)
 	}
-	
+
 	func registeredMemberDidSignIn(with token: String) {
 		// TODO: 이 토큰을 어디서 저장할 것 인가...
-		listener?.attachStudyList()
+//		listener?.attachStudyList()
 	}
 }

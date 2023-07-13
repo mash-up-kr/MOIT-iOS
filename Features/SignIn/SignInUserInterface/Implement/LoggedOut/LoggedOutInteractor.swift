@@ -15,8 +15,8 @@ import MOITWeb
 protocol LoggedOutRouting: ViewableRouting {
 	func attachSignInWeb()
 	func detachSignInWeb()
-	func attachSignUp()
-	func detachSignUp()
+//	func attachSignUp()
+//	func detachSignUp()
 }
 
 protocol LoggedOutPresentable: Presentable {
@@ -54,11 +54,11 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	}
 	
 // MARK: - MOITWeb
-	func attachSignUp(with signInResponse: MOITSignInResponse) {
-		router?.attachSignUp()
-	}
-	
-	func attachStudyList() {
-		router.
-	}
+//	func attachSignUp(with signInResponse: MOITSignInResponse) {
+//		router?.attachSignUp()
+//	}
+//
+//	func attachStudyList() {
+//		router.
+//	}
 }

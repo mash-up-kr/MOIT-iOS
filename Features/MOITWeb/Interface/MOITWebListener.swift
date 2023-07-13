@@ -10,6 +10,6 @@ import Foundation
 
 public protocol MOITWebListener: AnyObject {
     func shouldDetach(withPop: Bool)
-	func attachSignUp(with signInResponse: MOITSignInResponse)
-	func attachStudyList()
+//	func attachSignUp(with signInResponse: MOITSignInResponse)
+//	func attachStudyList()
 }

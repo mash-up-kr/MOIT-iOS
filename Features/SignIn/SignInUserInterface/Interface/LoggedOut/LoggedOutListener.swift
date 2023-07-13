@@ -9,5 +9,5 @@
 import RIBs
 
 public protocol LoggedOutListener: AnyObject {
-	func attachStudyList()
+//	func attachStudyList()
 }

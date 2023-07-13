@@ -14,7 +14,7 @@ import RxSwift
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
-	func notRegisteredMemeberDidSignIn(with cookies: [String: String])
+	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
 	func registeredMemberDidSignIn(with token: String)
 }
 
@@ -133,6 +133,7 @@ extension MOITWebViewController: WKNavigationDelegate {
 		
 		if let response = navigationResponse.response as? HTTPURLResponse {
 			print("webview response status code: \(response.statusCode)")
+			print("headerFields: \(response.allHeaderFields)")
 			
 			switch response.statusCode {
 			case (200...299):
@@ -145,11 +146,8 @@ extension MOITWebViewController: WKNavigationDelegate {
 			case (400...499):
 				print("clientError")
 					
-				let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-				cookieStore.getAllCookies { [weak self] cookies in
-					let cookieList: [String: String] = Dictionary(cookies.map { ($0.name, $0.value) }, uniquingKeysWith: { (first, _) in first })
-					self?.listener?.notRegisteredMemeberDidSignIn(with: cookieList)
-				}
+				let headerFields = response.allHeaderFields
+				listener?.notRegisteredMemeberDidSignIn(with: headerFields)
 					
 				decisionHandler(.cancel)
 			default:
