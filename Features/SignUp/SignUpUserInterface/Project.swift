@@ -17,6 +17,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     interfaceDependencies: [
         .ThirdParty.RIBs,
         .ThirdParty.RxSwift,
+		.ThirdParty.RxRelay,
+		
+		.Feature.SignIn.UserInterface.Interface
     ],
     implementDependencies: [
         .ThirdParty.RxGesture,
@@ -29,7 +32,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Core.Utils,
         
         .Feature.SignUp.Domain.Interface,
-        .Feature.SignUp.Data.Interface,
+        .Feature.SignUp.Data.Interface
     ],
     demoAppDependencies: [
         .Feature.SignUp.Domain.Implement,

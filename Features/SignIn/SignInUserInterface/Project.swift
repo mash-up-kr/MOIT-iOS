@@ -28,9 +28,13 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		
 		.Feature.MOITWeb.Interface,
 		.Feature.MOITWeb.Implement,
+		
+		.Feature.SignUp.UserInterface.Interface,
+		.Feature.SignUp.UserInterface.Implement,
     ],
 	demoAppDependencies: [
-		
+		.Feature.SignUp.Domain.Interface,
+		.Feature.SignUp.Domain.Implement,
 	],
     isUserInterface: true
 )
