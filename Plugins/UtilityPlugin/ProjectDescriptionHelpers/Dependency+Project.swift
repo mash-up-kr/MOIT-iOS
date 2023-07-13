@@ -11,6 +11,12 @@ extension TargetDependency {
 			public struct UserInterface {}
 		}
 		
+		public struct SignIn {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
 		public struct SignUp {
 			public struct Data {}
 			public struct Domain {}
@@ -84,6 +90,32 @@ public extension TargetDependency.Feature.StudyList.Domain {
 public extension TargetDependency.Feature.StudyList.Data {
     static let Interface = TargetDependency.Feature.StudyList.project(name: "Data", isInterface: true)
     static let Implement = TargetDependency.Feature.StudyList.project(name: "Data", isInterface: false)
+}
+
+// MARK: - Features/SignIn
+
+public extension TargetDependency.Feature.SignIn {
+	static let folderName = "SignIn"
+	static func project(name: String, isInterface: Bool) -> TargetDependency {
+		let postfix: String = isInterface ? "" : "Impl"
+		return .project(target: "\(folderName)\(name)\(postfix)",
+						path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
+	}
+}
+
+public extension TargetDependency.Feature.SignIn.UserInterface {
+	static let Interface = TargetDependency.Feature.SignIn.project(name: "UserInterface", isInterface: true)
+	static let Implement = TargetDependency.Feature.SignIn.project(name: "UserInterface", isInterface: false)
+}
+
+public extension TargetDependency.Feature.SignIn.Domain {
+	static let Interface = TargetDependency.Feature.SignIn.project(name: "Domain", isInterface: true)
+	static let Implement = TargetDependency.Feature.SignIn.project(name: "Domain", isInterface: false)
+}
+
+public extension TargetDependency.Feature.SignIn.Data {
+	static let Interface = TargetDependency.Feature.SignIn.project(name: "Data", isInterface: true)
+	static let Implement = TargetDependency.Feature.SignIn.project(name: "Data", isInterface: false)
 }
 
 // MARK: - Features/SignUp
