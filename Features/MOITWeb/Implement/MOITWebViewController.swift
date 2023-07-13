@@ -154,8 +154,6 @@ extension MOITWebViewController: WKNavigationDelegate {
 				print("unknown")
 				decisionHandler(.cancel)
 			}
-			
-			
 		}
 	}
 }

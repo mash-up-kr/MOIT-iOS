@@ -8,8 +8,10 @@
 
 import Foundation
 
+import SignInUserInterface
+
 public protocol MOITWebListener: AnyObject {
     func shouldDetach(withPop: Bool)
-//	func attachSignUp(with signInResponse: MOITSignInResponse)
+	func authorizationDidFinish(with signInResponse: MOITSignInResponse)
 //	func attachStudyList()
 }

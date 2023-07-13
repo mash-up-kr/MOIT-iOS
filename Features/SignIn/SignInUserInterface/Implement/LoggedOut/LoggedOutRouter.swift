@@ -9,10 +9,13 @@
 import RIBs
 
 import SignInUserInterface
+import SignUpUserInterface
 import Utils
 import MOITWeb
 
-protocol LoggedOutInteractable: Interactable, MOITWebListener {
+import RxRelay
+
+protocol LoggedOutInteractable: Interactable, MOITWebListener, SignUpListener {
     var router: LoggedOutRouting? { get set }
     var listener: LoggedOutListener? { get set }
 }
@@ -25,12 +28,17 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 	private let signInWebBuildable: MOITWebBuildable
 	private var signInWebRouting: Routing?
 	
+	private let signUpBuildable: SignUpBuildable
+	private var signUpRouting: Routing?
+	
     init(
 		interactor: LoggedOutInteractable,
 		viewController: LoggedOutViewControllable,
-		signInWebBuildable: MOITWebBuildable
+		signInWebBuildable: MOITWebBuildable,
+		signUpBuildable: SignUpBuildable
 	) {
 		self.signInWebBuildable = signInWebBuildable
+		self.signUpBuildable = signUpBuildable
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -61,5 +69,29 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 		
 		signInWebRouting = nil
 		detachChild(router)
+	}
+	
+	func routeToSignUp(with response: MOITSignInResponse) {
+		detachSignInWeb()
+		attachSignUp(with: response)
+	}
+	
+	private func attachSignUp(with response: MOITSignInResponse) {
+		if signUpRouting != nil { return }
+		
+		let router = signUpBuildable.build(
+			withListener: interactor,
+			authorizationResponseRelay: BehaviorRelay(value: response)
+		)
+		let viewController = router.viewControllable
+		router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen
+		viewControllable.present(
+			viewController,
+			animated: true,
+			completion: nil
+		)
+		
+		signUpRouting = router
+		attachChild(router)
 	}
 }

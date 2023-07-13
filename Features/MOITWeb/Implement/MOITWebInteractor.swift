@@ -9,6 +9,7 @@
 import WebKit
 
 import MOITWeb
+import SignInUserInterface
 
 import RIBs
 import RxSwift
@@ -64,7 +65,7 @@ extension MOITWebInteractor {
 	
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable : Any]) {
 		let signInResponse = MOITSignInResponse(headerFields: headerFields)
-//		listener?.attachSignUp(with: signInResponse)
+		listener?.authorizationDidFinish(with: signInResponse)
 	}
 
 	func registeredMemberDidSignIn(with token: String) {

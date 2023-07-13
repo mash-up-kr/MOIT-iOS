@@ -13,7 +13,9 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITWeb",
     interfaceDependencies: [
-        .ThirdParty.RIBs
+        .ThirdParty.RIBs,
+		
+		.Feature.SignIn.UserInterface.Interface
     ],
     implementDependencies: [
         .ThirdParty.RIBs,
