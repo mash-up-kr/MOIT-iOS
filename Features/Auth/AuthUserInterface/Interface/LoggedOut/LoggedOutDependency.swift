@@ -8,8 +8,11 @@
 
 import Foundation
 
+import MOITWeb
+
 import RIBs
 
 public protocol LoggedOutDependency: Dependency {
 	var signUpBuildable: SignUpBuildable { get }
+	var moitWebBuildable: MOITWebBuildable { get }
 }

@@ -5,7 +5,7 @@
 //  Created by 김찬수 on 2023/06/21.
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
-import SignUpUserInterface
+import AuthUserInterface
 
 import RIBs
 import RxSwift
@@ -20,7 +20,9 @@ protocol ProfileSelectPresentable: Presentable {
     func updateProfileIndex(index: Int?)
 }
 
-final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresentable>, ProfileSelectInteractable, ProfileSelectPresentableListener {
+final class ProfileSelectInteractor: PresentableInteractor<ProfileSelectPresentable>,
+									 ProfileSelectInteractable,
+									 ProfileSelectPresentableListener {
 
     weak var router: ProfileSelectRouting?
     weak var listener: ProfileSelectListener?

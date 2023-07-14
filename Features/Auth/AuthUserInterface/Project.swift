@@ -17,7 +17,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     interfaceDependencies: [
 		.ThirdParty.RIBs,
 		.ThirdParty.RxSwift,
-		.ThirdParty.RxRelay
+		.ThirdParty.RxRelay,
+		
+		.Feature.MOITWeb.Interface,
     ],
     implementDependencies: [
 		.ThirdParty.RxGesture,
@@ -33,6 +35,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.Auth.Domain.Interface,
 		.Feature.Auth.Data.Interface
     ],
+	demoAppDependencies: [
+		.Feature.MOITWeb.Implement,
+		.Feature.Auth.Domain.Implement
+	],
     isUserInterface: true
 )
 

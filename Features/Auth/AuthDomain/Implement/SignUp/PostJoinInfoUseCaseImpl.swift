@@ -8,8 +8,8 @@
 
 import Foundation
 
-import SignUpData
-import SignUpDomain
+import AuthData
+import AuthDomain
 
 import RxSwift
 

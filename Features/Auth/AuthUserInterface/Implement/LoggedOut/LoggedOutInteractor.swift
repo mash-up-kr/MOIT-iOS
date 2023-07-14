@@ -6,8 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import SignInUserInterface
-import SignInDomain
+import AuthUserInterface
+import AuthDomain
 
 import RIBs
 import RxSwift

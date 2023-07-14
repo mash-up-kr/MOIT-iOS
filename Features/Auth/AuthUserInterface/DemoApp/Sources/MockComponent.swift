@@ -13,6 +13,8 @@ import AuthUserInterfaceImpl
 import AuthDomain
 import AuthDomainImpl
 import AuthData
+import MOITWeb
+import MOITWebImpl
 
 import RIBs
 import RxSwift
@@ -20,7 +22,7 @@ import RxSwift
 final class MOCKAuthComponent: Component<EmptyDependency>,
 							   LoggedOutDependency,
 							   ProfileSelectDependency,
-							   SignUpDependency{
+							   SignUpDependency, MOITWebDependency{
 	
 	init() {
 		super.init(dependency: EmptyComponent())
@@ -28,6 +30,7 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	
 	var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
 	
+//	var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
 	var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
 	
 	lazy var profileSelectBuildable: ProfileSelectBuildable = {
@@ -36,6 +39,10 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	
 	lazy var signUpBuildable: SignUpBuildable = {
 		return SignUpBuilder(dependency: self)
+	}()
+	
+	lazy var moitWebBuildable: MOITWebBuildable = {
+		return MOITWebBuilder(dependency: self)
 	}()
 }
 

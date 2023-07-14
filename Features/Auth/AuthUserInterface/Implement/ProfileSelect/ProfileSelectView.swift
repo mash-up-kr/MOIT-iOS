@@ -8,7 +8,7 @@
 
 import UIKit
 
-import SignUpUserInterface
+import AuthUserInterface
 import Utils
 import ResourceKit
 import DesignSystem

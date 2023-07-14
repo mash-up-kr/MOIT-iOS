@@ -8,13 +8,11 @@
 
 import Foundation
 
-import SignInUserInterface
-import MOITWeb
-import MOITWebImpl
+import AuthUserInterface
 
 import RIBs
 
-final class LoggedOutComponent: Component<LoggedOutDependency>, MOITWebDependency { }
+final class LoggedOutComponent: Component<LoggedOutDependency> { }
 
 // MARK: - Builder
 
@@ -30,13 +28,10 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
         let interactor = LoggedOutInteractor(presenter: viewController)
         interactor.listener = listener
 		
-		// TODO: 추후 수정
-		let signInWebBuildable = MOITWebBuilder(dependency: component)
-		
         return LoggedOutRouter(
 			interactor: interactor,
 			viewController: viewController,
-			signInWebBuildable: signInWebBuildable,
+			signInWebBuildable: dependency.moitWebBuildable,
 			signUpBuildable: dependency.signUpBuildable
 		)
     }

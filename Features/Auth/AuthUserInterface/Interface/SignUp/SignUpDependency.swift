@@ -8,7 +8,7 @@
 
 import UIKit
 
-import SignUpDomain
+import AuthDomain
 
 import RIBs
 

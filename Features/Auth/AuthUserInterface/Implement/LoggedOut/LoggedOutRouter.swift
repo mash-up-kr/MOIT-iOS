@@ -8,9 +8,9 @@
 
 import RIBs
 
-import SignInUserInterface
-import SignInDomain
-import SignUpUserInterface
+import AuthUserInterface
+import AuthDomain
+import AuthUserInterface
 import Utils
 import MOITWeb
 

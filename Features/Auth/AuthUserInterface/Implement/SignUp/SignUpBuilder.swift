@@ -6,9 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import SignUpUserInterface
-
-import SignUpDomain
+import AuthUserInterface
+import AuthDomain
 
 import RIBs
 
