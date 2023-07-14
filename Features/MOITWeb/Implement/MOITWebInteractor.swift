@@ -9,7 +9,7 @@
 import WebKit
 
 import MOITWeb
-import SignInDomain
+import AuthDomain
 
 import RIBs
 import RxSwift

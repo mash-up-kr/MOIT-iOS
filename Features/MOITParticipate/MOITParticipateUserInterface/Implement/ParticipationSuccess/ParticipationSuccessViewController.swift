@@ -8,9 +8,9 @@
 
 import UIKit
 
-import MOITFoundation
 import DesignSystem
 import ResourceKit
+import Utils
 
 import RIBs
 import RxSwift

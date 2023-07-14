@@ -11,13 +11,7 @@ extension TargetDependency {
 			public struct UserInterface {}
 		}
 		
-		public struct SignIn {
-			public struct Data {}
-			public struct Domain {}
-			public struct UserInterface {}
-		}
-		
-		public struct SignUp {
+		public struct Auth {
 			public struct Data {}
 			public struct Domain {}
 			public struct UserInterface {}
@@ -94,8 +88,8 @@ public extension TargetDependency.Feature.StudyList.Data {
 
 // MARK: - Features/SignIn
 
-public extension TargetDependency.Feature.SignIn {
-	static let folderName = "SignIn"
+public extension TargetDependency.Feature.Auth {
+	static let folderName = "Auth"
 	static func project(name: String, isInterface: Bool) -> TargetDependency {
 		let postfix: String = isInterface ? "" : "Impl"
 		return .project(target: "\(folderName)\(name)\(postfix)",
@@ -103,44 +97,19 @@ public extension TargetDependency.Feature.SignIn {
 	}
 }
 
-public extension TargetDependency.Feature.SignIn.UserInterface {
-	static let Interface = TargetDependency.Feature.SignIn.project(name: "UserInterface", isInterface: true)
-	static let Implement = TargetDependency.Feature.SignIn.project(name: "UserInterface", isInterface: false)
+public extension TargetDependency.Feature.Auth.UserInterface {
+	static let Interface = TargetDependency.Feature.Auth.project(name: "UserInterface", isInterface: true)
+	static let Implement = TargetDependency.Feature.Auth.project(name: "UserInterface", isInterface: false)
 }
 
-public extension TargetDependency.Feature.SignIn.Domain {
-	static let Interface = TargetDependency.Feature.SignIn.project(name: "Domain", isInterface: true)
-	static let Implement = TargetDependency.Feature.SignIn.project(name: "Domain", isInterface: false)
+public extension TargetDependency.Feature.Auth.Domain {
+	static let Interface = TargetDependency.Feature.Auth.project(name: "Domain", isInterface: true)
+	static let Implement = TargetDependency.Feature.Auth.project(name: "Domain", isInterface: false)
 }
 
-public extension TargetDependency.Feature.SignIn.Data {
-	static let Interface = TargetDependency.Feature.SignIn.project(name: "Data", isInterface: true)
-	static let Implement = TargetDependency.Feature.SignIn.project(name: "Data", isInterface: false)
-}
-
-// MARK: - Features/SignUp
-public extension TargetDependency.Feature.SignUp {
-    static let folderName = "SignUp"
-    static func project(name: String, isInterface: Bool) -> TargetDependency {
-        let postfix: String = isInterface ? "" : "Impl"
-        return .project(target: "\(folderName)\(name)\(postfix)",
-                        path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
-    }
-}
-
-public extension TargetDependency.Feature.SignUp.UserInterface {
-    static let Interface = TargetDependency.Feature.SignUp.project(name: "UserInterface", isInterface: true)
-    static let Implement = TargetDependency.Feature.SignUp.project(name: "UserInterface", isInterface: false)
-}
-
-public extension TargetDependency.Feature.SignUp.Domain {
-    static let Interface = TargetDependency.Feature.SignUp.project(name: "Domain", isInterface: true)
-    static let Implement = TargetDependency.Feature.SignUp.project(name: "Domain", isInterface: false)
-}
-
-public extension TargetDependency.Feature.SignUp.Data {
-    static let Interface = TargetDependency.Feature.SignUp.project(name: "Data", isInterface: true)
-    static let Implement = TargetDependency.Feature.SignUp.project(name: "Data", isInterface: false)
+public extension TargetDependency.Feature.Auth.Data {
+	static let Interface = TargetDependency.Feature.Auth.project(name: "Data", isInterface: true)
+	static let Implement = TargetDependency.Feature.Auth.project(name: "Data", isInterface: false)
 }
 
 // MARK: - Features/MOITParticipate

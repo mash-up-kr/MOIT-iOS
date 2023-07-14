@@ -11,7 +11,7 @@ import UIKit
 
 import MOITWeb
 import MOITWebImpl
-import SignInDomain
+import AuthDomain
 
 import RIBs
 
@@ -100,7 +100,7 @@ extension MOITWebDemoRootViewController {
 // MARK: - MOITWebListener
 
 extension MOITWebDemoRootViewController: MOITWebListener {
-	func authorizationDidFinish(with signInResponse: SignInDomain.MOITSignInResponse) {
+	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
 		
 	}
 	
