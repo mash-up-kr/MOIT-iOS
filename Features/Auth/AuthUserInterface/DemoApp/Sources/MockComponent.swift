@@ -30,7 +30,6 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	
 	var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
 	
-//	var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
 	var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
 	
 	lazy var profileSelectBuildable: ProfileSelectBuildable = {
