@@ -71,8 +71,8 @@ final class SignInAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		router = LoggedOutBuilder(dependency: MockSignInComponent())
 			.build(withListener: MockSignInListener())
-		router?.load()
 		router?.interactable.activate()
+		router?.load()
 
 		window.rootViewController = self.router?.viewControllable.uiviewController
 		window.makeKeyAndVisible()

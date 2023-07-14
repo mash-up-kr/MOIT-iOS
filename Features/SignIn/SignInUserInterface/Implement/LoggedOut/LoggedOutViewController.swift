@@ -22,8 +22,6 @@ protocol LoggedOutPresentableListener: AnyObject {
 }
 
 final class LoggedOutViewController: UIViewController, LoggedOutPresentable, LoggedOutViewControllable {
-
-    weak var listener: LoggedOutPresentableListener?
 	
 // MARK: - UI
 	
@@ -59,6 +57,7 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	
 // MARK: - property
 	
+	weak var listener: LoggedOutPresentableListener?
 	private let disposeBag = DisposeBag()
 	private let lastGradientColor = UIColor(red: 236 / 255, green: 236 / 255, blue: 239 / 255, alpha: 1)
 	

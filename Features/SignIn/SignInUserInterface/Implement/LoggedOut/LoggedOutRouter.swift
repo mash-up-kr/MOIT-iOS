@@ -67,7 +67,6 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 		guard let router = signInWebRouting else { return }
 		
 		viewControllable.dismiss(completion: nil)
-		
 		signInWebRouting = nil
 		detachChild(router)
 	}

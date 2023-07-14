@@ -8,7 +8,6 @@
 
 import SignInUserInterface
 import SignInDomain
-import MOITWeb
 
 import RIBs
 import RxSwift
@@ -52,9 +51,7 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	
 	
 // MARK: - MOITWeb
-	func shouldDetach(withPop: Bool) {
-		router?.detachSignInWeb()
-	}
+	func shouldDetach(withPop: Bool) { }
 
 	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
 		router?.routeToSignUp(with: signInResponse)

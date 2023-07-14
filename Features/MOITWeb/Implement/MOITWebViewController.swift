@@ -39,8 +39,10 @@ final class MOITWebViewController: UIViewController,
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+		
+		self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
+		
         if self.isMovingFromParent {
-            self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
             self.listener?.didSwipeBack()
         }
     }
