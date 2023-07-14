@@ -10,13 +10,23 @@ import RIBs
 import MOITDetailData
 import MOITDetailDomainImpl
 
+enum AttendanceTabType: CaseIterable {
+    case allAttendance
+    case myAttendance
+    
+    var title: String {
+        switch self {
+        case .allAttendance: return "전체출결"
+        case .myAttendance: return "내 출결"
+        }
+    }
+}
 protocol MOITDetailAttendanceDependency: Dependency {
     var moitDetailRepository: MOITDetailRepository { get }
+    
 }
 
 final class MOITDetailAttendanceComponent: Component<MOITDetailAttendanceDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
 // MARK: - Builder
@@ -45,7 +55,8 @@ final class MOITDetailAttendanceBuilder: Builder<MOITDetailAttendanceDependency>
         let interactor = MOITDetailAttendanceInteractor(
             presenter: viewController,
             moitID: moitID,
-            moitAllAttendanceUsecase: usecase
+            moitAllAttendanceUsecase: usecase,
+            attendanceTabs: AttendanceTabType.allCases
         )
         interactor.listener = listener
         

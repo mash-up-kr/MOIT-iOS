@@ -24,7 +24,7 @@ struct MOITAttendanceStudyViewModel {
             var renderedImage: UIImage?
             switch self {
             case .unfold:
-                renderedImage =  ResourceKitAsset.Icon.chevronUp.image
+                renderedImage = ResourceKitAsset.Icon.chevronUp.image
             case .fold:
                 renderedImage = ResourceKitAsset.Icon.chevronDown.image
             }

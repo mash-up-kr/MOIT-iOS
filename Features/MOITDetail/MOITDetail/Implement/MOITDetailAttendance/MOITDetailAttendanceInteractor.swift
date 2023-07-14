@@ -18,6 +18,8 @@ protocol MOITDetailAttendancePresentable: Presentable {
     var listener: MOITDetailAttendancePresentableListener? { get set }
     func configure(_ viewModel: MOITDetailAttendanceViewModel)
     func updateStudy(id: String, viewModel: MOITAttendanceStudyViewModel)
+    func configureSegment(types: [AttendanceTabType])
+    func updateAttendance(type: AttendanceTabType)
 }
 
 protocol MOITDetailAttendanceListener: AnyObject {
@@ -40,11 +42,15 @@ final class MOITDetailAttendanceInteractor: PresentableInteractor<MOITDetailAtte
     private let moitAllAttendanceUsecase: MOITAllAttendanceUsecase
     private var viewModel: MOITDetailAttendanceViewModel?
     
+    private let attendanceTabs: [AttendanceTabType]
+    
     init(
         presenter: MOITDetailAttendancePresentable,
         moitID: String,
-        moitAllAttendanceUsecase: MOITAllAttendanceUsecase
+        moitAllAttendanceUsecase: MOITAllAttendanceUsecase,
+        attendanceTabs: [AttendanceTabType]
     ) {
+        self.attendanceTabs = attendanceTabs
         self.moitID = moitID
         self.moitAllAttendanceUsecase = moitAllAttendanceUsecase
         super.init(presenter: presenter)
@@ -73,6 +79,7 @@ extension MOITDetailAttendanceInteractor {
     }
     
     func viewDidLoad() {
+        self.presenter.configureSegment(types: self.attendanceTabs)
         moitAllAttendanceUsecase.fetchAllAttendance(moitID: self.moitID)
             .compactMap { [weak self] entity -> MOITDetailAttendanceViewModel? in
                 var studiesDictionary = OrderedDictionary<StudyID, MOITAttendanceStudyViewModel>()
@@ -96,6 +103,11 @@ extension MOITDetailAttendanceInteractor {
                 print(error, "error를 잡았따.")
             })
             .disposeOnDeactivate(interactor: self)
+    }
+    
+    func didTapSegment(at index: Int) {
+        guard let type = self.attendanceTabs[safe: index] else { return }
+        self.presenter.updateAttendance(type: type)
     }
 }
 
