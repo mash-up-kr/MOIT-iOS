@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class SignUpUserInterfaceViewController: UIViewController {
+final class MOITListUserInterfaceViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
