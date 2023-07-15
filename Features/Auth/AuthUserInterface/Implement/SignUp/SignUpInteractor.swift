@@ -34,6 +34,7 @@ protocol SignUpPresentable: Presentable {
 protocol SignUpInteractorDependency {
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { get }
     var postJoinInfoUseCase: PostJoinInfoUseCase { get }
+	var signInResponse: MOITSignInResponse { get }
 }
 
 final class SignUpInteractor: PresentableInteractor<SignUpPresentable>,

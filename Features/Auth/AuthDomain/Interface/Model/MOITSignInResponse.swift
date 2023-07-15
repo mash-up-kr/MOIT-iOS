@@ -17,8 +17,8 @@ public struct MOITSignInResponse {
 	public init(
 		headerFields: [AnyHashable : Any]
 	) {
-		self.providerUniqueKey = headerFields["X-MOIT-User-Provider"] as? String ?? ""
-		self.nickname = headerFields["X-MOIT-User-Nickname"]  as? String ?? ""
-		self.email = headerFields["X-MOIT-User-Email"]  as? String ?? ""
+		self.providerUniqueKey = headerFields["X-MOIT-USER-PROVIDER"] as? String ?? ""
+		self.nickname = headerFields["X-MOIT-USER-NICKNAME"]  as? String ?? ""
+		self.email = headerFields["X-MOIT-USER-EMAIL"]  as? String ?? ""
 	}
 }

@@ -81,7 +81,8 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 		if signUpRouting != nil { return }
 		
 		let router = signUpBuildable.build(
-			withListener: interactor
+			withListener: interactor,
+			signInResponse: response
 		)
 		let viewController = router.viewControllable
 		router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen

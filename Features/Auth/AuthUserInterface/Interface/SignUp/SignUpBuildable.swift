@@ -8,8 +8,13 @@
 
 import UIKit
 
+import AuthDomain
+
 import RIBs
 
 public protocol SignUpBuildable: Buildable {
-    func build(withListener listener: SignUpListener) -> ViewableRouting
+    func build(
+		withListener listener: SignUpListener,
+		signInResponse: MOITSignInResponse
+	) -> ViewableRouting
 }

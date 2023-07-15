@@ -11,11 +11,21 @@ import AuthDomain
 
 import RIBs
 
-public final class SignUpComponent: Component<SignUpDependency>, SignUpInteractorDependency {
+public final class SignUpComponent: Component<SignUpDependency>,
+									SignUpInteractorDependency {
     
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { dependency.fetchRandomNumberUseCase }
     var postJoinInfoUseCase: PostJoinInfoUseCase { dependency.postJoinInfoUseCase }
     var profileSelectBuildable: ProfileSelectBuildable { dependency.profileSelectBuildable }
+	let signInResponse: MOITSignInResponse
+	
+	init(
+		dependency: SignUpDependency,
+		signInResponse: MOITSignInResponse
+	) {
+		self.signInResponse = signInResponse
+		super.init(dependency: dependency)
+	}
 }
 
 // MARK: - Builder
@@ -26,8 +36,14 @@ public final class SignUpBuilder: Builder<SignUpDependency>, SignUpBuildable {
         super.init(dependency: dependency)
     }
     
-    public func build(withListener listener: SignUpListener) -> ViewableRouting {
-        let component = SignUpComponent(dependency: dependency)
+    public func build(
+		withListener listener: SignUpListener,
+		signInResponse: MOITSignInResponse
+	) -> ViewableRouting {
+        let component = SignUpComponent(
+			dependency: dependency,
+			signInResponse: signInResponse
+		)
         let viewController = SignUpViewController()
         let interactor = SignUpInteractor(
             presenter: viewController,
