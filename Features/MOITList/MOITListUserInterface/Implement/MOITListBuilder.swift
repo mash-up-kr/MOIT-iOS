@@ -6,12 +6,9 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
+import MOITListUserInterface
 
-protocol MOITListDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
+import RIBs
 
 final class MOITListComponent: Component<MOITListDependency> {
 
@@ -20,17 +17,13 @@ final class MOITListComponent: Component<MOITListDependency> {
 
 // MARK: - Builder
 
-protocol MOITListBuildable: Buildable {
-    func build(withListener listener: MOITListListener) -> MOITListRouting
-}
+public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildable {
 
-final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildable {
-
-    override init(dependency: MOITListDependency) {
+    public override init(dependency: MOITListDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: MOITListListener) -> MOITListRouting {
+    public func build(withListener listener: MOITListListener) -> ViewableRouting {
         let component = MOITListComponent(dependency: dependency)
         let viewController = MOITListViewController()
         let interactor = MOITListInteractor(presenter: viewController)

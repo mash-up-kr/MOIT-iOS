@@ -6,6 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import MOITListUserInterface
+
 import RIBs
 
 protocol MOITListInteractable: Interactable {

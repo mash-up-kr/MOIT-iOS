@@ -6,6 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import MOITListUserInterface
+
 import RIBs
 import RxSwift
 
@@ -16,10 +18,6 @@ protocol MOITListRouting: ViewableRouting {
 protocol MOITListPresentable: Presentable {
     var listener: MOITListPresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
-
-protocol MOITListListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
 final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOITListInteractable, MOITListPresentableListener {

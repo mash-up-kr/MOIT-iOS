@@ -6,6 +6,9 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import MOITListUserInterface
+import Utils
+
 import RIBs
 import RxSwift
 import UIKit
@@ -16,7 +19,7 @@ protocol MOITListPresentableListener: AnyObject {
     // interactor class.
 }
 
-final class MOITListViewController: UIViewController, MOITListPresentable, MOITListViewControllable {
+final class MOITListViewController: BaseViewController, MOITListPresentable, MOITListViewControllable {
 
     // MARK: - UI
     
@@ -24,8 +27,16 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
     weak var listener: MOITListPresentableListener?
     
     // MARK: - Initializers
+    public init(listener: MOITListPresentableListener? = nil) {
+        self.listener = listener
+        super.init()
+    }
     
     // MARK: - Lifecycle
+    override func viewDidLoad() {
+        self.view.backgroundColor = .cyan
+        self.flexRootView.backgroundColor = .systemBlue
+    }
     
     // MARK: - Methods
 }
