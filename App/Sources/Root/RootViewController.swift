@@ -68,7 +68,8 @@ Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0Iiwi
         
         modifyButton.rx.tap
             .bind(onNext: { [weak self] _ in
-                let id = self?.modifyTextField.text ?? "2"
+                var id = self?.modifyTextField.text ?? ""
+                if id.isEmpty { id = "2" }
                 self?.listener?.didTapModifyButton(id: id)
             })
             .disposed(by: self.diseposeBag)
