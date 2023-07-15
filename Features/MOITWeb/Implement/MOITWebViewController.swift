@@ -102,7 +102,7 @@ extension MOITWebViewController {
 
 enum Command: String {
     case toast
-    case back
+    case close
     case alert
     case keypad
     case share
