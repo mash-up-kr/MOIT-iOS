@@ -126,36 +126,48 @@ extension MOITWebViewController: WKNavigationDelegate {
 		decidePolicyFor navigationResponse: WKNavigationResponse,
 		decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
 	) {
-		let path = navigationResponse.response.url?.path() ?? ""
+		let currentPath = navigationResponse.response.url?.path() ?? ""
+		let redirectURL = RedirectURL(pathRawValue: currentPath)
 		
-		debugPrint("here url is...\(path)")
-		
-		// success -> header에서 token 뽑아서 저장
-		// 401 -> 받은 response 데이터 signUp RIB에 전달
-		
-		if let response = navigationResponse.response as? HTTPURLResponse {
-			print("webview response status code: \(response.statusCode)")
-			print("headerFields: \(response.allHeaderFields)")
+		switch redirectURL {
+		case .signInSuccess:
+			guard let response = navigationResponse.response as? HTTPURLResponse else { return decisionHandler(.allow) }
 			
-			switch response.statusCode {
-			case (200...299):
-			// header에 Jwt 토큰 넘어오는 경우 사용할 수 있지않을까...?!
-				let authorizationToken = response.allHeaderFields["authroziation"] as? String ?? ""
-				listener?.registeredMemberDidSignIn(with: authorizationToken)
-				
-				print("success")
-				decisionHandler(.allow)
-			case (400...499):
-				print("clientError")
-					
-				let headerFields = response.allHeaderFields
-				listener?.notRegisteredMemeberDidSignIn(with: headerFields)
-					
-				decisionHandler(.cancel)
-			default:
-				print("unknown")
-				decisionHandler(.cancel)
-			}
+			let responsePolicy = executeResponseForSignIn(with: response)
+			decisionHandler(responsePolicy)
+		default:
+			decisionHandler(.allow)
+		}
+	}
+	
+	private func executeResponseForSignIn(
+		with response: HTTPURLResponse
+	) -> WKNavigationResponsePolicy {
+		switch response.statusCode {
+		case (200...299):
+			// TODO: token key 뽑는 로직 interactor로 이동시키기
+			let authorizationToken = response.allHeaderFields["authroziation"] as? String ?? ""
+			listener?.registeredMemberDidSignIn(with: authorizationToken)
+			return .cancel
+		case 401:
+			let headerFields = response.allHeaderFields
+			listener?.notRegisteredMemeberDidSignIn(with: headerFields)
+			return .cancel
+		default:
+			return .allow
+		}
+	}
+}
+
+extension MOITWebViewController {
+	enum RedirectURL: String {
+		case none = ""
+		case signInSuccess = "/api/v1/auth/sign-in/success"
+
+		init(
+			pathRawValue: String
+		) {
+			self = RedirectURL(rawValue: pathRawValue) ?? .none
 		}
 	}
 }
