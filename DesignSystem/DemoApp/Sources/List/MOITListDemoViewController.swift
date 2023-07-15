@@ -71,7 +71,7 @@ final class MOITListDemoViewController: UIViewController {
 	private func allAttendList() -> MOITList {
 		MOITList(
 			type: .allAttend,
-			imageUrlString: "https://github.com/hope1053.png",
+			imageType: .one,
 			title: "가나다라마바사아자차카타",
 			detail: "17:02",
 			chipType: .attend
@@ -140,7 +140,7 @@ final class MOITListDemoViewController: UIViewController {
 	private func peopleList() -> MOITList {
 		MOITList(
 			type: .people,
-			imageUrlString: "https://github.com/hope1053.png",
+			imageType: .one,
 			title: "가나다라마바사아자차카타"
 		)
 	}
