@@ -24,7 +24,7 @@ final class MOITWebViewController: UIViewController,
         static let messageName = "MOIT"
         
         // TODO: 합의 후 수정 필요
-        static let domain = "https://entertain.naver.com"
+        static let domain = "https://dev-moit-web.vercel.app"
     }
     
     weak var listener: MOITWebPresentableListener?
@@ -57,6 +57,7 @@ extension MOITWebViewController {
         self.view.addSubview(webView)
 
         guard let url = URL(string: "\(Self.Constant.domain)\(path)") else { return }
+        print(url)
         let URLRequest = URLRequest(url: url)
         webView.load(URLRequest)
     }
@@ -70,8 +71,8 @@ extension MOITWebViewController {
         HTTPCookie(properties: [
             .domain: Self.Constant.domain,
             .path: path,
-            .name: "accessToken",   // TODO: 합의 후 수정 필요
-            .value: "어딘가에서 가지고 온 토큰값"  // TODO: 합의 후 수정 필요
+            .name: "accessToken",
+            .value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc"
         ])
     }
     
@@ -99,12 +100,30 @@ extension MOITWebViewController {
 
 // MARK: - WKScriptMessageHandler
 
+enum Command: String {
+    case toast
+    case back
+    case alert
+    case keypad
+    case share
+}
+
 extension MOITWebViewController: WKScriptMessageHandler {
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        print(#function, message)
+        guard message.name == Constant.messageName,
+            let messages = message.body as? [String: Any],
+            let cmd = messages["command"] as? String,
+            let command = Command(rawValue: cmd) else { return }
+        let value = messages["body"]
+        let alertController = UIAlertController(
+            title: "\(cmd)",
+            message: "\(value)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true)
     }
 }
 
