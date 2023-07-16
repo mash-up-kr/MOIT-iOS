@@ -38,6 +38,7 @@ struct MOITDetailAttendanceViewModel {
     }
     var studies: OrderedDictionary<String, MOITAttendanceStudyViewModel>
     let attendances: OrderedDictionary<String, [AttendanceViewModel]>
+    let myAttendances: [AttendanceViewModel]
 }
 public protocol MOITDetailAttendancePresentableListener: AnyObject {
     func viewDidLoad()
@@ -53,6 +54,7 @@ final class MOITDetailAttendanceViewController: UIViewController,
     
     private let disposeBag = DisposeBag()
     private let flexRootView = UIView()
+    private let emptyStudyView = MOITAttendanceEmptyView()
     private let attendanceSegmentView = MOITSegmentPager()
     private let attendanceRatingView = MOITDetailAttendanceRatingView()
     private let allAttendanceView = UIView()
@@ -71,6 +73,7 @@ final class MOITDetailAttendanceViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.flexRootView.backgroundColor = .white
+        
         
         self.configureLayouts()
         self.listener?.viewDidLoad()
@@ -96,59 +99,64 @@ extension MOITDetailAttendanceViewController {
             .define { flex in
                 flex.addItem(self.attendanceSegmentView)
                     .marginHorizontal(20)
+                
+                // 전체출결
+                flex.addItem(self.allAttendanceView)
+                    .width(UIScreen.main.bounds.width)
+                    .define { flex in
+                        flex.addItem(self.emptyStudyView)
+                            .height(400)
+//                            .backgroundColor(.systemPink)
                         
-                        // 전체출결
-                        flex.addItem(self.allAttendanceView)
-                            .width(UIScreen.main.bounds.width)
-                            .define { flex in
-                                flex.addItem(self.attendanceRatingView)
+                        flex.addItem(self.attendanceRatingView)
+                            .marginHorizontal(20)
+                            .height(78)
+                            .marginTop(20)
+                        
+                        
+                        self.seminarViews.elements.enumerated().forEach { index, element in
+                            let (key, seminarView) = element
+                            if self.seminarViews.elements.first?.key != key {
+                                flex.addItem()
+                                    .backgroundColor(ResourceKitAsset.Color.gray50.color)
+                                    .height(1)
                                     .marginHorizontal(20)
-                                    .height(78)
-                                    .marginTop(20)
-                                
-                                self.seminarViews.elements.enumerated().forEach { index, element in
-                                    let (key, seminarView) = element
-                                    if self.seminarViews.elements.first?.key != key {
-                                        flex.addItem()
-                                            .backgroundColor(ResourceKitAsset.Color.gray50.color)
-                                            .height(1)
-                                            .marginHorizontal(20)
-                                    }
-                                    
-                                    let flex = flex.addItem(seminarView)
-                                        .marginHorizontal(20)
-                                    
-                                    let attendances = self.attendanceViews[key] ?? []
-                                    attendances.enumerated().forEach { index, view in
-                                        view.isHidden = true
-                                        let flex = flex.addItem(view)
-                                            .marginHorizontal(20)
-                                            .display(.none)
-                                        if index != 0 {
-                                            flex.marginTop(20)
-                                        }
-                                        if index == attendances.endIndex {
-                                            flex.marginBottom(20)
-                                        }
-                                    }
+                            }
+                            
+                            let flex = flex.addItem(seminarView)
+                                .marginHorizontal(20)
+                            
+                            let attendances = self.attendanceViews[key] ?? []
+                            attendances.enumerated().forEach { index, view in
+                                view.isHidden = true
+                                let flex = flex.addItem(view)
+                                    .marginHorizontal(20)
+                                    .display(.none)
+                                if index != 0 {
+                                    flex.marginTop(20)
+                                }
+                                if index == attendances.endIndex {
+                                    flex.marginBottom(20)
                                 }
                             }
-                        
+                        }
+                    }
+                
                 // 내 출결
-                        flex.addItem(self.myAttendanceView)
-                            .width(UIScreen.main.bounds.width)
-                            .define { flex in
-                                self.myAttendances.enumerated().forEach { index, view in
-                                    let flex = flex.addItem(view)
-                                        .marginHorizontal(20)
-                                        .marginTop(20)
-                                    
-                                    if index == self.myAttendances.endIndex {
-                                        flex.marginBottom(20)
-                                    }
-                                }
+                flex.addItem(self.myAttendanceView)
+                    .width(UIScreen.main.bounds.width)
+                    .define { flex in
+                        self.myAttendances.enumerated().forEach { index, view in
+                            let flex = flex.addItem(view)
+                                .marginHorizontal(20)
+                                .marginTop(20)
+                            
+                            if index == self.myAttendances.endIndex {
+                                flex.marginBottom(20)
                             }
-            
+                        }
+                    }
+                
             }
     }
     
@@ -215,6 +223,15 @@ extension MOITDetailAttendanceViewController {
     }
     
     func configure(_ viewModel: MOITDetailAttendanceViewModel) {
+        if viewModel.studies.isEmpty {
+            self.emptyStudyView.flex.display(.flex)
+            self.attendanceRatingView.flex.display(.none)
+        } else {
+            self.emptyStudyView.flex.display(.none)
+            self.attendanceRatingView.flex.display(.flex)
+        }
+        self.emptyStudyView.flex.markDirty()
+        
         viewModel.studies.forEach { studyID, studyViewModel in
             let studyView = MOITAttendanceStudyView()
             studyView.configure(viewModel: studyViewModel)
@@ -236,14 +253,17 @@ extension MOITDetailAttendanceViewController {
             self.attendanceViews[studyID] = views
         }
         
-        self.myAttendances = [
-            MOITList(type: .myAttend, title: "1차 스터디", detail: "2023.07.07", chipType: .late),
-            MOITList(type: .myAttend, title: "2차 스터디", detail: "2023.07.07", chipType: .late),
-            MOITList(type: .myAttend, title: "3차 스터디", detail: "2023.07.07", chipType: .late),
-            MOITList(type: .myAttend, title: "4차 스터디", detail: "2023.07.07", chipType: .late),
-            MOITList(type: .myAttend, title: "5차 스터디", detail: "2023.07.07", chipType: .late),
-            MOITList(type: .myAttend, title: "6차 스터디", detail: "2023.07.07", chipType: .late)
-        ]
+        self.myAttendances = viewModel.myAttendances.map { viewModel in
+            let view = MOITList(
+                type: .myAttend,
+                imageUrlString: viewModel.profileImageURL,
+                title: viewModel.tilte,
+                detail: viewModel.detail,
+                chipType: viewModel.attendance.toChipeType
+            )
+            view.flex.markDirty()
+            return view
+        }
         
         self.attendanceRatingView.absentRating = self.absentRating
         self.attendanceRatingView.attendanceRating = self.attendanceRating

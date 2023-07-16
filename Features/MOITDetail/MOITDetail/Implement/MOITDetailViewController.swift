@@ -163,16 +163,24 @@ final class MOITDetailViewController: UIViewController,
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print(#function)
-        
         self.flexRootView.pin.all()
-        self.flexRootView.flex.layout()
-        
+
         self.navigationBar.flex.layout()
         self.moitNameNavigationTitleLabel.pin.center(to: self.navigationBar.anchor.center)
         
         self.scrollView.pin.all()
+            
+        self.sheetContentView.flex.layout(mode: .adjustHeight)
+        
+        self.contentView.flex.layout(mode: .adjustHeight)
+        
+        print("sheetContentView size", sheetContentView.frame.size)
+        print("scrollView size", scrollView.frame.size)
+        print("contentview size", contentView.frame.size)
         self.scrollView.contentSize = contentView.frame.size
-        self.scrollView.flex.layout()
+        self.flexRootView.flex.layout()
+        
+        print("scrollView. contentSize", self.scrollView.contentSize)
         self.listener?.viewDidLayoutSubViews()
     }
 }
@@ -192,10 +200,9 @@ extension MOITDetailViewController {
             .define { flex in
                 flex.addItem(self.scrollView)
                     .position(.absolute)
-                    .grow(1)
+                    .height(UIScreen.main.bounds.height)
                 
                 flex.addItem(self.navigationTopView)
-                    .backgroundColor(.blue)
                     .height(44) // TODO: safe area높이로 바꿔야함
                     
                 flex.addItem(self.navigationBar)
@@ -231,7 +238,6 @@ extension MOITDetailViewController {
             .alignItems(.stretch)
             .define { flex in
                 flex.addItem(contentView)
-                    .grow(1)
             }
         
     self.contentView.flex
@@ -241,8 +247,9 @@ extension MOITDetailViewController {
             
             flex.addItem(self.sheetContentView)
                 .marginTop(-45)
-                .height(2000)
+                .grow(1)
         }
+        .width(UIScreen.main.bounds.width)
         .backgroundColor(.yellow)
         
         self.sheetContentView.flex
@@ -401,6 +408,17 @@ extension MOITDetailViewController {
 // MARK: - MOITDetailPresentable
 
 extension MOITDetailViewController {
+    
+    func showAlert(message: String) {
+        let alertcontroller = UIAlertController(
+            title: nil,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "확인", style: .default)
+        alertcontroller.addAction(okAction)
+        self.present(alertcontroller, animated: true)
+    }
     
     func configure(_ viewModel: MOITDetailViewModel) {
         if let url = URL(string: viewModel.moitImage ?? "") {

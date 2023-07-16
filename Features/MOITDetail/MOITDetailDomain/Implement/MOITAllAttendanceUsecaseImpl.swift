@@ -12,16 +12,18 @@ import MOITDetailData
 import RxSwift
 import MOITFoundation
 
-public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase {
+public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
+                                            MOITMyAttendanceUsecase {
     
     private let repository: MOITDetailRepository
-    
+    private let attendancesModel = PublishSubject<MOITAllAttendanceModel>()
+    private let disposeBag = DisposeBag()
     public init(repository: MOITDetailRepository) {
         self.repository = repository
     }
-    
+
     public func fetchAllAttendance(moitID: String) -> Single<MOITAllAttendanceEntity> {
-        return repository.fetchAttendance(moitID: moitID)
+        self.repository.fetchAttendance(moitID: moitID)
             .map { response -> MOITAllAttendanceEntity in
                 let studies = response.studies.map { study in
                     MOITAllAttendanceEntity.Study(
@@ -32,6 +34,23 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase {
                     )
                 }
                 return MOITAllAttendanceEntity(studies: studies)
+            }
+    }
+    
+    public func getMyAttendance(studyID: String, myID: String) -> Single<[AttendanceEntity]> {
+        self.repository.fetchAttendance(moitID: studyID)
+            .map { $0.studies.compactMap { $0.attendances.filter { "\($0.userID)" == myID }.first } }
+            .map { attendances -> [AttendanceEntity] in
+                attendances.map { attendance in
+                    AttendanceEntity(
+                        userID: "\(attendance.userID)",
+                        nickname: attendance.nickname,
+                        profileImage: "3",
+                        status: AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED,
+                        attendanceAt: attendance.attendanceAt.dateString
+                    )
+                }
+              
             }
     }
     

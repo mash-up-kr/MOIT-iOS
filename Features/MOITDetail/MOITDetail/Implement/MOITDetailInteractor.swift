@@ -21,6 +21,7 @@ protocol MOITDetailPresentable: Presentable {
     var listener: MOITDetailPresentableListener? { get set }
     func configure(_ viewModel: MOITDetailViewModel)
     func update(infoViewModel: MOITDetailInfosViewModel)
+    func showAlert(message: String)
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
@@ -105,9 +106,8 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                 guard let self else { return }
                 let viewModel = self.configureViewModel(response: $0)
                 self.presenter.configure(viewModel)
-            }, onFailure: { error in
-                // TODO: 에러 처리 필요
-                print(error)
+            }, onFailure: { [weak self] error in
+                self?.presenter.showAlert(message: error.localizedDescription)
             })
             .disposeOnDeactivate(interactor: self)
     }

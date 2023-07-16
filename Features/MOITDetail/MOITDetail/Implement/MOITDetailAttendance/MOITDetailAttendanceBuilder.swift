@@ -56,6 +56,7 @@ final class MOITDetailAttendanceBuilder: Builder<MOITDetailAttendanceDependency>
             presenter: viewController,
             moitID: moitID,
             moitAllAttendanceUsecase: usecase,
+            moitMyAttendanceUsecase: usecase,
             attendanceTabs: AttendanceTabType.allCases
         )
         interactor.listener = listener

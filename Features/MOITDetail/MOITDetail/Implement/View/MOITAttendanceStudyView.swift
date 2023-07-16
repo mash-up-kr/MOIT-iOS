@@ -87,23 +87,23 @@ final class MOITAttendanceStudyView: UIView {
         self.addSubview(self.flexRootView)
         self.flexRootView.flex
             .direction(.row)
-            .justifyContent(.center)
+            .alignItems(.center)
             .define { flex in
                 
                 flex.addItem(self.seminarNameLabel)
                     .height(23)
-                    .marginVertical(20)
                 
                 flex.addItem()
                     .grow(1)
                 
                 flex.addItem(self.seminarDateLabel)
+                    .height(23)
                 
                 flex.addItem(self.foldButton)
                     .marginLeft(22)
                     .size(24)
-                    .alignSelf(.center)
             }
+            .height(60)
     }
     
     func configure(viewModel: MOITAttendanceStudyViewModel) {

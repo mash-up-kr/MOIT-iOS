@@ -49,7 +49,6 @@ final class MOITDetailAttendanceRatingView: UIView {
                 .foregroundColor: UIColor.white.cgColor
             ]))
             self.attendanceRatingLabel.attributedText = attributedString
-            print("출석 attr", attributedString)
             self.attendanceRatingLabel.flex.markDirty()
             flexRootView.flex.layout()
         }

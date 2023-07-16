@@ -37,6 +37,7 @@ extension MOITAllAttendanceEntity {
     }
 }
 
+public typealias AttendanceEntity = MOITAllAttendanceEntity.Study.Attendance
 extension MOITAllAttendanceEntity.Study {
     public struct Attendance {
         public let userID: String

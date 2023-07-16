@@ -13,3 +13,7 @@ public extension Array {
         return nil
     }
 }
+
+public extension Collection {
+    var isNotEmpty: Bool { !self.isEmpty }
+}
