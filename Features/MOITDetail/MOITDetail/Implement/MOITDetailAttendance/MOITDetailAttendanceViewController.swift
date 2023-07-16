@@ -55,17 +55,18 @@ final class MOITDetailAttendanceViewController: UIViewController,
     private let disposeBag = DisposeBag()
     
     private let flexRootView = UIView()
-    private let emptyStudyView = MOITAttendanceEmptyView()
     private let attendanceSegmentView = MOITSegmentPager()
     private let attendanceRatingView = MOITDetailAttendanceRatingView()
     
-    //전체출결
+    // 전체출결
     private let allAttendanceView = UIView()
     private var seminarViews: OrderedDictionary<StudyID, MOITAttendanceStudyView> = .init()
+    private let emptyStudyView = MOITAttendanceEmptyView()
     
-    //내출결
+    // 내출결
     private let myAttendanceView = UIView()
     private var myAttendances = [MOITList]()
+    private let emptyMyAttendanceView = MOITAttendanceEmptyView()
     
     public weak var listener: MOITDetailAttendancePresentableListener?
     private var attendanceRating: CGFloat = 0.7
@@ -75,10 +76,10 @@ final class MOITDetailAttendanceViewController: UIViewController,
     override func loadView() {
         self.view = flexRootView
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.flexRootView.backgroundColor = .white
-        
         
         self.configureLayouts()
         self.listener?.viewDidLoad()
@@ -119,7 +120,7 @@ extension MOITDetailAttendanceViewController {
                         
                         
                         self.seminarViews.elements.enumerated().forEach { index, element in
-                            let (key, seminarView) = element
+                            let seminarView = element.value
                             let seminarViewFlex = flex.addItem(seminarView)
                                 .marginHorizontal(20)
                             
@@ -133,6 +134,9 @@ extension MOITDetailAttendanceViewController {
                 flex.addItem(self.myAttendanceView)
                     .width(UIScreen.main.bounds.width)
                     .define { flex in
+                        flex.addItem(self.emptyMyAttendanceView)
+                            .height(400)
+                        
                         self.myAttendances.enumerated().forEach { index, view in
                             let flex = flex.addItem(view)
                                 .marginHorizontal(20)
@@ -198,14 +202,16 @@ extension MOITDetailAttendanceViewController {
     }
     
     func configure(_ viewModel: MOITDetailAttendanceViewModel) {
-//        if viewModel.studies.isEmpty {
-//            self.emptyStudyView.flex.display(.flex)
-//            self.attendanceRatingView.flex.display(.none)
-//        } else {
-//            self.emptyStudyView.flex.display(.none)
-//            self.attendanceRatingView.flex.display(.flex)
-//        }
-//        self.emptyStudyView.flex.markDirty()
+        if viewModel.studies.isEmpty {
+            self.emptyStudyView.isHidden = false
+            self.emptyStudyView.flex.display(.flex)
+            self.attendanceRatingView.flex.display(.none)
+        } else {
+            self.emptyStudyView.isHidden = true
+            self.emptyStudyView.flex.display(.none)
+            self.attendanceRatingView.flex.display(.flex)
+        }
+        self.emptyStudyView.flex.markDirty()
         
         viewModel.studies.forEach { studyID, studyViewModel in
             let studyView = MOITAttendanceStudyView()
@@ -224,6 +230,14 @@ extension MOITDetailAttendanceViewController {
             )
             view.flex.markDirty()
             return view
+        }
+        
+        if viewModel.myAttendances.isEmpty {
+            emptyMyAttendanceView.isHidden = false
+            emptyMyAttendanceView.flex.display(.flex)
+        } else {
+            emptyMyAttendanceView.isHidden = true
+            emptyMyAttendanceView.flex.display(.none)
         }
         
         self.attendanceRatingView.absentRating = self.absentRating
