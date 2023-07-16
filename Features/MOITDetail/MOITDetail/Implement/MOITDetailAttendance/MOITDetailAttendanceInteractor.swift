@@ -23,6 +23,8 @@ protocol MOITDetailAttendancePresentable: Presentable {
 }
 
 protocol MOITDetailAttendanceListener: AnyObject {
+    func didTapStudyView()
+    func didTapSegment()
 }
 
 final class MOITDetailAttendanceInteractor: PresentableInteractor<MOITDetailAttendancePresentable>,
@@ -79,6 +81,7 @@ extension MOITDetailAttendanceInteractor {
         self.viewModel?.studies[id]?.toggleFold()
         guard let studyViewModel = self.viewModel?.studies[id] else { return }
         self.presenter.updateStudy(id: id, viewModel: studyViewModel)
+        self.listener?.didTapStudyView()
     }
     
     func viewDidLoad() {
@@ -116,6 +119,7 @@ extension MOITDetailAttendanceInteractor {
     func didTapSegment(at index: Int) {
         guard let type = self.attendanceTabs[safe: index] else { return }
         self.presenter.updateAttendance(type: type)
+        self.listener?.didTapSegment()
     }
 }
 

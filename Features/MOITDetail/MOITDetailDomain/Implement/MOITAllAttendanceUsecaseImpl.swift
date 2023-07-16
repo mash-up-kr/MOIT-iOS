@@ -25,14 +25,35 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
     public func fetchAllAttendance(moitID: String) -> Single<MOITAllAttendanceEntity> {
         self.repository.fetchAttendance(moitID: moitID)
             .map { response -> MOITAllAttendanceEntity in
-                let studies = response.studies.map { study in
-                    MOITAllAttendanceEntity.Study(
-                        studyID: "\(study.studyID)",
-                        studyName: self.createStudyName(order: study.order),
-                        studyDate: study.date.dateString,
-                        attendances: self.convertAttendanceEntities(study.attendances)
-                    )
-                }
+                let studies = [
+                                    MOITAllAttendanceEntity.Study(
+                                        studyID: "1",
+                                        studyName: "1차 스터디",
+                                        studyDate: "2023.04.21",
+                                        attendances: [
+                                            AttendanceEntity(userID: "1", nickname: "김매숑", profileImage: "2", status: .ATTENDANCE, attendanceAt: "17:02"),
+                                            AttendanceEntity(userID: "2", nickname: "박매숑", profileImage: "2", status: .LATE, attendanceAt: "17:03"),
+                                            AttendanceEntity(userID: "3", nickname: "이매숑", profileImage: "2", status: .ABSENCE, attendanceAt: "17:00")
+                                        ]
+                                    ),
+                                    MOITAllAttendanceEntity.Study(
+                                        studyID: "2",
+                                        studyName: "2차 스터디",
+                                        studyDate: "2023.04.22",
+                                        attendances: [
+                                            AttendanceEntity(userID: "1", nickname: "김매숑", profileImage: "2", status: .ATTENDANCE, attendanceAt: "17:02"),
+                                            AttendanceEntity(userID: "2", nickname: "박매숑", profileImage: "2", status: .LATE, attendanceAt: "17:03"),
+                                            AttendanceEntity(userID: "3", nickname: "이매숑", profileImage: "2", status: .ABSENCE, attendanceAt: "17:00")
+                                        ]
+                                    ),
+                                    MOITAllAttendanceEntity.Study(
+                                        studyID: "3",
+                                        studyName: "3차 스터디",
+                                        studyDate: "2023.04.23",
+                                        attendances: [
+                                        ]
+                                    )
+                                ]
                 return MOITAllAttendanceEntity(studies: studies)
             }
     }

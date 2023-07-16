@@ -455,4 +455,9 @@ extension MOITDetailViewController {
         self.infoView.flex.markDirty()
         self.view.setNeedsLayout()
     }
+    
+    func shouldLayout() {
+        self.contentView.flex.markDirty()
+        self.view.setNeedsLayout()
+    }
 }

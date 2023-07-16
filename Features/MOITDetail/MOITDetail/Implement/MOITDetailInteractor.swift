@@ -22,6 +22,7 @@ protocol MOITDetailPresentable: Presentable {
     func configure(_ viewModel: MOITDetailViewModel)
     func update(infoViewModel: MOITDetailInfosViewModel)
     func showAlert(message: String)
+    func shouldLayout()
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
@@ -182,5 +183,15 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     }
     func didTapPager(at index: Int) {
         print(#function, index)
+    }
+}
+
+// MARK: - MOITDetailAttendance
+extension MOITDetailInteractor {
+    func didTapStudyView() {
+        self.presenter.shouldLayout()
+    }
+    func didTapSegment() {
+        self.presenter.shouldLayout()
     }
 }

@@ -68,6 +68,11 @@ final class MOITAttendanceStudyView: UIView {
         return button
     }()
     
+    private let underLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = ResourceKitAsset.Color.gray50.color
+        return view
+    }()
     init() {
         super.init(frame: .zero)
         self.configureLayouts()
@@ -86,24 +91,29 @@ final class MOITAttendanceStudyView: UIView {
     private func configureLayouts() {
         self.addSubview(self.flexRootView)
         self.flexRootView.flex
-            .direction(.row)
-            .alignItems(.center)
             .define { flex in
-                
-                flex.addItem(self.seminarNameLabel)
-                    .height(23)
-                
                 flex.addItem()
-                    .grow(1)
-                
-                flex.addItem(self.seminarDateLabel)
-                    .height(23)
-                
-                flex.addItem(self.foldButton)
-                    .marginLeft(22)
-                    .size(24)
+                    .direction(.row)
+                    .alignItems(.center)
+                    .define { flex in
+                        flex.addItem(self.seminarNameLabel)
+                            .height(23)
+                        
+                        flex.addItem()
+                            .grow(1)
+                        
+                        flex.addItem(self.seminarDateLabel)
+                            .height(23)
+                        
+                        flex.addItem(self.foldButton)
+                            .marginLeft(22)
+                            .size(24)
+                    }
+                    .height(60)
+                flex.addItem(underLineView)
+                    .height(1)
+                    .marginBottom(0)
             }
-            .height(60)
     }
     
     func configure(viewModel: MOITAttendanceStudyViewModel) {
@@ -114,6 +124,11 @@ final class MOITAttendanceStudyView: UIView {
         self.seminarDateLabel.flex.markDirty()
         
         self.foldButton.setImage(viewModel.isFold.image, for: .normal)
+        switch viewModel.isFold {
+        case .fold: self.underLineView.flex.display(.flex)
+        case .unfold: self.underLineView.flex.display(.none)
+        }
+        self.underLineView.flex.markDirty()
         self.flexRootView.setNeedsLayout()
     }
 }
