@@ -111,7 +111,6 @@ extension MOITDetailAttendanceViewController {
                     .define { flex in
                         flex.addItem(self.emptyStudyView)
                             .height(400)
-//                            .backgroundColor(.systemPink)
                         
                         flex.addItem(self.attendanceRatingView)
                             .marginHorizontal(20)
@@ -123,7 +122,6 @@ extension MOITDetailAttendanceViewController {
                             let (key, seminarView) = element
                             let seminarViewFlex = flex.addItem(seminarView)
                                 .marginHorizontal(20)
-                                .backgroundColor(.systemPink)
                             
                             if index == self.seminarViews.elements.endIndex {
                                 seminarViewFlex.marginBottom(20)

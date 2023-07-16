@@ -75,6 +75,7 @@ final class MOITAttendanceStudyView: UIView {
         view.backgroundColor = ResourceKitAsset.Color.gray50.color
         return view
     }()
+    private let emtpyView = MOITAttendanceEmptyView()
     
     private var attendanceViews: [MOITList] = []
     private var isFold: MOITAttendanceStudyViewModel.SeminarFold = .fold
@@ -130,6 +131,9 @@ final class MOITAttendanceStudyView: UIView {
                         flex.marginBottom(20)
                     }
                 }
+                
+                flex.addItem(self.emtpyView)
+                    .height(300)
             }
     }
     
@@ -148,6 +152,9 @@ final class MOITAttendanceStudyView: UIView {
         case .unfold: self.underLineView.flex.display(.none)
         }
         self.underLineView.flex.markDirty()
+        
+        self.emtpyView.isHidden = true
+        self.emtpyView.flex.display(.none)
         
         self.attendanceViews = viewModel.attendances.map { viewModel in
             let view = MOITList(
@@ -178,6 +185,8 @@ final class MOITAttendanceStudyView: UIView {
                 $0.isHidden = true
                 $0.flex.markDirty()
             }
+            self.emtpyView.isHidden = true
+            self.emtpyView.flex.display(.none)
         case .unfold:
             self.underLineView.flex.display(.none)
             self.attendanceViews.forEach {
@@ -185,6 +194,14 @@ final class MOITAttendanceStudyView: UIView {
                 $0.isHidden = false
                 $0.flex.markDirty()
             }
+            if self.attendanceViews.isEmpty {
+                emtpyView.flex.display(.flex)
+                emtpyView.isHidden = false
+            } else {
+                emtpyView.isHidden = true
+                emtpyView.flex.display(.none)
+            }
+
         }
         self.underLineView.flex.markDirty()
     }
