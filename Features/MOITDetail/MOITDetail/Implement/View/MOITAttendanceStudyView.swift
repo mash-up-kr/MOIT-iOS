@@ -13,6 +13,7 @@ import PinLayout
 import RxSwift
 import RxCocoa
 import ResourceKit
+import DesignSystem
 
 struct MOITAttendanceStudyViewModel {
     
@@ -37,6 +38,7 @@ struct MOITAttendanceStudyViewModel {
     let name: String
     let date: String
     var isFold: SeminarFold = .fold
+    let attendances: [MOITDetailAttendanceViewModel.AttendanceViewModel]
     
     mutating func toggleFold() {
         switch self.isFold {
@@ -73,9 +75,13 @@ final class MOITAttendanceStudyView: UIView {
         view.backgroundColor = ResourceKitAsset.Color.gray50.color
         return view
     }()
+    
+    private var attendanceViews: [MOITList] = []
+    private var isFold: MOITAttendanceStudyViewModel.SeminarFold = .fold
+    
     init() {
         super.init(frame: .zero)
-        self.configureLayouts()
+        self.addSubview(self.flexRootView)
     }
     
     required init?(coder: NSCoder) {
@@ -89,7 +95,7 @@ final class MOITAttendanceStudyView: UIView {
     }
     
     private func configureLayouts() {
-        self.addSubview(self.flexRootView)
+        
         self.flexRootView.flex
             .define { flex in
                 flex.addItem()
@@ -110,9 +116,20 @@ final class MOITAttendanceStudyView: UIView {
                             .size(24)
                     }
                     .height(60)
+                
                 flex.addItem(underLineView)
                     .height(1)
                     .marginBottom(0)
+                
+                self.attendanceViews.enumerated().forEach { index, attendanceView in
+                    let flex = flex.addItem(attendanceView)
+                    if index != 0 {
+                        flex.marginTop(20)
+                    }
+                    if index == attendanceViews.endIndex {
+                        flex.marginBottom(20)
+                    }
+                }
             }
     }
     
@@ -124,11 +141,51 @@ final class MOITAttendanceStudyView: UIView {
         self.seminarDateLabel.flex.markDirty()
         
         self.foldButton.setImage(viewModel.isFold.image, for: .normal)
+        self.isFold = viewModel.isFold
+        
         switch viewModel.isFold {
         case .fold: self.underLineView.flex.display(.flex)
         case .unfold: self.underLineView.flex.display(.none)
         }
         self.underLineView.flex.markDirty()
-        self.flexRootView.setNeedsLayout()
+        
+        self.attendanceViews = viewModel.attendances.map { viewModel in
+            let view = MOITList(
+                type: .allAttend,
+                imageUrlString: viewModel.profileImageURL,
+                title: viewModel.tilte,
+                detail: viewModel.detail,
+                chipType: viewModel.attendance.toChipeType
+            )
+            view.flex.markDirty()
+            view.flex.display(.none)
+            view.isHidden = true
+            return view
+        }
+        
+        self.configureLayouts()
+    }
+    
+    func updateFold(_ isFold: MOITAttendanceStudyViewModel.SeminarFold) {
+        self.foldButton.setImage(isFold.image, for: .normal)
+        self.isFold = isFold
+        
+        switch isFold {
+        case .fold:
+            self.underLineView.flex.display(.flex)
+            self.attendanceViews.forEach {
+                $0.flex.display(.none)
+                $0.isHidden = true
+                $0.flex.markDirty()
+            }
+        case .unfold:
+            self.underLineView.flex.display(.none)
+            self.attendanceViews.forEach {
+                $0.flex.display(.flex)
+                $0.isHidden = false
+                $0.flex.markDirty()
+            }
+        }
+        self.underLineView.flex.markDirty()
     }
 }

@@ -62,7 +62,6 @@ final class MOITDetailAttendanceViewController: UIViewController,
     //전체출결
     private let allAttendanceView = UIView()
     private var seminarViews: OrderedDictionary<StudyID, MOITAttendanceStudyView> = .init()
-    private var attendanceViews: OrderedDictionary<StudyID, [MOITList]> = .init()
     
     //내출결
     private let myAttendanceView = UIView()
@@ -124,27 +123,10 @@ extension MOITDetailAttendanceViewController {
                             let (key, seminarView) = element
                             let seminarViewFlex = flex.addItem(seminarView)
                                 .marginHorizontal(20)
+                                .backgroundColor(.systemPink)
                             
                             if index == self.seminarViews.elements.endIndex {
                                 seminarViewFlex.marginBottom(20)
-                            }
-                            
-                            let attendances = self.attendanceViews[key] ?? []
-                            if attendances.isEmpty {
-                                flex.addItem(emptyStudyView)
-                                    .height(300)
-                            }
-                            attendances.enumerated().forEach { index, view in
-                                view.isHidden = true
-                                let flex = flex.addItem(view)
-                                    .marginHorizontal(20)
-                                    .display(.none)
-                                if index != 0 {
-                                    flex.marginTop(20)
-                                }
-                                if index == attendances.endIndex {
-                                    flex.marginBottom(20)
-                                }
                             }
                         }
                     }
@@ -212,18 +194,7 @@ extension MOITDetailAttendanceViewController {
     }
     
     func updateStudy(id: String, viewModel: MOITAttendanceStudyViewModel) {
-        self.attendanceViews[id]?.forEach { attendance in
-            switch viewModel.isFold {
-            case .fold:
-                attendance.flex.display(.none)
-                attendance.isHidden = true
-            case .unfold:
-                attendance.flex.display(.flex)
-                attendance.isHidden = false
-            }
-            attendance.flex.markDirty()
-        }
-        self.seminarViews[id]?.configure(viewModel: viewModel)
+        self.seminarViews[id]?.updateFold(viewModel.isFold)
         self.seminarViews[id]?.flex.markDirty()
         self.flexRootView.setNeedsLayout()
     }
@@ -243,20 +214,6 @@ extension MOITDetailAttendanceViewController {
             studyView.configure(viewModel: studyViewModel)
             self.seminarViews[studyID] = studyView
             studyView.flex.markDirty()
-        }
-        viewModel.attendances.forEach { studyID, attendanceViewModels in
-            let views = attendanceViewModels.map { viewModel in
-                let view = MOITList(
-                    type: .allAttend,
-                    imageUrlString: viewModel.profileImageURL,
-                    title: viewModel.tilte,
-                    detail: viewModel.detail,
-                    chipType: viewModel.attendance.toChipeType
-                )
-                view.flex.markDirty()
-                return view
-            }
-            self.attendanceViews[studyID] = views
         }
         
         self.myAttendances = viewModel.myAttendances.map { viewModel in

@@ -130,7 +130,8 @@ extension MOITDetailAttendanceInteractor {
         MOITAttendanceStudyViewModel(
             studyID: study.studyID,
             name: study.studyName,
-            date: study.studyDate
+            date: study.studyDate,
+            attendances: self.configureAttendanceViewModel(study.attendances)
         )
     }
     
