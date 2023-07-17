@@ -63,12 +63,13 @@ extension MOITWebInteractor {
         self.listener?.shouldDetach(withPop: false)
     }
 	
-	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable : Any]) {
+	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any]) {
 		let signInResponse = MOITSignInResponse(headerFields: headerFields)
 		listener?.authorizationDidFinish(with: signInResponse)
 	}
 
-	func registeredMemberDidSignIn(with token: String) {
-		listener?.didSignIn(with: token)
+	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any]) {
+		let authorizationToken = headerFields["Authorization"] as? String ?? ""
+		listener?.didSignIn(with: authorizationToken)
 	}
 }

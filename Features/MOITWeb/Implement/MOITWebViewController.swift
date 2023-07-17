@@ -17,7 +17,7 @@ import RxSwift
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
-	func registeredMemberDidSignIn(with token: String)
+	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
 }
 
 final class MOITWebViewController: UIViewController,
@@ -148,14 +148,13 @@ extension MOITWebViewController: WKNavigationDelegate {
 		
 		Logger.debug(response.statusCode)
 		
+		let headerFields = response.allHeaderFields
+		
 		switch response.statusCode {
 		case (200...299):
-			// TODO: token key 뽑는 로직 interactor로 이동시키기
-			let authorizationToken = response.allHeaderFields["Authorization"] as? String ?? ""
-			listener?.registeredMemberDidSignIn(with: authorizationToken)
+			listener?.registeredMemberDidSignIn(with: headerFields)
 			return .allow
 		case 401:
-			let headerFields = response.allHeaderFields
 			listener?.notRegisteredMemeberDidSignIn(with: headerFields)
 			return .cancel
 		default:
