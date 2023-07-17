@@ -13,7 +13,7 @@ public enum MOITWebPath {
     case modify(id: String)
     case attendance
     case attendanceResult
-	case signIn 
+	case signIn
     
     public var path: String {
         switch self {
