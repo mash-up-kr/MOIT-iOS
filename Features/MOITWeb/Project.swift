@@ -17,7 +17,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     ],
     implementDependencies: [
         .ThirdParty.PinLayout,
-        .ThirdParty.FlexLayout
+        .ThirdParty.FlexLayout,
+		
+		.Core.CSLogger
     ],
 	demoAppDependencies: [
 		.Feature.Auth.Domain.Interface

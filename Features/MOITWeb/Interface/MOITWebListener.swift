@@ -13,5 +13,5 @@ import AuthDomain
 public protocol MOITWebListener: AnyObject {
     func shouldDetach(withPop: Bool)
 	func authorizationDidFinish(with signInResponse: MOITSignInResponse)
-//	func attachStudyList()
+	func didSignIn(with token: String)
 }

@@ -9,6 +9,8 @@
 import UIKit
 import WebKit
 
+import CSLogger
+
 import RIBs
 import RxSwift
 
@@ -143,12 +145,15 @@ extension MOITWebViewController: WKNavigationDelegate {
 	private func executeResponseForSignIn(
 		with response: HTTPURLResponse
 	) -> WKNavigationResponsePolicy {
+		
+		Logger.debug(response.statusCode)
+		
 		switch response.statusCode {
 		case (200...299):
 			// TODO: token key 뽑는 로직 interactor로 이동시키기
-			let authorizationToken = response.allHeaderFields["authroziation"] as? String ?? ""
+			let authorizationToken = response.allHeaderFields["Authorization"] as? String ?? ""
 			listener?.registeredMemberDidSignIn(with: authorizationToken)
-			return .cancel
+			return .allow
 		case 401:
 			let headerFields = response.allHeaderFields
 			listener?.notRegisteredMemeberDidSignIn(with: headerFields)

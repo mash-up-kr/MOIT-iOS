@@ -8,6 +8,7 @@
 
 import AuthUserInterface
 import AuthDomain
+import TokenManager
 
 import RIBs
 import RxSwift
@@ -22,12 +23,22 @@ protocol LoggedOutPresentable: Presentable {
     var listener: LoggedOutPresentableListener? { get set }
 }
 
+public protocol LoggedOutInteractorDependency: AnyObject {
+	var tokenManager: TokenManager { get }
+}
+
 final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, LoggedOutInteractable, LoggedOutPresentableListener {
 
     weak var router: LoggedOutRouting?
     weak var listener: LoggedOutListener?
+	
+	private let dependency: LoggedOutInteractorDependency
 
-    override init(presenter: LoggedOutPresentable) {
+    init(
+		presenter: LoggedOutPresentable,
+		dependency: LoggedOutInteractorDependency
+	) {
+		self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -48,16 +59,14 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 //		CSLogger.Logger.debug("appleSignIn")
 	}
 	
-	
-	
 // MARK: - MOITWeb
 	func shouldDetach(withPop: Bool) { }
 
 	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
 		router?.routeToSignUp(with: signInResponse)
 	}
-//
-//	func attachStudyList() {
-//		router.
-//	}
+	
+	func didSignIn(with token: String) {
+		dependency.tokenManager.save(token: token, with: .authorizationToken)
+	}
 }

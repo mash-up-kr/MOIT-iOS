@@ -9,10 +9,12 @@
 import Foundation
 
 import MOITWeb
+import TokenManager
 
 import RIBs
 
 public protocol LoggedOutDependency: Dependency {
 	var signUpBuildable: SignUpBuildable { get }
 	var moitWebBuildable: MOITWebBuildable { get }
+	var tokenManager: TokenManager { get }
 }

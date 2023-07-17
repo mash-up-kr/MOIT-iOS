@@ -20,6 +20,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ThirdParty.RxRelay,
 		
 		.Feature.MOITWeb.Interface,
+		
+		.TokenManager.Interface
     ],
     implementDependencies: [
 		.ThirdParty.RxGesture,
@@ -37,7 +39,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     ],
 	demoAppDependencies: [
 		.Feature.MOITWeb.Implement,
-		.Feature.Auth.Domain.Implement
+		.Feature.Auth.Domain.Implement,
+		
+		.TokenManager.Implement
 	],
     isUserInterface: true
 )

@@ -35,6 +35,8 @@ extension TargetDependency {
     }
     
     public struct MOITNetwork {}
+	
+	public struct TokenManager {}
     
     public static let ResourceKit = TargetDependency.project(
         target: "ResourceKit",
@@ -45,11 +47,6 @@ extension TargetDependency {
         target: "DesignSystem",
         path: .relativeToRoot("DesignSystem")
     )
-	
-	public static let TokenManager = TargetDependency.project(
-		target: "TokenManager",
-		path: .relativeToRoot("TokenManager")
-	)
 
     public struct ThirdParty {}
 }
@@ -64,6 +61,18 @@ public extension TargetDependency.Core {
     
     static let CSLogger = project(name: "CSLogger", isInterface: true)
     static let Utils = project(name: "Utils", isInterface: true)
+}
+
+public extension TargetDependency.TokenManager {
+	static let folderName = "TokenManager"
+	static func project(name: String, isInterface: Bool) -> TargetDependency {
+		let postfix: String = isInterface ? "" : "Impl"
+		return .project(target: "\(name)\(postfix)",
+						path: .relativeToRoot("\(folderName)"))
+	}
+	
+	static let Interface = project(name: "TokenManager", isInterface: true)
+	static let Implement = project(name: "TokenManager", isInterface: false)
 }
 
 // MARK: - Features/Home

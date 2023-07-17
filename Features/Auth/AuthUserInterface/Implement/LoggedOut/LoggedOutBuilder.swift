@@ -9,10 +9,14 @@
 import Foundation
 
 import AuthUserInterface
+import TokenManager
 
 import RIBs
 
-final class LoggedOutComponent: Component<LoggedOutDependency> { }
+final class LoggedOutComponent: Component<LoggedOutDependency>,
+								LoggedOutInteractorDependency {
+	var tokenManager: TokenManager { dependency.tokenManager }
+}
 
 // MARK: - Builder
 
@@ -25,7 +29,10 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
 	public func build(withListener listener: LoggedOutListener) -> ViewableRouting {
         let component = LoggedOutComponent(dependency: dependency)
         let viewController = LoggedOutViewController()
-        let interactor = LoggedOutInteractor(presenter: viewController)
+        let interactor = LoggedOutInteractor(
+							presenter: viewController,
+							dependency: component
+						)
         interactor.listener = listener
 		
         return LoggedOutRouter(

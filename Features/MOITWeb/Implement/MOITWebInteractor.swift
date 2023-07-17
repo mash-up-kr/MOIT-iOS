@@ -69,7 +69,6 @@ extension MOITWebInteractor {
 	}
 
 	func registeredMemberDidSignIn(with token: String) {
-		// TODO: 이 토큰을 어디서 저장할 것 인가...
-//		listener?.attachStudyList()
+		listener?.didSignIn(with: token)
 	}
 }

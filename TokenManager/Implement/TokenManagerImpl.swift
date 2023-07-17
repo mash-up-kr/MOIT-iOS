@@ -11,77 +11,112 @@ import Foundation
 import TokenManager
 import CSLogger
 
-struct TokenManagerImpl: TokenManager {
+public struct TokenManagerImpl: TokenManager {
 	
-	// 서비스 아이디, 앱 번들 아이디
-	private let service = Bundle.main.bundleIdentifier
 	private let keychainClass = kSecClassGenericPassword
+	
+	public init() {}
 	 
-	func get(key: KeychainType) -> String? {
-		guard let service else { return nil }
+	public func get(key: KeychainType) -> String? {
 		
-		let query: [CFString: Any] = [kSecClass: keychainClass,
-								kSecAttrService: service,
-								kSecAttrAccount: key.rawValue,
-								 kSecMatchLimit: kSecMatchLimitOne,
-						   kSecReturnAttributes: true,
-								 kSecReturnData: true]
+		let query: [CFString: Any] = [
+			kSecClass: keychainClass,
+			kSecAttrAccount: key.rawValue,
+			kSecMatchLimit: kSecMatchLimitOne,
+			kSecReturnAttributes: true,
+			kSecReturnData: true
+		]
 		
 		var item: CFTypeRef?
 		let status = SecItemCopyMatching(query as CFDictionary, &item)
-		if status != errSecSuccess { return nil }
+		guard status != errSecItemNotFound else {
+			Logger.debug("Keychain item not found")
+			return nil
+		}
+		guard status == errSecSuccess else {
+			Logger.debug("Keychain read Error")
+			return nil
+		}
 		
 		guard let existingItem = item as? [String: Any],
-			  let data = existingItem[kSecAttrGeneric as String] as? Data,
-			  let token = try? JSONDecoder().decode(String.self, from: data) else { return nil }
+			  let data = existingItem[kSecValueData as String] as? Data,
+			  let token = String(data: data, encoding: .utf8) else { return nil }
 		
 		Logger.debug("get token: \(token)")
 		
 		return token
 	}
 	
-	func save(token: String, with key: KeychainType) -> Bool {
-		guard let service else { return false }
+	@discardableResult
+	public func save(token: String, with key: KeychainType) -> Bool {
 		
-		let query: [CFString: Any] = [kSecClass: keychainClass,
-								kSecAttrService: service,
-								kSecAttrAccount: key.rawValue,
-								kSecAttrGeneric: token]
+		guard let tokenData = token.data(using: .utf8) else { return false }
+		
+		let query: [CFString: Any] = [
+			kSecClass: keychainClass,
+			kSecAttrAccount: key.rawValue,
+			kSecValueData: tokenData
+		]
 		
 		let status = SecItemAdd(query as CFDictionary, nil)
 		
-		Logger.debug("save requested token: \(token), saved token: \(get(key: key))")
+		Logger.debug("save token status: \(status)")
 		
-		return status == errSecSuccess
+		switch status {
+		case errSecSuccess:
+			Logger.debug("save requested token: \(token), saved token: \(get(key: key))")
+			return true
+		case errSecDuplicateItem:
+			return update(token: token, with: key)
+		default:
+			return false
+		}
 	}
 	
-	func update(token: String, with key: KeychainType) -> Bool {
-		guard let service else { return false }
+	@discardableResult
+	public func update(token: String, with key: KeychainType) -> Bool {
 		
-		let query: [CFString: Any] = [kSecClass: keychainClass,
-								kSecAttrService: service,
-								kSecAttrAccount: key.rawValue,
-								kSecAttrGeneric: token]
+		guard let tokenData = token.data(using: .utf8) else { return false }
+
+		let searchQuery: [CFString: Any] = [
+			kSecClass: keychainClass,
+			kSecAttrAccount: key.rawValue
+		]
 		
-		let attributes: [CFString: Any] = [kSecAttrAccount: key.rawValue,
-										   kSecAttrGeneric: token]
-		let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+		let updateQuery: [CFString: Any] = [
+			kSecAttrAccount: key.rawValue,
+			kSecValueData: tokenData
+		]
 		
-		Logger.debug("update requested token: \(token), updated token: \(get(key: key))")
+		let status = SecItemUpdate(searchQuery as CFDictionary, updateQuery as CFDictionary)
+		
+		Logger.debug("update token status: \(status)")
 		
 		return status == errSecSuccess
+		
+		switch status {
+		case errSecSuccess:
+			Logger.debug("update requested token: \(token), updated token: \(get(key: key))")
+			return true
+		case errSecItemNotFound:
+			return save(token: token, with: key)
+		default:
+			return true
+		}
 	}
 	
-	func delete(key: KeychainType) -> Bool {
-		guard let service else { return false }
+	@discardableResult
+	public func delete(key: KeychainType) -> Bool {
 		
-		let query: [CFString: Any] = [kSecClass: keychainClass,
-								kSecAttrService: service,
-								kSecAttrAccount: key.rawValue]
+		let query: [CFString: Any] = [
+			kSecClass: keychainClass,
+			kSecAttrAccount: key.rawValue
+		]
 		
 		let status = SecItemDelete(query as CFDictionary)
 		
 		Logger.debug("check empty token: Is \(get(key: key)) empty?")
+		Logger.debug("delete token status: \(status)")
 		
 		return status == errSecSuccess
 	}
