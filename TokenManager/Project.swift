@@ -16,5 +16,6 @@ let project = Project.invertedDualTargetProject(
 	interfaceDependencies: [
 	],
 	implementDependencies: [
+		.Core.CSLogger
 	]
 )

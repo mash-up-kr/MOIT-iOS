@@ -45,6 +45,11 @@ extension TargetDependency {
         target: "DesignSystem",
         path: .relativeToRoot("DesignSystem")
     )
+	
+	public static let TokenManager = TargetDependency.project(
+		target: "TokenManager",
+		path: .relativeToRoot("TokenManager")
+	)
 
     public struct ThirdParty {}
 }
