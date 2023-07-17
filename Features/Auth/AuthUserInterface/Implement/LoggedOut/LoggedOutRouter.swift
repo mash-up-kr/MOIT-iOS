@@ -77,7 +77,6 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 	}
 	
 	private func attachSignUp(with response: MOITSignInResponse) {
-		// TODO: 자식한테 MOITSignResponse 넘겨줘야함~
 		if signUpRouting != nil { return }
 		
 		let router = signUpBuildable.build(
