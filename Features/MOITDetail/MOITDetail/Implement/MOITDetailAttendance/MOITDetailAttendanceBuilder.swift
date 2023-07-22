@@ -8,7 +8,7 @@
 
 import RIBs
 import MOITDetailData
-import MOITDetailDomainImpl
+import MOITDetailDomain
 
 enum AttendanceTabType: CaseIterable {
     case allAttendance
@@ -23,7 +23,7 @@ enum AttendanceTabType: CaseIterable {
 }
 protocol MOITDetailAttendanceDependency: Dependency {
     var moitDetailRepository: MOITDetailRepository { get }
-    
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
 }
 
 final class MOITDetailAttendanceComponent: Component<MOITDetailAttendanceDependency> {
@@ -51,13 +51,13 @@ final class MOITDetailAttendanceBuilder: Builder<MOITDetailAttendanceDependency>
     ) -> MOITDetailAttendanceRouting {
         let component = MOITDetailAttendanceComponent(dependency: dependency)
         let viewController = MOITDetailAttendanceViewController()
-        let usecase = MOITAllAttendanceUsecaseImpl(repository: self.dependency.moitDetailRepository)
+        
         let interactor = MOITDetailAttendanceInteractor(
             presenter: viewController,
             moitID: moitID,
-            moitAllAttendanceUsecase: usecase,
-            moitMyAttendanceUsecase: usecase,
-            attendanceTabs: AttendanceTabType.allCases
+            moitAllAttendanceUsecase: dependency.moitAllAttendanceUsecase,
+            attendanceTabs: AttendanceTabType.allCases,
+            userID: "1"
         )
         interactor.listener = listener
         

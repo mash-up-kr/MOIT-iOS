@@ -16,30 +16,7 @@ import ResourceKit
 import DesignSystem
 import Collections
 
-struct MOITDetailAttendanceViewModel {
-    struct AttendanceViewModel {
-        enum Attendance {
-            case attend
-            case late
-            case absent
-            
-            var toChipeType: MOITChipType {
-                switch self {
-                case .absent: return .absent
-                case .late: return .late
-                case .attend: return .attend
-                }
-            }
-        }
-        let profileImageURL: String
-        let tilte: String
-        let detail: String
-        let attendance: Attendance
-    }
-    var studies: OrderedDictionary<String, MOITAttendanceStudyViewModel>
-    let attendances: OrderedDictionary<String, [AttendanceViewModel]>
-    let myAttendances: [AttendanceViewModel]
-}
+
 public protocol MOITDetailAttendancePresentableListener: AnyObject {
     func viewDidLoad()
     func didTapStudyView(id: String)
@@ -69,9 +46,6 @@ final class MOITDetailAttendanceViewController: UIViewController,
     private let emptyMyAttendanceView = MOITAttendanceEmptyView()
     
     public weak var listener: MOITDetailAttendancePresentableListener?
-    private var attendanceRating: CGFloat = 0.7
-    private var lateRating: CGFloat = 0.2
-    private var absentRating: CGFloat = 0.1
     
     override func loadView() {
         self.view = flexRootView
@@ -90,7 +64,6 @@ final class MOITDetailAttendanceViewController: UIViewController,
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        print("🙇‍♀️", #function, #file)
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
     }
@@ -206,10 +179,12 @@ extension MOITDetailAttendanceViewController {
             self.emptyStudyView.isHidden = false
             self.emptyStudyView.flex.display(.flex)
             self.attendanceRatingView.flex.display(.none)
+            self.attendanceRatingView.isHidden = true
         } else {
             self.emptyStudyView.isHidden = true
             self.emptyStudyView.flex.display(.none)
             self.attendanceRatingView.flex.display(.flex)
+            self.attendanceRatingView.isHidden = false
         }
         self.emptyStudyView.flex.markDirty()
         
@@ -240,13 +215,14 @@ extension MOITDetailAttendanceViewController {
             emptyMyAttendanceView.flex.display(.none)
         }
         
-        self.attendanceRatingView.absentRating = self.absentRating
-        self.attendanceRatingView.attendanceRating = self.attendanceRating
-        self.attendanceRatingView.lateRating = self.lateRating
+        self.attendanceRatingView.absentRating = viewModel.absenceRate
+        self.attendanceRatingView.attendanceRating = viewModel.attendanceRate
+        self.attendanceRatingView.lateRating = viewModel.lateRate
         
         self.attendanceRatingView.flex.markDirty()
         self.allAttendanceView.flex.markDirty()
         self.myAttendanceView.flex.markDirty()
+        self.view.setNeedsLayout()
         self.configureLayouts()
         self.bind()
     }

@@ -42,21 +42,20 @@ final class MOITDetailAttendanceInteractor: PresentableInteractor<MOITDetailAtte
     
     private let moitID: StudyID
     private let moitAllAttendanceUsecase: MOITAllAttendanceUsecase
-    private let moitMyAttendanceUsecase: MOITMyAttendanceUsecase
     private var viewModel: MOITDetailAttendanceViewModel?
-    
     private let attendanceTabs: [AttendanceTabType]
+    private let userID: String
     
     init(
         presenter: MOITDetailAttendancePresentable,
         moitID: String,
         moitAllAttendanceUsecase: MOITAllAttendanceUsecase,
-        moitMyAttendanceUsecase: MOITMyAttendanceUsecase,
-        attendanceTabs: [AttendanceTabType]
+        attendanceTabs: [AttendanceTabType],
+        userID: String
     ) {
+        self.userID = userID
         self.attendanceTabs = attendanceTabs
         self.moitID = moitID
-        self.moitMyAttendanceUsecase = moitMyAttendanceUsecase
         self.moitAllAttendanceUsecase = moitAllAttendanceUsecase
         super.init(presenter: presenter)
         presenter.listener = self
@@ -84,26 +83,26 @@ extension MOITDetailAttendanceInteractor {
         self.listener?.didTapStudyView()
     }
     
-    func viewDidLoad() {
-        self.presenter.configureSegment(types: self.attendanceTabs)
-        Observable.zip(
-            moitAllAttendanceUsecase.fetchAllAttendance(moitID: self.moitID).asObservable(),
-            moitMyAttendanceUsecase.getMyAttendance(studyID: self.moitID, myID: "1").asObservable()
-        )
-        .compactMap { [weak self] allAttendances, myAttendances -> MOITDetailAttendanceViewModel? in
+    private func fetch() {
+        moitAllAttendanceUsecase.fetchAllAttendance(moitID: self.moitID, myID: "2")
+            .asObservable()
+        .compactMap { [weak self] allAttendances, attendanceRate, myAttendances -> MOITDetailAttendanceViewModel? in
             guard let self else { return nil }
             var studiesDictionary = OrderedDictionary<StudyID, MOITAttendanceStudyViewModel>()
             var attendancesDictionary = OrderedDictionary<StudyID, [AttendanceViewModel]>()
-            
+
             allAttendances.studies.forEach { [weak self] study in
                 studiesDictionary[study.studyID] = self?.configureStudyViewModel(study)
                 attendancesDictionary[study.studyID] = self?.configureAttendanceViewModel(study.attendances)
             }
-            
+
             return MOITDetailAttendanceViewModel(
                 studies: studiesDictionary,
                 attendances: attendancesDictionary,
-                myAttendances: self.configureAttendanceViewModel(myAttendances)
+                myAttendances: self.configureAttendanceViewModel(myAttendances),
+                attendanceRate: attendanceRate.attendanceRate,
+                lateRate: attendanceRate.lateRate,
+                absenceRate: attendanceRate.absentRate
             )
         }
         .observe(on: MainScheduler.instance)
@@ -114,6 +113,11 @@ extension MOITDetailAttendanceInteractor {
             print(error, "error를 잡았따.")
         })
         .disposeOnDeactivate(interactor: self)
+    }
+    
+    func viewDidLoad() {
+        self.presenter.configureSegment(types: self.attendanceTabs)
+        self.fetch()
     }
     
     func didTapSegment(at index: Int) {

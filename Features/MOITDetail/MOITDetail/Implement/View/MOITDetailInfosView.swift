@@ -104,12 +104,6 @@ final class MOITDetailInfosView: UIView {
         super.layoutSubviews()
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
-        
-        self.button.pin.top()
-            .right()
-            .marginTop(20)
-            .marginRight(11)
-            .size(24)
     }
     
     private func configureLayouts() {
@@ -117,9 +111,13 @@ final class MOITDetailInfosView: UIView {
         self.flexRootView.flex
             .define { flex in
                 flex.addItem(self.button)
-                    .position(.absolute)
+                    .alignSelf(.end)
+                    .marginTop(20)
+                    .marginRight(11)
+                    .size(24)
                 
                 flex.addItem()
+                    .marginTop(-24)
                     .marginVertical(20)
                     .marginLeft(10)
                     .marginRight(45)

@@ -8,13 +8,14 @@
 
 import RIBs
 import MOITDetail
-import MOITDetailDomainImpl
-import MOITDetailDataImpl
 import MOITDetailData
+import MOITDetailDomain
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency {
-    lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: dependency.network)
+    var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
+    
 }
 
 // MARK: - Builder
@@ -33,13 +34,12 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         
         let component = MOITDetailComponent(dependency: dependency)
         let viewController = MOITDetailViewController()
-        let detailUsecase = MOITDetailUsecaseImpl(repository: component.moitDetailRepository)
         
         let interactor = MOITDetailInteractor(
             moitID: moitID,
             tabTypes: [.attendance, .fine],
             presenter: viewController,
-            detailUsecase: detailUsecase
+            detailUsecase: dependency.moitDetailUsecase
         )
         interactor.listener = listener
         

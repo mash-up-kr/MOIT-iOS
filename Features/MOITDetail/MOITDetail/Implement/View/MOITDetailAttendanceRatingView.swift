@@ -33,14 +33,17 @@ final class MOITDetailAttendanceRatingView: UIView {
         label.text = ""
         return label
     }()
+    private let attendanceView = UIView()
+    private let lateView = UIView()
+    private let absentView = UIView()
     
-    var attendanceRating: CGFloat = 0.7 {
+    var attendanceRating: CGFloat = .zero {
         didSet {
             let attributedString = NSMutableAttributedString(string: "출석", attributes: [
                 .font: ResourceKitFontFamily.caption,
                 .foregroundColor: UIColor.white.cgColor
             ])
-            attributedString.append(NSAttributedString(string: "\n\(Int(attendanceRating*100))", attributes: [
+            attributedString.append(NSAttributedString(string: "\n\(Int(attendanceRating * 100))", attributes: [
                 .font: ResourceKitFontFamily.h5,
                 .foregroundColor: UIColor.white.cgColor
             ]))
@@ -50,17 +53,18 @@ final class MOITDetailAttendanceRatingView: UIView {
             ]))
             self.attendanceRatingLabel.attributedText = attributedString
             self.attendanceRatingLabel.flex.markDirty()
-            flexRootView.flex.layout()
+            attendanceView.flex.markDirty()
+            bind()
         }
     }
     
-    var lateRating: CGFloat = 0.2 {
+    var lateRating: CGFloat = .zero {
         didSet {
             let attributedString = NSMutableAttributedString(string: "지각\n", attributes: [
                 .font: ResourceKitFontFamily.caption,
                 .foregroundColor: UIColor.white.cgColor
             ])
-            attributedString.append(NSAttributedString(string: "\(Int(lateRating*100))", attributes: [
+            attributedString.append(NSAttributedString(string: "\(Int(lateRating * 100))", attributes: [
                 .font: ResourceKitFontFamily.h5,
                 .foregroundColor: UIColor.white.cgColor
             ]))
@@ -70,17 +74,18 @@ final class MOITDetailAttendanceRatingView: UIView {
             ]))
             self.lateRatingLabel.attributedText = attributedString
             self.lateRatingLabel.flex.markDirty()
-            flexRootView.flex.layout()
+            lateView.flex.markDirty()
+            bind()
         }
     }
     
-    var absentRating: CGFloat = 0.1 {
+    var absentRating: CGFloat = .zero {
         didSet {
-            let attributedString = NSMutableAttributedString(string: "결석\n\n", attributes: [
+            let attributedString = NSMutableAttributedString(string: "결석\n", attributes: [
                 .font: ResourceKitFontFamily.caption,
                 .foregroundColor: UIColor.white.cgColor
             ])
-            attributedString.append(NSAttributedString(string: "\(Int(absentRating*100))", attributes: [
+            attributedString.append(NSAttributedString(string: "\(Int(absentRating * 100))", attributes: [
                 .font: ResourceKitFontFamily.h5,
                 .foregroundColor: UIColor.white.cgColor
             ]))
@@ -90,12 +95,14 @@ final class MOITDetailAttendanceRatingView: UIView {
             ]))
             self.absentRatingLabel.attributedText = attributedString
             self.absentRatingLabel.flex.markDirty()
-            flexRootView.flex.layout()
+            absentView.flex.markDirty()
+            bind()
         }
     }
     
     init() {
         super.init(frame: .zero)
+        self.addSubview(self.flexRootView)
         self.bind()
         self.layer.cornerRadius = 6
         self.clipsToBounds = true
@@ -108,21 +115,19 @@ final class MOITDetailAttendanceRatingView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        print(#function, #file)
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
     }
     
     private func bind() {
-        self.addSubview(self.flexRootView)
         
         self.flexRootView.flex
             .direction(.row)
             .define { flex in
                 let width = UIScreen.main.bounds.width - 40
-                print("width", width)
+                
                 // 출석
-                flex.addItem()
+                flex.addItem(attendanceView)
                     .backgroundColor(ResourceKitAsset.Color.blue800.color)
                     .define { flex in
                         flex.addItem(self.attendanceRatingLabel)
@@ -131,7 +136,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                     .width(self.attendanceRating * width)
                 
                 // 지각
-                flex.addItem()
+                flex.addItem(lateView)
                     .backgroundColor(ResourceKitAsset.Color.orange200.color)
                     .define { flex in
                         flex.addItem(self.lateRatingLabel)
@@ -141,7 +146,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                 
                 
                 // 결석
-                flex.addItem()
+                flex.addItem(absentView)
                     .backgroundColor(ResourceKitAsset.Color.orange100.color)
                     .define { flex in
                         flex.addItem(self.absentRatingLabel)

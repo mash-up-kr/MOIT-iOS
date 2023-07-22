@@ -151,7 +151,6 @@ final class MOITDetailViewController: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
         self.configureRefreshControl()
         self.configureLayouts()
         self.bind()
@@ -173,14 +172,8 @@ final class MOITDetailViewController: UIViewController,
         self.sheetContentView.flex.layout(mode: .adjustHeight)
         
         self.contentView.flex.layout(mode: .adjustHeight)
-        
-        print("sheetContentView size", sheetContentView.frame.size)
-        print("scrollView size", scrollView.frame.size)
-        print("contentview size", contentView.frame.size)
         self.scrollView.contentSize = contentView.frame.size
         self.flexRootView.flex.layout()
-        
-        print("scrollView. contentSize", self.scrollView.contentSize)
         self.listener?.viewDidLayoutSubViews()
     }
 }
@@ -250,7 +243,6 @@ extension MOITDetailViewController {
                 .grow(1)
         }
         .width(UIScreen.main.bounds.width)
-        .backgroundColor(.yellow)
         
         self.sheetContentView.flex
             .alignItems(.stretch)

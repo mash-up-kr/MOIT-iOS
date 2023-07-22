@@ -56,4 +56,22 @@ public struct MOITDetailModel: Decodable {
         case startDate
         case endDate
     }
+    
+    public init(moitID: Int, name: String, masterID: Int, description: String, imageURL: String?, scheduleDayOfWeeks: [String], scheduleRepeatCycle: String, scheduleStartTime: String, scheduleEndTime: String, fineLateTime: Int, fineLateAmount: Int, fineAbsenceTime: Int, fineAbsenceAmount: Int, startDate: String, endDate: String) {
+        self.moitID = moitID
+        self.name = name
+        self.masterID = masterID
+        self.description = description
+        self.imageURL = imageURL
+        self.scheduleDayOfWeeks = scheduleDayOfWeeks
+        self.scheduleRepeatCycle = scheduleRepeatCycle
+        self.scheduleStartTime = scheduleStartTime
+        self.scheduleEndTime = scheduleEndTime
+        self.fineLateTime = fineLateTime
+        self.fineLateAmount = fineLateAmount
+        self.fineAbsenceTime = fineAbsenceTime
+        self.fineAbsenceAmount = fineAbsenceAmount
+        self.startDate = startDate
+        self.endDate = endDate
+    }
 }

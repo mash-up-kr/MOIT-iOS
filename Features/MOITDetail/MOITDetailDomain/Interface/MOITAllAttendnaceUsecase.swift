@@ -10,5 +10,5 @@ import Foundation
 import RxSwift
 
 public protocol MOITAllAttendanceUsecase {
-    func fetchAllAttendance(moitID: String) -> Single<MOITAllAttendanceEntity>
+    func fetchAllAttendance(moitID: String, myID: String) -> Single<(studies: MOITAllAttendanceEntity, rate: MOITAllAttendanceRateEntity, myAttendance: [AttendanceEntity])>
 }
