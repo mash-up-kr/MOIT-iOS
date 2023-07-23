@@ -15,4 +15,5 @@ import RxSwift
 public protocol MOITRepository {
     
     func fetchMOITList() -> Single<[MOIT]>
+    func deleteMoit(id: Int) -> Single<Void>
 }
