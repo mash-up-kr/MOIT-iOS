@@ -48,7 +48,8 @@ let project = Project(
                 .ThirdParty.SkeletonView,
                 .Feature.MOITWeb.Implement,
                 .ThirdParty.RxCocoa,
-                .ThirdParty.RxSwift
+                .ThirdParty.RxSwift,
+                .ThirdParty.RxGesture,
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),

@@ -44,7 +44,7 @@ final class RootViewController: UIViewController,
         
         self.view.rx.tapGesture()
             .when(.recognized)
-            .bind(onNext: { [weak self] in
+            .bind(onNext: { [weak self] _ in
                 self?.modifyTextField.resignFirstResponder()
             })
             .disposed(by: self.diseposeBag)
