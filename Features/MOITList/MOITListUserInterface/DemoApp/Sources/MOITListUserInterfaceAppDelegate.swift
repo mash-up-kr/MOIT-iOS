@@ -10,7 +10,12 @@ import UIKit
 
 import MOITListUserInterface
 import MOITListUserInterfaceImpl
+import MOITListDomain
+import MOITListDomainImpl
+import MOITListData
+import MOITListDataImpl
 
+import RxSwift
 import RIBs
 
 @main
@@ -18,7 +23,7 @@ final class MOITListAppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     private var router: ViewableRouting?
-    let dependency = MockMOITListDependency()
+    let dependency = MockMoitListComponent()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -32,7 +37,6 @@ final class MOITListAppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         return true
     }
-    
 }
 
 extension MOITListAppDelegate {
