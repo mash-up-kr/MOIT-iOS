@@ -20,7 +20,11 @@ import PinLayout
 
 protocol MOITListPresentableListener: AnyObject {
     
-    func didTapMOIT(index: Int) -> Void // MOIT 하나 탭 시 불리는 함수
+    func didTapMOIT(index: Int) // MOIT 하나 탭 시 불리는 함수
+    func didTapDeleteMOIT(index: Int) // MOIT 하나 삭제 시 불리는 함수
+    func didTapAlarm(index: Int)
+    func didTapCreateButton()
+    func didTapParticipateButton()
 }
 
 final class MOITListViewController: BaseViewController, MOITListPresentable, MOITListViewControllable {
@@ -33,7 +37,7 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     
     
     private let moitTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "전체 스터디"
         label.textColor = ResourceKitAsset.Color.gray800.color
         label.font = ResourceKitFontFamily.h6
@@ -42,13 +46,15 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     
     private let moitCountLabel: UILabel = {
         let label = UILabel()
-         label.text = "0"
+        label.text = "0"
         label.textColor = ResourceKitAsset.Color.blue600.color
-         label.font = ResourceKitFontFamily.h6
-         return label
-     }()
+        label.font = ResourceKitFontFamily.h6
+        return label
+    }()
     
     private let emptyMOITView = EmptyMOITView()
+    
+    private var moitPreviewList: [MOITStudyPreview] = []
     
     private let createButton = MOITButton(
         type: .small,
@@ -142,6 +148,45 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     override func bind() {
         super.bind()
         
+        pagableAlarmView.thumbnailDidTap.asObservable()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, index in
+                owner.listener?.didTapAlarm(index: index.row)
+            })
+            .disposed(by: disposebag)
+        
+        
+        createButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.listener?.didTapCreateButton()
+            })
+            .disposed(by: disposebag)
+        
+        participateButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.listener?.didTapParticipateButton()
+            })
+            .disposed(by: disposebag)
+        
+        moitPreviewList.enumerated().forEach { index, preview in
+            // 탭
+            preview.rx.didTap
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.listener?.didTapMOIT(index: index)
+                })
+                .disposed(by: disposebag)
+            
+            // 삭제
+            preview.rx.didConfirmDelete
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.listener?.didTapDeleteMOIT(index: index)
+                })
+                .disposed(by: disposebag)
+        }
     }
     
     func didReceiveMOITList(moitList: [MOITPreviewViewModel]) {
@@ -154,9 +199,13 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
         
         emptyMOITView.flex.display(.none)
         
+        // TODO: - studypreview 모아서 저장해두고 걔를 additem
+        let moitPreviewList = moitList.map { makeStudyPreview(with: $0) }
+        self.moitPreviewList = moitPreviewList
+        
         listRootView.flex.define { flex in
-            moitList.forEach {
-                flex.addItem(makeStudyPreview(with: $0))
+            moitPreviewList.forEach {
+                flex.addItem($0)
                     .height(100)
                     .width(100%)
                     .marginBottom(10)
@@ -180,7 +229,10 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
         flexRootView.flex.layout()
     }
     
-    private func makeStudyPreview(with viewModel: MOITPreviewViewModel) -> MOITStudyPreview {
+}
+
+private extension MOITListViewController {
+    func makeStudyPreview(with viewModel: MOITPreviewViewModel) -> MOITStudyPreview {
         MOITStudyPreview(
             remainingDate: viewModel.remainingDate,
             profileURLString: viewModel.profileUrlString,
@@ -188,4 +240,5 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
             studyProgressDescription: viewModel.studyProgressDescription
         )
     }
+    
 }
