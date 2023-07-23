@@ -41,6 +41,10 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     private let dependency: MOITListInteractorDependency
     
     private let selectedMoitIndex = PublishRelay<Int>()
+    private let deleteMoitIndex = PublishRelay<Int>()
+    private let selectedAlarmIndex = PublishRelay<Int>()
+    private let createButtonTapped = PublishRelay<Void>()
+    private let participateButtonTapped = PublishRelay<Void>()
     
     // MARK: - Initializers
     
@@ -106,11 +110,43 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             }
             .asObservable()
         
+        let alarmList = Observable.merge(fine, alertMoitInfo).toArray()
         // fine과 alertMoitInfo을 합쳐서 subscribe에서 didReceiveAlarm로 보낸다
-        Observable.merge(fine, alertMoitInfo)
-            .toArray()
+        
+        alarmList
             .subscribe(onSuccess: { [weak self] alarms in
                 self?.presenter.didReceiveAlarm(alarms: alarms)
+            })
+            .disposeOnDeactivate(interactor: self)
+        
+        
+        deleteMoitIndex
+            .withLatestFrom(moitList) { index, moits in
+                moits[index]
+            }
+            .subscribe(onNext: { deleteMoit in
+                // TODO: - moit 삭제 usecase 실행
+                print("deleteMoit: \(deleteMoit)")
+            })
+            .disposeOnDeactivate(interactor: self)
+        
+        selectedMoitIndex
+            .withLatestFrom(moitList) { index, moits in
+                moits[index]
+            }
+            .subscribe(onNext: { selectedMoit in
+                // TODO: - MOITDetail로 보내기
+                print("selectedMoit: \(selectedMoit)")
+            })
+            .disposeOnDeactivate(interactor: self)
+        
+        selectedAlarmIndex
+            .withLatestFrom(alarmList) { index, alarmList in
+                alarmList[index]
+            }
+            .subscribe(onNext: { alarmViewModel in
+                // TODO: - alarm 타입에 따라서 벌금, 출첵으로 나눠서 보내기
+                print("alarmViewModel: \(alarmViewModel)")
             })
             .disposeOnDeactivate(interactor: self)
     }
@@ -128,6 +164,27 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
 
 // MARK: - MOITListPresentableListener
 extension MOITListInteractor: MOITListPresentableListener {
+    
+    func didTapDeleteMOIT(index: Int) {
+        print(#function)
+        deleteMoitIndex.accept(index)
+    }
+    
+    func didTapCreateButton() {
+        print(#function)
+        createButtonTapped.accept(())
+    }
+    
+    func didTapParticipateButton() {
+        print(#function)
+        participateButtonTapped.accept(())
+    }
+    
+    func didTapAlarm(index: Int) {
+        print(#function)
+        selectedAlarmIndex.accept(index)
+    }
+    
     func didTapMOIT(index: Int) {
         self.selectedMoitIndex.accept(index)
     }
