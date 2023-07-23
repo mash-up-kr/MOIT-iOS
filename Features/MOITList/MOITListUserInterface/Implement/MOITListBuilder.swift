@@ -14,6 +14,7 @@ import RIBs
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency
 {
+    
     var fetchLeftTimeUseCase: FetchLeftTimeUseCase { dependency.fetchLeftTimeUseCase }
     
     var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase { dependency.fetchPaneltyToBePaiedUSeCase }

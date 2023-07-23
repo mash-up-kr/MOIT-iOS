@@ -29,6 +29,7 @@ protocol MOITListInteractorDependency {
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var fetchLeftTimeUseCase: FetchLeftTimeUseCase { get }
     var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase { get }
+//    var deleteMOITUseCase: DeleteMOITUseCase { get }
 }
 
 final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOITListInteractable {
@@ -72,6 +73,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     private func bind() {
         let moitList = dependency.fetchMOITListsUseCase.execute()
         
+        // moitlist 보내주기
         moitList
             .subscribe(onSuccess: { [weak self] moitList in
                 print("fetchMOITListsUseCase list: \(moitList)")
@@ -81,12 +83,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             })
             .disposeOnDeactivate(interactor: self)
         
-        selectedMoitIndex
-            .subscribe(onNext: { index in
-                fatalError("MOITDetail 연결")
-            })
-            .disposeOnDeactivate(interactor: self)
-        
+        // 알람 설정
         let fine = dependency.fetchPaneltyToBePaiedUSeCase.execute()
             .map {
                 AlarmViewModel(
@@ -111,7 +108,6 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .asObservable()
         
         let alarmList = Observable.merge(fine, alertMoitInfo).toArray()
-        // fine과 alertMoitInfo을 합쳐서 subscribe에서 didReceiveAlarm로 보낸다
         
         alarmList
             .subscribe(onSuccess: { [weak self] alarms in
@@ -119,17 +115,25 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             })
             .disposeOnDeactivate(interactor: self)
         
-        
+        // moit 삭제
         deleteMoitIndex
             .withLatestFrom(moitList) { index, moits in
                 moits[index]
             }
-            .subscribe(onNext: { deleteMoit in
-                // TODO: - moit 삭제 usecase 실행
-                print("deleteMoit: \(deleteMoit)")
+            .withUnretained(self)
+//            .flatMap { owner, deleteMoit in
+//                print("deleteMoit: \(deleteMoit)")
+////                return owner.dependency.deleteMOITUseCase.execute(moitId: deleteMoit.id)
+//
+//            }
+            .subscribe(onNext: { owner, deleteMoit in
+                print("성공")
+            }, onError: { _ in
+                print("실패")
             })
             .disposeOnDeactivate(interactor: self)
         
+        // 선택된 moitdetail로 보내기
         selectedMoitIndex
             .withLatestFrom(moitList) { index, moits in
                 moits[index]
@@ -140,6 +144,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             })
             .disposeOnDeactivate(interactor: self)
         
+        // 알람 탭
         selectedAlarmIndex
             .withLatestFrom(alarmList) { index, alarmList in
                 alarmList[index]
@@ -147,6 +152,22 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .subscribe(onNext: { alarmViewModel in
                 // TODO: - alarm 타입에 따라서 벌금, 출첵으로 나눠서 보내기
                 print("alarmViewModel: \(alarmViewModel)")
+            })
+            .disposeOnDeactivate(interactor: self)
+        
+        // 생성하기로 보내기
+        createButtonTapped
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                // TODO: - 생성하기로 보내기
+            })
+            .disposeOnDeactivate(interactor: self)
+        
+        // 참여하기로 보내기
+        participateButtonTapped
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                // TODO: - 참여하기로 보내기
             })
             .disposeOnDeactivate(interactor: self)
     }
@@ -166,22 +187,18 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
 extension MOITListInteractor: MOITListPresentableListener {
     
     func didTapDeleteMOIT(index: Int) {
-        print(#function)
         deleteMoitIndex.accept(index)
     }
     
     func didTapCreateButton() {
-        print(#function)
         createButtonTapped.accept(())
     }
     
     func didTapParticipateButton() {
-        print(#function)
         participateButtonTapped.accept(())
     }
     
     func didTapAlarm(index: Int) {
-        print(#function)
         selectedAlarmIndex.accept(index)
     }
     
