@@ -8,8 +8,10 @@
 
 import Foundation
 
+import MOITListDomain
+
 public struct MOITListDTO: Decodable {
-    let moits: [MOITDTO]
+    public let moits: [MOITDTO]
 }
 
 public extension MOITListDTO {
@@ -24,5 +26,19 @@ public extension MOITListDTO {
         let startTime: String
         let endTime: String
         let dday: Int
+        
+        public func toMOIT() -> MOIT {
+            MOIT(
+                id: self.id,
+                name: self.name,
+                profileUrl: self.profileUrl,
+                isEnd: self.isEnd,
+                repeatCycle: self.repeatCycle,
+                dayOfWeeks: self.dayOfWeeks,
+                startTime: self.startTime,
+                endTime: self.endTime,
+                dday: self.dday
+            )
+        }
     }
 }
