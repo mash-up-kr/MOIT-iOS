@@ -37,3 +37,16 @@ public enum MOITAlarmType: Equatable {
         }
     }
 }
+
+extension MOITAlarmType: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        switch self {
+        case .attendanceCheck(let remainSeconds):
+            hasher.combine(remainSeconds)
+        case .penalty(let amount):
+            hasher.combine(amount)
+        case .attendanceRating(let percent):
+            hasher.combine(percent)
+        }
+    }
+}
