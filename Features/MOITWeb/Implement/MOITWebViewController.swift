@@ -18,6 +18,7 @@ protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
 	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
+    func didTapBackButton()
 }
 
 final class MOITWebViewController: UIViewController,
@@ -77,7 +78,7 @@ extension MOITWebViewController {
     
     private func setCookie(path: String) -> HTTPCookie? {
         HTTPCookie(properties: [
-            .domain: Self.Constant.domain,
+            .domain: "dev-moit-web.vercel.app",
             .path: path,
             .name: "accessToken",
             .value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc"
@@ -86,7 +87,7 @@ extension MOITWebViewController {
     
     private func setWebConfiguration(with cookie: HTTPCookie) -> WKWebViewConfiguration {
         let webConfiguration = WKWebViewConfiguration()
-        webConfiguration.preferences.isTextInteractionEnabled = false
+        webConfiguration.preferences.isTextInteractionEnabled = true
         webConfiguration.websiteDataStore = .nonPersistent()
         webConfiguration.websiteDataStore.httpCookieStore.setCookie(cookie)
         
@@ -125,13 +126,19 @@ extension MOITWebViewController: WKScriptMessageHandler {
             let messages = message.body as? [String: Any],
             let cmd = messages["command"] as? String,
             let command = Command(rawValue: cmd) else { return }
-        let value = messages["body"]
-        let alertController = UIAlertController(
-            title: "\(cmd)",
-            message: "\(value)", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default)
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true)
+        
+        switch command {
+        case .close:
+            self.listener?.didTapBackButton()
+        default:
+            let value = messages["body"]
+            let alertController = UIAlertController(
+                title: "\(cmd)",
+                message: "\(value)", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true)
+        }
     }
 }
 

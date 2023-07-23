@@ -62,7 +62,7 @@ extension MOITWebInteractor {
     func didSwipeBack() {
         self.listener?.shouldDetach(withPop: false)
     }
-	
+  
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any]) {
 		let signInResponse = MOITSignInResponse(headerFields: headerFields)
 		listener?.authorizationDidFinish(with: signInResponse)
@@ -72,4 +72,8 @@ extension MOITWebInteractor {
 		let authorizationToken = headerFields["Authorization"] as? String ?? ""
 		listener?.didSignIn(with: authorizationToken)
 	}
+
+    func didTapBackButton() {
+        self.listener?.shouldDetach(withPop: true)
+    }
 }

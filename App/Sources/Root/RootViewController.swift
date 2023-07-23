@@ -11,6 +11,7 @@ import UIKit
 import FlexLayout
 import PinLayout
 import RxCocoa
+import RxGesture
 
 protocol RootPresentableListener: AnyObject {
     func didTapCreateButton()
@@ -40,6 +41,14 @@ final class RootViewController: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.rx.tapGesture()
+            .when(.recognized)
+            .bind(onNext: { [weak self] _ in
+                self?.modifyTextField.resignFirstResponder()
+            })
+            .disposed(by: self.diseposeBag)
+        
         self.flexrootView.backgroundColor = .white
         self.label.text = "웹분들 여기예용 😲💖 화이팅! 전자군단🤖"
         self.tokenLabel.numberOfLines = 0
