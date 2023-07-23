@@ -29,4 +29,8 @@ public final class MOITDetailRepositoryImpl: MOITDetailRepository {
     public func fetchAttendance(moitID: String) -> Single<MOITAllAttendanceModel> {
         network.request(with: MOITAttendanceRequestable(moitID: moitID))
     }
+    
+    public func fetchUesrs(moitID: String) -> Single<MOITUserModel> {
+        network.request(with: MOITUsersRequestable(moitID: moitID))
+    }
 }

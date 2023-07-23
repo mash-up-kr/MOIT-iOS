@@ -26,8 +26,12 @@ final class MOITDetailAppDelegate: UIResponder,
         var tabTypes: [MOITDetailTab] = [.attendance, .fine]
         var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: NetworkImpl())
         var moitDetailUsecase: MOITDetailUsecase { MOITDetailUsecaseImpl(repository: moitDetailRepository) }
-//        var moitAttendanceUsecase: MOITAllAttendanceUsecase { StubMOITAllAttendanceUsecase() }
-        var moitAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository) }
+        var moitAttendanceUsecase: MOITAllAttendanceUsecase { StubMOITAllAttendanceUsecase() }
+//        var moitAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository) }
+        var moitUserusecase: MOITUserUsecase { MOITUserUsecaseImpl(repository: moitDetailRepository) }
+//        var moitUserusecase: MOITUserUsecase {
+//            StubMOITUserUsecase()
+//        }
     }
     
     var window: UIWindow?
@@ -38,11 +42,14 @@ final class MOITDetailAppDelegate: UIResponder,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
-        self.router = MOITDetailBuilder(dependency: dependency)
+        
+        let router = MOITDetailBuilder(dependency: dependency)
             .build(withListener: self, moitID: "2")
+        self.router = router
         self.router?.load()
         self.router?.interactable.activate()
-        window.rootViewController = self.router?.viewControllable.uiviewController
+        let navigation = UINavigationController(rootViewController: router.viewControllable.uiviewController)
+        window.rootViewController = navigation
 
         window.makeKeyAndVisible()
         self.window = window

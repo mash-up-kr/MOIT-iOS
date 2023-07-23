@@ -231,15 +231,12 @@ enum Formatter {
 
 
 extension MOITList {
-    func configure(imageURLString: String, title: String, detail: String, chipType: MOITChipType) {
-        self.title = title
-        self.imageUrlString = imageURLString
-        self.detail = detail
-        self.chipType = chipType
+    public func configure(title: String?, detail: String?) {
+        self.titleLabel?.text = title
+        self.detailLabel?.text = detail
         
         self.titleLabel?.flex.markDirty()
         self.detailLabel?.flex.markDirty()
-        self.chip?.flex.markDirty()
         
         self.flexRootView.setNeedsLayout()
     }

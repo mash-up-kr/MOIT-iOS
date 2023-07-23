@@ -144,13 +144,11 @@ final class MOITDetailViewController: UIViewController,
     
     // MARK: - LifeCycles
     
-    override func loadView() {
-        self.view = self.flexRootView
-        self.flexRootView.isSkeletonable = true
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(self.flexRootView)
+        self.flexRootView.isSkeletonable = true
+        self.navigationController?.navigationBar.isHidden = true
         self.configureRefreshControl()
         self.configureLayouts()
         self.bind()
@@ -161,7 +159,6 @@ final class MOITDetailViewController: UIViewController,
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(#function)
         self.flexRootView.pin.all()
 
         self.navigationBar.flex.layout()

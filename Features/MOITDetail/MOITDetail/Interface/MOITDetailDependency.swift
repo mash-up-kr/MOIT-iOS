@@ -17,4 +17,5 @@ public protocol MOITDetailDependency: Dependency {
     var moitDetailUsecase: MOITDetailUsecase { get }
     var moitAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitDetailRepository: MOITDetailRepository { get }
+    var moitUserusecase: MOITUserUsecase { get }
 }
