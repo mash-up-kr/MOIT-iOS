@@ -26,6 +26,17 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.PinLayout,
         .ThirdParty.FlexLayout,
         .ThirdParty.RxGesture,
+        
+        .ResourceKit,
+        .DesignSystem,
+        .Core.Utils,
+        
+        .Feature.MOITList.Domain.Interface,
+    ],
+    demoAppDependencies: [
+        .Feature.MOITList.Domain.Implement,
+        .Feature.MOITList.Data.Implement,
+        
     ],
     isUserInterface: true
 )
