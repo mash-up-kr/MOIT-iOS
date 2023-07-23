@@ -36,10 +36,67 @@ final class MOITListAppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension MOITListAppDelegate {
-
-    final class MockMOITListDependency:  MOITListDependency {
+    
+    final class MockMoitListComponent: Component<EmptyDependency>,
+                                       MOITListDependency
+    {
+        var fetchLeftTimeUseCase: FetchLeftTimeUseCase
         
+        var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase
+        
+        var fetchMOITListsUseCase: FetchMoitListUseCase
+        
+        init() {
+            self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MockMoitRepository())
+            self.fetchLeftTimeUseCase = MockFetchLeftTimeUseCase()
+            self.fetchPaneltyToBePaiedUSeCase = MockFetchPenaltyToBePaidUseCase()
+            super.init(dependency: EmptyComponent())
+        }
     }
+    
     private final class MOCKMOITListListener: MOITListListener {
     }
+    
+    private final class MockMoitRepository: MOITRepository {
+        func fetchMOITList() -> Single<[MOIT]> {
+            return Single.just([
+                MOIT(
+                    id: 1,
+                    name: "hi",
+                    profileUrl: "hi",
+                    isEnd: true,
+                    repeatCycle: "hi",
+                    dayOfWeeks: ["hi"],
+                    startTime: "hi",
+                    endTime: "hi",
+                    dday: 1
+                ),
+                MOIT(
+                    id: 1,
+                    name: "hi",
+                    profileUrl: "hi",
+                    isEnd: true,
+                    repeatCycle: "hi",
+                    dayOfWeeks: ["hi"],
+                    startTime: "hi",
+                    endTime: "hi",
+                    dday: 1
+                )
+            ])
+        }
+    }
+    
+    private final class MockFetchPenaltyToBePaidUseCase: FetchPenaltyToBePaidUseCase {
+        func execute() -> Single<Int> {
+            return Single.just(1000)
+        }
+    }
+    
+    private final class MockFetchLeftTimeUseCase: FetchLeftTimeUseCase {
+        func execute(moitList: [MOIT]) -> (moitName: String, time: Date) {
+            return ("전전자군단", Date())
+        }
+    }
+    
+    
 }
