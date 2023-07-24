@@ -57,17 +57,15 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
     }
 	
 	func completeButtonDidTap(with code: String) {
-//		router?.attachPariticipationSuccess()
 		dependency.participateUseCase.execute(with: code)
+			.observe(on: MainScheduler.instance)
 			.subscribe { [weak self] event in
 				switch event {
 				case.success(let response):
 					// TODO: moitId로 모잇 정보 조회하는 API 호출해야함
 					break
 				case .failure(let error):
-					DispatchQueue.main.async {
-						self?.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
-					}
+					self?.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
 				}
 			}
 			.disposed(by: disposeBag)
