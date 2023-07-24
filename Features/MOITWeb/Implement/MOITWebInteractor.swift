@@ -58,4 +58,8 @@ extension MOITWebInteractor {
     func didSwipeBack() {
         self.listener?.shouldDetach(withPop: false)
     }
+    
+    func didTapBackButton() {
+        self.listener?.shouldDetach(withPop: true)
+    }
 }

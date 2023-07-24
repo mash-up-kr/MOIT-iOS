@@ -27,7 +27,8 @@ let spm = SwiftPackageManagerDependencies(
         .remote(url: "https://github.com/airbnb/lottie-ios", requirement: .upToNextMajor(from: "4.2.0")),
         .remote(url: "https://github.com/Quick/Nimble", requirement: .upToNextMajor(from: "9.2.0")),
         .remote(url: "https://github.com/Quick/Quick", requirement: .upToNextMajor(from: "5.0.0")),
-        .remote(url: "https://github.com/Juanpe/SkeletonView", requirement: .upToNextMajor(from: "1.30.0"))
+        .remote(url: "https://github.com/Juanpe/SkeletonView", requirement: .upToNextMajor(from: "1.30.0")),
+        .remote(url: "https://github.com/apple/swift-collections", requirement: .branch("main")),
     ],
     productTypes: [
         "RIBs": .framework,
@@ -39,7 +40,8 @@ let spm = SwiftPackageManagerDependencies(
         "Nimble": .framework,
         "Quick": .framework,
         "Lottie": .framework,
-        "SkeletonView": .framework
+        "SkeletonView": .framework,
+        "Collections": .framework
     ]
 )
 

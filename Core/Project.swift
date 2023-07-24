@@ -26,5 +26,9 @@ let project = Project(
                 .ThirdParty.FlexLayout,
             ]
         ),
+    Project.makeTarget(
+        name: "MOITFoundation",
+        dependencies: []
+    ),
     ]
 )

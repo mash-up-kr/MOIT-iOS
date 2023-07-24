@@ -32,7 +32,7 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
         let viewController = MOITWebViewController()
         let interactor = MOITWebInteractor(
             presenter: viewController,
-            path: path.rawValue
+            path: path.path
         )
         interactor.listener = listener
         

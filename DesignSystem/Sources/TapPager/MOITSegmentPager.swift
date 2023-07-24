@@ -32,13 +32,14 @@ public final class MOITSegmentPager: UIView {
 
     // MARK: - Initializers
     public init(
-        pages: [String]
+        pages: [String] = []
     ) {
         super.init(frame: .zero)
-
-        configurePages(pages: pages)
-        configureLayout()
-        congifureSelectedCircle()
+        if !pages.isEmpty {
+            configurePages(pages: pages)
+            configureLayout()
+            congifureSelectedCircle()
+        }
     }
 
     @available(*, unavailable)
@@ -82,8 +83,10 @@ public final class MOITSegmentPager: UIView {
             }
     }
     
-    private func configurePages(pages: [String]) {
+    public func configurePages(pages: [String]) {
         self.pages = pages.map { self.configureLabel(text: $0) }
+        configureLayout()
+        congifureSelectedCircle()
     }
 
     private func configureLabel(text: String?) -> UILabel {

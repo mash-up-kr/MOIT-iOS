@@ -46,6 +46,10 @@ let project = Project(
             dependencies: [
                 .ThirdParty.RIBs,
                 .ThirdParty.SkeletonView,
+                .Feature.MOITWeb.Implement,
+                .ThirdParty.RxCocoa,
+                .ThirdParty.RxSwift,
+                .ThirdParty.RxGesture,
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),

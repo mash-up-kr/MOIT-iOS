@@ -120,8 +120,8 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 				.define { flex in
 					flex.addItem(titleDescriptionLabel)
 					flex.addItem(logoImageView)
-						.width(238)
-						.height(102)
+						.width(230)
+						.height(80)
 						.marginTop(6)
 				}
 			
