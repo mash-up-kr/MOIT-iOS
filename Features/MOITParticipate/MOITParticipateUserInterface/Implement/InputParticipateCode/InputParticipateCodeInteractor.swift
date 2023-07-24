@@ -65,6 +65,7 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 					// TODO: moitId로 모잇 정보 조회하는 API 호출해야함
 					break
 				case .failure(let error):
+					// TODO: 서버에서 받은 에러 메세지 전달해야함
 					self?.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
 				}
 			}

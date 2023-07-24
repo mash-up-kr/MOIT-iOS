@@ -8,12 +8,13 @@
 
 import Foundation
 
-import MOITNetwork
 import MOITParticipateData
+import MOITDetailData
+import MOITNetwork
 
 enum ParticipateEndpoint {
 	
-	static func postParticipateCode(with request: MOITParticipateRequest) -> Endpoint<MOITParticipateDTO> {
+	static func postParticipateCode(with request: MOITParticipateRequest) -> Endpoint<MOITDetailModel> {
 		
 		return Endpoint(
 			path: "moit/join",

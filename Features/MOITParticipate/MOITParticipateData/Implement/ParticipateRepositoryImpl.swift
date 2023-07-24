@@ -9,6 +9,7 @@
 import Foundation
 
 import MOITParticipateData
+import MOITDetailData
 import MOITNetwork
 
 import RxSwift
@@ -23,7 +24,7 @@ public final class ParticipateRepositoryImpl: ParticipateRepository {
 	
 	public func postParticipateCode(
 		with request: MOITParticipateRequest
-	) -> Single<MOITParticipateDTO> {
+	) -> Single<MOITDetailModel> {
 		let endpoint = ParticipateEndpoint.postParticipateCode(with: request)
 		return network.request(with: endpoint)
 	}
