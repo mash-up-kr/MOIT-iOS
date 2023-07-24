@@ -7,8 +7,12 @@
 
 import RIBs
 import RxSwift
+import MOITWebImpl
+import MOITWeb
 
 protocol RootRouting: ViewableRouting {
+    func routeToMoitWeb(path: MOITWebPath)
+    func detachWeb(withPop: Bool)
 }
 
 protocol RootPresentable: Presentable {
@@ -37,5 +41,26 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
         super.willResignActive()
     }
     
+    func didTapCreateButton() {
+        self.router?.routeToMoitWeb(path: .register)
+    }
+    
+    func didTapAttendanceButton() {
+        self.router?.routeToMoitWeb(path: .attendance)
+    }
+    
+    func didTapModifyButton(id: String) {
+        self.router?.routeToMoitWeb(path: .modify(id: id))
+    }
+    
+    func didTapAttendanceResultButton() {
+        self.router?.routeToMoitWeb(path: .attendanceResult)
+    }
     deinit { debugPrint("\(self) deinit") }
+}
+
+extension RootInteractor {
+    func shouldDetach(withPop: Bool) {
+        self.router?.detachWeb(withPop: withPop)
+    }
 }

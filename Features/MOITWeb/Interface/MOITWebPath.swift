@@ -8,8 +8,18 @@
 
 import Foundation
 
-public enum MOITWebPath: String {
-    // TODO: 추후 삭제 해야됩니다.
-    case tv = "/tv"
-    case movie = "/movie"
+public enum MOITWebPath {
+    case register
+    case modify(id: String)
+    case attendance
+    case attendanceResult
+    
+    public var path: String {
+        switch self {
+        case .attendance: return "/attendance"
+        case .register: return "/register"
+        case .modify(let id): return "/register?id=\(id)"
+        case .attendanceResult: return "/attendanceResult"
+        }
+    }
 }

@@ -105,7 +105,7 @@ extension Project {
     public static func invertedDualTargetProjectWithDemoApp(
         name: String,
         platform: Platform = .iOS,
-        iOSTargetVersion: String = "15.0.0",
+        iOSTargetVersion: String = "16.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         demoAppDependencies: [TargetDependency] = [],
@@ -180,7 +180,7 @@ extension Project {
     public static func makeTarget(
         name: String,
         dependencies: [TargetDependency],
-        iOSTargetVersion: String = "15.0.0"
+        iOSTargetVersion: String = "16.0.0"
     ) -> Target {
         return Target(name: name,
                platform: .iOS,

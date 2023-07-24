@@ -6,7 +6,12 @@
 //
 
 import RIBs
+import MOITWebImpl
+import MOITWeb
 
+final class RootComponent: EmptyDependency, MOITWebDependency{
+    
+}
 // MARK: - Builder
 
 protocol RootBuildable: Buildable {
@@ -22,12 +27,15 @@ final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
     deinit { debugPrint("\(self) deinit") }
 
     func build() -> LaunchRouting {
+        let component = RootComponent()
         let viewController = RootViewController()
         let interactor = RootInteractor(presenter: viewController)
         
+        let webBuilder = MOITWebBuilder(dependency: component)
         return RootRouter(
             interactor: interactor,
-            viewController: viewController
+            viewController: viewController,
+            moitWebBuilder: webBuilder
         )
     }
 }
