@@ -15,6 +15,7 @@ import RxSwift
 
 public final class NetworkImpl: Network {
 
+    public static let shared = NetworkImpl()
 	private let session: URLSession
 
 	public init(session: URLSession = URLSession.shared) {
@@ -30,13 +31,18 @@ public final class NetworkImpl: Network {
 			return Single.create { [weak self] single in
 				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
 					guard let self else { return }
-
 					let result = self.checkError(with: data, response, error, E.Response.self)
 
 					switch result {
 					case .success(let response):
 						single(.success(response))
+                        print("---------success---------")
+                        print(response)
+                        print("-------------------------")
 					case .failure(let error):
+                        print("--------- error ---------")
+                        print(error)
+                        print("-------------------------")
 						single(.failure(error))
 					}
 				}.resume()
@@ -46,6 +52,8 @@ public final class NetworkImpl: Network {
 			return .error(NetworkError.invalidURL)
 		}
 	}
+    
+    deinit { debugPrint("\(self) deinit") }
 
 	private func checkError<M: Decodable>(
 		with data: Data?,

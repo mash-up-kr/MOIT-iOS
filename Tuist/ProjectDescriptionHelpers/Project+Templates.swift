@@ -61,7 +61,7 @@ extension Project {
     public static func invertedDualTargetProject(
         name: String,
         platform: Platform,
-        iOSTargetVersion: String,
+        iOSTargetVersion: String = "15.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         useTestTarget: Bool = true,
@@ -143,14 +143,17 @@ extension Project {
                         "CFBundleDevelopmentRegion": "ko_KR",
                         "CFBundleShortVersionString": "1.0",
                         "CFBundleVersion": "1",
-                        "UILaunchStoryboardName": "LaunchScreen"
+                        "UILaunchStoryboardName": "LaunchScreen",
+                        "NSAppTransportSecurity": [
+                            "NSAllowsArbitraryLoads": "YES"
+                        ]
                     ]
             ),
             sources: ["./DemoApp/Sources/**"],
             resources: ["./DemoApp/Resources/**"],
             scripts: [.swiftLintScript],
             dependencies:
-                implementDependencies +
+//                implementDependencies +
             [
                 .target(name: name),
                 .target(name: "\(name)Impl"),

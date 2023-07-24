@@ -17,11 +17,7 @@ import RxSwift
 open class MOITList: UIView {
 	
 // MARK: - UI
-	
-// MARK: - UI
-	
-// MARK: - UI
-	
+
 	private let flexRootView = UIView()
 	
 	private lazy var profileImageView: MOITProfileView? = {
@@ -232,4 +228,20 @@ enum Formatter {
 		formatter.numberStyle = .decimal
 		return formatter
 	}()
+}
+
+
+extension MOITList {
+    func configure(imageURLString: String, title: String, detail: String, chipType: MOITChipType) {
+        self.title = title
+        self.imageUrlString = imageURLString
+        self.detail = detail
+        self.chipType = chipType
+        
+        self.titleLabel?.flex.markDirty()
+        self.detailLabel?.flex.markDirty()
+        self.chip?.flex.markDirty()
+        
+        self.flexRootView.setNeedsLayout()
+    }
 }
