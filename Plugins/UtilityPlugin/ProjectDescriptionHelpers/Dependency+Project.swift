@@ -29,29 +29,27 @@ extension TargetDependency {
 			public struct UserInterface {}
 		}
     
-    public struct MOITDetail {
-      public struct Data {}
-      public struct Domain {}
-    }
+		public struct MOITDetail {
+		  public struct Data {}
+		  public struct Domain {}
+		}
 	}
 
-  public struct Core {
-        
-    }
+	public struct Core { }
     
-    public struct MOITNetwork {}
-    
-    public static let ResourceKit = TargetDependency.project(
-        target: "ResourceKit",
-        path: .relativeToRoot("ResourceKit")
-    )
-    
-    public static let DesignSystem = TargetDependency.project(
-        target: "DesignSystem",
-        path: .relativeToRoot("DesignSystem")
-    )
+	public struct MOITNetwork {}
 
-    public struct ThirdParty {}
+	public static let ResourceKit = TargetDependency.project(
+		target: "ResourceKit",
+		path: .relativeToRoot("ResourceKit")
+	)
+
+	public static let DesignSystem = TargetDependency.project(
+		target: "DesignSystem",
+		path: .relativeToRoot("DesignSystem")
+	)
+
+	public struct ThirdParty {}
 }
 
 public extension TargetDependency.Core {
@@ -172,6 +170,7 @@ public extension TargetDependency.ThirdParty {
     static let Nimble = TargetDependency.external(name: "Nimble")
     static let SkeletonView = TargetDependency.external(name: "SkeletonView")
     static let Collections = TargetDependency.external(name: "Collections")
+	static let Toast = TargetDependency.external(name: "Toast")
 }
 
 public extension TargetDependency.ThirdParty {
