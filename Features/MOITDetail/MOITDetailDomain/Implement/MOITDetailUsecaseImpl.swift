@@ -47,6 +47,9 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 			fineAbsenceTime: moitDetailModel.fineAbsenceTime,
 			fineAbsenceAmount: moitDetailModel.fineAbsenceAmount
 		)
+		let notificationDescription = self.notificationDescription(
+			remindOption: moitDetailModel.notificationRemindOption
+		)
 		let periodDescription = self.periodDescription(
 			startDate: moitDetailModel.startDate,
 			endDate: moitDetailModel.endDate
@@ -60,7 +63,8 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 			scheduleDescription: scheduleDescription,
 			ruleShortDescription: ruleShortDescription,
 			ruleLoneDescription: ruleLongDescription,
-			notificationDescription: <#String#>,
+			isNotificationActive: moitDetailModel.notificationIsRemindActive,
+			notificationDescription: notificationDescription,
 			periodDescription: periodDescription
 		)
 	}
@@ -113,4 +117,10 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
     ) -> String {
         return "\(startDate.dateKORString) - \(endDate.dateKORString)"
     }
+	
+	private func notificationDescription(
+		remindOption: String
+	) -> String {
+		return NotificationRemindOption(fromRawValue: remindOption).toKor
+	}
 }
