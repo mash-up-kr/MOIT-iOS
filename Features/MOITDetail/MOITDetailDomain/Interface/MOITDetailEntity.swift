@@ -18,6 +18,7 @@ public struct MOITDetailEntity {
     public let ruleShortDescription: String
     public let ruleLongDescription: String
     public let periodDescription: String
+	// TODO: 알람 description 추가
     
     public init(
         moitID: String,

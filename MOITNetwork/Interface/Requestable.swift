@@ -18,7 +18,7 @@ public enum HTTPRequestParameter {
 public protocol Requestable {
 	associatedtype Response: Decodable
 
-	var baseURL: URL? { get }
+	var baseURL: URL { get }
 	var path: String { get }
 	var method: HTTPMethod { get }
 	var headers: HTTPHeaders { get }
@@ -39,7 +39,7 @@ public extension Requestable {
 	}
 
 	func makeURL() -> URL? {
-		self.baseURL?.append(path: path).append(queries: parameters)
+		self.baseURL.append(path: path).append(queries: parameters)
 	}
     
     var baseURL: URL { URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com") ?? URL(fileReferenceLiteralResourceName: "") }

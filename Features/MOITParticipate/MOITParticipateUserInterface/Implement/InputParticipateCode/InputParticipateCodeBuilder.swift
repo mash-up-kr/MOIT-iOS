@@ -19,7 +19,10 @@ import MOITParticipateDomain
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
 										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {
-	var participateUseCase: ParticipateUseCase { ParticipateUseCaseImpl(participateRepository: participateRepository) }
+	var participateUseCase: ParticipateUseCase { ParticipateUseCaseImpl(
+		participateRepository: participateRepository,
+		moitDetailUseCase: dependency.moitDetailUseCase
+	) }
 	let participateRepository: ParticipateRepository
 	
 	override init(

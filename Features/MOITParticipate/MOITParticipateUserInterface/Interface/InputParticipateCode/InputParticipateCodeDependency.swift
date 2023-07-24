@@ -9,9 +9,11 @@
 import Foundation
 
 import MOITNetwork
+import MOITDetailDomain
 
 import RIBs
 
 public protocol InputParticipateCodeDependency: Dependency {
 	var network: Network { get }
+	var moitDetailUseCase: MOITDetailUsecase { get }
 }

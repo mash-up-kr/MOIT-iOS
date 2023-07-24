@@ -16,6 +16,12 @@ import MOITParticipateDomain
 import MOITParticipateDomainImpl
 import MOITNetwork
 import MOITNetworkImpl
+
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
 import ResourceKit
 
 import RxSwift
@@ -23,12 +29,15 @@ import RIBs
 import Toast
 
 final class MockMOITParticipateDependency: InputParticipateCodeDependency {
-	var network: Network
+	let network: Network
+	let moitDetailUseCase: MOITDetailUsecase
 	
 	init(
-		network: Network
+		network: Network,
+		moitDetailUseCase: MOITDetailUsecase
 	) {
 		self.network = network
+		self.moitDetailUseCase = moitDetailUseCase
 	}
 }
 
@@ -49,7 +58,7 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		setToastStyle()
 
 		router = InputParticipateCodeBuilder(
-			dependency: MockMOITParticipateDependency(network: NetworkImpl())
+			dependency: MockMOITParticipateDependency(network: NetworkImpl(), moitDetailUseCase: MOITDetailUsecaseImpl(repository: MOITDetailRepositoryImpl(network: NetworkImpl())))
 		).build(withListener: MockMOITPariticipateListener())
 		router?.interactable.activate()
 		router?.load()
