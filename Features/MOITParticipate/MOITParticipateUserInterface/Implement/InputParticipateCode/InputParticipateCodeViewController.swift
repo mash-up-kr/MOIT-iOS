@@ -15,6 +15,7 @@ import Utils
 import RIBs
 import RxCocoa
 import RxSwift
+import Toast
 
 protocol InputParticipateCodePresentableListener: AnyObject {
 	func completeButtonDidTap(with code: String)
@@ -65,6 +66,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
+	private var keyboardHeight: CGFloat = 0
 	
 // MARK: - override
 	
@@ -94,6 +96,19 @@ public final class InputParticipateCodeViewController: UIViewController,
 		super.viewWillDisappear(animated)
 		
 		deleteKeyboardNotification()
+	}
+	
+// MARK: - internal
+	func showErrorToast(with message: String) {
+		let verticalPoint = UIScreen.main.bounds.height - (keyboardHeight + completeButton.bounds.height + 10 + 32)
+		let horizontalPoint = UIScreen.main.bounds.width / 2
+		self.view.makeToast(
+			message,
+			point: CGPoint(x: horizontalPoint, y: verticalPoint),
+			title: nil,
+			image: ResourceKitAsset.Icon.error.image,
+			completion: nil
+		)
 	}
 	
 // MARK: - private
@@ -164,6 +179,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 	@objc private func keyboardWillShow(_ notification: Notification) {
 		if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 			let keyboardHeight = keyboardFrame.cgRectValue.height - UIDevice.safeAreaBottomPadding
+			self.keyboardHeight = keyboardHeight
 
 			completeButton.flex.marginBottom(keyboardHeight)
 			completeButton.flex.markDirty()

@@ -16,9 +16,11 @@ import MOITParticipateDomain
 import MOITParticipateDomainImpl
 import MOITNetwork
 import MOITNetworkImpl
+import ResourceKit
 
 import RxSwift
 import RIBs
+import Toast
 
 final class MockMOITParticipateDependency: InputParticipateCodeDependency {
 	var network: Network
@@ -43,6 +45,8 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
 		let window = UIWindow(frame: UIScreen.main.bounds)
+		
+		setToastStyle()
 
 		router = InputParticipateCodeBuilder(
 			dependency: MockMOITParticipateDependency(network: NetworkImpl())
@@ -55,6 +59,21 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		self.window = window
 
 		return true
+	}
+}
+
+extension MOITParticipateAppDelegate {
+	// TODO: 추후 setting 위치 변경 필요
+	private func setToastStyle() {
+		var style = ToastStyle()
+		style.backgroundColor = ResourceKitAsset.Color.gray800.color
+		style.cornerRadius = 10
+		style.imageSize = CGSize(width: 24, height: 24)
+		style.horizontalPadding = 20
+		style.messageFont = ResourceKitFontFamily.p2
+		// TODO: 노출시간 변경되는 경우 세팅필요함
+		//		style.fadeDuration =
+		ToastManager.shared.style = style
 	}
 }
 

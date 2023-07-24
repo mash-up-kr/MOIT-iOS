@@ -21,6 +21,8 @@ protocol InputParticipateCodeRouting: ViewableRouting {
 
 protocol InputParticipateCodePresentable: Presentable {
     var listener: InputParticipateCodePresentableListener? { get set }
+	
+	func showErrorToast(with message: String)
 }
 
 protocol InputParticipateCodeInteractorDependency {
@@ -57,15 +59,15 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	func completeButtonDidTap(with code: String) {
 //		router?.attachPariticipationSuccess()
 		dependency.participateUseCase.execute(with: code)
-			.subscribe { event in
+			.subscribe { [weak self] event in
 				switch event {
 				case.success(let response):
 					// TODO: moitId로 모잇 정보 조회하는 API 호출해야함
 					break
 				case .failure(let error):
-					// TODO: toast 띄워야함 ~
-					// TODO: toast로 띄워줄 에러 메세지를 받아와야함...흠
-					break
+					DispatchQueue.main.async {
+						self?.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
+					}
 				}
 			}
 			.disposed(by: disposeBag)
