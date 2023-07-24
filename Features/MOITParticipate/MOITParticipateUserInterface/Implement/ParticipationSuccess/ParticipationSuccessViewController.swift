@@ -85,28 +85,6 @@ public final class ParticipationSuccessViewController: UIViewController,
 		configureView()
 		configureLayout()
 		bind()
-		
-		// TODO: 추후 삭제
-		moitDetailCardView.configure(
-			viewModel: [
-				MOITDetailInfoViewModel(
-					title: "일정",
-					description: "격주 금요일 17:00 - 20:00"
-				),
-				MOITDetailInfoViewModel(
-					title: "규칙",
-					description: "지각 15분부터 5,000원\n결석 30분 부터 8,000원"
-				),
-				MOITDetailInfoViewModel(
-					title: "알람",
-					description: "당일 오전 10시"
-				),
-				MOITDetailInfoViewModel(
-					title: "기간",
-					description: "2023년 6월 27일 - 2023년 8월 30일"
-				)
-			]
-		)
 	}
 	
 	override public func viewDidLayoutSubviews() {

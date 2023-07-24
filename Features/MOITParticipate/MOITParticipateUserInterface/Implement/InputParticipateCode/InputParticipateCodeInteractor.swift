@@ -10,12 +10,13 @@ import Foundation
 
 import MOITParticipateUserInterface
 import MOITParticipateDomain
+import MOITDetail
 
 import RIBs
 import RxSwift
 
 protocol InputParticipateCodeRouting: ViewableRouting {
-	func attachPariticipationSuccess()
+	func attachPariticipationSuccess(with viewModel: MOITDetailInfoViewModels)
 	func detachPariticipationSuccess()
 }
 
@@ -60,13 +61,21 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 		dependency.participateUseCase.execute(with: code)
 			.observe(on: MainScheduler.instance)
 			.subscribe { [weak self] event in
+				guard let self else { return }
+				
 				switch event {
-				case.success(let response):
-					// TODO: moitId로 모잇 정보 조회하는 API 호출해야함
-					break
+				case.success(let moitDetailEntity):
+					let moitDetailInfoViewModels = self.convertToMOITDetailInfoViewModels(
+						scheduleDescription: moitDetailEntity.scheduleDescription,
+						ruleDescription: moitDetailEntity.ruleLongDescription,
+						isNotificationActivate: moitDetailEntity.isNotificationActive,
+						notificationDescription: moitDetailEntity.notificationDescription,
+						periodDescription: moitDetailEntity.periodDescription
+					)
+					self.router?.attachPariticipationSuccess(with: moitDetailInfoViewModels)
 				case .failure(let error):
 					// TODO: 서버에서 받은 에러 메세지 전달해야함
-					self?.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
+					self.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
 				}
 			}
 			.disposed(by: disposeBag)
@@ -74,5 +83,40 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	
 	func participationSuccessDismissButtonDidTap() {
 		router?.detachPariticipationSuccess()
+	}
+	
+	private func convertToMOITDetailInfoViewModels(
+		scheduleDescription: String,
+		ruleDescription: String,
+		isNotificationActivate: Bool,
+		notificationDescription: String,
+		periodDescription: String
+	) -> MOITDetailInfoViewModels {
+		var infos = [
+			MOITDetailInfoViewModel(
+				title: "일정",
+				description: scheduleDescription
+			),
+			MOITDetailInfoViewModel(
+				title: "규칙",
+				description: ruleDescription
+			),
+			MOITDetailInfoViewModel(
+				title: "기간",
+				description: periodDescription
+			)
+		]
+		
+		if isNotificationActivate {
+			infos.insert(
+				MOITDetailInfoViewModel(
+					title: "알람",
+					description: notificationDescription
+				),
+				at: 2
+			)
+		}
+		
+		return infos
 	}
 }
