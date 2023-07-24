@@ -17,8 +17,8 @@ public struct MOITDetailEntity {
     public let scheduleDescription: String
     public let ruleShortDescription: String
     public let ruleLongDescription: String
+	public let notificationDescription: String
     public let periodDescription: String
-	// TODO: 알람 description 추가
     
     public init(
         moitID: String,
@@ -29,6 +29,7 @@ public struct MOITDetailEntity {
         scheduleDescription: String,
         ruleShortDescription: String,
         ruleLoneDescription: String,
+		notificationDescription: String,
         periodDescription: String
     ) {
         self.moitID = moitID
@@ -39,6 +40,7 @@ public struct MOITDetailEntity {
         self.scheduleDescription = scheduleDescription
         self.ruleShortDescription = ruleShortDescription
         self.ruleLongDescription = ruleLoneDescription
+		self.notificationDescription = notificationDescription
         self.periodDescription = periodDescription
     }
 }

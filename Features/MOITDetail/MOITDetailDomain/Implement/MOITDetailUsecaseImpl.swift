@@ -60,6 +60,7 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 			scheduleDescription: scheduleDescription,
 			ruleShortDescription: ruleShortDescription,
 			ruleLoneDescription: ruleLongDescription,
+			notificationDescription: <#String#>,
 			periodDescription: periodDescription
 		)
 	}

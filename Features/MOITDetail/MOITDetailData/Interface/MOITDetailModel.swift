@@ -34,6 +34,10 @@ public struct MOITDetailModel: Decodable {
     public let fineAbsenceTime: Int
     /// moit 결석 벌금
     public let fineAbsenceAmount: Int
+	/// moit 알람 리마인드 on/off
+	public let notificationIsRemindActive: Bool
+	/// moit 알람 리마인드 시간
+	public let notificationRemindOption: String
     /// moit 시작 일자 (YYYY-MM-dd)
     public let startDate: String
     /// moit 종료 일자 (YYYY-MM-dd)
@@ -53,11 +57,13 @@ public struct MOITDetailModel: Decodable {
         case fineLateAmount
         case fineAbsenceTime
         case fineAbsenceAmount
+		case notificationIsRemindActive
+		case notificationRemindOption
         case startDate
         case endDate
     }
     
-    public init(moitID: Int, name: String, masterID: Int, description: String, imageURL: String?, scheduleDayOfWeeks: [String], scheduleRepeatCycle: String, scheduleStartTime: String, scheduleEndTime: String, fineLateTime: Int, fineLateAmount: Int, fineAbsenceTime: Int, fineAbsenceAmount: Int, startDate: String, endDate: String) {
+	public init(moitID: Int, name: String, masterID: Int, description: String, imageURL: String?, scheduleDayOfWeeks: [String], scheduleRepeatCycle: String, scheduleStartTime: String, scheduleEndTime: String, fineLateTime: Int, fineLateAmount: Int, fineAbsenceTime: Int, fineAbsenceAmount: Int, notificationIsRemindActive: Bool, notificationRemindOption: String, startDate: String, endDate: String) {
         self.moitID = moitID
         self.name = name
         self.masterID = masterID
@@ -71,6 +77,8 @@ public struct MOITDetailModel: Decodable {
         self.fineLateAmount = fineLateAmount
         self.fineAbsenceTime = fineAbsenceTime
         self.fineAbsenceAmount = fineAbsenceAmount
+		self.notificationIsRemindActive = notificationIsRemindActive
+		self.notificationRemindOption = notificationRemindOption
         self.startDate = startDate
         self.endDate = endDate
     }
