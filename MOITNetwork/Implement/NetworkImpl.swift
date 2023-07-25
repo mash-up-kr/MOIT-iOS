@@ -41,14 +41,11 @@ public final class NetworkImpl: Network {
 
 					switch result {
 					case .success(let response):
-						Logger.debug(response)
+						Logger.debug("👍 success: \(response)")
 						
 						single(.success(response))
-                        print("---------success---------")
-                        print(response)
-                        print("-------------------------")
 					case .failure(let error):
-						Logger.debug(error)
+						Logger.debug("💥 error: \(error)")
 						
 						single(.failure(error))
 					}
@@ -80,8 +77,8 @@ public final class NetworkImpl: Network {
 			return .failure(NetworkError.emptyData)
 		}
 		
-		Logger.debug(String(decoding: data, as: UTF8.self))
-		Logger.debug("statusCode: \(response.statusCode)")
+		Logger.debug("🧐 response data: \(String(decoding: data, as: UTF8.self))")
+		Logger.debug("👀 statusCode: \(response.statusCode)")
 
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
