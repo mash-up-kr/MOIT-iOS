@@ -8,6 +8,7 @@
 
 import UIKit
 
+import MOITDetail
 import Utils
 import DesignSystem
 import ResourceKit
@@ -17,6 +18,7 @@ import RxSwift
 
 protocol ParticipationSuccessPresentableListener: AnyObject {
 	func dismissButtonDidTap()
+	func viewDidLoad()
 }
 
 public final class ParticipationSuccessViewController: UIViewController,
@@ -85,6 +87,8 @@ public final class ParticipationSuccessViewController: UIViewController,
 		configureView()
 		configureLayout()
 		bind()
+		
+		listener?.viewDidLoad()
 	}
 	
 	override public func viewDidLayoutSubviews() {
@@ -145,11 +149,12 @@ public final class ParticipationSuccessViewController: UIViewController,
 			.disposed(by: disposeBag)
 	}
 	
-// MARK: - public
+// MARK: - internal
 	
-	// TODO: MOIT명, info setting
-	public func configure() {
-		
+	func configure(_ viewModel: MOITDetailProfileInfoViewModel) {
+		moitNameLabel.text = viewModel.profileInfo.moitName
+		profileImageView.configureImage(with: viewModel.profileInfo.imageUrl)
+		moitDetailCardView.configure(viewModel: viewModel)
 	}
 }
 

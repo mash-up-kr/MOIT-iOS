@@ -11,12 +11,13 @@ import Foundation
 import MOITParticipateUserInterface
 import MOITParticipateDomain
 import MOITDetail
+import MOITDetailDomain
 
 import RIBs
 import RxSwift
 
 protocol InputParticipateCodeRouting: ViewableRouting {
-	func attachPariticipationSuccess(with viewModel: MOITDetailInfoViewModels)
+	func attachPariticipationSuccess(with viewModel: MOITDetailProfileInfoViewModel)
 	func detachPariticipationSuccess()
 }
 
@@ -65,14 +66,10 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 				
 				switch event {
 				case.success(let moitDetailEntity):
-					let moitDetailInfoViewModels = self.convertToMOITDetailInfoViewModels(
-						scheduleDescription: moitDetailEntity.scheduleDescription,
-						ruleDescription: moitDetailEntity.ruleLongDescription,
-						isNotificationActivate: moitDetailEntity.isNotificationActive,
-						notificationDescription: moitDetailEntity.notificationDescription,
-						periodDescription: moitDetailEntity.periodDescription
+					let moitDetailProfileInfoViewModel = self.convertToMOITDetailProfileInfoViewModel(
+						model: moitDetailEntity
 					)
-					self.router?.attachPariticipationSuccess(with: moitDetailInfoViewModels)
+					self.router?.attachPariticipationSuccess(with: moitDetailProfileInfoViewModel)
 				case .failure(let error):
 					// TODO: 서버에서 받은 에러 메세지 전달해야함
 					self.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
@@ -84,39 +81,43 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	func participationSuccessDismissButtonDidTap() {
 		router?.detachPariticipationSuccess()
 	}
-	
-	private func convertToMOITDetailInfoViewModels(
-		scheduleDescription: String,
-		ruleDescription: String,
-		isNotificationActivate: Bool,
-		notificationDescription: String,
-		periodDescription: String
-	) -> MOITDetailInfoViewModels {
-		var infos = [
+
+	private func convertToMOITDetailProfileInfoViewModel(
+		model: MOITDetailEntity
+	) -> MOITDetailProfileInfoViewModel {
+		let profileViewModel = MOITProfileInfoViewModel(
+			imageUrl: model.imageURL,
+			moitName: model.moitName
+		)
+		
+		var detailViewModels = [
 			MOITDetailInfoViewModel(
 				title: "일정",
-				description: scheduleDescription
+				description: model.scheduleDescription
 			),
 			MOITDetailInfoViewModel(
 				title: "규칙",
-				description: ruleDescription
+				description: model.ruleLongDescription
 			),
 			MOITDetailInfoViewModel(
 				title: "기간",
-				description: periodDescription
+				description: model.periodDescription
 			)
 		]
 		
-		if isNotificationActivate {
-			infos.insert(
+		if model.isNotificationActive {
+			detailViewModels.insert(
 				MOITDetailInfoViewModel(
 					title: "알람",
-					description: notificationDescription
+					description: model.notificationDescription
 				),
 				at: 2
 			)
 		}
 		
-		return infos
+		return MOITDetailProfileInfoViewModel(
+			profileInfo: profileViewModel,
+			detailInfos: detailViewModels
+		)
 	}
 }

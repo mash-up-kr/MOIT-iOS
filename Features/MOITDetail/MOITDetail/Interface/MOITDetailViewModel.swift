@@ -10,6 +10,32 @@ import Foundation
 
 public typealias MOITDetailInfoViewModels = [MOITDetailInfoViewModel]
 
+public struct MOITDetailProfileInfoViewModel {
+	public let profileInfo: MOITProfileInfoViewModel
+	public let detailInfos: MOITDetailInfoViewModels
+	
+	public init(
+		profileInfo: MOITProfileInfoViewModel,
+		detailInfos: MOITDetailInfoViewModels
+	) {
+		self.profileInfo = profileInfo
+		self.detailInfos = detailInfos
+	}
+}
+
+public struct MOITProfileInfoViewModel {
+	public let imageUrl: String?
+	public let moitName: String
+	
+	public init(
+		imageUrl: String?,
+		moitName: String
+	) {
+		self.imageUrl = imageUrl
+		self.moitName = moitName
+	}
+}
+
 public struct MOITDetailInfoViewModel {
 	public let title: String
 	public let description: String
