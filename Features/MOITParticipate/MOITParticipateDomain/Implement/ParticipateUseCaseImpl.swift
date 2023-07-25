@@ -32,6 +32,7 @@ public final class ParticipateUseCaseImpl: ParticipateUseCase {
 // MARK: - public
 	public func execute(with code: String) -> Single<MOITDetailEntity> {
 		// ???: 이걸 여기서 만드는게 맞나?! 만드는 위치에 대한 고민...
+		// TODO: userId 불러오는 로직 추가 필요
 		let request = MOITParticipateRequest(
 			userId: 0,
 			invitationCode: code

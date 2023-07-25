@@ -100,6 +100,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 	
 // MARK: - internal
 	func showErrorToast() {
+		// TODO: Point 수정 필요ㅜ
 		let spaceBetweenButtonAndToast: CGFloat = 10
 		let toastHeight: CGFloat = 64
 		
