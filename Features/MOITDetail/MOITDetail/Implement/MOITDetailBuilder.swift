@@ -6,13 +6,17 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
 import MOITDetail
 import MOITDetailData
 import MOITDetailDomain
+import FineUserInterface
+import FineUserInterfaceImpl
+
+import RIBs
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
-                                 MOITDetailAttendanceDependency {
+                                 MOITDetailAttendanceDependency,
+								 FineListDependency {
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
     
@@ -44,11 +48,13 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         interactor.listener = listener
         
         let attendanceBuiler = MOITDetailAttendanceBuilder(dependency: component)
+		let fineListBuilder = FineListBuilder(dependency: component)
         
         return MOITDetailRouter(
             interactor: interactor,
             viewController: viewController,
-            attendanceBuiler: attendanceBuiler
+            attendanceBuiler: attendanceBuiler,
+			fineListBuilder: fineListBuilder
         )
     }
 }

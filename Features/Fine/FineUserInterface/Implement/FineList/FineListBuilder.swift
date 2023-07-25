@@ -10,8 +10,6 @@ import RIBs
 
 import FineUserInterface
 
-public protocol FineListDependency: Dependency { }
-
 final class FineListComponent: Component<FineListDependency>, AuthorizePaymentDependency { }
 
 // MARK: - Builder
@@ -22,7 +20,10 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
         super.init(dependency: dependency)
     }
 
-	public func build(withListener listener: FineListListener) -> ViewableRouting {
+	public func build(
+		withListener listener: FineListListener,
+		moitID: String
+	) -> ViewableRouting {
         let component = FineListComponent(dependency: dependency)
         let viewController = FineListViewController()
         let interactor = FineListInteractor(presenter: viewController)

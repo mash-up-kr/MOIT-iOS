@@ -15,6 +15,7 @@ import RxRelay
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
+	func attachFineList(moitID: String)
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -169,8 +170,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
         self.tabTypes.forEach { type  in
             switch type {
             case .attendance: self.router?.attachAttendance(moitID: self.moitID)
-                // TODO: 혜린언니 TODO입니당 !
-            case .fine: print("벌금 붙이는 작업 해야됨")
+			case .fine: self.router?.attachFineList(moitID: self.moitID)
             }
         }
     }
