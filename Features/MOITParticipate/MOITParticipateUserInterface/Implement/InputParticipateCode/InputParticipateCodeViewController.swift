@@ -100,14 +100,17 @@ public final class InputParticipateCodeViewController: UIViewController,
 	
 // MARK: - internal
 	func showErrorToast(with message: String) {
-		let verticalPoint = UIScreen.main.bounds.height - (keyboardHeight + completeButton.bounds.height + 10 + 32)
+		let spaceBetweenButtonAndToast: CGFloat = 10
+		let toastHeight: CGFloat = 64
+		
+		let verticalPoint = UIScreen.main.bounds.height - (
+			keyboardHeight + completeButton.bounds.height + spaceBetweenButtonAndToast + toastHeight * 2
+		)
 		let horizontalPoint = UIScreen.main.bounds.width / 2
-		self.view.makeToast(
-			message,
-			point: CGPoint(x: horizontalPoint, y: verticalPoint),
-			title: nil,
-			image: ResourceKitAsset.Icon.error.image,
-			completion: nil
+
+		self.flexRootContainer.showToast(
+			MOITToast(toastType: .fail, text: message),
+			point: CGPoint(x: horizontalPoint, y: verticalPoint)
 		)
 	}
 	

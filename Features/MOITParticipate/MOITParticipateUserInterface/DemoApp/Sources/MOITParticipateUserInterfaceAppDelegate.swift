@@ -78,10 +78,10 @@ extension MOITParticipateAppDelegate {
 		style.backgroundColor = ResourceKitAsset.Color.gray800.color
 		style.cornerRadius = 10
 		style.imageSize = CGSize(width: 24, height: 24)
-		style.horizontalPadding = 20
+		style.verticalPadding = 20
 		style.messageFont = ResourceKitFontFamily.p2
-		style.fadeDuration = 5
 		ToastManager.shared.style = style
+		ToastManager.shared.duration = 5.0
 	}
 }
 
