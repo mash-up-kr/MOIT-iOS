@@ -80,8 +80,7 @@ extension MOITParticipateAppDelegate {
 		style.imageSize = CGSize(width: 24, height: 24)
 		style.horizontalPadding = 20
 		style.messageFont = ResourceKitFontFamily.p2
-		// TODO: 노출시간 변경되는 경우 세팅필요함
-		//		style.fadeDuration =
+		style.fadeDuration = 5
 		ToastManager.shared.style = style
 	}
 }
