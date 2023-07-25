@@ -15,10 +15,12 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
-        .ThirdParty.RIBs
+        .ThirdParty.RIBs,
+		.MOITNetwork.Interface,
+		.Feature.MOITDetail.Domain.Interface,
+		.Feature.MOITDetail.Data.Interface
     ],
     implementDependencies: [
-        .ThirdParty.RIBs,
         .ThirdParty.Kingfisher,
         .ThirdParty.RxSwift,
         .ThirdParty.RxCocoa,
@@ -31,6 +33,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .DesignSystem,
         .Feature.MOITDetail.Domain.Implement,
         .Feature.MOITDetail.Data.Implement,
+		.Feature.Fine.UserInterface.Interface,
+		.Feature.Fine.UserInterface.Implement,
         .ThirdParty.Collections,
     ],
     isUserInterface: true
