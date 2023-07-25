@@ -99,7 +99,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 	}
 	
 // MARK: - internal
-	func showErrorToast(with message: String) {
+	func showErrorToast() {
 		let spaceBetweenButtonAndToast: CGFloat = 10
 		let toastHeight: CGFloat = 64
 		
@@ -109,7 +109,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 		let horizontalPoint = UIScreen.main.bounds.width / 2
 
 		self.flexRootContainer.showToast(
-			MOITToast(toastType: .fail, text: message),
+			MOITToast(toastType: .fail, text: StringResource.errorToast.value),
 			point: CGPoint(x: horizontalPoint, y: verticalPoint)
 		)
 	}
@@ -197,6 +197,7 @@ extension InputParticipateCodeViewController {
 		case title
 		case placeHolder
 		case buttonTitle
+		case errorToast
 		
 		var value: String {
 			switch self {
@@ -208,6 +209,8 @@ extension InputParticipateCodeViewController {
 				return "초대코드를 입력해주세요."
 			case .buttonTitle:
 				return "완료"
+			case .errorToast:
+				return "존재하지 않는 스터디이에요!"
 			}
 		}
 	}

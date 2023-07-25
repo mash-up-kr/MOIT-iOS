@@ -24,7 +24,7 @@ protocol InputParticipateCodeRouting: ViewableRouting {
 protocol InputParticipateCodePresentable: Presentable {
     var listener: InputParticipateCodePresentableListener? { get set }
 	
-	func showErrorToast(with message: String)
+	func showErrorToast()
 }
 
 protocol InputParticipateCodeInteractorDependency {
@@ -70,9 +70,8 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 						model: moitDetailEntity
 					)
 					self.router?.attachPariticipationSuccess(with: moitDetailProfileInfoViewModel)
-				case .failure(let error):
-					// TODO: 서버에서 받은 에러 메세지 전달해야함
-					self.presenter.showErrorToast(with: "존재하지 않는 스터디이에요!")
+				case .failure:
+					self.presenter.showErrorToast()
 				}
 			}
 			.disposed(by: disposeBag)
