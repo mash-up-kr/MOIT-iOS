@@ -28,7 +28,7 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         
 		router = FineListBuilder(dependency: MockFineDependency())
-			.build(withListener: MockFineListener())
+			.build(withListener: MockFineListener(), moitID: "2")
 		router?.interactable.activate()
 		router?.load()
 

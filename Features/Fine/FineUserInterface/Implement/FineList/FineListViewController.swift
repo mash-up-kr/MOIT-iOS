@@ -87,8 +87,10 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	}
 	
 	private func configureLayout() {
-		flexRootContainer.flex.define { flex in
-			flex.addItem(fineTitleLabel).marginTop(300)
+		flexRootContainer.flex
+			.marginHorizontal(20)
+			.define { flex in
+			flex.addItem(fineTitleLabel)
 			
 			flex.addItem().direction(.row).define { flex in
 				flex.addItem(fineAmountLabel)

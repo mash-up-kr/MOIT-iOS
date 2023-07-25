@@ -289,8 +289,8 @@ final class FineListScrollView: UIView {
 		contentView.flex
 			.direction(.row)
 			.define { flex in
-				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width)
-				flex.addItem(paymentListView).width(UIScreen.main.bounds.width)
+				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width - 40)
+				flex.addItem(paymentListView).width(UIScreen.main.bounds.width - 40)
 			}
 		
 		// TODO: 추후 삭제
