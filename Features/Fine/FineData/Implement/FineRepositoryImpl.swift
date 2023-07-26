@@ -13,17 +13,17 @@ import MOITNetwork
 
 import RxSwift
 
-final class FineRepositoryImpl: FineRepository {
+public final class FineRepositoryImpl: FineRepository {
 	
-	let network: Network
+	private let network: Network
 	
-	init(
+	public init(
 		network: Network
 	) {
 		self.network = network
 	}
 	
-	func fetchFineInfo(moitID: String) -> Single<FineInfo> {
+	public func fetchFineInfo(moitID: String) -> Single<FineInfo> {
 		let endPoint = FineEndpoint.fetchFineInfo(moitId: moitID)
 		
 		return network.request(with: endPoint)

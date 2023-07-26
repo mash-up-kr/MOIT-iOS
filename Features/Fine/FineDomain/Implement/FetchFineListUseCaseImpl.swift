@@ -13,17 +13,17 @@ import FineData
 
 import RxSwift
 
-final class FetchFineInfoUseCaseImpl: FetchFineInfoUseCase {
+public final class FetchFineInfoUseCaseImpl: FetchFineInfoUseCase {
 	
-	let fineRepository: FineRepository
+	private let fineRepository: FineRepository
 	
-	init(
+	public init(
 		fineRepository: FineRepository
 	) {
 		self.fineRepository = fineRepository
 	}
 	
-	func execute(moitID: String) -> Single<FineInfoEntity> {
+	public func execute(moitID: String) -> Single<FineInfoEntity> {
 		return fineRepository.fetchFineInfo(moitID: moitID)
 			.compactMap { FineInfoEntity(fineInfo: $0) }
 			.asObservable().asSingle()
