@@ -8,6 +8,7 @@
 
 import RIBs
 import RxSwift
+import MOITShare
 
 protocol ShareRouting: ViewableRouting {
 }
@@ -16,9 +17,7 @@ protocol SharePresentable: Presentable {
     var listener: SharePresentableListener? { get set }
 }
 
-protocol ShareListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-}
+
 
 final class ShareInteractor: PresentableInteractor<SharePresentable>, ShareInteractable, SharePresentableListener {
 

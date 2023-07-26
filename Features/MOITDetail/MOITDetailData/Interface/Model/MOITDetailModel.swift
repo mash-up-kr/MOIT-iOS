@@ -57,5 +57,6 @@ public struct MOITDetailModel: Decodable {
         case fineAbsenceAmount
         case startDate
         case endDate
+        case invitationCode
     }
 }

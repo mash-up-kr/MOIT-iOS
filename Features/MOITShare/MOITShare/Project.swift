@@ -12,8 +12,6 @@ import UtilityPlugin
 
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITShare",
-    platform: .iOS,
-    iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
     ],
     implementDependencies: [

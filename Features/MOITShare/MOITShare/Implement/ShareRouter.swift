@@ -7,6 +7,7 @@
 //
 
 import RIBs
+import MOITShare
 
 protocol ShareInteractable: Interactable {
     var router: ShareRouting? { get set }
