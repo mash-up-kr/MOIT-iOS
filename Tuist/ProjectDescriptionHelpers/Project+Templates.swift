@@ -60,7 +60,7 @@ extension Project {
     /// implement는 자동으로 interface에 대한 종속성을 가지고 있습니다.
     public static func invertedDualTargetProject(
         name: String,
-        platform: Platform,
+        platform: Platform = .iOS,
         iOSTargetVersion: String = "16.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
@@ -142,7 +142,7 @@ extension Project {
                     [
                         "CFBundleDevelopmentRegion": "ko_KR",
                         "CFBundleShortVersionString": "1.0",
-                        "CFBundleVersion": "1",
+                        "CFBundleVersion": "1.0.0",
                         "UILaunchStoryboardName": "LaunchScreen",
 						"NSAppTransportSecurity" : [
 							"NSAllowsArbitraryLoads": true

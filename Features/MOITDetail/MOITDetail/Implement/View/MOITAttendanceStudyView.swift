@@ -159,7 +159,7 @@ final class MOITAttendanceStudyView: UIView {
         self.attendanceViews = viewModel.attendances.map { viewModel in
             let view = MOITList(
                 type: .allAttend,
-                imageUrlString: viewModel.profileImageURL,
+                imageType: ProfileImageType(rawValue: viewModel.profileImageURL),
                 title: viewModel.tilte,
                 detail: viewModel.detail,
                 chipType: viewModel.attendance.toChipeType

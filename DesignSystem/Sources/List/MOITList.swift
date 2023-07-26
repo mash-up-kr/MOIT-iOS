@@ -95,13 +95,14 @@ open class MOITList: UIView {
 	
 // MARK: - property
 	
-	private var type: MOITListType
-	private var imageType: ProfileImageType?
+	private let type: MOITListType
+	private var imageUrlString: String?
 	private var title: String?
 	private var detail: String?
 	private var chipType: MOITChipType?
 	private var studyOrder: Int?
 	private var fine: Int?
+    private var imageType: ProfileImageType?
 	
 // MARK: - init
 	public init(
