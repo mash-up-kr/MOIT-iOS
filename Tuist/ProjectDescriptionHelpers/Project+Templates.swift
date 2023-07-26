@@ -60,8 +60,8 @@ extension Project {
     /// implement는 자동으로 interface에 대한 종속성을 가지고 있습니다.
     public static func invertedDualTargetProject(
         name: String,
-        platform: Platform,
-        iOSTargetVersion: String,
+        platform: Platform = .iOS,
+        iOSTargetVersion: String = "16.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         useTestTarget: Bool = true,
@@ -153,7 +153,7 @@ extension Project {
             resources: ["./DemoApp/Resources/**"],
             scripts: [.swiftLintScript],
             dependencies:
-                implementDependencies +
+//                implementDependencies +
             [
                 .target(name: name),
                 .target(name: "\(name)Impl"),

@@ -17,11 +17,7 @@ import RxSwift
 open class MOITList: UIView {
 	
 // MARK: - UI
-	
-// MARK: - UI
-	
-// MARK: - UI
-	
+
 	private let flexRootView = UIView()
 	
 	private lazy var profileImageView: MOITProfileView? = {
@@ -100,12 +96,13 @@ open class MOITList: UIView {
 // MARK: - property
 	
 	private let type: MOITListType
-	private let imageType: ProfileImageType?
-	private let title: String?
-	private let detail: String?
-	private let chipType: MOITChipType?
-	private let studyOrder: Int?
-	private let fine: Int?
+	private var imageUrlString: String?
+	private var title: String?
+	private var detail: String?
+	private var chipType: MOITChipType?
+	private var studyOrder: Int?
+	private var fine: Int?
+    private var imageType: ProfileImageType?
 	
 // MARK: - init
 	public init(
@@ -232,4 +229,17 @@ enum Formatter {
 		formatter.numberStyle = .decimal
 		return formatter
 	}()
+}
+
+
+extension MOITList {
+    public func configure(title: String?, detail: String?) {
+        self.titleLabel?.text = title
+        self.detailLabel?.text = detail
+        
+        self.titleLabel?.flex.markDirty()
+        self.detailLabel?.flex.markDirty()
+        
+        self.flexRootView.setNeedsLayout()
+    }
 }
