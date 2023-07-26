@@ -35,6 +35,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITDetail.Data.Implement,
 		.Feature.Fine.UserInterface.Interface,
 		.Feature.Fine.UserInterface.Implement,
+        .Feature.Fine.Domain.Interface,
+        .Feature.Fine.Domain.Implement,
+        .Feature.Fine.Data.Interface,
+        .Feature.Fine.Data.Implement,
         .ThirdParty.Collections,
     ],
     isUserInterface: true

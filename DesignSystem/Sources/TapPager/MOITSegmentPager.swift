@@ -35,10 +35,9 @@ public final class MOITSegmentPager: UIView {
         pages: [String] = []
     ) {
         super.init(frame: .zero)
+        self.addSubview(flexRootView)
         if !pages.isEmpty {
             configurePages(pages: pages)
-            configureLayout()
-            congifureSelectedCircle()
         }
     }
 
@@ -59,8 +58,6 @@ public final class MOITSegmentPager: UIView {
     // MARK: - Functions
     
     private func configureLayout() {
-        self.addSubview(flexRootView)
-        
         self.flexRootView.flex
             .height(42)
             .cornerRadius(21)
@@ -85,6 +82,8 @@ public final class MOITSegmentPager: UIView {
     
     public func configurePages(pages: [String]) {
         self.pages = pages.map { self.configureLabel(text: $0) }
+        configureLayout()
+        congifureSelectedCircle()
     }
 
     private func configureLabel(text: String?) -> UILabel {

@@ -11,10 +11,12 @@ import MOITNetwork
 import RIBs
 import MOITDetailDomain
 import MOITDetailData
+import FineDomain
 
 public protocol MOITDetailDependency: Dependency {
     var tabTypes: [MOITDetailTab] { get }
     var moitDetailUsecase: MOITDetailUsecase { get }
     var moitAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitDetailRepository: MOITDetailRepository { get }
+    var fetchFineInfoUsecase: FetchFineInfoUseCase { get }
 }

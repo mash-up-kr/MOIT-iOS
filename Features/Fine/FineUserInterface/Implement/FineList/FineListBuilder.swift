@@ -14,7 +14,7 @@ import FineDomain
 final class FineListComponent: Component<FineListDependency>,
 							   AuthorizePaymentDependency,
 							   FineListInteractorDependency {
-	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUsecase }
+    var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 }
 
 // MARK: - Builder

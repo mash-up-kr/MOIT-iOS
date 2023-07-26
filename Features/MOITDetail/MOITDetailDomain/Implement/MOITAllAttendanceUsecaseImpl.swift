@@ -70,7 +70,7 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
                     AttendanceEntity(
                         userID: "\(attendance.userID)",
                         nickname: attendance.nickname,
-                        profileImage: "3",
+                        profileImage: attendance.profileImage,
                         status: AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED,
                         attendanceAt: attendance.attendanceAt.dateString
                     )
@@ -83,7 +83,7 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
             AttendanceEntity(
                 userID: "\(attendance.userID)",
                 nickname: attendance.nickname,
-                profileImage: "attendance.profileImage",
+                profileImage: attendance.profileImage,
                 status: AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED,
                 attendanceAt: attendance.attendanceAt.dateString
             )

@@ -153,7 +153,7 @@ extension Project {
             resources: ["./DemoApp/Resources/**"],
             scripts: [.swiftLintScript],
             dependencies:
-//                implementDependencies +
+                implementDependencies +
             [
                 .target(name: name),
                 .target(name: "\(name)Impl"),
