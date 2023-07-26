@@ -8,4 +8,8 @@
 
 import RIBs
 
-public protocol FineListDependency: Dependency { }
+import FineDomain
+
+public protocol FineListDependency: Dependency {
+	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
+}

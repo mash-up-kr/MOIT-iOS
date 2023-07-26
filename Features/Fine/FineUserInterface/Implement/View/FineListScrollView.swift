@@ -16,6 +16,11 @@ import PinLayout
 import RxSwift
 import RxCocoa
 
+struct FineInfo {
+	let totalFineAmount: Int
+	let fineNotYet, fineComplete: [FineItem]
+}
+
 struct FineItem {
 	let id, fineAmount, userID: Int
 	let userNickname: String
@@ -82,165 +87,6 @@ final class FineListScrollView: UIView {
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
-	// TODO: 추후 삭제
-	fileprivate let myDefaulterList = [
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		)
-	]
 	
 // MARK: - init
 	
@@ -292,10 +138,6 @@ final class FineListScrollView: UIView {
 				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width - 40)
 				flex.addItem(paymentListView).width(UIScreen.main.bounds.width - 40)
 			}
-		
-		// TODO: 추후 삭제
-		defaulterListView.configureView(with: myDefaulterList)
-		paymentListView.configureView(with: [])
 	}
 	
 	private func bind() {
@@ -308,6 +150,12 @@ final class FineListScrollView: UIView {
 				}
 			})
 			.disposed(by: disposeBag)
+	}
+	
+// MARK: - internal
+	func configureView(with fineInfo: FineInfo) {
+		defaulterListView.configureView(with: fineInfo.fineNotYet.map { FineList(fineItem: $0) } )
+		paymentListView.configureView(with: fineInfo.fineComplete.map { FineList(fineItem: $0) })
 	}
 }
 
@@ -330,13 +178,14 @@ extension FineListScrollView {
 // MARK: - Reactive
 extension Reactive where Base: FineListScrollView {
 	
-	var tappedListItem: Observable<FineItem> {
-		
-		let observables = base.myDefaulterList.map { list in
-			list.rx.tap
-				.map { _ in list.item }
-		}
-
-		return Observable.merge(observables)
-	}
+	// TODO: 여기서 index만 넘길까?
+//	var tappedListItem: Observable<FineItem> {
+//		
+//		let observables = base.myDefaulterList.map { list in
+//			list.rx.tap
+//				.map { _ in list.item }
+//		}
+//
+//		return Observable.merge(observables)
+//	}
 }

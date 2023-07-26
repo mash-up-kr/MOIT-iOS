@@ -9,8 +9,13 @@
 import RIBs
 
 import FineUserInterface
+import FineDomain
 
-final class FineListComponent: Component<FineListDependency>, AuthorizePaymentDependency { }
+final class FineListComponent: Component<FineListDependency>,
+							   AuthorizePaymentDependency,
+							   FineListInteractorDependency {
+	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUsecase }
+}
 
 // MARK: - Builder
 
@@ -26,7 +31,10 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
 	) -> ViewableRouting {
         let component = FineListComponent(dependency: dependency)
         let viewController = FineListViewController()
-        let interactor = FineListInteractor(presenter: viewController)
+        let interactor = FineListInteractor(
+			presenter: viewController,
+			dependency: component
+		)
         interactor.listener = listener
 		
 		let authorizePaymentBuildable = AuthorizePaymentBuilder(dependency: component)

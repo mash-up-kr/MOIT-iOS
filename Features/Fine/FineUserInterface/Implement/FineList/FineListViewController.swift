@@ -102,11 +102,11 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	}
 	
 	private func bind() {
-		fineListScrollView.rx.tappedListItem
-			.bind(onNext: { [weak self] item in
-				self?.listener?.fineListDidTap(with: item)
-			})
-			.disposed(by: disposeBag)
+//		fineListScrollView.rx.tappedListItem
+//			.bind(onNext: { [weak self] item in
+//				self?.listener?.fineListDidTap(with: item)
+//			})
+//			.disposed(by: disposeBag)
 	}
 }
 

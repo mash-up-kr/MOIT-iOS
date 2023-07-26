@@ -10,6 +10,7 @@ import RIBs
 import RxSwift
 
 import FineUserInterface
+import FineDomain
 
 protocol FineListRouting: ViewableRouting {
 	func attachAuthorizePayment()
@@ -20,12 +21,22 @@ protocol FineListPresentable: Presentable {
     var listener: FineListPresentableListener? { get set }
 }
 
+protocol FineListInteractorDependency {
+	var fetchFineInfoUsecase: FetchFineInfoUseCase { get }
+}
+
 final class FineListInteractor: PresentableInteractor<FineListPresentable>, FineListInteractable, FineListPresentableListener {
 
     weak var router: FineListRouting?
     weak var listener: FineListListener?
+	
+	private let dependency: FineListInteractorDependency
 
-    override init(presenter: FineListPresentable) {
+    init(
+		presenter: FineListPresentable,
+		dependency: FineListInteractorDependency
+	) {
+		self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
