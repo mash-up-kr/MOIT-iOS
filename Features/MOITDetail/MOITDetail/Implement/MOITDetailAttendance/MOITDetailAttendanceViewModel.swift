@@ -26,7 +26,7 @@ struct MOITDetailAttendanceViewModel {
                 }
             }
         }
-        let profileImageURL: String
+        let profileImageURL: Int
         let tilte: String
         let detail: String
         let attendance: Attendance

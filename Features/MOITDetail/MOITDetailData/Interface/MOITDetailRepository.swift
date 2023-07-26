@@ -12,4 +12,5 @@ import RxSwift
 public protocol MOITDetailRepository: AnyObject {
     func fetchDetail(moitID: String) -> Single<MOITDetailModel>
     func fetchAttendance(moitID: String) -> Single<MOITAllAttendanceModel>
+    func fetchUesrs(moitID: String) -> Single<MOITUserModel>
 }

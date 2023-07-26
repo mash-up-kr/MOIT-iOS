@@ -42,14 +42,14 @@ extension MOITAllAttendanceEntity.Study {
     public struct Attendance {
         public let userID: String
         public let nickname: String
-        public let profileImage: String
+        public let profileImage: Int
         public let status: AttendanceStatus
         public let attendanceAt: String
         
         public init(
             userID: String,
             nickname: String,
-            profileImage: String,
+            profileImage: Int,
             status: AttendanceStatus,
             attendanceAt: String
         ) {

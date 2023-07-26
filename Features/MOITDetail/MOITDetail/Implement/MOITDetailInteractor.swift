@@ -15,6 +15,8 @@ import RxRelay
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
+    func attachMOITUsers(moitID: String)
+    func detachMOITUsers()
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -92,10 +94,6 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     }
     private func fetchMOITDetail(with id: String) {
         self.detailUsecase.moitDetail(with: id)
-            .delay(
-                .seconds(3),
-                scheduler: MainScheduler.instance
-            )
             .do(onSuccess: { [weak self] in
                 self?.scheduleDescription = $0.scheduleDescription
                 self?.longRuleDescription = $0.ruleLongDescription
@@ -176,7 +174,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     }
     
     func didTapParticipantsButton() {
-        print(#function)
+        self.router?.attachMOITUsers(moitID: self.moitID)
     }
     func didTapShareButton() {
         print(#function)
@@ -193,5 +191,12 @@ extension MOITDetailInteractor {
     }
     func didTapSegment() {
         self.presenter.shouldLayout()
+    }
+}
+
+// MARK: - MOITUsers
+extension MOITDetailInteractor {
+    func didTapBackButton() {
+        self.router?.detachMOITUsers()
     }
 }

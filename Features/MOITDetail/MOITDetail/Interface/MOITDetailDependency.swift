@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import MOITNetwork
 import RIBs
 import MOITDetailDomain
 import MOITDetailData
@@ -17,4 +16,5 @@ public protocol MOITDetailDependency: Dependency {
     var moitDetailUsecase: MOITDetailUsecase { get }
     var moitAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitDetailRepository: MOITDetailRepository { get }
+    var moitUserusecase: MOITUserUsecase { get }
 }
