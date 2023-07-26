@@ -85,13 +85,14 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 		)
 		let viewController = router.viewControllable
 		router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen
+		
+		signUpRouting = router
+		attachChild(router)
+		
 		viewControllable.present(
 			viewController,
 			animated: true,
 			completion: nil
 		)
-		
-		signUpRouting = router
-		attachChild(router)
 	}
 }
