@@ -14,7 +14,7 @@ import PinLayout
 
 final class MOITUserCollectionViewCell: UICollectionViewCell {
     private let flexRootview = UIView()
-    private var userView = MOITList(type: .people, imageUrlString: "",title: "")
+    private var userView = MOITList(type: .people, imageType: .zero, title: "")
     
     override init(frame: CGRect) {
         super.init(frame: frame)

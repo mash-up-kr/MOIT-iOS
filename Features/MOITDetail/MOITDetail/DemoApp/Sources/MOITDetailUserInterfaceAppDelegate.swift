@@ -28,10 +28,10 @@ final class MOITDetailAppDelegate: UIResponder,
         var moitDetailUsecase: MOITDetailUsecase { MOITDetailUsecaseImpl(repository: moitDetailRepository) }
         var moitAttendanceUsecase: MOITAllAttendanceUsecase { StubMOITAllAttendanceUsecase() }
 //        var moitAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository) }
-        var moitUserusecase: MOITUserUsecase { MOITUserUsecaseImpl(repository: moitDetailRepository) }
-//        var moitUserusecase: MOITUserUsecase {
-//            StubMOITUserUsecase()
-//        }
+//        var moitUserusecase: MOITUserUsecase { MOITUserUsecaseImpl(repository: moitDetailRepository) }
+        var moitUserusecase: MOITUserUsecase {
+            StubMOITUserUsecase()
+        }
     }
     
     var window: UIWindow?

@@ -3,26 +3,39 @@ import ProjectDescription
 
 // MARK: Project
 extension TargetDependency {
-    public struct Feature {
-        
-        public struct StudyList {
-            public struct Data {}
-            public struct Domain {}
-            public struct UserInterface {}
-        }
-        
-        public struct SignUp {
-            public struct Data {}
-            public struct Domain {}
-            public struct UserInterface {}
-        }
-        public struct MOITDetail {
-            public struct Data {}
-            public struct Domain {}
-        }
-    }
+	public struct Feature {
+		
+		public struct StudyList {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
+		public struct SignUp {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
+		public struct MOITShare {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+		
+		public struct MOITParticipate {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
     
-    public struct Core {
+    public struct MOITDetail {
+      public struct Data {}
+      public struct Domain {}
+    }
+	}
+
+  public struct Core {
         
     }
     
@@ -61,7 +74,8 @@ public extension TargetDependency.Feature.StudyList {
         let postfix: String = isInterface ? "" : "Impl"
         return .project(target: "\(folderName)\(name)\(postfix)",
                         path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
-    }}
+    }
+}
 
 public extension TargetDependency.Feature.StudyList.UserInterface {
     static let Interface = TargetDependency.Feature.StudyList.project(name: "UserInterface", isInterface: true)
@@ -85,7 +99,8 @@ public extension TargetDependency.Feature.SignUp {
         let postfix: String = isInterface ? "" : "Impl"
         return .project(target: "\(folderName)\(name)\(postfix)",
                         path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
-    }}
+    }
+}
 
 public extension TargetDependency.Feature.SignUp.UserInterface {
     static let Interface = TargetDependency.Feature.SignUp.project(name: "UserInterface", isInterface: true)
@@ -100,6 +115,31 @@ public extension TargetDependency.Feature.SignUp.Domain {
 public extension TargetDependency.Feature.SignUp.Data {
     static let Interface = TargetDependency.Feature.SignUp.project(name: "Data", isInterface: true)
     static let Implement = TargetDependency.Feature.SignUp.project(name: "Data", isInterface: false)
+}
+
+// MARK: - Features/MOITParticipate
+public extension TargetDependency.Feature.MOITParticipate {
+	static let folderName = "MOITParticipate"
+	static func project(name: String, isInterface: Bool) -> TargetDependency {
+		let postfix: String = isInterface ? "" : "Impl"
+		return .project(target: "\(folderName)\(name)\(postfix)",
+						path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
+	}
+}
+
+public extension TargetDependency.Feature.MOITParticipate.UserInterface {
+	static let Interface = TargetDependency.Feature.MOITParticipate.project(name: "UserInterface", isInterface: true)
+	static let Implement = TargetDependency.Feature.MOITParticipate.project(name: "UserInterface", isInterface: false)
+}
+
+public extension TargetDependency.Feature.MOITParticipate.Domain {
+	static let Interface = TargetDependency.Feature.MOITParticipate.project(name: "Domain", isInterface: true)
+	static let Implement = TargetDependency.Feature.MOITParticipate.project(name: "Domain", isInterface: false)
+}
+
+public extension TargetDependency.Feature.MOITParticipate.Data {
+	static let Interface = TargetDependency.Feature.MOITParticipate.project(name: "Data", isInterface: true)
+	static let Implement = TargetDependency.Feature.MOITParticipate.project(name: "Data", isInterface: false)
 }
 
 

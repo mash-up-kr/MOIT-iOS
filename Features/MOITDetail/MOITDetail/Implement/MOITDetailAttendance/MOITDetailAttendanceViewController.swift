@@ -198,7 +198,7 @@ extension MOITDetailAttendanceViewController {
         self.myAttendances = viewModel.myAttendances.map { viewModel in
             let view = MOITList(
                 type: .myAttend,
-                imageUrlString: viewModel.profileImageURL,
+                imageType: ProfileImageType(rawValue: viewModel.profileImageURL),
                 title: viewModel.tilte,
                 detail: viewModel.detail,
                 chipType: viewModel.attendance.toChipeType

@@ -60,8 +60,8 @@ extension Project {
     /// implement는 자동으로 interface에 대한 종속성을 가지고 있습니다.
     public static func invertedDualTargetProject(
         name: String,
-        platform: Platform,
-        iOSTargetVersion: String = "15.0.0",
+        platform: Platform = .iOS,
+        iOSTargetVersion: String = "16.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         useTestTarget: Bool = true,
@@ -105,7 +105,7 @@ extension Project {
     public static func invertedDualTargetProjectWithDemoApp(
         name: String,
         platform: Platform = .iOS,
-        iOSTargetVersion: String = "15.0.0",
+        iOSTargetVersion: String = "16.0.0",
         interfaceDependencies: [TargetDependency] = [],
         implementDependencies: [TargetDependency] = [],
         demoAppDependencies: [TargetDependency] = [],
@@ -145,7 +145,7 @@ extension Project {
                         "CFBundleVersion": "1",
                         "UILaunchStoryboardName": "LaunchScreen",
                         "NSAppTransportSecurity": [
-                            "NSAllowsArbitraryLoads": "YES"
+                            "NSAllowsArbitraryLoads": true
                         ]
                     ]
             ),
@@ -180,7 +180,7 @@ extension Project {
     public static func makeTarget(
         name: String,
         dependencies: [TargetDependency],
-        iOSTargetVersion: String = "15.0.0"
+        iOSTargetVersion: String = "16.0.0"
     ) -> Target {
         return Target(name: name,
                platform: .iOS,

@@ -13,7 +13,6 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITDetail",
     platform: .iOS,
-    iOSTargetVersion: "15.0.0",
     interfaceDependencies: [
         .ThirdParty.RIBs
     ],

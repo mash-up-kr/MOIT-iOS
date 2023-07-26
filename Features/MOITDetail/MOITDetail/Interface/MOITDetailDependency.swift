@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import MOITNetwork
 import RIBs
 import MOITDetailDomain
 import MOITDetailData
