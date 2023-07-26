@@ -67,4 +67,8 @@ public enum AttendanceStatus: String {
     case ATTENDANCE
     case LATE
     case ABSENCE
+	
+	public init(fromRawValue rawValue: String) {
+		self = AttendanceStatus(rawValue: rawValue) ?? .UNDECIDED
+	}
 }
