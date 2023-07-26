@@ -15,7 +15,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
-        .ThirdParty.RIBs
+        .ThirdParty.RIBs,
+		.Feature.MOITDetail.Domain.Interface,
+		.Feature.MOITDetail.Data.Interface,
+		.MOITNetwork.Interface
     ],
     implementDependencies: [
         .ThirdParty.RIBs,

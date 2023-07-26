@@ -28,16 +28,15 @@ extension TargetDependency {
 			public struct Domain {}
 			public struct UserInterface {}
 		}
-    
-    public struct MOITDetail {
-      public struct Data {}
-      public struct Domain {}
-    }
+		
+		public struct MOITDetail {
+			public struct Data {}
+			public struct Domain {}
+			public struct Interface {}
+		}
 	}
 
-  public struct Core {
-        
-    }
+    public struct Core { }
     
     public struct MOITNetwork {}
 	
@@ -52,20 +51,6 @@ extension TargetDependency {
         target: "DesignSystem",
         path: .relativeToRoot("DesignSystem")
     )
-
-	public struct Core { }
-    
-	public struct MOITNetwork {}
-
-	public static let ResourceKit = TargetDependency.project(
-		target: "ResourceKit",
-		path: .relativeToRoot("ResourceKit")
-	)
-
-	public static let DesignSystem = TargetDependency.project(
-		target: "DesignSystem",
-		path: .relativeToRoot("DesignSystem")
-	)
 
 	public struct ThirdParty {}
 }
