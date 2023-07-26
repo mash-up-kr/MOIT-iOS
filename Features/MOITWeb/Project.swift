@@ -13,16 +13,17 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITWeb",
     interfaceDependencies: [
-        .ThirdParty.RIBs
+        .ThirdParty.RIBs,
+		.Feature.Auth.Domain.Interface
     ],
     implementDependencies: [
         .ThirdParty.PinLayout,
         .ThirdParty.FlexLayout,
 		
-		.Core.CSLogger
+		.Core.CSLogger,
+		.Core.Utils
     ],
 	demoAppDependencies: [
-		.Feature.Auth.Domain.Interface
 	],
     useTestTarget: true,
     isUserInterface: true

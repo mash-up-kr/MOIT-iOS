@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 
 import CSLogger
+import Utils
 
 import RIBs
 import RxSwift
@@ -19,6 +20,7 @@ protocol MOITWebPresentableListener: AnyObject {
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
 	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
     func didTapBackButton()
+	func didTapErrorAlertOkButton()
 }
 
 final class MOITWebViewController: UIViewController,
@@ -190,6 +192,19 @@ extension MOITWebViewController: WKNavigationDelegate {
 	}
 }
 
+// MARK: - presentable
+extension MOITWebViewController {
+	func showErrorAlert() {
+		showAlert(
+			message: StringResource.errorMessage.value,
+			type: .single,
+			okActionHandler: { [weak self] in
+				self?.listener?.didTapErrorAlertOkButton()
+			}
+		)
+	}
+}
+
 extension MOITWebViewController {
 	enum RedirectURL: String {
 		case none = ""
@@ -199,6 +214,19 @@ extension MOITWebViewController {
 			pathRawValue: String
 		) {
 			self = RedirectURL(rawValue: pathRawValue) ?? .none
+		}
+	}
+}
+
+extension MOITWebViewController {
+	enum StringResource {
+		case errorMessage
+		
+		var value: String {
+			switch self {
+			case .errorMessage:
+				return "네트워크 에러가 발생했습니다. 다시 시도해주세요!"
+			}
 		}
 	}
 }

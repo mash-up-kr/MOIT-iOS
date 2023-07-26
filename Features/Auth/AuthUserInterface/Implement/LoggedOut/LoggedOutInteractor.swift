@@ -60,7 +60,9 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	}
 	
 // MARK: - MOITWeb
-	func shouldDetach(withPop: Bool) { }
+	func shouldDetach(withPop: Bool) {
+		router?.detachSignInWeb()
+	}
 
 	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
 		router?.routeToSignUp(with: signInResponse)

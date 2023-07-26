@@ -19,13 +19,15 @@ protocol MOITWebRouting: ViewableRouting { }
 
 protocol MOITWebPresentable: Presentable {
     var listener: MOITWebPresentableListener? { get set }
+	
     func render(with path: String)
+	func showErrorAlert()
 }
 
 final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
                                 MOITWebInteractable,
 							   MOITWebPresentableListener {
-	
+
     // MARK: - Properties
     
     weak var router: MOITWebRouting?
@@ -69,11 +71,18 @@ extension MOITWebInteractor {
 	}
 
 	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any]) {
-		let authorizationToken = headerFields["Authorization"] as? String ?? ""
-		listener?.didSignIn(with: authorizationToken)
+		if let authorizationToken = headerFields ["Authorization"] as? String {
+			listener?.didSignIn(with: authorizationToken)
+		} else {
+			presenter.showErrorAlert()
+		}
 	}
 
     func didTapBackButton() {
         self.listener?.shouldDetach(withPop: true)
     }
+	
+	func didTapErrorAlertOkButton() {
+		self.listener?.shouldDetach(withPop: false)
+	}
 }
