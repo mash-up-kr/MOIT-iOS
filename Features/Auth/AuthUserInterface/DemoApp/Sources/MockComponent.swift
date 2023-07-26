@@ -36,7 +36,7 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	
 	var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
 	
-	var tokenManager: TokenManager = TokenManagerImpl()
+	var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: TokenManagerImpl())
 	
 	lazy var profileSelectBuildable: ProfileSelectBuildable = {
 		return ProfileSelectBuilder(dependency: self)

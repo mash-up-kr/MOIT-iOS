@@ -20,6 +20,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ThirdParty.RxRelay,
 		
 		.Feature.MOITWeb.Interface,
+		.Feature.Auth.Domain.Interface,
 		
 		.TokenManager.Interface
     ],
@@ -33,8 +34,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.DesignSystem,
 		
 		.Core.Utils,
-
-		.Feature.Auth.Domain.Interface,
+		
 		.Feature.Auth.Data.Interface
     ],
 	demoAppDependencies: [

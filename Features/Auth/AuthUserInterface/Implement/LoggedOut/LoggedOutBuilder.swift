@@ -9,13 +9,13 @@
 import Foundation
 
 import AuthUserInterface
-import TokenManager
+import AuthDomain
 
 import RIBs
 
 final class LoggedOutComponent: Component<LoggedOutDependency>,
 								LoggedOutInteractorDependency {
-	var tokenManager: TokenManager { dependency.tokenManager }
+	var saveTokenUseCase: SaveTokenUseCase { dependency.saveTokenUseCase }
 }
 
 // MARK: - Builder

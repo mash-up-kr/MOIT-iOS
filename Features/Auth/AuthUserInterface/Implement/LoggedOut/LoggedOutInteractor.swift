@@ -8,7 +8,6 @@
 
 import AuthUserInterface
 import AuthDomain
-import TokenManager
 
 import RIBs
 import RxSwift
@@ -24,7 +23,7 @@ protocol LoggedOutPresentable: Presentable {
 }
 
 public protocol LoggedOutInteractorDependency: AnyObject {
-	var tokenManager: TokenManager { get }
+	var saveTokenUseCase: SaveTokenUseCase { get }
 }
 
 final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, LoggedOutInteractable, LoggedOutPresentableListener {
@@ -69,6 +68,6 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	}
 	
 	func didSignIn(with token: String) {
-		dependency.tokenManager.save(token: token, with: .authorizationToken)
+		dependency.saveTokenUseCase.execute(token: token)
 	}
 }
