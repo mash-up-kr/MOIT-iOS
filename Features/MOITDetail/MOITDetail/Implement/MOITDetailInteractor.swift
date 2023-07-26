@@ -17,6 +17,8 @@ protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
     func attachMOITUsers(moitID: String)
     func detachMOITUsers()
+    func attachMOITShare(code: String)
+    func detachMOITShare()
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -177,7 +179,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
         self.router?.attachMOITUsers(moitID: self.moitID)
     }
     func didTapShareButton() {
-        print(#function)
+        self.router?.attac
     }
     func didTapPager(at index: Int) {
         print(#function, index)

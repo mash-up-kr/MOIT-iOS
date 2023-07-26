@@ -71,4 +71,11 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         self.detachChild(moitUserRouter)
         self.viewController.uiviewController.navigationController?.popViewController(animated: true)
     }
+    
+    func attachMOITShare(code: String) {
+        
+    }
+    func detachMOITShare() {
+        
+    }
 }

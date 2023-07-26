@@ -52,7 +52,8 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
                     scheduleDescription: scheduleDescription,
                     ruleShortDescription: ruleShortDescription,
                     ruleLoneDescription: ruleLongDescription,
-                    periodDescription: periodDescription
+                    periodDescription: periodDescription,
+                    invitationCode: response.invitationCode
                 )
             }.asObservable()
             .asSingle()
