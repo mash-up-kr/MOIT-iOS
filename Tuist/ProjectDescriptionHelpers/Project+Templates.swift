@@ -142,11 +142,11 @@ extension Project {
                     [
                         "CFBundleDevelopmentRegion": "ko_KR",
                         "CFBundleShortVersionString": "1.0",
-                        "CFBundleVersion": "1",
+                        "CFBundleVersion": "1.0.0",
                         "UILaunchStoryboardName": "LaunchScreen",
-                        "NSAppTransportSecurity": [
-                            "NSAllowsArbitraryLoads": true
-                        ]
+						"NSAppTransportSecurity" : [
+							"NSAllowsArbitraryLoads": true
+						]
                     ]
             ),
             sources: ["./DemoApp/Sources/**"],

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
     
     func hideKeyboardWhenTapped() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -20,4 +20,45 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
     }
+	
+	func showAlert(
+		title: String? = nil,
+		message: String,
+		type: AlertActionType,
+		okActionTitle: String = "확인",
+		okActionHandler: (() -> Void)? = nil,
+		cancelActionTitle: String = "취소",
+		cancelActionHandler: (() -> Void)? = nil
+	) {
+		let alertController = UIAlertController(
+			title: title,
+			message: message,
+			preferredStyle: .alert
+		)
+			
+		if type == .double {
+			let cancelAction = UIAlertAction(title: cancelActionTitle, style: .default) { _ in
+				if let cancelActionHandler = cancelActionHandler {
+					cancelActionHandler()
+				}
+			}
+			alertController.addAction(cancelAction)
+		}
+		
+		let okAction = UIAlertAction(title: okActionTitle, style: .default) { _ in
+			if let okActionHandler = okActionHandler {
+				okActionHandler()
+			}
+		}
+		
+		alertController.addAction(okAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
+}
+
+extension UIViewController {
+	public enum AlertActionType {
+		case single
+		case double
+	}
 }

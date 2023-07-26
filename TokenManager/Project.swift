@@ -2,7 +2,7 @@
 //  Project.swift
 //  ProjectDescriptionHelpers
 //
-//  Created by 최혜린 on 2023/05/15.
+//  Created by 최혜린 on 2023/07/17.
 //
 
 import ProjectDescription
@@ -10,11 +10,10 @@ import ProjectDescriptionHelpers
 import UtilityPlugin
 
 let project = Project.invertedDualTargetProject(
-	name: "MOITNetwork",
+	name: "TokenManager",
 	platform: .iOS,
+	iOSTargetVersion: "16.0.0",
 	interfaceDependencies: [
-		.ThirdParty.RxSwift,
-		.ThirdParty.RxCocoa
 	],
 	implementDependencies: [
 		.Core.CSLogger
