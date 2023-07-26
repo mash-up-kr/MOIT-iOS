@@ -18,6 +18,7 @@ import PinLayout
 
 protocol FineListPresentableListener: AnyObject {
 	func fineListDidTap(with fineItem: FineItem)
+	func viewDidLoad()
 }
 
 final class FineListViewController: UIViewController, FineListPresentable, FineListViewControllable {
@@ -63,6 +64,8 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		configureView()
 		configureLayout()
 		bind()
+		
+		listener?.viewDidLoad()
 	}
 	
 	override func viewDidLayoutSubviews() {

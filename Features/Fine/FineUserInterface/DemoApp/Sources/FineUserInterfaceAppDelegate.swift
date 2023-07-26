@@ -21,8 +21,7 @@ import RIBs
 @main
 final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 	
-	private final class MockFineDependency: FineListDependency,
-											FineListInteractorDependency {
+	private final class MockFineDependency: FineListDependency {
 		var fetchFineInfoUseCase: FetchFineInfoUseCase
 		
 		init(
