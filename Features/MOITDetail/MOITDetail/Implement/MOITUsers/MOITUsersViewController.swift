@@ -92,6 +92,7 @@ final class MOITUsersViewController: UIViewController,
     private func configureCollectionView() {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.register(
             MOITUserCollectionViewCell.self,
             forCellWithReuseIdentifier: "MOITUserCollectionViewCell"

@@ -21,10 +21,10 @@ public struct MOITUserUsecaseImpl: MOITUserUsecase {
     public func fetchMOITUsers(moitID: String) -> Single<[MOITUserEntity]> {
         self.repository.fetchUesrs(moitID: moitID)
             .map(\.users)
-            .map(self.convertToEntitys(_:))
+            .map(self.convertToEntities(_:))
     }
     
-    private func convertToEntitys(_ users: [MOITUserModel.User]) -> [MOITUserEntity] {
+    private func convertToEntities(_ users: [MOITUserModel.User]) -> [MOITUserEntity] {
         users.map { user in
             MOITUserEntity(
                 userID: "\(user.userID)",
