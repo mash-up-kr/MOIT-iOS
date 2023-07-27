@@ -25,6 +25,7 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
 
     public func build(
         withListener listener: MOITWebListener,
+        domain: WebDomain,
         path: MOITWebPath
     ) -> ViewableRouting {
         let component = MOITWebComponent(dependency: dependency)
@@ -32,6 +33,7 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
         let viewController = MOITWebViewController()
         let interactor = MOITWebInteractor(
             presenter: viewController,
+            domain: domain.rawValue,
             path: path.path
         )
         interactor.listener = listener
