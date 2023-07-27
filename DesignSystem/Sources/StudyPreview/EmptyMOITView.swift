@@ -59,7 +59,7 @@ public final class EmptyMOITView: UIView {
         self.flexRootView.pin.all()
         self.flexRootView.flex.layout()
         self.flexRootView.layer.cornerRadius = 30
-        
+        self.flexRootView.clipsToBounds = true
     }
     
     // MARK: - Methods
