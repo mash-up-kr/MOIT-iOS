@@ -33,7 +33,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.Fine.Data.Interface,
 		.Feature.Fine.Data.Implement,
 		.MOITNetwork.Interface,
-		.MOITNetwork.Implement
+		.MOITNetwork.Implement,
+		.TokenManager.Implement
 	],
     isUserInterface: true
 )

@@ -15,6 +15,7 @@ import FineDomainImpl
 import FineData
 import FineDataImpl
 import MOITNetworkImpl
+import TokenManagerImpl
 
 import RIBs
 
@@ -22,12 +23,15 @@ import RIBs
 final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	private final class MockFineDependency: FineListDependency {
+		var compareUserIDUseCase: CompareUserIDUseCase
 		var fetchFineInfoUseCase: FetchFineInfoUseCase
 		
 		init(
-			fetchFineInfoUseCase: FetchFineInfoUseCase
+			fetchFineInfoUseCase: FetchFineInfoUseCase,
+			compareUserIDUseCase: CompareUserIDUseCase
 		) {
 			self.fetchFineInfoUseCase = fetchFineInfoUseCase
+			self.compareUserIDUseCase = compareUserIDUseCase
 		}
 	}
 	
@@ -41,9 +45,13 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         
 		let fetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		let compareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 		
 		router = FineListBuilder(
-			dependency: MockFineDependency(fetchFineInfoUseCase: fetchFineInfoUseCase)
+			dependency: MockFineDependency(
+				fetchFineInfoUseCase: fetchFineInfoUseCase,
+				compareUserIDUseCase: compareUserIDUseCase
+			)
 		)
 			.build(withListener: MockFineListener(), moitID: "2")
 		router?.interactable.activate()
