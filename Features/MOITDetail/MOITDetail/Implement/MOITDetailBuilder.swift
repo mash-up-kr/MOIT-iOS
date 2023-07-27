@@ -10,6 +10,7 @@ import MOITDetail
 import MOITDetailData
 import MOITDetailDomain
 import FineUserInterface
+import FineDomain
 import FineUserInterfaceImpl
 import FineDomain
 

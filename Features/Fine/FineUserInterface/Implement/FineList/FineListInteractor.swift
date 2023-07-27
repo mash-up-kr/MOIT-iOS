@@ -23,7 +23,7 @@ protocol FineListPresentable: Presentable {
     var listener: FineListPresentableListener? { get set }
 }
 
-protocol FineListInteractorDependency {
+public protocol FineListInteractorDependency {
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var moitID: String { get }

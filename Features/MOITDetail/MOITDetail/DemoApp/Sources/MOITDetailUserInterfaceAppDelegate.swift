@@ -41,6 +41,7 @@ final class MOITDetailAppDelegate: UIResponder,
         var moitUserusecase: MOITUserUsecase {
             StubMOITUserUsecase()
         }
+        var fetchFineInfoUsecase: FetchFineInfoUseCase { FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))}
     }
     
     var window: UIWindow?
