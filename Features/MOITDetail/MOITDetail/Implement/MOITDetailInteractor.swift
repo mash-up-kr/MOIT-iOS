@@ -208,3 +208,13 @@ extension MOITDetailInteractor {
         self.router?.detachMOITUsers()
     }
 }
+
+// MARK: - MOITShare
+extension MOITDetailInteractor {
+    func didSuccessLinkCopy() {
+        self.router?.detachMOITShare()
+    }
+    func didTapDimmedView() {
+        self.router?.detachMOITShare()
+    }
+}

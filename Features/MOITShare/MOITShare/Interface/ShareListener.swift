@@ -9,5 +9,6 @@
 import Foundation
 
 public protocol ShareListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+   func didSuccessLinkCopy()
+    func didTapDimmedView()
 }

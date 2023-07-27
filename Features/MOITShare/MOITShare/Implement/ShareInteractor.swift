@@ -9,6 +9,7 @@
 import RIBs
 import RxSwift
 import MOITShare
+import MOITShareDomain
 
 protocol ShareRouting: ViewableRouting {
 }
@@ -17,16 +18,21 @@ protocol SharePresentable: Presentable {
     var listener: SharePresentableListener? { get set }
 }
 
-
-
 final class ShareInteractor: PresentableInteractor<SharePresentable>, ShareInteractable, SharePresentableListener {
 
     weak var router: ShareRouting?
     weak var listener: ShareListener?
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init(presenter: SharePresentable) {
+    private let shareUsecase: MOITShareUsecase
+    private let invitationCode: String
+    
+    init(
+        presenter: SharePresentable,
+        shareUsecase: MOITShareUsecase,
+        invitationCode: String
+    ) {
+        self.invitationCode = invitationCode
+        self.shareUsecase = shareUsecase
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -39,5 +45,26 @@ final class ShareInteractor: PresentableInteractor<SharePresentable>, ShareInter
     override func willResignActive() {
         super.willResignActive()
         // TODO: Pause any business logic.
+    }
+}
+
+// MARK: - SharePresentableListener
+
+extension ShareInteractor {
+    func didTapLinkCopyButton() {
+        self.shareUsecase.copyLink(invitationCode)
+            .subscribe { [weak self] _ in
+                // TODO: 토스트 띄우기
+                self?.listener?.didSuccessLinkCopy()
+            }
+            .disposeOnDeactivate(interactor: self)
+    }
+    
+    func didTapDimmedView() {
+        self.listener?.didTapDimmedView()
+    }
+    
+    func didTapShareButton() {
+        print(#function)
     }
 }

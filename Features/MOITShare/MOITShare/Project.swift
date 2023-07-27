@@ -13,6 +13,7 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITShare",
     interfaceDependencies: [
+        .ThirdParty.RIBs,
     ],
     implementDependencies: [
         .ThirdParty.RIBs,
@@ -23,7 +24,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RxGesture,
         .ResourceKit,
         .DesignSystem,
+        .Feature.MOITShare.Domain.Implement
     ],
     isUserInterface: true
 )
-

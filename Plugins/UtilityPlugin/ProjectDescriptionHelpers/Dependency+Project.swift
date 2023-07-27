@@ -18,6 +18,7 @@ extension TargetDependency {
 		}
 		
 		public struct MOITShare {
+            public struct Domain {}
 		}
 		
 		public struct MOITParticipate {
@@ -243,4 +244,16 @@ public extension TargetDependency.Feature.MOITDetail.Domain {
 public extension TargetDependency.Feature.MOITShare {
     static let Interface: TargetDependency = .project(target: "MOITShare", path: .relativeToRoot("Features/MOITShare/MOITShare"))
     static let Implement: TargetDependency = .project(target: "MOITShareImpl", path: .relativeToRoot("Features/MOITShare/MOITShare"))
+}
+
+public extension TargetDependency.Feature.MOITShare.Domain {
+    static func project(isInterface: Bool) -> TargetDependency {
+        let postfix: String = isInterface ? "" : "Impl"
+        return .project(
+            target: "MOITShareDomain\(postfix)",
+            path: .relativeToRoot("Features/MOITShare/MOITShareDomain")
+        )
+    }
+    static let Interface = Self.project(isInterface: true)
+    static let Implement = Self.project(isInterface: false)
 }
