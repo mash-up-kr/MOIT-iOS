@@ -30,7 +30,7 @@ final class MOITDetailAppDelegate: UIResponder,
 	final class MockMOITDetailDependency: MOITDetailDependency {
 		
 		var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
-		var fetchFineInfoUseCase: FetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		var fetchFineInfoUseCase: FetchFineInfoUseCase { StubFetchFineInfoUseCase() }
 		
         var tabTypes: [MOITDetailTab] = [.attendance, .fine]
         var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: NetworkImpl())

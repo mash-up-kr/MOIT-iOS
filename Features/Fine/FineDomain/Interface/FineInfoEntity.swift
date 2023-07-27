@@ -21,6 +21,16 @@ public struct FineInfoEntity {
 		self.notPaidFineList = fineInfo.notPaidFineList.map { FineItemEntity(fineItem: $0) }
 		self.paymentCompletedFineList = fineInfo.paymentCompletedFineList.map { FineItemEntity(fineItem: $0) }
 	}
+	
+	public init(
+		totalFineAmount: Int,
+		notPaidFineList: FineListEntity,
+		paymentCompletedFineList: FineListEntity
+	) {
+		self.totalFineAmount = totalFineAmount
+		self.notPaidFineList = notPaidFineList
+		self.paymentCompletedFineList = paymentCompletedFineList
+	}
 }
 
 public typealias FineListEntity = [FineItemEntity]
@@ -43,5 +53,25 @@ public struct FineItemEntity {
 		self.studyOrder = fineItem.studyOrder + 1
 		self.isApproved = fineItem.isApproved
 		self.approveAt = fineItem.approveAt
+	}
+	
+	public init(
+		id: Int,
+		fineAmount: Int,
+		userID: Int,
+		userNickname: String,
+		attendanceStatus: AttendanceStatus,
+		studyOrder: Int,
+		isApproved: Bool,
+		approveAt: String
+	) {
+		self.id = id
+		self.fineAmount = fineAmount
+		self.userID = userID
+		self.userNickname = userNickname
+		self.attendanceStatus = attendanceStatus
+		self.studyOrder = studyOrder
+		self.isApproved = isApproved
+		self.approveAt = approveAt
 	}
 }
