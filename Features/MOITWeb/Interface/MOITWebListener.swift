@@ -14,4 +14,5 @@ public protocol MOITWebListener: AnyObject {
     func shouldDetach(withPop: Bool)
 	func authorizationDidFinish(with signInResponse: MOITSignInResponse)
 	func didSignIn(with token: String)
+    func didTapShare(code: String)
 }

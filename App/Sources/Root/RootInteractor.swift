@@ -27,14 +27,6 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
                             RootInteractable,
                             RootPresentableListener {
     
-    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
-        
-    }
-    
-    func didSignIn(with token: String) {
-        
-    }
-    
     weak var router: RootRouting?
     
     override init(presenter: RootPresentable) {
@@ -68,8 +60,21 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
     deinit { debugPrint("\(self) deinit") }
 }
 
+// MARK: MOITWebListener
 extension RootInteractor {
     func shouldDetach(withPop: Bool) {
         self.router?.detachWeb(withPop: withPop)
+    }
+    
+    func didTapShare(code: String) {
+        // TODO: 서영. share로 라우팅 필요
+    }
+    
+    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
+        
+    }
+    
+    func didSignIn(with token: String) {
+        
     }
 }

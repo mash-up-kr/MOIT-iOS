@@ -21,6 +21,7 @@ protocol MOITWebPresentableListener: AnyObject {
 	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
     func didTapBackButton()
 	func didTapErrorAlertOkButton()
+    func didTapShare(code: String)
 }
 
 final class MOITWebViewController: UIViewController,
@@ -128,11 +129,17 @@ extension MOITWebViewController: WKScriptMessageHandler {
         switch command {
         case .close:
             self.listener?.didTapBackButton()
+        case .share:
+            guard let value = messages["value"] as? String else { return }
+            self.listener?.didTapShare(code: value)
+        case .toast:
+            guard let value = messages["value"] as? String else { return }
+            print("토스트")
         default:
-            let value = messages["body"]
+            guard let value = messages["value"] as? String else { return }
             let alertController = UIAlertController(
                 title: "\(cmd)",
-                message: "\(value)", preferredStyle: .alert)
+                message: value, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "확인", style: .default)
             alertController.addAction(okAction)
             self.present(alertController, animated: true)

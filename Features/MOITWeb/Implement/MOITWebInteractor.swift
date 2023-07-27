@@ -81,6 +81,10 @@ extension MOITWebInteractor {
 		}
 	}
 
+    func didTapShare(code: String) {
+        self.listener?.didTapShare(code: code)
+    }
+    
     func didTapBackButton() {
         self.listener?.shouldDetach(withPop: true)
     }
