@@ -20,7 +20,7 @@ protocol MOITWebRouting: ViewableRouting { }
 protocol MOITWebPresentable: Presentable {
     var listener: MOITWebPresentableListener? { get set }
 	
-    func render(with path: String)
+    func render(domain: String, path: String)
 	func showErrorAlert()
 }
 
@@ -33,14 +33,17 @@ final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
     weak var router: MOITWebRouting?
     weak var listener: MOITWebListener?
 
+    private let domain: String
     private let path: String
     
     // MARK: - LifeCycles
     
     init(
         presenter: MOITWebPresentable,
+        domain: String,
         path: String
     ) {
+        self.domain = domain
         self.path = path
         super.init(presenter: presenter)
         presenter.listener = self
@@ -48,7 +51,7 @@ final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        self.presenter.render(with: self.path)
+        self.presenter.render(domain: self.domain, path: self.path)
     }
 
     override func willResignActive() {

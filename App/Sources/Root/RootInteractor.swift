@@ -9,6 +9,7 @@ import RIBs
 import RxSwift
 import MOITWebImpl
 import MOITWeb
+import AuthDomain
 
 protocol RootRouting: ViewableRouting {
     func routeToMoitWeb(path: MOITWebPath)
@@ -25,6 +26,14 @@ protocol RootListener: AnyObject {
 final class RootInteractor: PresentableInteractor<RootPresentable>,
                             RootInteractable,
                             RootPresentableListener {
+    
+    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
+        
+    }
+    
+    func didSignIn(with token: String) {
+        
+    }
     
     weak var router: RootRouting?
     

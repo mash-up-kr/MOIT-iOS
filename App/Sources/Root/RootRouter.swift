@@ -39,6 +39,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         guard self.moitWebRouter == nil else { return }
         let router = moitWebBuilder.build(
             withListener: self.interactor,
+            domain: .frontend,
             path: path
         )
         
