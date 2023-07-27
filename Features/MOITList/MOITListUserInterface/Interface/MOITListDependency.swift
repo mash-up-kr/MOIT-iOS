@@ -14,5 +14,5 @@ public protocol MOITListDependency: Dependency {
     
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var fetchLeftTimeUseCase: FetchLeftTimeUseCase { get }
-    var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase { get }
+    var fetchPaneltyToBePaiedUseCase: FetchPenaltyToBePaidUseCase { get }
 }
