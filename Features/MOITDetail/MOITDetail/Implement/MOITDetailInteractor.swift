@@ -181,9 +181,6 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     func didTapShareButton() {
         print(#function)
     }
-    func didTapPager(at index: Int) {
-        print(#function, index)
-    }
 }
 
 // MARK: - MOITDetailAttendance

@@ -22,7 +22,6 @@ protocol MOITDetailPresentableListener: AnyObject {
     func viewDidLayoutSubViews()
     func didTapParticipantsButton()
     func didTapShareButton()
-    func didTapPager(at index: Int)
     func didRefresh()
 }
 
@@ -267,7 +266,6 @@ extension MOITDetailViewController {
                 
                 flex.addItem(self.childViewControllerContainer)
                     .marginTop(0)
-                    .backgroundColor(.orange)
                     .marginBottom(0)
                     .grow(1)
             }
@@ -277,7 +275,16 @@ extension MOITDetailViewController {
         
         self.tapPageView.rx.tapIndex
             .bind(onNext: { [weak self] index in
-                self?.listener?.didTapPager(at: index)
+                guard let self else { return }
+                (0..<self.childViewControllerContainer.subviews.count).forEach { subViewIndex in
+                    self.childViewControllerContainer.subviews[safe: subViewIndex]?.isHidden = (subViewIndex != index)
+                    let display: Flex.Display
+                    if subViewIndex == index { display = .flex }
+                    else { display = .none }
+                    self.childViewControllerContainer.subviews[safe: subViewIndex]?.flex.display(display)
+                }
+                childViewControllerContainer.flex.markDirty()
+                self.flexRootView.setNeedsLayout()
             })
             .disposed(by: self.disposeBag)
         
@@ -392,8 +399,18 @@ extension MOITDetailViewController {
 extension MOITDetailViewController {
     func addChild(viewController: ViewControllable) {
         self.addChild(viewController.uiviewController)
-        self.childViewControllerContainer.addSubview(viewController.uiviewController.view)
+        
+        self.childViewControllerContainer.flex
+            .direction(.row)
+            .define { flex in
+                flex.addItem(viewController.uiviewController.view)
+                    .width(self.view.bounds.width)
+            }
         viewController.uiviewController.willMove(toParent: self)
+        
+        viewController.uiviewController.view.flex.markDirty()
+        childViewControllerContainer.flex.markDirty()
+        self.flexRootView.setNeedsLayout()
     }
 }
 
