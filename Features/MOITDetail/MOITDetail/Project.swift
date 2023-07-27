@@ -41,6 +41,13 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.Fine.Data.Implement,
         .ThirdParty.Collections,
     ],
+	demoAppDependencies: [
+		.Feature.Fine.Domain.Interface,
+		.Feature.Fine.Domain.Implement,
+		.Feature.Fine.Data.Interface,
+		.Feature.Fine.Data.Implement,
+		.TokenManager.Implement
+	],
     isUserInterface: true
 )
 
