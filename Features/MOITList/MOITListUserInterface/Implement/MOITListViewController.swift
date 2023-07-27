@@ -224,8 +224,9 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
             flex.addItem(pagableAlarmView)
         }
         
-        pagableAlarmView.flex.layout()
-        alarmRootView.flex.layout()
+        // TODO: - flexRootView.flex.layout만 해도 레이아웃 잡히는지 실 데이터 받을 때 확인
+        pagableAlarmView.flex.markDirty()
+        alarmRootView.flex.markDirty()
         flexRootView.flex.layout()
     }
     
