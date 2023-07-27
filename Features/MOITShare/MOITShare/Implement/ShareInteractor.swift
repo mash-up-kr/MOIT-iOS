@@ -16,10 +16,11 @@ protocol ShareRouting: ViewableRouting {
 
 protocol SharePresentable: Presentable {
     var listener: SharePresentableListener? { get set }
+    func presentActivity(code: String)
 }
 
 final class ShareInteractor: PresentableInteractor<SharePresentable>, ShareInteractable, SharePresentableListener {
-
+    
     weak var router: ShareRouting?
     weak var listener: ShareListener?
 
@@ -60,11 +61,15 @@ extension ShareInteractor {
             .disposeOnDeactivate(interactor: self)
     }
     
+    func didShareSuccess() {
+        self.listener?.didSuccessLinkCopy()
+    }
+
     func didTapDimmedView() {
         self.listener?.didTapDimmedView()
     }
     
     func didTapShareButton() {
-        print(#function)
+        self.presenter.presentActivity(code: invitationCode)
     }
 }

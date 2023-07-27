@@ -25,7 +25,8 @@ public final class ShareBuilder: Builder<ShareDependency>,
 
     public func build(
         withListener listener: ShareListener,
-        code: String) -> ViewableRouting {
+        code: String
+    ) -> ViewableRouting {
         let component = ShareComponent(dependency: dependency)
         let viewController = ShareViewController(contentView: MOITShareView(invitationCode: code))
         

@@ -19,12 +19,13 @@ protocol SharePresentableListener: AnyObject {
     func didTapLinkCopyButton()
     func didTapDimmedView()
     func didTapShareButton()
+    func didShareSuccess()
 }
 
 public final class ShareViewController: BottomSheetViewController,
-                                 SharePresentable,
-                                ShareViewControllable {
-
+                                        SharePresentable,
+                                        ShareViewControllable {
+    
     private var contentview: MOITShareView?
     private let disposeBag = DisposeBag()
     weak var listener: SharePresentableListener?
@@ -59,10 +60,48 @@ public final class ShareViewController: BottomSheetViewController,
             })
             .disposed(by: self.disposeBag)
         
-        contentview?.rx.didTapKakaoTalkShareButton
+        contentview?.rx.didTapShareButton
             .bind(onNext: { [weak self] in
                 self?.listener?.didTapShareButton()
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    func presentActivity(code: String) {
+        self.presentUIActivity(item: code)
+    }
+    
+    private func presentUIActivity(item: String) {
+        let viewController = UIActivityViewController(
+            activityItems: [item],
+            applicationActivities: nil
+        )
+        viewController.excludedActivityTypes = [
+            .assignToContact,
+            .print,
+            .postToWeibo,
+            .postToVimeo,
+            .postToTencentWeibo,
+            .postToFlickr,
+            .openInIBooks,
+            .assignToContact
+        ]
+        
+        viewController.completionWithItemsHandler = { activity, isSuccess, activityItems, error in
+            if isSuccess {
+                self.listener?.didShareSuccess()
+            } else {
+                let alertController = UIAlertController(
+                    title: "공유에 실패했습니다",
+                    message: "다시 시도해주세요",
+                    preferredStyle: .alert
+                )
+                
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true)
+            }
+        }
+        self.present(viewController, animated: true)
     }
 }
