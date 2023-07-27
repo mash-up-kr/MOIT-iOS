@@ -10,6 +10,22 @@ import Foundation
 
 import DesignSystem
 
+struct ParticipantFineInfoViewModel {
+	let totalFineAmountText: String
+	let notPaidFineListViewModel: [ParticipantNotPaidFineListViewModel]
+	let paymentCompletedFineListViewModel: [PaymentCompletedFineListViewModel]
+	
+	init(
+		totalFineAmountText: String,
+		notPaidFineListViewModel: [ParticipantNotPaidFineListViewModel],
+		paymentCompletedFineListViewModel: [PaymentCompletedFineListViewModel]
+	) {
+		self.totalFineAmountText = totalFineAmountText
+		self.notPaidFineListViewModel = notPaidFineListViewModel
+		self.paymentCompletedFineListViewModel = paymentCompletedFineListViewModel
+	}
+}
+
 /// 스터디원 벌금 미납자 리스트 viewmodel
 // TODO: image URL 프로퍼티 추가 요청해야함
 struct ParticipantNotPaidFineListViewModel {
@@ -38,10 +54,4 @@ struct PaymentCompletedFineListViewModel {
 	let useNickName: String
 	/// 인증 시간
 	let approvedDate: String
-}
-
-struct ParticipantFineInfoViewModel {
-	let totalFineAmount: Int
-	let notPaidFineList: [ParticipantFineInfoViewModel]
-	let paymentCompletedFineList: [PaymentCompletedFineListViewModel]
 }

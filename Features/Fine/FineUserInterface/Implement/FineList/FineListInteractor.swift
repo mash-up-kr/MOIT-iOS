@@ -65,10 +65,30 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 	
 	func viewDidLoad() {
 		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
-		// TODO: 받아온 Entity.....어떻게 할건데?!
+			.compactMap { [weak self] fineInfoEntity -> ParticipantFineInfoViewModel? in
+				return self?.convertToParticipantFineInfoViewModel(from: fineInfoEntity)
+			}
+			.subscribe(
+				onSuccess: { [weak self] fineInfoViewModel in
+					debugPrint("------------FineInfoViewModel-------------")
+					debugPrint(fineInfoViewModel)
+					debugPrint("------------------------------------------")
+				}
+			)
+			.disposeOnDeactivate(interactor: self)
 	}
 	
 // MARK: - private
+	
+	private func convertToParticipantFineInfoViewModel(
+		from entity: FineInfoEntity
+	) -> ParticipantFineInfoViewModel {
+		return ParticipantFineInfoViewModel(
+			totalFineAmountText: "\(entity.totalFineAmount)",
+			notPaidFineListViewModel: entity.notPaidFineList.map { convertToParticipantNotPaidFineListViewModel(from: $0) },
+			paymentCompletedFineListViewModel: entity.paymentCompletedFineList.map { convertToPaymentCompletedFineListViewModel(from: $0) }
+		)
+	}
 	
 	private func convertToParticipantNotPaidFineListViewModel(
 		from entity: FineItemEntity
@@ -106,8 +126,6 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 			approvedDate: entity.approveAt
 		)
 	}
-	
-	
 
 	private func convertAttendanceStatusToMOITChipType(
 		status: AttendanceStatus
