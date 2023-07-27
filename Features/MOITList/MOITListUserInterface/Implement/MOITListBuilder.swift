@@ -17,7 +17,7 @@ final class MOITListComponent: Component<MOITListDependency>,
     
     var fetchLeftTimeUseCase: FetchLeftTimeUseCase { dependency.fetchLeftTimeUseCase }
     
-    var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase { dependency.fetchPaneltyToBePaiedUSeCase }
+    var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase { dependency.fetchPaneltyToBePaiedUseCase }
     
     var fetchMOITListsUseCase: FetchMoitListUseCase { dependency.fetchMOITListsUseCase }
 }
