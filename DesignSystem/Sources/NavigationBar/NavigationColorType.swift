@@ -26,7 +26,7 @@ public enum NavigationColorType {
     var backgroundColor: UIColor {
         switch self {
         case .normal:
-            return ResourceKitAsset.Color.white.color
+            return .clear
         case .reverse:
             return ResourceKitAsset.Color.gray500.color
         }
