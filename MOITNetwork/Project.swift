@@ -12,15 +12,11 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProject(
 	name: "MOITNetwork",
 	platform: .iOS,
-	iOSTargetVersion: "16.0.0",
 	interfaceDependencies: [
 		.ThirdParty.RxSwift,
 		.ThirdParty.RxCocoa
 	],
 	implementDependencies: [
-		.ThirdParty.RxSwift,
-		.ThirdParty.RxCocoa,
-		
 		.Core.CSLogger
 	]
 )

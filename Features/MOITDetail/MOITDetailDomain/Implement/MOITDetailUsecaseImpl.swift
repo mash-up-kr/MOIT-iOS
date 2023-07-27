@@ -23,7 +23,7 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 		return self.repository.fetchDetail(moitID: ID)
 			.compactMap { [weak self] response -> MOITDetailEntity? in
 				guard let self = self else { return nil }
-				return convertToMOITDetailEntity(from: response)
+				return self.convertToMOITDetailEntity(from: response)
 			}.asObservable()
 			.asSingle()
 	}

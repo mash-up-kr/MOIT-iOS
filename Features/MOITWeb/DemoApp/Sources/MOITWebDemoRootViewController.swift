@@ -8,8 +8,11 @@
 
 import Foundation
 import UIKit
+
 import MOITWeb
 import MOITWebImpl
+import AuthDomain
+
 import RIBs
 
 final class MOITWebDemoRootViewController: UITableViewController {
@@ -97,6 +100,10 @@ extension MOITWebDemoRootViewController {
 // MARK: - MOITWebListener
 
 extension MOITWebDemoRootViewController: MOITWebListener {
+	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
+		
+	}
+	
     func shouldDetach(withPop: Bool) {
         guard let router = self.webRouter else { return }
         self.webRouter = nil

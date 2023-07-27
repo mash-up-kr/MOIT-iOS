@@ -16,10 +16,10 @@ import RIBs
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
-								 FineListDependency {
+                                MOITUsersDependency, FineListDependency {
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
-    
+    var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
 }
 
 // MARK: - Builder
@@ -48,12 +48,14 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         interactor.listener = listener
         
         let attendanceBuiler = MOITDetailAttendanceBuilder(dependency: component)
+        let moitUserBuilder = MOITUsersBuilder(dependency: component)
 		let fineListBuilder = FineListBuilder(dependency: component)
         
         return MOITDetailRouter(
             interactor: interactor,
             viewController: viewController,
             attendanceBuiler: attendanceBuiler,
+            moitUserBuilder: moitUserBuilder,
 			fineListBuilder: fineListBuilder
         )
     }

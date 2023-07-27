@@ -6,8 +6,9 @@
 //  Copyright © 2023 chansoo.io. All rights reserved.
 //
 
-import RIBs
 import MOITWeb
+
+import RIBs
 
 protocol MOITWebInteractable: Interactable {
     var router: MOITWebRouting? { get set }
@@ -18,8 +19,8 @@ protocol MOITWebViewControllable: ViewControllable {
 }
 
 final class MOITWebRouter: ViewableRouter<MOITWebInteractable, MOITWebViewControllable>,
-                            MOITWebRouting {
-
+						   MOITWebRouting {
+	
     override init(
         interactor: MOITWebInteractable,
         viewController: MOITWebViewControllable

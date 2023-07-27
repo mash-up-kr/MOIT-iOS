@@ -13,6 +13,7 @@ public enum MOITWebPath {
     case modify(id: String)
     case attendance
     case attendanceResult
+	case signIn
     
     public var path: String {
         switch self {
@@ -20,6 +21,7 @@ public enum MOITWebPath {
         case .register: return "/register"
         case .modify(let id): return "/register?id=\(id)"
         case .attendanceResult: return "/attendanceResult"
+		case .signIn: return "auth/sign-in"
         }
     }
 }

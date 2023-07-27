@@ -16,9 +16,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
         .ThirdParty.RIBs,
-		.MOITNetwork.Interface,
 		.Feature.MOITDetail.Domain.Interface,
-		.Feature.MOITDetail.Data.Interface
+		.Feature.MOITDetail.Data.Interface,
+		.MOITNetwork.Interface
     ],
     implementDependencies: [
         .ThirdParty.Kingfisher,
