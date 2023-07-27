@@ -15,7 +15,7 @@ import RxSwift
 
 public final class FetchFineInfoUseCaseImpl: FetchFineInfoUseCase {
 	
-	let fineRepository: FineRepository
+	private let fineRepository: FineRepository
 	
 	public init(
 		fineRepository: FineRepository

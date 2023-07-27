@@ -14,7 +14,16 @@ import FineDomain
 final class FineListComponent: Component<FineListDependency>,
 							   AuthorizePaymentDependency,
 							   FineListInteractorDependency {
-    var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
+	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
+	let moitID: String
+	
+	init(
+		dependency: FineListDependency,
+		moitID: String
+	) {
+		self.moitID = moitID
+		super.init(dependency: dependency)
+	}
 }
 
 // MARK: - Builder
@@ -29,7 +38,10 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
 		withListener listener: FineListListener,
 		moitID: String
 	) -> ViewableRouting {
-        let component = FineListComponent(dependency: dependency)
+        let component = FineListComponent(
+			dependency: dependency,
+			moitID: moitID
+		)
         let viewController = FineListViewController()
         let interactor = FineListInteractor(
 			presenter: viewController,

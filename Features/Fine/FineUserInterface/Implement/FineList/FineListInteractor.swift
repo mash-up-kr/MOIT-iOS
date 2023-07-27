@@ -23,6 +23,7 @@ protocol FineListPresentable: Presentable {
 
 public protocol FineListInteractorDependency {
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { get }
+	var moitID: String { get }
 }
 
 final class FineListInteractor: PresentableInteractor<FineListPresentable>, FineListInteractable, FineListPresentableListener {
@@ -55,5 +56,11 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 	
 	func authorizePaymentDismissButtonDidTap() {
 		router?.detachAuthorizePayment()
+	}
+	
+// MARK: - FineListPresentableListener
+	func viewDidLoad() {
+		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
+		// TODO: 받아온 Entity.....어떻게 할건데?!
 	}
 }
