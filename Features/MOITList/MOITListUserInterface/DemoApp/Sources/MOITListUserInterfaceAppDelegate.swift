@@ -46,14 +46,14 @@ extension MOITListAppDelegate {
     {
         var fetchLeftTimeUseCase: FetchLeftTimeUseCase
         
-        var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase
+        var fetchPaneltyToBePaiedUseCase: FetchPenaltyToBePaidUseCase
         
         var fetchMOITListsUseCase: FetchMoitListUseCase
         
         init() {
             self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MockMoitRepository())
             self.fetchLeftTimeUseCase = MockFetchLeftTimeUseCase()
-            self.fetchPaneltyToBePaiedUSeCase = MockFetchPenaltyToBePaidUseCase()
+            self.fetchPaneltyToBePaiedUseCase = MockFetchPenaltyToBePaidUseCase()
             super.init(dependency: EmptyComponent())
         }
     }
@@ -62,6 +62,7 @@ extension MOITListAppDelegate {
     }
     
     private final class MockMoitRepository: MOITRepository {
+        
         func fetchMOITList() -> Single<[MOIT]> {
             return Single.just([
                 MOIT(
