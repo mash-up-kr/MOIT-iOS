@@ -89,6 +89,10 @@ extension MOITListAppDelegate {
                 )
             ])
         }
+        
+        func deleteMoit(id: Int) -> Single<Void> {
+            fatalError()
+        }
     }
     
     private final class MockFetchPenaltyToBePaidUseCase: FetchPenaltyToBePaidUseCase {
