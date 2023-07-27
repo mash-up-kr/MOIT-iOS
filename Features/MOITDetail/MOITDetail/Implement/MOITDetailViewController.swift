@@ -142,11 +142,14 @@ final class MOITDetailViewController: UIViewController,
     private let disposeBag = DisposeBag()
     
     // MARK: - LifeCycles
+	
+	override func loadView() {
+		self.view = self.flexRootView
+		self.flexRootView.isSkeletonable = true
+	}
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.flexRootView)
-        self.flexRootView.isSkeletonable = true
         self.navigationController?.navigationBar.isHidden = true
         self.configureRefreshControl()
         self.configureLayouts()
