@@ -85,6 +85,8 @@ public final class MOITSegmentPager: UIView {
     
     public func configurePages(pages: [String]) {
         self.pages = pages.map { self.configureLabel(text: $0) }
+        configureLayout()
+        congifureSelectedCircle()
     }
 
     private func configureLabel(text: String?) -> UILabel {
