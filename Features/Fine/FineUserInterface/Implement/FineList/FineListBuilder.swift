@@ -14,7 +14,9 @@ import FineDomain
 final class FineListComponent: Component<FineListDependency>,
 							   AuthorizePaymentDependency,
 							   FineListInteractorDependency {
+	
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
+	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
 	let moitID: String
 	
 	init(

@@ -11,12 +11,18 @@ import MOITDetailData
 import MOITDetailDomain
 import FineUserInterface
 import FineUserInterfaceImpl
+import FineDomain
 
 import RIBs
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
-                                MOITUsersDependency, FineListDependency {
+								 MOITUsersDependency,
+								 FineListDependency {
+	
+	var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
+	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
+	
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
     var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }

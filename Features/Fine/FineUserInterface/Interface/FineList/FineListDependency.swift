@@ -12,4 +12,5 @@ import FineDomain
 
 public protocol FineListDependency: Dependency {
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
+	var compareUserIDUseCase: CompareUserIDUseCase { get }
 }

@@ -46,10 +46,7 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
     }
     
     // MARK: - MOITDetailAttendance
-    
-    private let attendanceBuiler: MOITDetailAttendanceBuildable
-    private var attendacneRouter: ViewableRouting?
-    
+
     func attachAttendance(moitID: String) {
         guard attendacneRouter == nil else { return }
         let router = self.attendanceBuiler.build(

@@ -16,13 +16,22 @@ import MOITDetailDomain
 import MOITDetailDomainImpl
 import MOITDetailDataImpl
 import MOITDetailData
+import FineDomain
+import FineDomainImpl
+import FineData
+import FineDataImpl
+import TokenManagerImpl
 import RxSwift
 
 @main
 final class MOITDetailAppDelegate: UIResponder,
                                    UIApplicationDelegate,
                                    MOITDetailListener {
-    final class MockMOITDetailDependency: MOITDetailDependency {
+	final class MockMOITDetailDependency: MOITDetailDependency {
+		
+		var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
+		var fetchFineInfoUseCase: FetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		
         var tabTypes: [MOITDetailTab] = [.attendance, .fine]
         var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: NetworkImpl())
         var moitDetailUsecase: MOITDetailUsecase { MOITDetailUsecaseImpl(repository: moitDetailRepository) }
