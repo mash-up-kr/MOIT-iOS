@@ -17,4 +17,6 @@ public protocol LoggedOutDependency: Dependency {
 	var signUpBuildable: SignUpBuildable { get }
 	var moitWebBuildable: MOITWebBuildable { get }
 	var saveTokenUseCase: SaveTokenUseCase { get }
+	var fetchUserInfoUseCase: FetchUserInfoUseCase { get }
+	var saveUserIDUseCase: SaveUserIDUseCase { get }
 }

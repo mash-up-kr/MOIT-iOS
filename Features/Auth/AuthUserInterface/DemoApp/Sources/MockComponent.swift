@@ -13,10 +13,12 @@ import AuthUserInterfaceImpl
 import AuthDomain
 import AuthDomainImpl
 import AuthData
+import AuthDataImpl
 import MOITWeb
 import MOITWebImpl
 import TokenManager
 import TokenManagerImpl
+import MOITNetworkImpl
 
 import RIBs
 import RxSwift
@@ -27,7 +29,7 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 							   SignUpDependency,
 							   MOITWebDependency,
 							   LoggedOutInteractorDependency {
-
+	
 	init() {
 		super.init(dependency: EmptyComponent())
 	}
@@ -49,6 +51,10 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	lazy var moitWebBuildable: MOITWebBuildable = {
 		return MOITWebBuilder(dependency: self)
 	}()
+	
+	var fetchUserInfoUseCase: FetchUserInfoUseCase = FetchUserInfoUseCaseImpl(repository: UserRepositoryImpl(network: NetworkImpl()))
+	
+	var saveUserIDUseCase: SaveUserIDUseCase = SaveUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 }
 
 final class MockJoinRepository: JoinRepository {

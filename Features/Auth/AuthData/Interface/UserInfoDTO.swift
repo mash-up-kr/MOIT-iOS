@@ -10,9 +10,9 @@ import Foundation
 
 // MARK: - UserInfoDTO
 public struct UserInfoDTO: Codable {
-	let id: Int
-	let providerUniqueKey, nickname: String
-	let profileImage: Int
-	let email: String
-	let roles: [String]
+	public let id: Int
+	public let providerUniqueKey, nickname: String
+	public let profileImage: Int
+	public let email: String
+	public let roles: [String]
 }

@@ -24,6 +24,8 @@ protocol LoggedOutPresentable: Presentable {
 
 public protocol LoggedOutInteractorDependency: AnyObject {
 	var saveTokenUseCase: SaveTokenUseCase { get }
+	var fetchUserInfoUseCase: FetchUserInfoUseCase { get }
+	var saveUserIDUseCase: SaveUserIDUseCase { get }
 }
 
 final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, LoggedOutInteractable, LoggedOutPresentableListener {
@@ -65,5 +67,13 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	
 	func didSignIn(with token: String) {
 		dependency.saveTokenUseCase.execute(token: token)
+		
+		dependency.fetchUserInfoUseCase.execute()
+			.subscribe(
+				onSuccess: { [weak self] entity in
+					self?.dependency.saveUserIDUseCase.execute(userID: entity.userID)
+				}
+			)
+			.disposeOnDeactivate(interactor: self)
 	}
 }

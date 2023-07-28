@@ -15,6 +15,9 @@ import RIBs
 
 final class LoggedOutComponent: Component<LoggedOutDependency>,
 								LoggedOutInteractorDependency {
+	
+	var fetchUserInfoUseCase: FetchUserInfoUseCase { dependency.fetchUserInfoUseCase }
+	var saveUserIDUseCase: SaveUserIDUseCase { dependency.saveUserIDUseCase }
 	var saveTokenUseCase: SaveTokenUseCase { dependency.saveTokenUseCase }
 }
 
