@@ -50,12 +50,8 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
         super.willResignActive()
     }
 	
-	func kakaoSignInButtonDidTap() {
+	func signInButtonDidTap() {
 		router?.attachSignInWeb()
-	}
-	
-	func appleSignInButtonDidTap() {
-//		CSLogger.Logger.debug("appleSignIn")
 	}
 	
 // MARK: - MOITWeb

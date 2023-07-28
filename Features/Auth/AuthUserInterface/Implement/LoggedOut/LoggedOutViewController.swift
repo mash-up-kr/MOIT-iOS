@@ -17,8 +17,7 @@ import RIBs
 import RxSwift
 
 protocol LoggedOutPresentableListener: AnyObject {
-	func kakaoSignInButtonDidTap()
-	func appleSignInButtonDidTap()
+	func signInButtonDidTap()
 }
 
 final class LoggedOutViewController: UIViewController, LoggedOutPresentable, LoggedOutViewControllable {
@@ -39,20 +38,11 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 		return label
 	}()
 	
-	private let kakaoSignInButton = MOITButton(
+	private let signInButton = MOITButton(
 		type: .large,
-		image: ResourceKitAsset.Icon.kakaotalk.image,
-		title: "카카오톡으로 시작하기",
-		titleColor: .black,
-		backgroundColor: ResourceKitAsset.Color.kakao.color
-	)
-	
-	private let appleSignInButton = MOITButton(
-		type: .large,
-		image: ResourceKitAsset.Icon.apple.image,
-		title: "Apple로 시작하기",
-		titleColor: .white,
-		backgroundColor: .black
+		title: StringResource.signInButtonTitle.value,
+		titleColor: ResourceKitAsset.Color.white.color,
+		backgroundColor: ResourceKitAsset.Color.blue800.color
 	)
 	
 // MARK: - property
@@ -126,26 +116,16 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 			
 			flex.addItem(mainCharacterImageView).position(.absolute)
 			
-			flex.addItem()
+			flex.addItem(signInButton)
 				.marginHorizontal(20)
 				.marginBottom(48)
-				.define { flex in
-					flex.addItem(kakaoSignInButton)
-					flex.addItem(appleSignInButton).marginTop(12)
-			}
 		}
 	}
 	
 	private func bind() {
-		kakaoSignInButton.rx.tap
+		signInButton.rx.tap
 			.bind(onNext: { [weak self] _ in
-				self?.listener?.kakaoSignInButtonDidTap()
-			})
-			.disposed(by: disposeBag)
-		
-		appleSignInButton.rx.tap
-			.bind(onNext: { [weak self] _ in
-				self?.listener?.appleSignInButtonDidTap()
+				self?.listener?.signInButtonDidTap()
 			})
 			.disposed(by: disposeBag)
 	}
@@ -169,11 +149,14 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 extension LoggedOutViewController {
 	enum StringResource {
 		case titleDescription
+		case signInButtonTitle
 		
 		var value: String {
 			switch self {
 			case .titleDescription:
 				return "스터디 출결 관리 서비스 모잇!"
+			case .signInButtonTitle:
+				return "모잇 시작하기"
 			}
 		}
 	}
