@@ -13,7 +13,11 @@ public enum MOITWebPath {
     case modify(id: String)
     case attendance
     case attendanceResult
+    
 	case signIn
+    
+    case 개인정보처리방침
+    case 서비스이용약관
     
     public var path: String {
         switch self {
@@ -22,6 +26,8 @@ public enum MOITWebPath {
         case .modify(let id): return "/register?id=\(id)"
         case .attendanceResult: return "/attendanceResult"
 		case .signIn: return "auth/sign-in"
+        case .개인정보처리방침: return "/3d5044b71c9c4b1c887706c9d9e6ffc4"
+        case .서비스이용약관: return "/3d5044b71c9c4b1c887706c9d9e6ffc4"
         }
     }
 }
