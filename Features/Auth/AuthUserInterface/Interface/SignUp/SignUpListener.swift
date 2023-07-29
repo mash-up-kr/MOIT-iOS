@@ -11,5 +11,5 @@ import UIKit
 import RIBs
 
 public protocol SignUpListener: AnyObject {
-    
+    func didCompleteSignUp()
 }

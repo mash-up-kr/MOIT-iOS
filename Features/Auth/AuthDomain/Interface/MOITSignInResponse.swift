@@ -10,9 +10,9 @@ import Foundation
 import WebKit
 
 public struct MOITSignInResponse {
-	let providerUniqueKey: String
-	let nickname: String
-	let email: String
+	public let providerUniqueKey: String
+	public let nickname: String
+	public let email: String
 	
 	public init(
 		headerFields: [AnyHashable : Any]
