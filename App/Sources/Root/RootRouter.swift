@@ -84,9 +84,12 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         
         let router = moitListBuilder.build(withListener: interactor)
         
-        self.viewController.uiviewController.navigationController?.pushViewController(
-            router.viewControllable.uiviewController,
-            animated: true
+        let navigationController = UINavigationController(rootViewController: router.viewControllable.uiviewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.navigationBar.isHidden = true
+        self.viewController.uiviewController.present(
+            navigationController,
+            animated: false
         )
         
         self.moitListRouter = router
