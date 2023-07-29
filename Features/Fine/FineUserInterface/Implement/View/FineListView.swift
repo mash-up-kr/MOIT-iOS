@@ -52,6 +52,12 @@ final class FineListView: UIView {
 		return label
 	}()
 	
+	private let separatorView: UIView = {
+		let view = UIView()
+		view.backgroundColor = ResourceKitAsset.Color.gray100.color
+		return view
+	}()
+	
 // MARK: - property
 	
 	private let type: FineListViewType
@@ -100,10 +106,23 @@ final class FineListView: UIView {
 		} else {
 			contentView.flex
 				.define { flex in
-					let notPaidFineListViews = fineList.map { NotPaidFineListView(fineViewModel: $0) }
+					let myFineListViews = myFineItem.map { NotPaidFineListView(fineViewModel: $0) }
+					let othersFineListViews = othersFineItem.map { NotPaidFineListView(fineViewModel: $0) }
 					
-					for (index, list) in notPaidFineListViews.enumerated() {
+					for (index, list) in myFineListViews.enumerated() {
 						if index == 0 {
+							flex.addItem(list)
+						} else {
+							flex.addItem(list).marginTop(20)
+						}
+					}
+					
+					if !myFineListViews.isEmpty && !othersFineListViews.isEmpty {
+						flex.addItem(separatorView).marginTop(20).height(1)
+					}
+					
+					for (index, list) in othersFineListViews.enumerated() {
+						if myFineListViews.isEmpty && index == 0 {
 							flex.addItem(list)
 						} else {
 							flex.addItem(list).marginTop(20)
