@@ -283,7 +283,7 @@ extension MOITDetailViewController {
                     else { display = .none }
                     self.childViewControllerContainer.subviews[safe: subViewIndex]?.flex.display(display)
                 }
-                childViewControllerContainer.flex.markDirty()
+				self.childViewControllerContainer.flex.markDirty()
                 self.flexRootView.setNeedsLayout()
             })
             .disposed(by: self.disposeBag)

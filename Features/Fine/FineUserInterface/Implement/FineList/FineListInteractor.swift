@@ -26,6 +26,7 @@ protocol FineListPresentable: Presentable {
 public protocol FineListInteractorDependency {
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
+	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
 	var moitID: String { get }
 }
 
@@ -65,8 +66,8 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 	
 	func viewDidLoad() {
 		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
-			.compactMap { [weak self] fineInfoEntity -> ParticipantFineInfoViewModel? in
-				return self?.convertToParticipantFineInfoViewModel(from: fineInfoEntity)
+			.compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
+				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: true)
 			}
 			.subscribe(
 				onSuccess: { [weak self] fineInfoViewModel in
@@ -80,42 +81,55 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 	
 // MARK: - private
 	
-	private func convertToParticipantFineInfoViewModel(
-		from entity: FineInfoEntity
-	) -> ParticipantFineInfoViewModel {
-		return ParticipantFineInfoViewModel(
+	/// FineInfoEntity -> FineInfoViewModel
+	private func convertToFineInfoViewModel(
+		from entity: FineInfoEntity,
+		isMaster: Bool
+	) -> FineInfoViewModel {
+		
+		let filteredFineListEntity = dependency.filterMyFineListUseCase.execute(
+			fineList: entity.notPaidFineList
+		)
+		
+		return FineInfoViewModel(
 			totalFineAmountText: "\(entity.totalFineAmount)",
-			notPaidFineListViewModel: entity.notPaidFineList.map { convertToParticipantNotPaidFineListViewModel(from: $0) },
+			myNotPaidFineListViewModel: filteredFineListEntity.myFineList.map { convertToNotPaidFineListViewModel(from: $0, isMaster: isMaster) },
+			othersNotPaidFineListViewModel: filteredFineListEntity.othersFineList.map { convertToNotPaidFineListViewModel(from: $0, isMaster: isMaster) },
 			paymentCompletedFineListViewModel: entity.paymentCompletedFineList.map { convertToPaymentCompletedFineListViewModel(from: $0) }
 		)
 	}
 	
-	private func convertToParticipantNotPaidFineListViewModel(
-		from entity: FineItemEntity
-	) -> ParticipantNotPaidFineListViewModel {
+	/// FineItemEnitty -> 벌금미납부내역
+	private func convertToNotPaidFineListViewModel(
+		from entity: FineItemEntity,
+		isMaster: Bool
+	) -> NotPaidFineListViewModel {
 		
 		let isMyFine = dependency.compareUserIDUseCase.execute(with: entity.userID)
-		// TODO: 이 부분 서버에서 어떻게 내려주는지 확인 필요
 		let nickName = isMyFine ? "나" : entity.userNickname
 		
-		return ParticipantNotPaidFineListViewModel(
+		return NotPaidFineListViewModel(
 			fineID: entity.id,
 			fineAmount: entity.fineAmount,
 			chipType: convertAttendanceStatusToMOITChipType(status: entity.attendanceStatus),
 			isMyFine: isMyFine,
 			useNickName: nickName,
 			studyOrder: entity.studyOrder,
-			isApproved: entity.isApproved
+			imageURL: entity.imageURL,
+			buttonTitle: convertFineApproveStatusToButtonTitle(
+				status: entity.fineApproveStatus,
+				isMyFineItem: isMyFine,
+				isMaster: isMaster
+			)
 		)
 	}
 	
+	/// FineItemEntity -> 벌금납부내역
 	private func convertToPaymentCompletedFineListViewModel(
 		from entity: FineItemEntity
 	) -> PaymentCompletedFineListViewModel {
 		
-		// TODO: nickname 받는 부분까지 useCase에서 처리?
 		let isMyFine = dependency.compareUserIDUseCase.execute(with: entity.userID)
-		// TODO: 이 부분 서버에서 어떻게 내려주는지 확인 필요
 		let nickName = isMyFine ? "나" : entity.userNickname
 		
 		return PaymentCompletedFineListViewModel(
@@ -125,6 +139,33 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 			// TODO: Date 변환 필요
 			approvedDate: entity.approveAt
 		)
+	}
+	
+	private func convertFineApproveStatusToButtonTitle(
+		status: FineApproveStatus,
+		isMyFineItem: Bool,
+		isMaster: Bool
+	) -> String? {
+		
+		if isMaster {
+			switch status {
+			case .new:
+				return isMyFineItem ? "납부 인증하기" : nil
+			case .inProgress, .rejected:
+				return "인증 확인하기"
+			default:
+				return nil
+			}
+		} else {
+			switch status {
+			case .new:
+				return isMyFineItem ? "납부 인증하기" : nil
+			case .inProgress, .rejected:
+				return isMyFineItem ? "인증 대기 중" : nil
+			default:
+				return nil
+			}
+		}
 	}
 
 	private func convertAttendanceStatusToMOITChipType(

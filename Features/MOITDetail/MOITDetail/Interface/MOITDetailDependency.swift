@@ -23,4 +23,5 @@ public protocol MOITDetailDependency: Dependency {
     var moitUserusecase: MOITUserUsecase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
+	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
 }

@@ -25,13 +25,16 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 	private final class MockFineDependency: FineListDependency {
 		var compareUserIDUseCase: CompareUserIDUseCase
 		var fetchFineInfoUseCase: FetchFineInfoUseCase
+		var filterMyFineListUseCase: FilterMyFineListUseCase
 		
 		init(
 			fetchFineInfoUseCase: FetchFineInfoUseCase,
-			compareUserIDUseCase: CompareUserIDUseCase
+			compareUserIDUseCase: CompareUserIDUseCase,
+			filterMyFineListUseCase: FilterMyFineListUseCase
 		) {
 			self.fetchFineInfoUseCase = fetchFineInfoUseCase
 			self.compareUserIDUseCase = compareUserIDUseCase
+			self.filterMyFineListUseCase = filterMyFineListUseCase
 		}
 	}
 	
@@ -46,11 +49,13 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
         
 		let fetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
 		let compareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
+		let filterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: TokenManagerImpl())
 		
 		router = FineListBuilder(
 			dependency: MockFineDependency(
 				fetchFineInfoUseCase: fetchFineInfoUseCase,
-				compareUserIDUseCase: compareUserIDUseCase
+				compareUserIDUseCase: compareUserIDUseCase,
+				filterMyFineListUseCase: filterMyFineListUseCase
 			)
 		)
 			.build(withListener: MockFineListener(), moitID: "2")

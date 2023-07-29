@@ -31,6 +31,7 @@ final class MOITDetailAppDelegate: UIResponder,
 		
 		var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 		var fetchFineInfoUseCase: FetchFineInfoUseCase { StubFetchFineInfoUseCase() }
+		var filterMyFineListUseCase: FilterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: TokenManagerImpl())
 		
         var tabTypes: [MOITDetailTab] = [.attendance, .fine]
         var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: NetworkImpl())

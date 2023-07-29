@@ -23,6 +23,7 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 	
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
+	var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
 	
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }

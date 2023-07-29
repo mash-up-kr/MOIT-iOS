@@ -18,6 +18,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RIBs,
 		.Feature.MOITDetail.Domain.Interface,
 		.Feature.MOITDetail.Data.Interface,
+		.Feature.Fine.Domain.Interface,
 		.MOITNetwork.Interface
     ],
     implementDependencies: [

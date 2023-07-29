@@ -25,8 +25,9 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						userNickname: "가가가",
 						attendanceStatus: .ABSENCE,
 						studyOrder: 1,
-						isApproved: false,
-						approveAt: ""
+						approveAt: "2023.07.29",
+						fineApproveStatus: .new,
+						imageURL: ""
 					),
 					FineItemEntity(
 						id: 1,
@@ -35,8 +36,9 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						userNickname: "나나나",
 						attendanceStatus: .LATE,
 						studyOrder: 2,
-						isApproved: false,
-						approveAt: ""
+						approveAt: "2023.07.29",
+						fineApproveStatus: .new,
+						imageURL: ""
 					),
 					FineItemEntity(
 						id: 2,
@@ -45,8 +47,9 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						userNickname: "다다다",
 						attendanceStatus: .LATE,
 						studyOrder: 3,
-						isApproved: false,
-						approveAt: ""
+						approveAt: "2023.07.29",
+						fineApproveStatus: .new,
+						imageURL: ""
 					)
 				],
 				paymentCompletedFineList: [
@@ -57,8 +60,9 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						userNickname: "가가가",
 						attendanceStatus: .ABSENCE,
 						studyOrder: 1,
-						isApproved: true,
-						approveAt: ""
+						approveAt: "2023.07.29",
+						fineApproveStatus: .new,
+						imageURL: ""
 					),
 					FineItemEntity(
 						id: 1,
@@ -67,8 +71,9 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						userNickname: "나나나",
 						attendanceStatus: .LATE,
 						studyOrder: 2,
-						isApproved: true,
-						approveAt: ""
+						approveAt: "2023.07.29",
+						fineApproveStatus: .new,
+						imageURL: ""
 					),
 					FineItemEntity(
 						id: 2,
@@ -77,8 +82,9 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						userNickname: "다다다",
 						attendanceStatus: .LATE,
 						studyOrder: 3,
-						isApproved: true,
-						approveAt: ""
+						approveAt: "2023.07.29",
+						fineApproveStatus: .new,
+						imageURL: ""
 					)
 				]
 			)
