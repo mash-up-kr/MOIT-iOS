@@ -118,6 +118,12 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				}
 		}
 		
+		if viewModel.isMaster && viewModel.approveStatus == .new || !viewModel.isMaster {
+			authenticateButton.flex.display(.flex)
+		} else {
+			authenticateButton.flex.display(.none)
+		}
+		
 		self.view.setNeedsLayout()
 	}
 	
