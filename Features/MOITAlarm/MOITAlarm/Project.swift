@@ -21,6 +21,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RxCocoa,
         .Feature.MOITAlarm.Data.Interface,
         .Feature.MOITAlarm.Domain.Interface,
+        .ResourceKit,
+        .DesignSystem,
+        .Core.MOITFoundation,
     ],
     isUserInterface: true
 )
