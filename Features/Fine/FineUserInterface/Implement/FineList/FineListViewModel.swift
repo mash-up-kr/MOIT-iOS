@@ -6,7 +6,7 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 import DesignSystem
 
@@ -47,6 +47,8 @@ struct NotPaidFineListViewModel {
 	let imageURL: String?
 	/// 버튼 타이틀
 	let buttonTitle: String?
+	let buttonBackgroundColor: UIColor?
+	let buttonTitleColor: UIColor?
 }
 
 struct PaymentCompletedFineListViewModel {

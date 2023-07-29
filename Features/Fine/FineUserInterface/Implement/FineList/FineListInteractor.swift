@@ -13,6 +13,7 @@ import FineUserInterface
 import FineDomain
 import MOITDetailDomain
 import DesignSystem
+import ResourceKit
 
 protocol FineListRouting: ViewableRouting {
 	func attachAuthorizePayment()
@@ -69,7 +70,8 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 	func viewDidLoad() {
 		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
 			.compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
-				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: true)
+				// TODO: isMaster값 스트림에서받아서 수정 필요
+				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: false)
 			}
 			.subscribe(
 				onSuccess: { [weak self] fineInfoViewModel in
@@ -110,6 +112,11 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 		
 		let isMyFine = dependency.compareUserIDUseCase.execute(with: entity.userID)
 		let nickName = isMyFine ? "나" : entity.userNickname
+		let buttonColorSet = convertFineApproveStatusToButtonColorSet(
+			status: entity.fineApproveStatus,
+			isMyFineItem: isMyFine,
+			isMaster: isMaster
+		)
 		
 		return NotPaidFineListViewModel(
 			fineID: entity.id,
@@ -123,7 +130,9 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 				status: entity.fineApproveStatus,
 				isMyFineItem: isMyFine,
 				isMaster: isMaster
-			)
+			),
+			buttonBackgroundColor: buttonColorSet?.backgroundColor.color,
+			buttonTitleColor: buttonColorSet?.titleColor.color
 		)
 	}
 	
@@ -170,6 +179,33 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 			}
 		}
 	}
+	
+	private func convertFineApproveStatusToButtonColorSet(
+		status: FineApproveStatus,
+		isMyFineItem: Bool,
+		isMaster: Bool
+	) -> ButtonColorSet? {
+		
+		if isMaster {
+			switch status {
+			case .new:
+				return isMyFineItem ? .active : nil
+			case .inProgress, .rejected:
+				return .active
+			default:
+				return nil
+			}
+		} else {
+			switch status {
+			case .new:
+				return isMyFineItem ? .active : nil
+			case .inProgress, .rejected:
+				return isMyFineItem ? .waiting : nil
+			default:
+				return nil
+			}
+		}
+	}
 
 	private func convertAttendanceStatusToMOITChipType(
 		status: AttendanceStatus
@@ -181,6 +217,27 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 				return .absent
 			default:
 				return .absent
+		}
+	}
+}
+
+extension FineListInteractor {
+	enum ButtonColorSet {
+		case active
+		case waiting
+		
+		var backgroundColor: ResourceKitColors {
+			switch self {
+			case .active: return ResourceKitAsset.Color.gray900
+			case .waiting: return ResourceKitAsset.Color.gray200
+			}
+		}
+		
+		var titleColor: ResourceKitColors {
+			switch self {
+			case .active: return ResourceKitAsset.Color.white
+			case .waiting: return ResourceKitAsset.Color.gray700
+			}
 		}
 	}
 }

@@ -18,15 +18,24 @@ final class NotPaidFineListView: MOITList {
 	
 	private let fineViewModel: NotPaidFineListViewModel
 	
-	private let button = MOITButton(
-		type: .mini,
-		title: "납부 인증하기",
-		titleColor: ResourceKitAsset.Color.white.color,
-		backgroundColor: ResourceKitAsset.Color.black.color
-	)
+	private let button: MOITButton?
 	
 	init(fineViewModel: NotPaidFineListViewModel) {
 		self.fineViewModel = fineViewModel
+		
+		if let title = fineViewModel.buttonTitle,
+		   let bgColor = fineViewModel.buttonBackgroundColor,
+		   let titleColor = fineViewModel.buttonTitleColor {
+			
+			self.button = MOITButton(
+				type: .mini,
+				title: title,
+				titleColor: titleColor,
+				backgroundColor: bgColor
+			)
+		} else {
+			self.button = nil
+		}
 		
 		super.init(
 			type: .sendMoney,

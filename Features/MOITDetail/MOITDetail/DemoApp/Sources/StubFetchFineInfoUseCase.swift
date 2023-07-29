@@ -26,7 +26,7 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 						attendanceStatus: .ABSENCE,
 						studyOrder: 1,
 						approveAt: "2023.07.29",
-						fineApproveStatus: .new,
+						fineApproveStatus: .inProgress,
 						imageURL: ""
 					),
 					FineItemEntity(
