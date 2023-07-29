@@ -9,17 +9,28 @@
 import RIBs
 
 import MOITParticipateUserInterface
+import MOITParticipateDataImpl
 import MOITParticipateData
+import MOITParticipateDomainImpl
 import MOITParticipateDomain
 
-public protocol InputParticipateCodeDependency: Dependency {
-	var participateUseCase: ParticipateUseCase { get }
-}
+
 
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
-										   InputParticipateCodeDependency,
+										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {
-	var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
+	var participateUseCase: ParticipateUseCase { ParticipateUseCaseImpl(
+		participateRepository: participateRepository,
+		moitDetailUseCase: dependency.moitDetailUseCase
+	) }
+	let participateRepository: ParticipateRepository
+	
+	override init(
+		dependency: InputParticipateCodeDependency
+	) {
+		self.participateRepository = ParticipateRepositoryImpl(network: dependency.network)
+		super.init(dependency: dependency)
+	}
 }
 
 // MARK: - Builder

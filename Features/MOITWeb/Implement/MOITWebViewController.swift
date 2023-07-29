@@ -6,15 +6,21 @@
 //  Copyright © 2023 chansoo.io. All rights reserved.
 //
 
-import RIBs
-import RxSwift
 import UIKit
 import WebKit
 
+import CSLogger
+import Utils
+
+import RIBs
+import RxSwift
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
+	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
+	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
     func didTapBackButton()
+	func didTapErrorAlertOkButton()
 }
 
 final class MOITWebViewController: UIViewController,
@@ -23,13 +29,11 @@ final class MOITWebViewController: UIViewController,
     
     private enum Constant {
         static let messageName = "MOIT"
-        
-        // TODO: 합의 후 수정 필요
-        static let domain = "https://dev-moit-web.vercel.app"
     }
     
     weak var listener: MOITWebPresentableListener?
     private let contentViewcontroller = WKUserContentController()
+    private var domain: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +42,10 @@ final class MOITWebViewController: UIViewController,
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+		
+		self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
+		
         if self.isMovingFromParent {
-            self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
             self.listener?.didSwipeBack()
         }
     }
@@ -50,15 +56,15 @@ final class MOITWebViewController: UIViewController,
 // MARK: - MOITWebPresentable
 
 extension MOITWebViewController {
-    func render(with path: String) {
+    func render(domain: String, path: String) {
         guard let cookie = self.setCookie(path: path) else { return }
         let configuration = self.setWebConfiguration(with: cookie)
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
+		webView.navigationDelegate = self
         self.view.addSubview(webView)
 
-        guard let url = URL(string: "\(Self.Constant.domain)\(path)") else { return }
-        print(url)
+        guard let url = URL(string: "\(domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
         webView.load(URLRequest)
     }
@@ -142,4 +148,81 @@ extension MOITWebViewController: WKUIDelegate {
 // MARK: - WKNavigationDelegate
 
 extension MOITWebViewController: WKNavigationDelegate {
+	func webView(
+		_ webView: WKWebView,
+		decidePolicyFor navigationResponse: WKNavigationResponse,
+		decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+	) {
+		let currentPath = navigationResponse.response.url?.path() ?? ""
+		let redirectURL = RedirectURL(pathRawValue: currentPath)
+		
+		switch redirectURL {
+		case .signInSuccess:
+			guard let response = navigationResponse.response as? HTTPURLResponse else { return decisionHandler(.allow) }
+			
+			let responsePolicy = executeResponseForSignIn(with: response)
+			decisionHandler(responsePolicy)
+		default:
+			decisionHandler(.allow)
+		}
+	}
+	
+	private func executeResponseForSignIn(
+		with response: HTTPURLResponse
+	) -> WKNavigationResponsePolicy {
+		
+		Logger.debug(response.statusCode)
+		
+		let headerFields = response.allHeaderFields
+		
+		switch response.statusCode {
+		case (200...299):
+			listener?.registeredMemberDidSignIn(with: headerFields)
+			return .allow
+		case 401:
+			listener?.notRegisteredMemeberDidSignIn(with: headerFields)
+			return .cancel
+		default:
+			return .allow
+		}
+	}
+}
+
+// MARK: - presentable
+extension MOITWebViewController {
+	func showErrorAlert() {
+		showAlert(
+			message: StringResource.errorMessage.value,
+			type: .single,
+			okActionHandler: { [weak self] in
+				self?.listener?.didTapErrorAlertOkButton()
+			}
+		)
+	}
+}
+
+extension MOITWebViewController {
+	enum RedirectURL: String {
+		case none = ""
+		case signInSuccess = "/api/v1/auth/sign-in/success"
+
+		init(
+			pathRawValue: String
+		) {
+			self = RedirectURL(rawValue: pathRawValue) ?? .none
+		}
+	}
+}
+
+extension MOITWebViewController {
+	enum StringResource {
+		case errorMessage
+		
+		var value: String {
+			switch self {
+			case .errorMessage:
+				return "네트워크 에러가 발생했습니다. 다시 시도해주세요!"
+			}
+		}
+	}
 }

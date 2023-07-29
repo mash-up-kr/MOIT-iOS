@@ -7,14 +7,17 @@
 //
 
 import UIKit
-import FlexLayout
-import PinLayout
+
+import MOITDetail
 import DesignSystem
 import ResourceKit
+import MOITFoundation
+
+import FlexLayout
+import PinLayout
 import RxSwift
 import RxCocoa
 import SkeletonView
-import MOITFoundation
 
 enum MOITDetailInfoViewButtonType {
     /// 닫힘

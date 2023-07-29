@@ -56,7 +56,7 @@ public final class MOITStudyPreview: UIView {
     
     public init(
         remainingDate: Int,
-        profileURLString: String,
+        profileURLString: String?,
         studyName: String,
         studyProgressDescription: String?
     ) {
@@ -80,7 +80,7 @@ public final class MOITStudyPreview: UIView {
     // MARK: - Methods
     public func configure(
         remainingDate: Int,
-        profileURL: String,
+        profileURL: String?,
         studyName: String,
         studyProgressDescription: String?
     ) {
@@ -156,7 +156,7 @@ public final class MOITStudyPreview: UIView {
     
     private func configureAttributes(
         remainingDate: Int,
-        profileURLString: String,
+        profileURLString: String?,
         studyName: String,
         studyProgressDescription: String?
     ) {
@@ -166,7 +166,8 @@ public final class MOITStudyPreview: UIView {
         
         remainingDateLabel = MOITChip(type: .dueDate(date: remainingDate))
         
-        if let url = URL(string: profileURLString) {
+        if let profileURLString = profileURLString,
+           let url = URL(string: profileURLString) {
             profileImageView.kf.setImage(
                 with: url,
                 options: [.processor(RoundCornerImageProcessor(cornerRadius: 20))]

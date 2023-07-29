@@ -6,35 +6,44 @@
 //  Copyright © 2023 chansoo.io. All rights reserved.
 //
 
+import WebKit
+
+import MOITWeb
+import AuthDomain
+
 import RIBs
 import RxSwift
-import MOITWeb
 
-protocol MOITWebRouting: ViewableRouting {
-}
+
+protocol MOITWebRouting: ViewableRouting { }
 
 protocol MOITWebPresentable: Presentable {
     var listener: MOITWebPresentableListener? { get set }
-    func render(with path: String)
+	
+    func render(domain: String, path: String)
+	func showErrorAlert()
 }
 
 final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
                                 MOITWebInteractable,
-                                MOITWebPresentableListener {
+							   MOITWebPresentableListener {
 
     // MARK: - Properties
     
     weak var router: MOITWebRouting?
     weak var listener: MOITWebListener?
 
+    private let domain: String
     private let path: String
     
     // MARK: - LifeCycles
     
     init(
         presenter: MOITWebPresentable,
+        domain: String,
         path: String
     ) {
+        self.domain = domain
         self.path = path
         super.init(presenter: presenter)
         presenter.listener = self
@@ -42,7 +51,7 @@ final class MOITWebInteractor: PresentableInteractor<MOITWebPresentable>,
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        self.presenter.render(with: self.path)
+        self.presenter.render(domain: self.domain, path: self.path)
     }
 
     override func willResignActive() {
@@ -58,8 +67,25 @@ extension MOITWebInteractor {
     func didSwipeBack() {
         self.listener?.shouldDetach(withPop: false)
     }
-    
+  
+	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any]) {
+		let signInResponse = MOITSignInResponse(headerFields: headerFields)
+		listener?.authorizationDidFinish(with: signInResponse)
+	}
+
+	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any]) {
+		if let authorizationToken = headerFields ["Authorization"] as? String {
+			listener?.didSignIn(with: authorizationToken)
+		} else {
+			presenter.showErrorAlert()
+		}
+	}
+
     func didTapBackButton() {
         self.listener?.shouldDetach(withPop: true)
     }
+	
+	func didTapErrorAlertOkButton() {
+		self.listener?.shouldDetach(withPop: false)
+	}
 }

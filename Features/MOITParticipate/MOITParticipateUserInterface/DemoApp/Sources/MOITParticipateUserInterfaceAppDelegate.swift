@@ -11,30 +11,33 @@ import UIKit
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
 import MOITParticipateData
+import MOITParticipateDataImpl
 import MOITParticipateDomain
 import MOITParticipateDomainImpl
 import MOITNetwork
+import MOITNetworkImpl
+
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
+import ResourceKit
 
 import RxSwift
 import RIBs
-
-final class MockParticipateRepository: ParticipateRepository {
-	func postParticipateCode(
-		with request: MOITParticipateRequest
-	) -> Single<MOITParticipateDTO> {
-		
-		let response = MOITParticipateDTO(moitId: 0)
-		return Observable.just(response).asSingle()
-	}
-}
+import Toast
 
 final class MockMOITParticipateDependency: InputParticipateCodeDependency {
-	var participateUseCase: ParticipateUseCase
+	let network: Network
+	let moitDetailUseCase: MOITDetailUsecase
 	
 	init(
-		participateUseCase: ParticipateUseCase
+		network: Network,
+		moitDetailUseCase: MOITDetailUsecase
 	) {
-		self.participateUseCase = participateUseCase
+		self.network = network
+		self.moitDetailUseCase = moitDetailUseCase
 	}
 }
 
@@ -52,21 +55,33 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 	) -> Bool {
 		let window = UIWindow(frame: UIScreen.main.bounds)
 		
-		let participateUseCase = ParticipateUseCaseImpl(
-			participateRepository: MockParticipateRepository()
-		)
-		
+		setToastStyle()
+
 		router = InputParticipateCodeBuilder(
-			dependency: MockMOITParticipateDependency(participateUseCase: participateUseCase)
+			dependency: MockMOITParticipateDependency(network: NetworkImpl(), moitDetailUseCase: MOITDetailUsecaseImpl(repository: MOITDetailRepositoryImpl(network: NetworkImpl())))
 		).build(withListener: MockMOITPariticipateListener())
-		router?.load()
 		router?.interactable.activate()
+		router?.load()
 
 		window.rootViewController = self.router?.viewControllable.uiviewController
 		window.makeKeyAndVisible()
 		self.window = window
 
 		return true
+	}
+}
+
+extension MOITParticipateAppDelegate {
+	// TODO: 추후 setting 위치 변경 필요
+	private func setToastStyle() {
+		var style = ToastStyle()
+		style.backgroundColor = ResourceKitAsset.Color.gray800.color
+		style.cornerRadius = 10
+		style.imageSize = CGSize(width: 24, height: 24)
+		style.verticalPadding = 20
+		style.messageFont = ResourceKitFontFamily.p2
+		ToastManager.shared.style = style
+		ToastManager.shared.duration = 5.0
 	}
 }
 

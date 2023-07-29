@@ -36,3 +36,23 @@ enum RepeatCycle: String {
     case 격주 = "TWO_WEEK"
     case 매달 = "FOUR_WEEK"
 }
+
+enum NotificationRemindOption: String {
+	case studyDay10am = "STUDY_DAY_10_AM"
+	case before1Hour = "BEFORE_1_HOUR"
+	case before30Minute = "BEFORE_30_MINUTE"
+	case before10Minute = "BEFORE_10_MINUTE"
+	
+	var toKor: String {
+		switch self {
+		case .studyDay10am: return "당일 오전 10시"
+		case .before1Hour: return "1시간 전"
+		case .before30Minute: return "30분 전"
+		case .before10Minute: return "10분 전"
+		}
+	}
+	
+	init(fromRawValue rawValue: String) {
+		self = NotificationRemindOption(rawValue: rawValue) ?? .studyDay10am
+	}
+}

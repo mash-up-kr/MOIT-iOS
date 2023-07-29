@@ -34,6 +34,10 @@ public struct MOITDetailModel: Decodable {
     public let fineAbsenceTime: Int
     /// moit 결석 벌금
     public let fineAbsenceAmount: Int
+	/// moit 알람 리마인드 on/off
+	public let notificationIsRemindActive: Bool
+	/// moit 알람 리마인드 시간
+	public let notificationRemindOption: String
     /// moit 시작 일자 (YYYY-MM-dd)
     public let startDate: String
     /// moit 종료 일자 (YYYY-MM-dd)
@@ -55,6 +59,8 @@ public struct MOITDetailModel: Decodable {
         case fineLateAmount
         case fineAbsenceTime
         case fineAbsenceAmount
+		case notificationIsRemindActive
+		case notificationRemindOption
         case startDate
         case endDate
         case invitationCode

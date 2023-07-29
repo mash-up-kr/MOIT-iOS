@@ -17,6 +17,8 @@ public struct MOITDetailEntity {
     public let scheduleDescription: String
     public let ruleShortDescription: String
     public let ruleLongDescription: String
+	public let isNotificationActive: Bool
+	public let notificationDescription: String
     public let periodDescription: String
     public let invitationCode: String
     
@@ -30,7 +32,10 @@ public struct MOITDetailEntity {
         ruleShortDescription: String,
         ruleLoneDescription: String,
         periodDescription: String,
-        invitationCode: String
+        invitationCode: String,
+		isNotificationActive: Bool,
+		notificationDescription: String,
+        periodDescription: String
     ) {
         self.invitationCode = invitationCode
         self.moitID = moitID
@@ -41,6 +46,8 @@ public struct MOITDetailEntity {
         self.scheduleDescription = scheduleDescription
         self.ruleShortDescription = ruleShortDescription
         self.ruleLongDescription = ruleLoneDescription
+		self.isNotificationActive = isNotificationActive
+		self.notificationDescription = notificationDescription
         self.periodDescription = periodDescription
     }
 }
