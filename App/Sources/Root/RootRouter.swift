@@ -88,7 +88,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
     func detachAuth() {
         guard let router = authRouter else { return }
         
-        viewControllable.dismiss(completion: nil)
+        viewControllable.popViewController(animated: true)
         authRouter = nil
         detachChild(router)
     }
@@ -96,7 +96,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
     func detachMOITList() {
         guard let router = moitListRouter else { return }
         
-        viewControllable.dismiss(completion: nil)
+        viewControllable.popViewController(animated: true)
         moitListRouter = nil
         detachChild(router)
     }
