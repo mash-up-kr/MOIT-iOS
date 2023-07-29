@@ -13,12 +13,15 @@ import FineUserInterface
 import FineDomain
 import FineUserInterfaceImpl
 import FineDomain
+import MOITShareImpl
+import MOITShare
 
 import RIBs
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
 								 MOITUsersDependency,
+								ShareDependency,
 								 FineListDependency {
 	
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
@@ -58,13 +61,15 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         let attendanceBuiler = MOITDetailAttendanceBuilder(dependency: component)
         let moitUserBuilder = MOITUsersBuilder(dependency: component)
 		let fineListBuilder = FineListBuilder(dependency: component)
+        let shareBuilder = ShareBuilder(dependency: component)
         
         return MOITDetailRouter(
             interactor: interactor,
             viewController: viewController,
             attendanceBuiler: attendanceBuiler,
             moitUserBuilder: moitUserBuilder,
-			fineListBuilder: fineListBuilder
+			fineListBuilder: fineListBuilder,
+			shareBuilder: shareBuilder
         )
     }
 }

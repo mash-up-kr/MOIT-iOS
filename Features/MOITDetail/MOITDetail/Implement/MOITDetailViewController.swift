@@ -22,6 +22,7 @@ protocol MOITDetailPresentableListener: AnyObject {
     func viewDidLayoutSubViews()
     func didTapParticipantsButton()
     func didTapShareButton()
+    func didTapPager(at index: Int)
     func didRefresh()
 }
 

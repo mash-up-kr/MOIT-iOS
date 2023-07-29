@@ -17,6 +17,8 @@ protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
     func attachMOITUsers(moitID: String)
     func detachMOITUsers()
+    func attachMOITShare(code: String)
+    func detachMOITShare()
 	func attachFineList(moitID: Int)
 }
 
@@ -73,6 +75,8 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     private var shortRuleDescription: String?
     private var periodDescription: String?
     
+    private var invitationCode: String?
+    
     init(
         moitID: String,
         tabTypes: [MOITDetailTab],
@@ -100,6 +104,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                 self?.longRuleDescription = $0.ruleLongDescription
                 self?.shortRuleDescription = $0.ruleShortDescription
                 self?.periodDescription = $0.periodDescription
+                self?.invitationCode = $0.invitationCode
             })
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] in
@@ -176,8 +181,14 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     func didTapParticipantsButton() {
         self.router?.attachMOITUsers(moitID: self.moitID)
     }
+    
     func didTapShareButton() {
-        print(#function)
+        guard let invitationCode else { return }
+        self.router?.attachMOITShare(code: invitationCode)
+    }
+    
+    func didTapPager(at index: Int) {
+        print(#function, index)
     }
 }
 
@@ -195,5 +206,15 @@ extension MOITDetailInteractor {
 extension MOITDetailInteractor {
     func didTapBackButton() {
         self.router?.detachMOITUsers()
+    }
+}
+
+// MARK: - MOITShare
+extension MOITDetailInteractor {
+    func didSuccessLinkCopy() {
+        self.router?.detachMOITShare()
+    }
+    func didTapDimmedView() {
+        self.router?.detachMOITShare()
     }
 }

@@ -108,7 +108,7 @@ extension MOITButton {
                     .marginHorizontal(12)
                     .marginVertical(self.type.marginVertical)
             }
-            .width(self.type.width)
+//            .width(self.type.width)
     }
 }
 

@@ -5,7 +5,7 @@ import ProjectDescription
 extension TargetDependency {
 	public struct Feature {
 		
-		public struct StudyList {
+		public struct MOITList {
 			public struct Data {}
 			public struct Domain {}
 			public struct UserInterface {}
@@ -18,9 +18,7 @@ extension TargetDependency {
 		}
 		
 		public struct MOITShare {
-			public struct Data {}
-			public struct Domain {}
-			public struct UserInterface {}
+            public struct Domain {}
 		}
 		
 		public struct MOITParticipate {
@@ -87,8 +85,8 @@ public extension TargetDependency.TokenManager {
 }
 
 // MARK: - Features/Home
-public extension TargetDependency.Feature.StudyList {
-    static let folderName = "StudyList"
+public extension TargetDependency.Feature.MOITList {
+    static let folderName = "MOITList"
     static func project(name: String, isInterface: Bool) -> TargetDependency {
         let postfix: String = isInterface ? "" : "Impl"
         return .project(target: "\(folderName)\(name)\(postfix)",
@@ -96,19 +94,19 @@ public extension TargetDependency.Feature.StudyList {
     }
 }
 
-public extension TargetDependency.Feature.StudyList.UserInterface {
-    static let Interface = TargetDependency.Feature.StudyList.project(name: "UserInterface", isInterface: true)
-    static let Implement = TargetDependency.Feature.StudyList.project(name: "UserInterface", isInterface: false)
+public extension TargetDependency.Feature.MOITList.UserInterface {
+    static let Interface = TargetDependency.Feature.MOITList.project(name: "UserInterface", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITList.project(name: "UserInterface", isInterface: false)
 }
 
-public extension TargetDependency.Feature.StudyList.Domain {
-    static let Interface = TargetDependency.Feature.StudyList.project(name: "Domain", isInterface: true)
-    static let Implement = TargetDependency.Feature.StudyList.project(name: "Domain", isInterface: false)
+public extension TargetDependency.Feature.MOITList.Domain {
+    static let Interface = TargetDependency.Feature.MOITList.project(name: "Domain", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITList.project(name: "Domain", isInterface: false)
 }
 
-public extension TargetDependency.Feature.StudyList.Data {
-    static let Interface = TargetDependency.Feature.StudyList.project(name: "Data", isInterface: true)
-    static let Implement = TargetDependency.Feature.StudyList.project(name: "Data", isInterface: false)
+public extension TargetDependency.Feature.MOITList.Data {
+    static let Interface = TargetDependency.Feature.MOITList.project(name: "Data", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITList.project(name: "Data", isInterface: false)
 }
 
 // MARK: - Features/SignIn
@@ -282,4 +280,22 @@ public extension TargetDependency.Feature.MOITDetail.Domain {
 public extension TargetDependency.Feature.MOITDetail.Interface {
 	static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: true)
 	static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: false)
+}
+
+// MARK: - MOITShare
+public extension TargetDependency.Feature.MOITShare {
+    static let Interface: TargetDependency = .project(target: "MOITShare", path: .relativeToRoot("Features/MOITShare/MOITShare"))
+    static let Implement: TargetDependency = .project(target: "MOITShareImpl", path: .relativeToRoot("Features/MOITShare/MOITShare"))
+}
+
+public extension TargetDependency.Feature.MOITShare.Domain {
+    static func project(isInterface: Bool) -> TargetDependency {
+        let postfix: String = isInterface ? "" : "Impl"
+        return .project(
+            target: "MOITShareDomain\(postfix)",
+            path: .relativeToRoot("Features/MOITShare/MOITShareDomain")
+        )
+    }
+    static let Interface = Self.project(isInterface: true)
+    static let Implement = Self.project(isInterface: false)
 }

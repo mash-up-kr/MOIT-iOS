@@ -29,14 +29,11 @@ final class MOITWebViewController: UIViewController,
     
     private enum Constant {
         static let messageName = "MOIT"
-        
-        // TODO: 합의 후 수정 필요
-        static let domain = "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/"
-//        static let domain = "https://dev-moit-web.vercel.app"
     }
     
     weak var listener: MOITWebPresentableListener?
     private let contentViewcontroller = WKUserContentController()
+    private var domain: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +56,7 @@ final class MOITWebViewController: UIViewController,
 // MARK: - MOITWebPresentable
 
 extension MOITWebViewController {
-    func render(with path: String) {
+    func render(domain: String, path: String) {
         guard let cookie = self.setCookie(path: path) else { return }
         let configuration = self.setWebConfiguration(with: cookie)
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
@@ -67,8 +64,7 @@ extension MOITWebViewController {
 		webView.navigationDelegate = self
         self.view.addSubview(webView)
 
-        guard let url = URL(string: "\(Self.Constant.domain)\(path)") else { return }
-        print(url)
+        guard let url = URL(string: "\(domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
         webView.load(URLRequest)
     }

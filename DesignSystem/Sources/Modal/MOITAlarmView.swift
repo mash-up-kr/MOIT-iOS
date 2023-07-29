@@ -59,7 +59,7 @@ public final class MOITAlarmView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         self.flexRootView.pin.all()
-        self.flexRootView.flex.layout()
+        self.flexRootView.flex.layout(mode: .fitContainer)
         self.configureGradient()
     }
 }
@@ -73,11 +73,11 @@ extension MOITAlarmView {
         
         self.flexRootView.flex
             .direction(.column)
+            .paddingHorizontal(16)
             .define { flex in
                 
                 flex.addItem(self.titleLabel)
                     .marginTop(20)
-                    .marginHorizontal(16)
                 
                 flex.addItem()
                     .direction(.row)
@@ -95,15 +95,15 @@ extension MOITAlarmView {
                             .shrink(1)
                             .aspectRatio(200/130)
                     }
-                    .marginHorizontal(16)
                     .height(130)
                 
                 flex.addItem(self.button)
-                    .marginHorizontal(16)
+//                    .marginHorizontal(16)
                     .marginBottom(19)
+                    .width(100%)
             }
-            .width(335)
-            .height(260)
+//            .width(335)
+//            .height(260)
     }
     
     private func configureGradient() {
