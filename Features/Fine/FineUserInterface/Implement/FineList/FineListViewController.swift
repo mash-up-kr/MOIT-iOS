@@ -17,7 +17,7 @@ import FlexLayout
 import PinLayout
 
 protocol FineListPresentableListener: AnyObject {
-	func fineListDidTap(with fineItem: FineItem)
+//	func fineListDidTap(with fineItem: FineItem)
 	func viewDidLoad()
 }
 
@@ -71,7 +71,7 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		flexRootContainer.pin.all(view.pin.safeArea)
+		flexRootContainer.pin.all()
 		flexRootContainer.flex.layout()
 	}
 	
@@ -80,13 +80,6 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	private func configureView() {
 		view.backgroundColor = .white
 		view.addSubview(flexRootContainer)
-		
-		// TODO: 추후 삭제
-		fineAmountLabel.setTextWithParagraphStyle(
-			text: "50,000",
-			font: ResourceKitFontFamily.h2,
-			textColor: ResourceKitAsset.Color.gray900.color
-		)
 	}
 	
 	private func configureLayout() {
@@ -110,6 +103,18 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 //				self?.listener?.fineListDidTap(with: item)
 //			})
 //			.disposed(by: disposeBag)
+	}
+	
+// MARK: - FineListPresentable
+	
+	func configure(_ viewModel: FineInfoViewModel) {
+		fineAmountLabel.setTextWithParagraphStyle(
+			text: viewModel.totalFineAmountText,
+			font: ResourceKitFontFamily.h2,
+			textColor: ResourceKitAsset.Color.gray900.color
+		)
+		
+		fineListScrollView.configureView(with: viewModel)
 	}
 }
 

@@ -40,7 +40,7 @@ struct NotPaidFineListViewModel {
 	/// 내 벌금인지 여부(버튼 표시 여부)
 	let isMyFine: Bool
 	/// 벌금 미납자 이름
-	let useNickName: String
+	let userNickName: String
 	/// 스터디 n차
 	let studyOrder: Int
 	/// 벌금 이미지 url

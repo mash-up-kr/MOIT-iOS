@@ -21,6 +21,8 @@ protocol FineListRouting: ViewableRouting {
 
 protocol FineListPresentable: Presentable {
     var listener: FineListPresentableListener? { get set }
+	
+	func configure(_ viewModel: FineInfoViewModel)
 }
 
 public protocol FineListInteractorDependency {
@@ -54,9 +56,9 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
         super.willResignActive()
     }
 	
-	func fineListDidTap(with fineItem: FineItem) {
-		router?.attachAuthorizePayment()
-	}
+//	func fineListDidTap(with fineItem: FineItem) {
+//		router?.attachAuthorizePayment()
+//	}
 	
 	func authorizePaymentDismissButtonDidTap() {
 		router?.detachAuthorizePayment()
@@ -74,6 +76,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 					debugPrint("------------FineInfoViewModel-------------")
 					debugPrint(fineInfoViewModel)
 					debugPrint("------------------------------------------")
+					self?.presenter.configure(fineInfoViewModel)
 				}
 			)
 			.disposeOnDeactivate(interactor: self)
@@ -113,7 +116,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 			fineAmount: entity.fineAmount,
 			chipType: convertAttendanceStatusToMOITChipType(status: entity.attendanceStatus),
 			isMyFine: isMyFine,
-			useNickName: nickName,
+			userNickName: nickName,
 			studyOrder: entity.studyOrder,
 			imageURL: entity.imageURL,
 			buttonTitle: convertFineApproveStatusToButtonTitle(

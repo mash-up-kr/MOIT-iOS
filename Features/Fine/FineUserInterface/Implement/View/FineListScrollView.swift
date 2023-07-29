@@ -16,51 +16,6 @@ import PinLayout
 import RxSwift
 import RxCocoa
 
-struct FineInfo {
-	let totalFineAmount: Int
-	let fineNotYet, fineComplete: [FineItem]
-}
-
-struct FineItem {
-	let id, fineAmount, userID: Int
-	let userNickname: String
-	let attendanceStatus: MOITChipType
-	let studyOrder: Int
-	let isApproved: Bool
-	let approveAt: String
-}
-
-final class FineList: MOITList {
-	var item: FineItem {
-		self.fineItem
-	}
-	
-	private let fineItem: FineItem
-	
-	private let button = MOITButton(
-		type: .mini,
-		title: "납부 인증하기",
-		titleColor: ResourceKitAsset.Color.white.color,
-		backgroundColor: ResourceKitAsset.Color.black.color
-	)
-	
-	init(fineItem: FineItem) {
-		self.fineItem = fineItem
-		super.init(
-			type: .sendMoney,
-			title: fineItem.userNickname,
-			detail: "\(fineItem.fineAmount)원",
-			chipType: fineItem.attendanceStatus,
-			studyOrder: fineItem.studyOrder,
-			button: button
-		)
-	}
-	
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-}
-
 final class FineListScrollView: UIView {
 	
 // MARK: - UI
@@ -123,19 +78,20 @@ final class FineListScrollView: UIView {
 		
 		flexRootContainer.flex
 			.define { flex in
-				flex.addItem(segmentPager).marginBottom(20)
+				flex.addItem(segmentPager)
 				flex.addItem(scrollView).grow(1)
 			}
 		
 		scrollView.flex
 			.define { flex in
-				flex.addItem(contentView).grow(1)
+				flex.addItem(contentView).grow(1).marginVertical(20)
 			}
 
 		contentView.flex
 			.direction(.row)
 			.define { flex in
 				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width - 40)
+//					.height(2000)
 				flex.addItem(paymentListView).width(UIScreen.main.bounds.width - 40)
 			}
 	}
@@ -153,9 +109,15 @@ final class FineListScrollView: UIView {
 	}
 	
 // MARK: - internal
-	func configureView(with fineInfo: FineInfo) {
-		defaulterListView.configureView(with: fineInfo.fineNotYet.map { FineList(fineItem: $0) } )
-		paymentListView.configureView(with: fineInfo.fineComplete.map { FineList(fineItem: $0) })
+	func configureView(with fineInfo: FineInfoViewModel) {
+		defaulterListView.configureNotPaidFineListView(
+			with: fineInfo.myNotPaidFineListViewModel,
+			othersFineItem: fineInfo.othersNotPaidFineListViewModel
+		)
+
+		paymentListView.configurePaymentCompletedFineListView(
+			with: fineInfo.paymentCompletedFineListViewModel
+		)
 	}
 }
 

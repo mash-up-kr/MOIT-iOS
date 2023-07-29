@@ -72,8 +72,9 @@ final class FineListView: UIView {
 		super.layoutSubviews()
 	
 		scrollView.pin.all()
-		contentView.pin.top().horizontally()
-		contentView.flex.layout(mode: .adjustHeight)
+		contentView.pin.top().horizontally().bottom()
+		scrollView.flex.layout(mode: .adjustHeight)
+
 		scrollView.contentSize = contentView.frame.size
 	}
 	
@@ -82,8 +83,14 @@ final class FineListView: UIView {
 		scrollView.addSubview(contentView)
 	}
 	
-	func configureView(with fineItems: [FineList]) {
-		if fineItems.isEmpty {
+	func configureNotPaidFineListView(
+		with myFineItem: [NotPaidFineListViewModel],
+		othersFineItem: [NotPaidFineListViewModel]
+	) {
+		
+		let fineList = myFineItem + othersFineItem
+		
+		if fineList.isEmpty {
 			contentView.flex
 				.alignSelf(.center)
 				.define { flex in
@@ -92,7 +99,9 @@ final class FineListView: UIView {
 		} else {
 			contentView.flex
 				.define { flex in
-					for (index, list) in fineItems.enumerated() {
+					let notPaidFineListViews = fineList.map { NotPaidFineListView(fineViewModel: $0) }
+					
+					for (index, list) in notPaidFineListViews.enumerated() {
 						if index == 0 {
 							flex.addItem(list)
 						} else {
@@ -100,6 +109,29 @@ final class FineListView: UIView {
 						}
 					}
 				}
+		}
+	}
+	
+	func configurePaymentCompletedFineListView(with fineList: [PaymentCompletedFineListViewModel]) {
+		if fineList.isEmpty {
+			contentView.flex
+				.alignSelf(.center)
+				.define { flex in
+					flex.addItem(emptyLabel).marginVertical(43)
+				}
+		} else {
+//			contentView.flex
+//				.define { flex in
+//					let notPaidFineListViews = fineList.map { NotPaidFineListView(fineViewModel: $0) }
+//					
+//					for (index, list) in fineList.enumerated() {
+//						if index == 0 {
+//							flex.addItem(list)
+//						} else {
+//							flex.addItem(list).marginTop(20)
+//						}
+//					}
+//				}
 		}
 	}
 }
