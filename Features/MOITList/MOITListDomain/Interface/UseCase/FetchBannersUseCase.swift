@@ -10,8 +10,8 @@ import Foundation
 
 import RxSwift
 
-/// 벌금리스트에서 아직 안 낸 벌금들 받아와서 합해서 보여주는 usecase
-public protocol FetchPenaltyToBePaidUseCase {
+/// 배너 모델 받아오는 UseCase
+public protocol FetchBannersUseCase {
     
-    func execute() -> Single<Int>
+    func execute() -> Single<[Banner]>
 }
