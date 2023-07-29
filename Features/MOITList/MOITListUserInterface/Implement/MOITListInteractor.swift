@@ -19,6 +19,8 @@ protocol MOITListRouting: ViewableRouting {
     func detachRegisterMOIT(withPop: Bool)
     func attachMOITDetail(id: String)
     func detachMOITDetail()
+    func attachInputParticipateCode()
+    func detachInputParticipateCode()
 }
 
 protocol MOITListPresentable: Presentable {
@@ -166,7 +168,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         participateButtonTapped
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                // TODO: - 참여하기로 보내기
+                owner.router?.attachInputParticipateCode()
             })
             .disposeOnDeactivate(interactor: self)
     }

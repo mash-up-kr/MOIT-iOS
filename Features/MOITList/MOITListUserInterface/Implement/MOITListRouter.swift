@@ -11,10 +11,13 @@ import MOITListUserInterface
 import RIBs
 import MOITWeb
 import MOITDetail
+import MOITParticipateUserInterface
+import UIKit
 
 protocol MOITListInteractable: Interactable,
                                MOITWebListener,
-                               MOITDetailListener {
+                               MOITDetailListener,
+                               InputParticipateCodeListener {
     var router: MOITListRouting? { get set }
     var listener: MOITListListener? { get set }
 }
@@ -29,10 +32,12 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         interactor: MOITListInteractable,
         viewController: MOITListViewControllable,
         moitWebBuilder: MOITWebBuildable,
-        moitDetailBuilder: MOITDetailBuildable
+        moitDetailBuilder: MOITDetailBuildable,
+        inputParticipateCodeBuilder: InputParticipateCodeBuildable
     ) {
         self.moitWebBuilder = moitWebBuilder
         self.moitDetailBuilder = moitDetailBuilder
+        self.inputParticipateCodeBuilder = inputParticipateCodeBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -75,5 +80,25 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         self.moitDetailRouter = nil
         detachChild(moitDetailRouter)
         viewController.uiviewController.navigationController?.popViewController(animated: true)
+    }
+    
+    private let inputParticipateCodeBuilder: InputParticipateCodeBuildable
+    private var inputParticipateCodeRouter: ViewableRouting?
+    
+    func attachInputParticipateCode() {
+        guard inputParticipateCodeRouter == nil else { return }
+        let router = inputParticipateCodeBuilder.build(withListener: interactor)
+        self.inputParticipateCodeRouter = router
+        attachChild(router)
+        let navi = UINavigationController(rootViewController: router.viewControllable.uiviewController)
+        navi.modalPresentationStyle = .fullScreen
+        navi.navigationBar.isHidden = true
+        viewController.uiviewController.present(navi, animated: true)
+    }
+    func detachInputParticipateCode() {
+        guard let inputParticipateCodeRouter else { return }
+        self.inputParticipateCodeRouter = nil
+        detachChild(inputParticipateCodeRouter)
+        viewController.uiviewController.dismiss(animated: true)
     }
 }

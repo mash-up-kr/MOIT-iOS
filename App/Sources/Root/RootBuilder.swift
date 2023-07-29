@@ -30,6 +30,11 @@ import TokenManagerImpl
 import MOITNetwork
 import MOITNetworkImpl
 
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
 final class RootComponent: EmptyDependency,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -45,12 +50,13 @@ final class RootComponent: EmptyDependency,
     private lazy var moitRepository = MOITRepositoryImpl(network: network)
     private lazy var bannerRepository = BannerRepositoryImpl(network: network)
     private lazy var authRepository = AuthRepositoryImpl(network: network)
+    private lazy var detailRepository = MOITDetailRepositoryImpl(network: network)
     private lazy var tokenManager = TokenManagerImpl()
     
     lazy var fetchMOITListsUseCase: FetchMoitListUseCase = FetchMoitListUseCaseImpl(moitRepository: moitRepository)
     
     lazy var calculateLeftTimeUseCase: CalculateLeftTimeUseCase = CalculateLeftTimeUseCaseImpl()
-    
+    lazy var moitDetailUseCase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: detailRepository)
     lazy var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase = FetchBannersUseCaseImpl(repository: bannerRepository)
     
     lazy var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
@@ -63,8 +69,7 @@ final class RootComponent: EmptyDependency,
     // MARK: - Initializers
     
     public init() {
-        #warning("나중에 지워")
-        tokenManager.delete(key: .authorizationToken)
+//        tokenManager.delete(key: .authorizationToken)
     }
     
     // MARK: - Methods

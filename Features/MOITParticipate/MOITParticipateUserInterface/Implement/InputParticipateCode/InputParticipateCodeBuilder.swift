@@ -14,8 +14,6 @@ import MOITParticipateData
 import MOITParticipateDomainImpl
 import MOITParticipateDomain
 
-
-
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
 										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {

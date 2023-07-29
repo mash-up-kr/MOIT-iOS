@@ -33,8 +33,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.DesignSystem,
 		
 		.Feature.MOITParticipate.Domain.Interface,
+        .Feature.MOITParticipate.Domain.Implement,
 		.Feature.MOITParticipate.Data.Interface,
-		.Feature.MOITDetail.Interface
+        .Feature.MOITParticipate.Data.Implement,
+		.Feature.MOITDetail.Interface,
     ],
 	demoAppDependencies: [
 		.Feature.MOITParticipate.Domain.Implement,

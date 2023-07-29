@@ -9,10 +9,12 @@
 import RIBs
 import MOITNetwork
 import MOITListDomain
+import MOITDetailDomain
 
 public protocol MOITListDependency: Dependency {
     var network: Network { get }
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
     var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase { get }
+    var moitDetailUseCase: MOITDetailUsecase { get }
 }
