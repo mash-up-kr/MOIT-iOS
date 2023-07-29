@@ -7,22 +7,29 @@
 //
 
 import FineUserInterface
+import FineDomain
+import MOITDetailDomain
 
 import RIBs
 
-protocol AuthorizePaymentDependency: Dependency { }
-
 final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency>, AuthorizePaymentInteractorDependency {
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
+	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
+	var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase }
+	
 	let fineID: Int
 	let moitID: Int
+	let isMaster: Bool
 	
 	init(
 		dependency: AuthorizePaymentDependency,
 		fineID: Int,
-		moitID: Int
+		moitID: Int,
+		isMaster: Bool
 	) {
 		self.fineID = fineID
 		self.moitID = moitID
+		self.isMaster = isMaster
 		super.init(dependency: dependency)
 	}
 }
@@ -38,12 +45,14 @@ final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, Author
     func build(
 		withListener listener: AuthorizePaymentListener,
 		moitID: Int,
-		fineID: Int
+		fineID: Int,
+		isMaster: Bool
 	) -> ViewableRouting {
         let component = AuthorizePaymentComponent(
 			dependency: dependency,
 			fineID: fineID,
-			moitID: moitID
+			moitID: moitID,
+			isMaster: isMaster
 		)
         let viewController = AuthorizePaymentViewController()
         let interactor = AuthorizePaymentInteractor(

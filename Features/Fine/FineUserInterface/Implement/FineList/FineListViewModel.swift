@@ -44,6 +44,7 @@ struct NotPaidFineListViewModel {
 	/// 스터디 n차
 	let studyOrder: Int
 	/// 벌금 이미지 url
+	// TODO: imageURL 삭제필요
 	let imageURL: String?
 	/// 버튼 타이틀
 	let buttonTitle: String?

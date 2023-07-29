@@ -9,6 +9,7 @@
 import MOITDetail
 import MOITDetailData
 import MOITDetailDomain
+import MOITDetailDomainImpl
 import FineUserInterface
 import FineDomain
 import FineUserInterfaceImpl
@@ -23,6 +24,10 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 								 MOITUsersDependency,
 								ShareDependency,
 								 FineListDependency {
+	var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase }
+	
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
+	
 	
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }

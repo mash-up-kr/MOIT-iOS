@@ -18,6 +18,7 @@ import PinLayout
 
 protocol AuthorizePaymentPresentableListener: AnyObject {
 	func dismissButtonDidTap()
+	func viewDidLoad()
 }
 
 final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPresentable, AuthorizePaymentViewControllable {
@@ -63,6 +64,8 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		configureView()
 		configureLayout()
 		bind()
+		
+		listener?.viewDidLoad()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -71,6 +74,14 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		flexRootContainer.pin.all(view.pin.safeArea)
 		flexRootContainer.flex.layout()
 	}
+	
+	
+// MARK: - AuthorizePaymentPresentable
+	
+	func configure(_ viewModel: AuthorizePaymentViewModel) {
+		debugPrint("viewModel: \(viewModel)")
+	}
+
 	
 // MARK: - private
 	

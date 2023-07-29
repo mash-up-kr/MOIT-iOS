@@ -14,6 +14,8 @@ import FineDomain
 import FineDomainImpl
 import FineData
 import FineDataImpl
+import MOITDetailDomain
+import MOITDetailDomainImpl
 import MOITNetworkImpl
 import TokenManagerImpl
 
@@ -26,15 +28,21 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 		var compareUserIDUseCase: CompareUserIDUseCase
 		var fetchFineInfoUseCase: FetchFineInfoUseCase
 		var filterMyFineListUseCase: FilterMyFineListUseCase
+		var fetchFineItemUseCase: FetchFineItemUseCase
+		var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase
 		
 		init(
 			fetchFineInfoUseCase: FetchFineInfoUseCase,
 			compareUserIDUseCase: CompareUserIDUseCase,
-			filterMyFineListUseCase: FilterMyFineListUseCase
+			filterMyFineListUseCase: FilterMyFineListUseCase,
+			fetchFineItemUseCase: FetchFineItemUseCase,
+			convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase
 		) {
 			self.fetchFineInfoUseCase = fetchFineInfoUseCase
 			self.compareUserIDUseCase = compareUserIDUseCase
 			self.filterMyFineListUseCase = filterMyFineListUseCase
+			self.fetchFineItemUseCase = fetchFineItemUseCase
+			self.convertAttendanceStatusUseCase = convertAttendanceStatusUseCase
 		}
 	}
 	
@@ -50,15 +58,19 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 		let fetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
 		let compareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 		let filterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: TokenManagerImpl())
+		let fetchFineItemUseCase = FetchFineItemUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		let convertAttendanceStatusUseCase = ConvertAttendanceStatusUseCaseImpl()
 		
 		router = FineListBuilder(
 			dependency: MockFineDependency(
 				fetchFineInfoUseCase: fetchFineInfoUseCase,
 				compareUserIDUseCase: compareUserIDUseCase,
-				filterMyFineListUseCase: filterMyFineListUseCase
+				filterMyFineListUseCase: filterMyFineListUseCase,
+				fetchFineItemUseCase: fetchFineItemUseCase,
+				convertAttendanceStatusUseCase: convertAttendanceStatusUseCase
 			)
 		)
-			.build(withListener: MockFineListener(), moitID: "2")
+			.build(withListener: MockFineListener(), moitID: 2)
 		router?.interactable.activate()
 		router?.load()
 

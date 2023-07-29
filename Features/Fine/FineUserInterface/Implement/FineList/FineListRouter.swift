@@ -34,14 +34,16 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
 	
 	func attachAuthorizePayment(
 		moitID: Int,
-		fineID: Int
+		fineID: Int,
+		isMaster: Bool
 	) {
 		if authorizePaymentRouting != nil { return }
 		
 		let router = authorizePaymentBuildable.build(
 			withListener: interactor,
 			moitID: moitID,
-			fineID: fineID
+			fineID: fineID,
+			isMaster: isMaster
 		)
 		let viewController = router.viewControllable.uiviewController
 		viewController.modalPresentationStyle = .fullScreen

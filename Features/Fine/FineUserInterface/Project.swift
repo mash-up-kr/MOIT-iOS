@@ -32,6 +32,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.Fine.Domain.Implement,
 		.Feature.Fine.Data.Interface,
 		.Feature.Fine.Data.Implement,
+		.Feature.MOITDetail.Domain.Interface,
+		.Feature.MOITDetail.Domain.Implement,
 		.MOITNetwork.Interface,
 		.MOITNetwork.Implement,
 		.TokenManager.Implement

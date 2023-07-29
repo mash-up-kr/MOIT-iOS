@@ -28,6 +28,11 @@ final class MOITDetailAppDelegate: UIResponder,
                                    UIApplicationDelegate,
                                    MOITDetailListener {
 	final class MockMOITDetailDependency: MOITDetailDependency {
+		var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase = ConvertAttendanceStatusUseCaseImpl()
+		
+//		var fetchFineItemUseCase: FetchFineItemUseCase = FetchFineItemUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		var fetchFineItemUseCase: FetchFineItemUseCase = StubFetchFineItemUseCase()
+		
 		
 		var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 		var fetchFineInfoUseCase: FetchFineInfoUseCase { StubFetchFineInfoUseCase() }

@@ -9,9 +9,12 @@
 import RIBs
 
 import FineDomain
+import MOITDetailDomain
 
 public protocol FineListDependency: Dependency {
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
+	var fetchFineItemUseCase: FetchFineItemUseCase { get }
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 }

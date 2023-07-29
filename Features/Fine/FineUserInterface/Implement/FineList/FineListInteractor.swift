@@ -16,7 +16,7 @@ import DesignSystem
 import ResourceKit
 
 protocol FineListRouting: ViewableRouting {
-	func attachAuthorizePayment(moitID: Int, fineID: Int)
+	func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool)
 	func detachAuthorizePayment()
 }
 
@@ -39,6 +39,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
     weak var listener: FineListListener?
 	
 	private let dependency: FineListInteractorDependency
+	private var isMaster = false
 
     init(
 		presenter: FineListPresentable,
@@ -67,6 +68,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
 			.compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
 				// TODO: isMaster값 스트림에서받아서 수정 필요
+				self?.isMaster = false
 				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: false)
 			}
 			.subscribe(
@@ -203,7 +205,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 		}
 	}
 
-	private func convertAttendanceStatusToMOITChipType(
+	func convertAttendanceStatusToMOITChipType(
 		status: AttendanceStatus
 	) -> MOITChipType {
 		switch status {
@@ -243,7 +245,8 @@ extension FineListInteractor {
 	func fineListDidTap(fineID: Int) {
 		router?.attachAuthorizePayment(
 			moitID: dependency.moitID,
-			fineID: fineID
+			fineID: fineID,
+			isMaster: isMaster
 		)
 	}
 }
