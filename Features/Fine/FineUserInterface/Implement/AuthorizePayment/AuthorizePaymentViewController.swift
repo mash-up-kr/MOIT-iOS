@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 import DesignSystem
 import ResourceKit
@@ -61,6 +62,7 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 	private var fineImage: UIImage? {
 		didSet {
 			activateAuthorizeButton()
+			fineImageView.hideGuideComponents()
 		}
 	}
 	
@@ -108,7 +110,6 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				with: URL(string: imageURL)) { [weak self] result in
 					switch result {
 					case .success(let imageResult):
-						self?.fineImageView.hideGuideComponents()
 						self?.fineImage = imageResult.image.imageWithoutBaseline()
 					case .failure:
 						break
@@ -158,6 +159,55 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				self?.listener?.dismissButtonDidTap()
 			})
 			.disposed(by: self.disposeBag)
+		
+		fineImageView.rx.tap
+			.subscribe(
+				onNext: { [weak self] in
+					if self?.fineImage == nil {
+						self?.presentImagePicker()
+					}
+				}
+			)
+			.disposed(by: disposeBag)
+	}
+	
+	private func presentImagePicker() {
+		var configuration = PHPickerConfiguration()
+		configuration.selectionLimit = 1
+		configuration.filter = .images
+		
+		let picker = PHPickerViewController(configuration: configuration)
+		picker.delegate = self
+		self.present(picker, animated: true, completion: nil)
+	}
+}
+
+extension AuthorizePaymentViewController: PHPickerViewControllerDelegate {
+	func picker(
+		_ picker: PHPickerViewController,
+		didFinishPicking results: [PHPickerResult]
+	) {
+		picker.dismiss(animated: true)
+				
+		let itemProvider = results.first?.itemProvider
+
+		if let itemProvider = itemProvider,
+		   itemProvider.canLoadObject(ofClass: UIImage.self) {
+			itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+				DispatchQueue.main.async {
+					
+					let resultImage = image as? UIImage
+					
+					self.fineImageView.image = resultImage
+					self.fineImage = resultImage
+				}
+			}
+		} else {
+			self.showAlert(
+				message: "에러발생~ 다시 해주세염~",
+				type: .single
+			)
+		}
 	}
 }
 
