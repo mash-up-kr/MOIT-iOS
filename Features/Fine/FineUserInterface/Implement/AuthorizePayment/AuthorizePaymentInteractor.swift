@@ -6,6 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import Foundation
+
 import FineUserInterface
 import FineDomain
 import MOITDetailDomain
@@ -21,6 +23,7 @@ protocol AuthorizePaymentPresentable: Presentable {
     var listener: AuthorizePaymentPresentableListener? { get set }
 	
 	func configure(_ viewModel: AuthorizePaymentViewModel)
+	func showErrorToast()
 }
 
 protocol AuthorizePaymentInteractorDependency {
@@ -30,6 +33,7 @@ protocol AuthorizePaymentInteractorDependency {
 	var fetchFineItemUseCase: FetchFineItemUseCase { get }
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
 }
 
 final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPresentable>, AuthorizePaymentInteractable, AuthorizePaymentPresentableListener {
@@ -108,5 +112,22 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 	
 	func viewDidLoad() {
 		fetchData()
+	}
+	
+	func authorizeButtonDidTap(with data: Data?) {
+		dependency.postFineEvaluateUseCase.execute(
+			moitID: dependency.moitID,
+			fineID: dependency.fineID,
+			data: data
+		)
+		.subscribe(
+			onSuccess: { [weak self] _ in
+				self?.listener?.didSuccessPostFineEvaluate()
+			},
+			onFailure: { [weak self] _ in
+				self?.presenter.showErrorToast()
+			}
+		)
+		.disposeOnDeactivate(interactor: self)
 	}
 }

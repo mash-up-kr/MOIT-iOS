@@ -13,9 +13,13 @@ import MOITDetailDomain
 import RIBs
 
 final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency>, AuthorizePaymentInteractorDependency {
+	
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
 	var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
+		dependency.postFineEvaluateUseCase
+	}
 	
 	let fineID: Int
 	let moitID: Int

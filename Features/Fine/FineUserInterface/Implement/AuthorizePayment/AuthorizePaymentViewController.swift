@@ -21,6 +21,7 @@ import Kingfisher
 protocol AuthorizePaymentPresentableListener: AnyObject {
 	func dismissButtonDidTap()
 	func viewDidLoad()
+	func authorizeButtonDidTap(with data: Data?)
 }
 
 final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPresentable, AuthorizePaymentViewControllable {
@@ -126,7 +127,10 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 			backgroundColor: ResourceKitAsset.Color.blue800
 		)
 	}
-
+	
+	func showErrorToast() {
+		print("에러 발생....ㅜㅜ")
+	}
 	
 // MARK: - private
 	
@@ -168,6 +172,15 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 					}
 				}
 			)
+			.disposed(by: disposeBag)
+		
+		authenticateButton.rx.tap
+			.bind(onNext: { [weak self] in
+				guard let self else { return }
+				if let image = self.fineImage {
+					self.listener?.authorizeButtonDidTap(with: image.pngData())
+				}
+			})
 			.disposed(by: disposeBag)
 	}
 	

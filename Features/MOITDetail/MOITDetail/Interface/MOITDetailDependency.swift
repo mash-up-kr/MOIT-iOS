@@ -26,4 +26,5 @@ public protocol MOITDetailDependency: Dependency {
 	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 	var fetchFineItemUseCase: FetchFineItemUseCase { get }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
 }

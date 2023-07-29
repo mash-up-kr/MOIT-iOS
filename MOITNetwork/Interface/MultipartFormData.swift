@@ -9,10 +9,22 @@
 import Foundation
 
 public struct FormData {
-	var fieldName: String
-	var fileName: String
-	var mimeType: String
-	var fileData: Data
+	public var fieldName: String
+	public var fileName: String
+	public var mimeType: String
+	public var fileData: Data
+	
+	public init(
+		fieldName: String,
+		fileName: String,
+		mimeType: String,
+		fileData: Data
+	) {
+		self.fieldName = fieldName
+		self.fileName = fileName
+		self.mimeType = mimeType
+		self.fileData = fileData
+	}
 }
 
 public struct MultipartFormData {

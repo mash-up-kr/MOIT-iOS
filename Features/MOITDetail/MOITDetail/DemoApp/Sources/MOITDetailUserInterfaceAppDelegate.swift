@@ -48,6 +48,7 @@ final class MOITDetailAppDelegate: UIResponder,
             StubMOITUserUsecase()
         }
         var fetchFineInfoUsecase: FetchFineInfoUseCase { FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))}
+		var postFineEvaluateUseCase: PostFineEvaluateUseCase = PostFineEvaluateUseCaseImpl(repository: FineRepositoryImpl(network: NetworkImpl()))
     }
     
     var window: UIWindow?

@@ -14,4 +14,5 @@ public protocol FineRepository {
 	
 	func fetchFineInfo(moitID: Int) -> Single<FineInfo>
 	func fetchFineItem(moitID: Int, fineID: Int) -> Single<FineItem>
+	func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<Bool>
 }

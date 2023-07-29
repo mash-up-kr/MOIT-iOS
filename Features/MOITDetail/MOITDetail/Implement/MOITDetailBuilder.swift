@@ -36,6 +36,9 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
     var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
+		dependency.postFineEvaluateUseCase
+	}
 }
 
 // MARK: - Builder

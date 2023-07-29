@@ -62,6 +62,10 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 		router?.detachAuthorizePayment()
 	}
 	
+	func didSuccessPostFineEvaluate() {
+		router?.detachAuthorizePayment()
+	}
+	
 // MARK: - FineListPresentableListener
 	
 	func viewDidLoad() {

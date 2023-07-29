@@ -21,6 +21,9 @@ final class FineListComponent: Component<FineListDependency>,
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
 	var fetchFineItemUseCase: FetchFineItemUseCase {
 		dependency.fetchFineItemUseCase }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
+		dependency.postFineEvaluateUseCase
+	}
 	let moitID: Int
 	
 	init(
