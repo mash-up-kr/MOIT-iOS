@@ -77,8 +77,16 @@ extension MOITSettingInteractor {
             message: "안녕히가세용 (' ᵔ '｡)"
         )
     }
+    
+    func didTap삭제Action() {
+        
+    }
+    func didTap로그아웃Action() {
+        
+    }
 }
 
+// MARK: - MOITWebListener
 extension MOITSettingInteractor {
     func didSignIn(with token: String) {
         // do not anything

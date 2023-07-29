@@ -20,6 +20,9 @@ protocol MOITSettingPresentableListener: AnyObject {
     func didTap피드백()
     func didTap계정삭제()
     func didTap로그아웃()
+    // alert에서 누른 액션
+    func didTap삭제Action()
+    func didTap로그아웃Action()
 }
 
 final class MOITSettingViewController: UIViewController,
@@ -239,7 +242,10 @@ extension MOITSettingViewController {
             message: message, preferredStyle: .alert)
         let logOutAction = UIAlertAction(
             title: "로그아웃",
-            style: .default
+            style: .default,
+            handler: { [weak self] _ in
+                self?.listener?.didTap로그아웃Action()
+            }
         )
         let cancelAction = UIAlertAction(
             title: "취소",
@@ -253,10 +259,15 @@ extension MOITSettingViewController {
     func showWithdrawAlert(title: String, message: String) {
         let alertController = UIAlertController(
             title: title,
-            message: message, preferredStyle: .alert)
+            message: message,
+            preferredStyle: .alert
+        )
         let removeAction = UIAlertAction(
             title: "삭제",
-            style: .default
+            style: .default,
+            handler: { [weak self] _ in
+                self?.listener?.didTap삭제Action()
+            }
         )
         let cancelAction = UIAlertAction(
             title: "취소",
