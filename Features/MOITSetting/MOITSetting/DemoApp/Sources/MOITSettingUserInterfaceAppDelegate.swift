@@ -19,7 +19,9 @@ final class MOITSettingAppDelegate: UIResponder, UIApplicationDelegate {
     private final class StubMOITSettingDependency: MOITSettingDependency {
     }
     private final class StubMOITSettingListener: MOITSettingListener {
-        
+        func didTapBackButton() {
+            print(#function)
+        }
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -28,7 +30,7 @@ final class MOITSettingAppDelegate: UIResponder, UIApplicationDelegate {
         self.router = router
         router.load()
         router.interactable.activate()
-        window.rootViewController = router.viewControllable.uiviewController
+        window.rootViewController = UINavigationController(rootViewController: router.viewControllable.uiviewController)
         window.makeKeyAndVisible()
         self.window = window
         return true

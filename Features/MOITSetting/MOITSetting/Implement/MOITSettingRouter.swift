@@ -8,21 +8,56 @@
 
 import RIBs
 import MOITSetting
+import MOITWeb
 
-protocol MOITSettingInteractable: Interactable {
+protocol MOITSettingInteractable: Interactable,
+                                  MOITWebListener {
     var router: MOITSettingRouting? { get set }
     var listener: MOITSettingListener? { get set }
 }
 
 protocol MOITSettingViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
 }
 
-final class MOITSettingRouter: ViewableRouter<MOITSettingInteractable, MOITSettingViewControllable>, MOITSettingRouting {
-
-    // TODO: Constructor inject child builder protocols to allow building children.
-    override init(interactor: MOITSettingInteractable, viewController: MOITSettingViewControllable) {
+final class MOITSettingRouter: ViewableRouter<MOITSettingInteractable, MOITSettingViewControllable>,
+                               MOITSettingRouting {
+    
+    init(
+        interactor: MOITSettingInteractable,
+        viewController: MOITSettingViewControllable,
+        moitWebBuilder: MOITWebBuildable
+    ) {
+        self.moitWebBuilder = moitWebBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
+    }
+    
+    func routeToProfileEdit() {
+        
+    }
+    func detachProfileEdit() {
+        
+    }
+    
+    private let moitWebBuilder: MOITWebBuildable
+    private var moitWebRouter: ViewableRouting?
+    func routeToWeb(path: MOITWebPath) {
+        guard moitWebRouter == nil else { return }
+        let router = moitWebBuilder.build(
+            withListener: interactor,
+            domain: .setting,
+            path: path
+        )
+        moitWebRouter = router
+        attachChild(router)
+        viewController.pushViewController(router.viewControllable, animated: true)
+    }
+    func detachWeb(withPop: Bool) {
+        guard let moitWebRouter else { return }
+        self.moitWebRouter = nil
+        detachChild(moitWebRouter)
+        if withPop {
+            viewController.popViewController(animated: true)
+        }
     }
 }

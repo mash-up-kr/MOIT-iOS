@@ -21,6 +21,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.PinLayout,
         .ResourceKit,
         .DesignSystem,
+        .Feature.MOITWeb.Implement,
+        .Feature.MOITWeb.Interface,
+        .Feature.Auth.Domain.Interface,
+        .Core.MOITFoundation,
     ],
     isUserInterface: true
 )

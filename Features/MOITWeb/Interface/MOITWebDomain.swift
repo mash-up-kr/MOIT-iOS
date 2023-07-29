@@ -11,4 +11,5 @@ import Foundation
 public enum WebDomain: String {
     case backend = "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1"
     case frontend = "https://dev-moit-web.vercel.app"
+    case setting = "https://heavy-canid-d0f.notion.site"
 }

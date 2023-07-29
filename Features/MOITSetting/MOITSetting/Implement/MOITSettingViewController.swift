@@ -13,6 +13,13 @@ import DesignSystem
 import MOITFoundation
 
 protocol MOITSettingPresentableListener: AnyObject {
+    func didTapBackButton()
+    func didTap프로필수정()
+    func didTap개인정보처리방침()
+    func didTap서비스이용약관()
+    func didTap피드백()
+    func didTap계정삭제()
+    func didTap로그아웃()
 }
 
 final class MOITSettingViewController: UIViewController,
@@ -45,6 +52,7 @@ final class MOITSettingViewController: UIViewController,
         MOITSettingDividerItemType.divider,
         MOITSettingTitleItemType.로그아웃,
     ]
+    private let dispoesBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +61,7 @@ final class MOITSettingViewController: UIViewController,
         self.flexRootView.backgroundColor = .white
         define()
         configureCollectionView()
-        collectionView.reloadData()
+        bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,6 +93,14 @@ final class MOITSettingViewController: UIViewController,
             MOITSettingToggleCollectionViewCell.self,
             forCellWithReuseIdentifier: "MOITSettingToggleCollectionViewCell"
         )
+    }
+    
+    private func bind() {
+        navigationBar.leftItems?[0].rx.tap
+            .bind(onNext: { [weak self] _ in
+                self?.listener?.didTapBackButton()
+            })
+            .disposed(by: self.dispoesBag)
     }
 }
 
@@ -163,7 +179,22 @@ extension MOITSettingViewController: UICollectionViewDelegate {
         didSelectItemAt indexPath: IndexPath
     ) {
         guard let item = self.items[safe: indexPath.item] else { return }
-        
+        if let titleItem = item as? MOITSettingTitleItemType {
+            switch titleItem {
+            case .개인정보처리방침:
+                self.listener?.didTap개인정보처리방침()
+            case .계정삭제:
+                self.listener?.didTap계정삭제()
+            case .로그아웃:
+                self.listener?.didTap로그아웃()
+            case .서비스이용약관:
+                self.listener?.didTap서비스이용약관()
+            case .프로필수정:
+                self.listener?.didTap프로필수정()
+            case .피드백:
+                self.listener?.didTap피드백()
+            }
+        }
     }
 }
 
@@ -196,5 +227,43 @@ extension MOITSettingViewController: UICollectionViewDelegateFlowLayout {
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
         .zero
+    }
+}
+
+// MARK: - MOITSettingPresentable
+
+extension MOITSettingViewController {
+    func showLogoutAlert(title: String, message: String) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message, preferredStyle: .alert)
+        let logOutAction = UIAlertAction(
+            title: "로그아웃",
+            style: .default
+        )
+        let cancelAction = UIAlertAction(
+            title: "취소",
+            style: .cancel
+        )
+        alertController.addAction(logOutAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+    
+    func showWithdrawAlert(title: String, message: String) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message, preferredStyle: .alert)
+        let removeAction = UIAlertAction(
+            title: "삭제",
+            style: .default
+        )
+        let cancelAction = UIAlertAction(
+            title: "취소",
+            style: .cancel
+        )
+        alertController.addAction(removeAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
     }
 }

@@ -8,8 +8,11 @@
 
 import RIBs
 import MOITSetting
+import MOITWeb
+import MOITWebImpl
 
-final class MOITSettingComponent: Component<MOITSettingDependency> {
+final class MOITSettingComponent: Component<MOITSettingDependency>,
+                                  MOITWebDependency {
 }
 
 // MARK: - Builder
@@ -25,6 +28,13 @@ public final class MOITSettingBuilder: Builder<MOITSettingDependency>, MOITSetti
         let viewController = MOITSettingViewController()
         let interactor = MOITSettingInteractor(presenter: viewController)
         interactor.listener = listener
-        return MOITSettingRouter(interactor: interactor, viewController: viewController)
+        
+        let moitWebBuilder = MOITWebBuilder(dependency: component)
+        
+        return MOITSettingRouter(
+            interactor: interactor,
+            viewController: viewController,
+            moitWebBuilder: moitWebBuilder
+        )
     }
 }
