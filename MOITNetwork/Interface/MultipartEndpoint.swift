@@ -12,7 +12,7 @@ public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 
 	public typealias Response = R
 
-	public let baseURL: URL?
+	public let baseURL: URL
 	public let path: String
 	public let method: HTTPMethod
 	public let headers: HTTPHeaders
@@ -20,7 +20,7 @@ public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 	public let formData: MultipartFormData
 
 	public init(
-		baseURL: URL? = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/"),
+		baseURL: URL = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/") ?? URL(fileReferenceLiteralResourceName: ""),
 		path: String,
 		method: HTTPMethod,
 		headers: HTTPHeaders,

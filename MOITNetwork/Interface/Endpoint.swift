@@ -11,14 +11,14 @@ import Foundation
 public struct Endpoint<R>: Requestable where R: Decodable {
 	public typealias Response = R
 
-	public let baseURL: URL?
+	public let baseURL: URL
 	public let path: String
 	public let method: HTTPMethod
 	public let headers: HTTPHeaders
 	public let parameters: HTTPRequestParameter?
 
 	public init(
-		baseURL: URL? = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/"),
+		baseURL: URL = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1/") ?? URL(fileReferenceLiteralResourceName: ""),
 		path: String,
 		method: HTTPMethod,
 		headers: HTTPHeaders = [

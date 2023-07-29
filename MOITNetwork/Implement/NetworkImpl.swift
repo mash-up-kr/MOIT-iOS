@@ -82,7 +82,9 @@ rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJ
 		guard let data = data else {
 			return .failure(NetworkError.emptyData)
 		}
-
+		
+		Logger.debug("✨ status code: \(response.statusCode)")
+		
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
 			
