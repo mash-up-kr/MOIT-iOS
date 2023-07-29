@@ -14,6 +14,7 @@ import MOITFoundation
 
 protocol MOITSettingPresentableListener: AnyObject {
     func didTapBackButton()
+    func didSwipeBack()
     func didTap프로필수정()
     func didTap개인정보처리방침()
     func didTap서비스이용약관()
@@ -73,6 +74,13 @@ final class MOITSettingViewController: UIViewController,
         flexRootView.flex.layout()
     }
     
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isMovingFromParent {
+            listener?.didSwipeBack()
+        }
+    }
     private func define() {
         view.addSubview(flexRootView)
         flexRootView.flex.define { flex in

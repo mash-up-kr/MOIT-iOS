@@ -13,11 +13,14 @@ import MOITWeb
 import MOITDetail
 import MOITParticipateUserInterface
 import UIKit
+import MOITSetting
 
 protocol MOITListInteractable: Interactable,
                                MOITWebListener,
                                MOITDetailListener,
-                               InputParticipateCodeListener {
+                               InputParticipateCodeListener,
+                               MOITSettingListener {
+    
     var router: MOITListRouting? { get set }
     var listener: MOITListListener? { get set }
 }
@@ -33,11 +36,13 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         viewController: MOITListViewControllable,
         moitWebBuilder: MOITWebBuildable,
         moitDetailBuilder: MOITDetailBuildable,
-        inputParticipateCodeBuilder: InputParticipateCodeBuildable
+        inputParticipateCodeBuilder: InputParticipateCodeBuildable,
+        settingBuilder: MOITSettingBuildable
     ) {
         self.moitWebBuilder = moitWebBuilder
         self.moitDetailBuilder = moitDetailBuilder
         self.inputParticipateCodeBuilder = inputParticipateCodeBuilder
+        self.settingBuilder = settingBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -75,11 +80,13 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         attachChild(router)
         viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
-    func detachMOITDetail() {
+    func detachMOITDetail(withPop: Bool) {
         guard let moitDetailRouter else { return }
         self.moitDetailRouter = nil
         detachChild(moitDetailRouter)
-        viewController.uiviewController.navigationController?.popViewController(animated: true)
+        if withPop {
+            viewController.uiviewController.navigationController?.popViewController(animated: true)
+        }
     }
     
     private let inputParticipateCodeBuilder: InputParticipateCodeBuildable
@@ -100,5 +107,24 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         self.inputParticipateCodeRouter = nil
         detachChild(inputParticipateCodeRouter)
         viewController.uiviewController.dismiss(animated: true)
+    }
+    
+    private let settingBuilder: MOITSettingBuildable
+    private var settingRouter: ViewableRouting?
+    
+    func attachSetting() {
+        guard settingRouter == nil else { return }
+        let router = settingBuilder.build(withListener: interactor)
+        settingRouter = router
+        attachChild(router)
+        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+    }
+    func detachSetting(withPop: Bool) {
+        guard let settingRouter else { return }
+        self.settingRouter = nil
+        detachChild(settingRouter)
+        if withPop {
+            viewController.uiviewController.navigationController?.popViewController(animated: true)
+        }
     }
 }

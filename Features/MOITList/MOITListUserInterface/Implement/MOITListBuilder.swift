@@ -17,12 +17,16 @@ import MOITNetwork
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
 import MOITDetailDomain
+import MOITSetting
+import MOITSettingImpl
 
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency,
                                MOITWebDependency,
                                MOITDetailDependency,
-                               InputParticipateCodeDependency {
+                               InputParticipateCodeDependency,
+                               MOITSettingDependency {
+    
     var network: Network { dependency.network }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { dependency.calculateLeftTimeUseCase }
     
@@ -52,12 +56,15 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         let moitWebBuilder = MOITWebBuilder(dependency: component)
         let moitDetailBuilder = MOITDetailBuilder(dependency: component)
         let inputParticipateCodeBuilder = InputParticipateCodeBuilder(dependency: component)
+        let settingBuilder = MOITSettingBuilder(dependency: component)
+        
         return MOITListRouter(
             interactor: interactor,
             viewController: viewController,
             moitWebBuilder: moitWebBuilder,
             moitDetailBuilder: moitDetailBuilder,
-            inputParticipateCodeBuilder: inputParticipateCodeBuilder
+            inputParticipateCodeBuilder: inputParticipateCodeBuilder,
+            settingBuilder: settingBuilder
         )
     }
 }

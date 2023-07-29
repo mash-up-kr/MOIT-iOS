@@ -24,6 +24,8 @@ protocol MOITDetailPresentableListener: AnyObject {
     func didTapShareButton()
     func didTapPager(at index: Int)
     func didRefresh()
+    func didSwipeBack()
+    func didTapBackButton()
 }
 
 struct MOITDetailViewModel {
@@ -157,6 +159,13 @@ final class MOITDetailViewController: UIViewController,
         self.flexRootView.showAnimatedGradientSkeleton()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isMovingFromParent {
+            self.listener?.didSwipeBack()
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.flexRootView.pin.all()
@@ -271,6 +280,12 @@ extension MOITDetailViewController {
     }
     
     private func bind() {
+        
+        self.backButton.rx.tap
+            .bind(onNext: { [weak self] in
+                self?.listener?.didTapBackButton()
+            })
+            .disposed(by: self.disposeBag)
         
         self.tapPageView.rx.tapIndex
             .bind(onNext: { [weak self] index in

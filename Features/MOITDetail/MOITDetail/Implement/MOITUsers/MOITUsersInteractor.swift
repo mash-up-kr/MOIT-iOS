@@ -20,7 +20,8 @@ protocol MOITUsersPresentable: Presentable {
 }
 
 protocol MOITUsersListener: AnyObject {
-  func didTapBackButton()
+  func moitUserDidTapBackButton()
+    func moitUserDidSwipeBack()
 }
 
 final class MOITUsersInteractor: PresentableInteractor<MOITUsersPresentable>,
@@ -65,6 +66,9 @@ final class MOITUsersInteractor: PresentableInteractor<MOITUsersPresentable>,
     }
     
     func didTapBackButton() {
-        self.listener?.didTapBackButton()
+        self.listener?.moitUserDidTapBackButton()
+    }
+    func didSwipeBack() {
+        self.listener?.moitUserDidSwipeBack()
     }
 }
