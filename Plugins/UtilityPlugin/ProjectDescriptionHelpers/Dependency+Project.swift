@@ -33,6 +33,11 @@ extension TargetDependency {
 		}
         
         public struct MOITSetting {}
+
+        public struct MOITAlarm {
+            public struct Data {}
+            public struct Domain {}
+        }
 	}
 
     public struct Core { }
@@ -186,6 +191,8 @@ public extension TargetDependency.ThirdParty {
     static let SkeletonView = TargetDependency.external(name: "SkeletonView")
     static let Collections = TargetDependency.external(name: "Collections")
 	static let Toast = TargetDependency.external(name: "Toast")
+    static let FirebaseMessaging = TargetDependency.external(name: "FirebaseMessaging")
+    static let Firebase = TargetDependency.external(name: "Firebase")
 }
 
 public extension TargetDependency.ThirdParty {
@@ -278,4 +285,34 @@ public extension TargetDependency.Feature.MOITShare.Domain {
 public extension TargetDependency.Feature.MOITSetting {
     static let Interface: TargetDependency = .project(target: "MOITSetting", path: .relativeToRoot("Features/MOITSetting/MOITSetting"))
     static let Implement: TargetDependency = .project(target: "MOITSettingImpl", path: .relativeToRoot("Features/MOITSetting/MOITSetting"))
+}
+// MARK: - MOITAlarm
+
+extension TargetDependency.Feature.MOITAlarm {
+    static func project(moduleName: String, isInterface: Bool) -> TargetDependency {
+        let postfix: String = isInterface ? "" : "Impl"
+        return .project(
+            target: "\(moduleName)\(postfix)",
+            path: .relativeToRoot("Features/MOITAlarm/\(moduleName)")
+        )
+    }
+    
+    public static let Interface: TargetDependency = .project(
+        target: "MOITAlarm",
+        path: .relativeToRoot("Features/MOITAlarm")
+    )
+    public static let Implement: TargetDependency = .project(
+        target: "MOITAlarmImpl",
+        path: .relativeToRoot("Features/MOITAlarm")
+    )
+}
+
+public extension TargetDependency.Feature.MOITAlarm.Data {
+    static let Interface = TargetDependency.Feature.MOITAlarm.project(moduleName: "MOITAlarmData", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITAlarm.project(moduleName: "MOITAlarmData", isInterface: false)
+}
+
+public extension TargetDependency.Feature.MOITAlarm.Domain {
+    static let Interface = TargetDependency.Feature.MOITAlarm.project(moduleName: "MOITAlarmDomain", isInterface: true)
+    static let Implement = TargetDependency.Feature.MOITAlarm.project(moduleName: "MOITAlarmDomain", isInterface: false)
 }
