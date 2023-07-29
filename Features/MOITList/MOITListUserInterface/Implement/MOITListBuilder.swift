@@ -8,12 +8,13 @@
 
 import MOITListUserInterface
 import MOITListDomain
-
+import MOITWebImpl
+import MOITWeb
 import RIBs
 
 final class MOITListComponent: Component<MOITListDependency>,
-                               MOITListInteractorDependency
-{
+                               MOITListInteractorDependency,
+MOITWebDependency {
     
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { dependency.calculateLeftTimeUseCase }
     
@@ -38,6 +39,12 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
             dependency: component
         )
         interactor.listener = listener
-        return MOITListRouter(interactor: interactor, viewController: viewController)
+        
+        let moitWebBuilder = MOITWebBuilder(dependency: component)
+        return MOITListRouter(
+            interactor: interactor,
+            viewController: viewController,
+            moitWebBuilder: moitWebBuilder
+        )
     }
 }

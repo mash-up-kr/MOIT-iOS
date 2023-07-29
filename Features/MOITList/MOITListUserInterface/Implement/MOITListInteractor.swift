@@ -9,13 +9,14 @@
 import DesignSystem
 import MOITListUserInterface
 import MOITListDomain
-
+import AuthDomain
 import RIBs
 import RxSwift
 import RxRelay
 
 protocol MOITListRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    func attachRegisterMOIT()
+    func detaachRegisterMOIT(withPop: Bool)
 }
 
 protocol MOITListPresentable: Presentable {
@@ -156,8 +157,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         createButtonTapped
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                // TODO: - 생성하기로 보내기
-                
+                owner.router?.attachRegisterMOIT()
             })
             .disposeOnDeactivate(interactor: self)
         
@@ -223,5 +223,17 @@ extension MOITListInteractor: MOITListPresentableListener {
     
     func didTapMOIT(index: Int) {
         self.selectedMoitIndex.accept(index)
+    }
+}
+
+// MARK: - MOITWebListener
+
+extension MOITListInteractor {
+    func didSignIn(with token: String) {
+    }
+    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
+    }
+    func shouldDetach(withPop: Bool) {
+        self.router?.detaachRegisterMOIT(withPop: withPop)
     }
 }
