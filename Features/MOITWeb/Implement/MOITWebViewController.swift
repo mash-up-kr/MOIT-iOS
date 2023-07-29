@@ -62,9 +62,9 @@ extension MOITWebViewController {
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
 		webView.navigationDelegate = self
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = true
-        }
+//        if #available(iOS 16.4, *) {
+//            webView.isInspectable = true
+//        }
         self.view.addSubview(webView)
 
         guard let url = URL(string: "\(domain)\(path)") else { return }

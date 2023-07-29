@@ -23,12 +23,14 @@ final class MOITDetailAppDelegate: UIResponder,
                                    UIApplicationDelegate,
                                    MOITDetailListener {
     final class MockMOITDetailDependency: MOITDetailDependency {
+        
+        var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)}
+        
         var tabTypes: [MOITDetailTab] = [.attendance, .fine]
         var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: NetworkImpl())
         var moitDetailUsecase: MOITDetailUsecase { MOITDetailUsecaseImpl(repository: moitDetailRepository) }
         var moitAttendanceUsecase: MOITAllAttendanceUsecase { StubMOITAllAttendanceUsecase() }
-//        var moitAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository) }
-//        var moitUserusecase: MOITUserUsecase { MOITUserUsecaseImpl(repository: moitDetailRepository) }
+
         var moitUserusecase: MOITUserUsecase {
             StubMOITUserUsecase()
         }

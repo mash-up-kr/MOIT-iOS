@@ -18,6 +18,9 @@ import MOITWebImpl
 import TokenManager
 import TokenManagerImpl
 import MOITListDomain
+import AuthDataImpl
+import MOITNetwork
+import MOITNetworkImpl
 
 import RIBs
 import RxSwift
@@ -41,7 +44,7 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	
 	var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
 	
-	var signUpUseCase: SignUpUseCase = SignUpUseCaseImpl(authRepository: MockAuthRepository())
+	var signUpUseCase: SignUpUseCase = SignUpUseCaseImpl(authRepository: AuthRepositoryImpl(network: NetworkImpl()))
 	
 	var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: TokenManagerImpl())
 	
@@ -59,9 +62,10 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 }
 
 final class MockAuthRepository: AuthRepository {
-	
-    func signUp(providerUniqueKey: String, imageIndex: Int, nickName: String, email: String, inviteCode: String?) -> Single<Void> {
-        Single.just(())
+    
+    func signUp(providerUniqueKey: String, imageIndex: Int, nickName: String, email: String, inviteCode: String?) -> Single<String> {
+        Single.just("사인업")
     }
+	
 	
 }

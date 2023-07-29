@@ -20,10 +20,9 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITUsersDependency,
                                  ShareDependency {
     
-    var moitDetailRepository: MOITDetailRepository { MOITDetailRepositoryImpl(network: dependency.network) }
-    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository) }
-    var moitUserusecase: MOITUserUsecase { MOITUserUsecaseImpl(repository: moitDetailRepository) }
-    var moitDetailUsecase: MOITDetailUsecase { MOITDetailUsecaseImpl(repository: moitDetailRepository) }
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAllAttendanceUsecase }
+    var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
+    var moitDetailUsecase: MOITDetailUsecase { dependency.moitDetailUsecase }
     var tabTypes: [MOITDetailTab] { [.attendance, .fine] }
 }
 

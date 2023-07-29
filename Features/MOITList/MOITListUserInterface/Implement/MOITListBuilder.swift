@@ -8,18 +8,21 @@
 
 import MOITListUserInterface
 import MOITListDomain
+import MOITDetailDomain
+import MOITDetail
 import MOITWebImpl
 import MOITWeb
 import RIBs
 import MOITDetailImpl
-import MOITDetail
-import MOITNetwork
 
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency,
                                MOITWebDependency,
                                MOITDetailDependency {
-    var network: Network { dependency.network }
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAllAttendanceUsecase }
+    var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
+    var moitDetailUsecase: MOITDetailUsecase { dependency.moitDetailUsecase }
+    
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { dependency.calculateLeftTimeUseCase }
     
     var fetchBannersUseCase: FetchBannersUseCase { dependency.fetchPaneltyToBePaiedUseCase }

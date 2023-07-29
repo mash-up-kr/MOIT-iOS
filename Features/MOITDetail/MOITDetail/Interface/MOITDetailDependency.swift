@@ -8,10 +8,13 @@
 
 import Foundation
 
-import MOITNetwork
+import MOITDetailDomain
 
 import RIBs
 
 public protocol MOITDetailDependency: Dependency {
-    var network: Network { get }
+    
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
+    var moitUserusecase: MOITUserUsecase { get }
+    var moitDetailUsecase: MOITDetailUsecase { get }
 }

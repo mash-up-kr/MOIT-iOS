@@ -24,6 +24,13 @@ import MOITListDomainImpl
 import MOITListData
 import MOITListDataImpl
 
+import MOITDetail
+import MOITDetailImpl
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
 import TokenManager
 import TokenManagerImpl
 
@@ -59,6 +66,11 @@ final class RootComponent: EmptyDependency,
     
     lazy var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: tokenManager)
     lazy var fetchTokenUseCase: FetchTokenUseCase = FetchTokenUseCaseImpl(tokenManager: tokenManager)
+    
+    lazy var moitDetailRepository = MOITDetailRepositoryImpl(network: network)
+    lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
+    lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
+    lazy var moitDetailUsecase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: moitDetailRepository)
     
     // MARK: - Initializers
     
