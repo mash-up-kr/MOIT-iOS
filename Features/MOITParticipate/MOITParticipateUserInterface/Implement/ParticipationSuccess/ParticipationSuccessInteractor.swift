@@ -6,23 +6,36 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import MOITParticipateUserInterface
+import MOITDetail
+
 import RIBs
 import RxSwift
-
-import MOITParticipateUserInterface
 
 protocol ParticipationSuccessRouting: ViewableRouting { }
 
 protocol ParticipationSuccessPresentable: Presentable {
     var listener: ParticipationSuccessPresentableListener? { get set }
+	
+	func configure(_ viewModel: MOITDetailProfileInfoViewModel)
+}
+
+protocol ParticipationSuccessInteractorDependency {
+	var viewModel: MOITDetailProfileInfoViewModel { get }
 }
 
 final class ParticipationSuccessInteractor: PresentableInteractor<ParticipationSuccessPresentable>, ParticipationSuccessInteractable, ParticipationSuccessPresentableListener {
 
     weak var router: ParticipationSuccessRouting?
     weak var listener: ParticipationSuccessListener?
+	
+	private let dependency: ParticipationSuccessInteractorDependency
 
-    override init(presenter: ParticipationSuccessPresentable) {
+    init(
+		presenter: ParticipationSuccessPresentable,
+		dependency: ParticipationSuccessInteractorDependency
+	) {
+		self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -37,5 +50,9 @@ final class ParticipationSuccessInteractor: PresentableInteractor<ParticipationS
 	
 	func dismissButtonDidTap() {
 		listener?.participationSuccessDismissButtonDidTap()
+	}
+	
+	func viewDidLoad() {
+		presenter.configure(dependency.viewModel)
 	}
 }

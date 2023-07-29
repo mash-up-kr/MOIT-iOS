@@ -75,7 +75,7 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+        navigationController?.navigationBar.isHidden = true
 		configureView()
 		configureLayout()
 		bind()

@@ -8,25 +8,11 @@
 
 import UIKit
 
+import MOITDetail
 import ResourceKit
 
 import FlexLayout
 import PinLayout
-
-public struct MOITDetailInfoViewModel {
-	public let title: String
-	public let description: String
-	
-	public init(
-		title: String,
-		description: String
-	) {
-		self.title = title
-		self.description = description
-	}
-}
-
-public typealias MOITDetailInfoViewModels = [MOITDetailInfoViewModel]
 
 public final class MOITDetailListView: UIView {
 	

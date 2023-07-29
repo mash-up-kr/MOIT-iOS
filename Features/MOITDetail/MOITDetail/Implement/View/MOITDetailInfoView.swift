@@ -7,16 +7,14 @@
 //
 
 import UIKit
-import FlexLayout
-import PinLayout
+
+import MOITDetail
 import DesignSystem
 import ResourceKit
-import SkeletonView
 
-struct MOITDetailInfoViewModel {
-    let title: String
-    let description: String
-}
+import FlexLayout
+import PinLayout
+import SkeletonView
 
 final class MOITDetailInfoView: UIView {
       

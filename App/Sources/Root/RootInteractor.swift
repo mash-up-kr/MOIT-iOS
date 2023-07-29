@@ -14,6 +14,11 @@ import AuthDomain
 protocol RootRouting: ViewableRouting {
     func routeToMoitWeb(path: MOITWebPath)
     func detachWeb(withPop: Bool)
+    
+    func routeToAuth()
+    func routeToMOITList()
+    func detachAuth()
+    func detachMOITList()
 }
 
 protocol RootPresentable: Presentable {
@@ -23,31 +28,83 @@ protocol RootPresentable: Presentable {
 protocol RootListener: AnyObject {
 }
 
+protocol RootInteractorDependency {
+    
+    var fetchTokenUseCase: FetchTokenUseCase { get }
+}
+
 final class RootInteractor: PresentableInteractor<RootPresentable>,
                             RootInteractable,
                             RootPresentableListener {
-    
-    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
         
-    }
-    
-    func didSignIn(with token: String) {
-        
-    }
-    
+    // MARK: - Properties
+
     weak var router: RootRouting?
+    private let dependency: RootInteractorDependency
     
-    override init(presenter: RootPresentable) {
+    // MARK: - Initializers
+    
+    public init(
+        presenter: RootPresentable,
+        dependency: RootInteractorDependency
+    ) {
+        self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
     
+    deinit { debugPrint("\(self) deinit") }
+    
+    // MARK: - Override
+    
     override func didBecomeActive() {
         super.didBecomeActive()
+        configureRIB()
     }
     
     override func willResignActive() {
         super.willResignActive()
+    }
+    
+    // MARK: - Methods
+    
+    // 로그인 여부 확인 메소드
+    
+    func configureRIB() {
+        // 토큰 있는지 확인 후 있으면 moitlist, 안됐으면 auth
+        if dependency.fetchTokenUseCase.execute() == nil {
+            router?.routeToAuth()
+            return
+        }
+        
+        router?.routeToMOITList()
+    }
+    
+    func didCompleteAuth() {
+        router?.detachAuth()
+        router?.routeToMOITList()
+    }
+
+}
+
+
+
+// TODO: - 삭제
+
+extension RootInteractor {
+    func shouldDetach(withPop: Bool) {
+        self.router?.detachWeb(withPop: withPop)
+    }
+}
+
+extension RootInteractor {
+    
+    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
+        // 뭘 해야함?
+    }
+    
+    func didSignIn(with token: String) {
+        // 뭘 해야함?
     }
     
     func didTapCreateButton() {
@@ -65,11 +122,7 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
     func didTapAttendanceResultButton() {
         self.router?.routeToMoitWeb(path: .attendanceResult)
     }
-    deinit { debugPrint("\(self) deinit") }
-}
+    
 
-extension RootInteractor {
-    func shouldDetach(withPop: Bool) {
-        self.router?.detachWeb(withPop: withPop)
-    }
+
 }

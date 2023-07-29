@@ -9,6 +9,7 @@
 import RIBs
 
 import MOITParticipateUserInterface
+import MOITDetail
 
 protocol InputParticipateCodeInteractable: Interactable, ParticipationSuccessListener {
     var router: InputParticipateCodeRouting? { get set }
@@ -34,13 +35,14 @@ final class InputParticipateCodeRouter: ViewableRouter<InputParticipateCodeInter
         interactor.router = self
     }
 	
-	func attachPariticipationSuccess() {
+	func attachPariticipationSuccess(with viewModel: MOITDetailProfileInfoViewModel) {
 		if participationSuccessRouting != nil {
 			return
 		}
 		
 		let router = participationSuccessBuildable.build(
-			withListener: interactor
+			withListener: interactor,
+			withViewModel: viewModel
 		)
 		
 		let participationSuccessViewController = router.viewControllable.uiviewController

@@ -9,12 +9,15 @@
 import UIKit
 
 import AuthDomain
+import MOITListUserInterface
 
 import RIBs
 
-public protocol SignUpDependency: Dependency {
+public protocol SignUpDependency: Dependency
+{
     
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { get }
-    var postJoinInfoUseCase: PostJoinInfoUseCase { get }
+    var signUpUseCase: SignUpUseCase { get }
     var profileSelectBuildable: ProfileSelectBuildable { get }
+    var saveTokenUseCase: SaveTokenUseCase { get }
 }

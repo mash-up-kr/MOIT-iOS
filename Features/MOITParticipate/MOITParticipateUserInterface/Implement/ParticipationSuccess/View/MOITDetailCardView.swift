@@ -8,6 +8,7 @@
 
 import UIKit
 
+import MOITDetail
 import ResourceKit
 
 import FlexLayout
@@ -70,9 +71,9 @@ public final class MOITDetailCardView: UIView {
 	
 // MARK: - public
 	public func configure(
-		viewModel: MOITDetailInfoViewModels
+		viewModel: MOITDetailProfileInfoViewModel
 	) {
-		self.infoViews = viewModel.map { infoViewModel in
+		self.infoViews = viewModel.detailInfos.map { infoViewModel in
 			MOITDetailListView(viewModel: infoViewModel)
 		}
 		self.configureLayouts()

@@ -28,14 +28,7 @@ final class AppDelegate: UIResponder,
         
         let router = RootBuilder(dependency: EmptyComponent()).build()
         self.launchRouter = router
-        window.rootViewController = UINavigationController(rootViewController: router.viewControllable.uiviewController)
-        window.makeKeyAndVisible()
-        
-        router.interactable.activate()
-        router.load()
-        
-        configure(application)
-        
+        self.launchRouter?.launch(from: window)
         return true
     }
     
