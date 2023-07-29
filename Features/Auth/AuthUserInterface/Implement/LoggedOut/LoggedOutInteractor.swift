@@ -77,6 +77,7 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
     
     // MARK: - SignUp
     func didCompleteSignUp() {
+        router?.detachSignInWeb()
         listener?.didCompleteAuth()
     }
 }

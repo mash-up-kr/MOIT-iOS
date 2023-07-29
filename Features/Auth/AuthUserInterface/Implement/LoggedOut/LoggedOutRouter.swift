@@ -27,7 +27,7 @@ protocol LoggedOutViewControllable: ViewControllable {
 final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutViewControllable>, LoggedOutRouting {
 
 	private let signInWebBuildable: MOITWebBuildable
-	private var signInWebRouting: Routing?
+	private var signInWebRouting: ViewableRouting?
 	
 	private let signUpBuildable: SignUpBuildable
 	private var signUpRouting: Routing?

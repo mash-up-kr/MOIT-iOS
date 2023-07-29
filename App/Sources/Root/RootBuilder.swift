@@ -58,10 +58,6 @@ final class RootComponent: EmptyDependency,
     lazy var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
     
     lazy var signUpUseCase: SignUpUseCase = SignUpUseCaseImpl(authRepository: authRepository)
-//
-//    lazy var signUpBuildable: SignUpBuildable = SignUpBuilder(dependency: self)
-//
-//    lazy var moitWebBuildable: MOITWebBuildable = MOITWebBuilder(dependency: self)
     
     lazy var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: tokenManager)
     lazy var fetchTokenUseCase: FetchTokenUseCase = FetchTokenUseCaseImpl(tokenManager: tokenManager)
@@ -69,7 +65,8 @@ final class RootComponent: EmptyDependency,
     // MARK: - Initializers
     
     public init() {
-        
+        #warning("나중에 지워")
+        tokenManager.delete(key: .authorizationToken)
     }
     
     // MARK: - Methods
