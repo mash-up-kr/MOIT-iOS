@@ -53,24 +53,21 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 			path: .signIn
 		)
         
-		let viewController = router.viewControllable
-		router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen
-		viewControllable.present(
-			viewController,
+		router.viewControllable.uiviewController.modalPresentationStyle = .overFullScreen
+        signInWebRouting = router
+        attachChild(router)
+        viewController.uiviewController.present(
+            router.viewControllable.uiviewController,
 			animated: true,
 			completion: nil
 		)
-		
-		signInWebRouting = router
-		attachChild(router)
 	}
 	
 	func detachSignInWeb() {
 		guard let router = signInWebRouting else { return }
-		
-		viewControllable.dismiss(completion: nil)
-		signInWebRouting = nil
-		detachChild(router)
+        signInWebRouting = nil
+        detachChild(router)
+        viewController.uiviewController.dismiss(animated: false)
 	}
 	
 	func routeToSignUp(with response: MOITSignInResponse) {

@@ -14,7 +14,13 @@ import AuthDomain
 import RIBs
 
 public protocol LoggedOutDependency: Dependency {
-	var signUpBuildable: SignUpBuildable { get }
-	var moitWebBuildable: MOITWebBuildable { get }
+//	var signUpBuildable: SignUpBuildable { get }
+//	var moitWebBuildable: MOITWebBuildable { get }
 	var saveTokenUseCase: SaveTokenUseCase { get }
+    
+    var fetchRandomNumberUseCase: FetchRandomNumberUseCase { get }
+    
+    var signUpUseCase: SignUpUseCase { get }
+    
+    var profileSelectBuildable: ProfileSelectBuildable { get }
 }

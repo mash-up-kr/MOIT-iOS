@@ -10,6 +10,7 @@ import MOITWeb
 import MOITWebImpl
 import AuthUserInterface
 import MOITListUserInterface
+import UIKit
 
 protocol RootInteractable: Interactable,
                            MOITWebListener,
@@ -62,13 +63,20 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         
         let router = authBuilder.build(withListener: interactor)
         
-        self.viewController.uiviewController.navigationController?.pushViewController(
-            router.viewControllable.uiviewController,
-            animated: true
-        )
-        
         self.authRouter = router
         attachChild(router)
+        let viewCon = router.viewControllable.uiviewController
+        viewCon.modalPresentationStyle = .overFullScreen
+        self.viewController.uiviewController.present(router.viewControllable.uiviewController, animated: false)
+        
+    }
+    
+    func detachAuth() {
+        guard let router = authRouter else { return }
+        
+        authRouter = nil
+        detachChild(router)
+        router.viewControllable.uiviewController.dismiss(animated: false)
     }
     
     func routeToMOITList() {
@@ -83,14 +91,6 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         
         self.moitListRouter = router
         attachChild(router)
-    }
-    
-    func detachAuth() {
-        guard let router = authRouter else { return }
-        
-        viewControllable.dismiss(completion: nil)
-        authRouter = nil
-        detachChild(router)
     }
     
     func detachMOITList() {

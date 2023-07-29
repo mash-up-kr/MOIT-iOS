@@ -13,8 +13,19 @@ import AuthDomain
 
 import RIBs
 
+import MOITWebImpl
+import MOITWeb
+
 final class LoggedOutComponent: Component<LoggedOutDependency>,
-								LoggedOutInteractorDependency {
+								LoggedOutInteractorDependency,
+SignUpDependency,
+                                MOITWebDependency {
+    var fetchRandomNumberUseCase: FetchRandomNumberUseCase { dependency.fetchRandomNumberUseCase }
+    
+    var signUpUseCase: SignUpUseCase { dependency.signUpUseCase }
+    
+    var profileSelectBuildable: ProfileSelectBuildable { dependency.profileSelectBuildable }
+    
 	var saveTokenUseCase: SaveTokenUseCase { dependency.saveTokenUseCase }
 }
 
@@ -35,11 +46,13 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
 						)
         interactor.listener = listener
 		
+        let signInWebBuilder = MOITWebBuilder(dependency: component)
+        let signUpBuilder = SignUpBuilder(dependency: component)
         return LoggedOutRouter(
 			interactor: interactor,
 			viewController: viewController,
-			signInWebBuildable: dependency.moitWebBuildable,
-			signUpBuildable: dependency.signUpBuildable
+			signInWebBuildable: signInWebBuilder,
+			signUpBuildable: signUpBuilder
 		)
     }
 }
