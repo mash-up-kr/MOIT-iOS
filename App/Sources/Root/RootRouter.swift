@@ -8,32 +8,102 @@
 import RIBs
 import MOITWeb
 import MOITWebImpl
+import AuthUserInterface
+import MOITListUserInterface
 
 protocol RootInteractable: Interactable,
-                           MOITWebListener {
+                           MOITWebListener,
+                           LoggedOutListener,
+                           MOITListListener
+{
     var router: RootRouting? { get set }
 }
 
 protocol RootViewControllable: ViewControllable {
+    
 }
 
 final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
                         RootRouting {
+
+    // MARK: - Properties
     
+    private let moitWebBuilder: MOITWebBuildable
+    private var moitWebRouter: ViewableRouting?
+    
+    private let moitListBuilder: MOITListBuildable
+    private var moitListRouter: ViewableRouting?
+    
+    private let authBuilder: LoggedOutBuildable
+    private var authRouter: ViewableRouting?
+
+    // MARK: - Initializers
+
     init(
         interactor: RootInteractable,
         viewController: RootViewControllable,
-        moitWebBuilder: MOITWebBuildable
+        moitWebBuilder: MOITWebBuildable,
+        moitListBuilder: MOITListBuildable,
+        loggedOutBuilder: LoggedOutBuildable
     ) {
         self.moitWebBuilder = moitWebBuilder
+        self.moitListBuilder = moitListBuilder
+        self.authBuilder = loggedOutBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
     
     deinit { debugPrint("\(self) deinit") }
     
-    private let moitWebBuilder: MOITWebBuildable
-    private var moitWebRouter: ViewableRouting?
+    // MARK: - Methods
+    
+    func routeToAuth() {
+        if authRouter != nil { return }
+        
+        let router = authBuilder.build(withListener: interactor)
+        
+        self.viewController.uiviewController.navigationController?.pushViewController(
+            router.viewControllable.uiviewController,
+            animated: true
+        )
+        
+        self.authRouter = router
+        attachChild(router)
+    }
+    
+    func routeToMOITList() {
+        if moitListRouter != nil { return }
+        
+        let router = moitListBuilder.build(withListener: interactor)
+        
+        self.viewController.uiviewController.navigationController?.pushViewController(
+            router.viewControllable.uiviewController,
+            animated: true
+        )
+        
+        self.moitListRouter = router
+        attachChild(router)
+    }
+    
+    func detachAuth() {
+        guard let router = authRouter else { return }
+        
+        viewControllable.dismiss(completion: nil)
+        authRouter = nil
+        detachChild(router)
+    }
+    
+    func detachMOITList() {
+        guard let router = moitListRouter else { return }
+        
+        viewControllable.dismiss(completion: nil)
+        moitListRouter = nil
+        detachChild(router)
+    }
+}
+
+// TODO: - 삭제
+extension RootRouter {
     
     func routeToMoitWeb(path: MOITWebPath) {
         guard self.moitWebRouter == nil else { return }
@@ -57,4 +127,5 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         self.moitWebRouter = nil
         self.detachChild(moitWebRouter)
     }
+
 }
