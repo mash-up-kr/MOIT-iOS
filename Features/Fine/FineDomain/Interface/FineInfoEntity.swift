@@ -11,6 +11,17 @@ import Foundation
 import MOITDetailDomain
 import FineData
 
+public enum FineApproveStatus: String {
+	case new = "NEW"
+	case inProgress = "IN_PROGRESS"
+	case rejected = "REJECTED"
+	case approved = "APPROVED"
+	
+	public init(fromRawValue rawValue: String) {
+		self = FineApproveStatus(rawValue: rawValue) ?? .new
+	}
+}
+
 // MARK: - FineInfo
 public struct FineInfoEntity {
 	public let totalFineAmount: Int
@@ -41,8 +52,9 @@ public struct FineItemEntity {
 	public let userNickname: String
 	public let attendanceStatus: AttendanceStatus
 	public let studyOrder: Int
-	public let isApproved: Bool
 	public let approveAt: String
+	public let fineApproveStatus: FineApproveStatus
+	public let imageURL: String
 	
 	public init(fineItem: FineItem) {
 		self.id = fineItem.id
@@ -51,8 +63,9 @@ public struct FineItemEntity {
 		self.userNickname = fineItem.userNickname
 		self.attendanceStatus = AttendanceStatus(fromRawValue: fineItem.attendanceStatus)
 		self.studyOrder = fineItem.studyOrder + 1
-		self.isApproved = fineItem.isApproved
 		self.approveAt = fineItem.approveAt
+		self.fineApproveStatus = FineApproveStatus(fromRawValue: fineItem.approveStatus)
+		self.imageURL = fineItem.paymentImageUrl
 	}
 	
 	public init(
@@ -62,8 +75,9 @@ public struct FineItemEntity {
 		userNickname: String,
 		attendanceStatus: AttendanceStatus,
 		studyOrder: Int,
-		isApproved: Bool,
-		approveAt: String
+		approveAt: String,
+		fineApproveStatus: FineApproveStatus,
+		imageURL: String
 	) {
 		self.id = id
 		self.fineAmount = fineAmount
@@ -71,7 +85,8 @@ public struct FineItemEntity {
 		self.userNickname = userNickname
 		self.attendanceStatus = attendanceStatus
 		self.studyOrder = studyOrder
-		self.isApproved = isApproved
 		self.approveAt = approveAt
+		self.fineApproveStatus = fineApproveStatus
+		self.imageURL = imageURL
 	}
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 // MARK: - FineInfo
-public struct FineInfo: Codable {
+public struct FineInfo: Decodable {
 	public let totalFineAmount: Int
 	public let notPaidFineList, paymentCompletedFineList: FineList
 	
@@ -23,16 +23,17 @@ public struct FineInfo: Codable {
 public typealias FineList = [FineItem]
 
 // MARK: - Fine
-public struct FineItem: Codable {
+public struct FineItem: Decodable {
 	public let id, fineAmount, userID: Int
 	public let userNickname, attendanceStatus: String
 	public let studyOrder: Int
-	public let isApproved: Bool
+	public let approveStatus: String
 	public let approveAt: String
+	public let paymentImageUrl: String
 
 	public enum CodingKeys: String, CodingKey {
 		case id, fineAmount
 		case userID = "userId"
-		case userNickname, attendanceStatus, studyOrder, isApproved, approveAt
+		case userNickname, attendanceStatus, studyOrder, approveAt, approveStatus, paymentImageUrl
 	}
 }
