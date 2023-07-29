@@ -18,4 +18,11 @@ enum FineEndpoint {
 			method: .get
 		)
 	}
+	
+	static func fetchFineItem(moitID: Int, fineID: Int) -> Endpoint<FineItem> {
+		return Endpoint(
+			path: "moit/\(moitID)/fine/\(fineID)",
+			method: .get
+		)
+	}
 }

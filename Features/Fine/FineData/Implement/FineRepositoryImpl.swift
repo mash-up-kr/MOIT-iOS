@@ -28,4 +28,10 @@ public final class FineRepositoryImpl: FineRepository {
 		
 		return network.request(with: endPoint)
 	}
+	
+	public func fetchFineItem(moitID: Int, fineID: Int) -> Single<FineItem> {
+		let endPoint = FineEndpoint.fetchFineItem(moitID: moitID, fineID: fineID)
+		
+		return network.request(with: endPoint)
+	}
 }
