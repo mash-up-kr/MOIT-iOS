@@ -86,7 +86,9 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         // 알람 설정
         // TODO: - 알람 로직 수정
         
-        let alarmList = dependency.fetchBannersUseCase.execute()
+        let bannerInfos = dependency.fetchBannersUseCase.execute()
+        
+        let alarmList = bannerInfos
             .map { [weak self] banners -> [AlarmViewModel] in
                 return banners.compactMap { self?.makeAlarmView(with: $0) }
             }
@@ -97,6 +99,8 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                 self?.presenter.didReceiveAlarm(alarms: alarms)
             })
             .disposeOnDeactivate(interactor: self)
+        
+        
         
         // moit 삭제
         deleteMoitIndex
@@ -129,12 +133,22 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         
         // 알람 탭
         selectedAlarmIndex
-            .withLatestFrom(alarmList) { index, alarmList in
-                alarmList[index]
+            .withLatestFrom(bannerInfos) { index, bannerInfos in
+                bannerInfos[index]
             }
-            .subscribe(onNext: { alarmViewModel in
+            .subscribe(onNext: { bannerInfo in
                 // TODO: - alarm 타입에 따라서 벌금, 출첵으로 나눠서 보내기
-                print("alarmViewModel: \(alarmViewModel)")
+                print("bannerInfo: \(bannerInfo)")
+                switch bannerInfo {
+                case .fine(let banner):
+                    // 화면 전환
+                    fatalError("화면 전환")
+                case .attendence(let banner):
+                    // 화면 전환
+                    fatalError("화면 전환")
+                case .empty:
+                    return
+                }
             })
             .disposeOnDeactivate(interactor: self)
         
