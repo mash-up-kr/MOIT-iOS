@@ -10,15 +10,16 @@ import MOITListUserInterface
 
 import RIBs
 import MOITWeb
+import MOITDetail
 
 protocol MOITListInteractable: Interactable,
-                               MOITWebListener {
+                               MOITWebListener,
+                               MOITDetailListener {
     var router: MOITListRouting? { get set }
     var listener: MOITListListener? { get set }
 }
 
 protocol MOITListViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
 }
 
 final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewControllable>,
@@ -27,9 +28,11 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
     init(
         interactor: MOITListInteractable,
         viewController: MOITListViewControllable,
-        moitWebBuilder: MOITWebBuildable
+        moitWebBuilder: MOITWebBuildable,
+        moitDetailBuilder: MOITDetailBuildable
     ) {
         self.moitWebBuilder = moitWebBuilder
+        self.moitDetailBuilder = moitDetailBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -48,12 +51,29 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         attachChild(router)
         viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
-    func detaachRegisterMOIT(withPop: Bool) {
+    func detachRegisterMOIT(withPop: Bool) {
         guard let moitWebRouter else { return }
         self.moitWebRouter = nil
         detachChild(moitWebRouter)
         if withPop {
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    private let moitDetailBuilder: MOITDetailBuildable
+    private var moitDetailRouter: ViewableRouting?
+    
+    func attachMOITDetail(id: String) {
+        guard moitDetailRouter == nil else { return }
+        let router = moitDetailBuilder.build(withListener: interactor, moitID: id)
+        self.moitDetailRouter = router
+        attachChild(router)
+        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+    }
+    func detachMOITDetail() {
+        guard let moitDetailRouter else { return }
+        self.moitDetailRouter = nil
+        detachChild(moitDetailRouter)
+        viewController.uiviewController.navigationController?.popViewController(animated: true)
     }
 }

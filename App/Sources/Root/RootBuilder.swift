@@ -36,14 +36,12 @@ final class RootComponent: EmptyDependency,
                            MOITListDependency,
                            LoggedOutDependency,
                            SignUpDependency,
-                           ProfileSelectDependency
-{
+                           ProfileSelectDependency {
     
     lazy var profileSelectBuildable: AuthUserInterface.ProfileSelectBuildable = ProfileSelectBuilder(dependency: self)
     
     // MARK: - Properties
-    
-    private let network = NetworkImpl()
+    let network: Network = NetworkImpl()
     private lazy var moitRepository = MOITRepositoryImpl(network: network)
     private lazy var bannerRepository = BannerRepositoryImpl(network: network)
     private lazy var authRepository = AuthRepositoryImpl(network: network)

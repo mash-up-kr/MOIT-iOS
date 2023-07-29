@@ -9,15 +9,9 @@
 import Foundation
 
 import MOITNetwork
-import MOITDetailDomain
-import MOITDetailData
 
 import RIBs
 
 public protocol MOITDetailDependency: Dependency {
-    var tabTypes: [MOITDetailTab] { get }
-    var moitDetailUsecase: MOITDetailUsecase { get }
-    var moitAttendanceUsecase: MOITAllAttendanceUsecase { get }
-    var moitDetailRepository: MOITDetailRepository { get }
-    var moitUserusecase: MOITUserUsecase { get }
+    var network: Network { get }
 }

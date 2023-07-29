@@ -34,8 +34,7 @@ public struct MOITDetailEntity {
         periodDescription: String,
         invitationCode: String,
 		isNotificationActive: Bool,
-		notificationDescription: String,
-        periodDescription: String
+		notificationDescription: String
     ) {
         self.invitationCode = invitationCode
         self.moitID = moitID

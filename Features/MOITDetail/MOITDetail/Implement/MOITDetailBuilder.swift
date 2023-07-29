@@ -8,6 +8,8 @@
 
 import RIBs
 import MOITDetail
+import MOITDetailDataImpl
+import MOITDetailDomainImpl
 import MOITDetailData
 import MOITDetailDomain
 import MOITShareImpl
@@ -18,9 +20,11 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITUsersDependency,
                                  ShareDependency {
     
-    var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
-    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
-    var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
+    var moitDetailRepository: MOITDetailRepository { MOITDetailRepositoryImpl(network: dependency.network) }
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository) }
+    var moitUserusecase: MOITUserUsecase { MOITUserUsecaseImpl(repository: moitDetailRepository) }
+    var moitDetailUsecase: MOITDetailUsecase { MOITDetailUsecaseImpl(repository: moitDetailRepository) }
+    var tabTypes: [MOITDetailTab] { [.attendance, .fine] }
 }
 
 // MARK: - Builder
@@ -42,9 +46,9 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         
         let interactor = MOITDetailInteractor(
             moitID: moitID,
-            tabTypes: [.attendance, .fine],
+            tabTypes: component.tabTypes,
             presenter: viewController,
-            detailUsecase: dependency.moitDetailUsecase
+            detailUsecase: component.moitDetailUsecase
         )
         interactor.listener = listener
         

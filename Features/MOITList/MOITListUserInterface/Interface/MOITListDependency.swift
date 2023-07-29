@@ -7,11 +7,11 @@
 //
 
 import RIBs
-
+import MOITNetwork
 import MOITListDomain
 
 public protocol MOITListDependency: Dependency {
-    
+    var network: Network { get }
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
     var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase { get }

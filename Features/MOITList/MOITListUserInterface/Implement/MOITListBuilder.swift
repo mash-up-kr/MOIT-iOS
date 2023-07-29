@@ -11,11 +11,15 @@ import MOITListDomain
 import MOITWebImpl
 import MOITWeb
 import RIBs
+import MOITDetailImpl
+import MOITDetail
+import MOITNetwork
 
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency,
-MOITWebDependency {
-    
+                               MOITWebDependency,
+                               MOITDetailDependency {
+    var network: Network { dependency.network }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { dependency.calculateLeftTimeUseCase }
     
     var fetchBannersUseCase: FetchBannersUseCase { dependency.fetchPaneltyToBePaiedUseCase }
@@ -41,10 +45,13 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         interactor.listener = listener
         
         let moitWebBuilder = MOITWebBuilder(dependency: component)
+        let moitDetailBuilder = MOITDetailBuilder(dependency: component)
+        
         return MOITListRouter(
             interactor: interactor,
             viewController: viewController,
-            moitWebBuilder: moitWebBuilder
+            moitWebBuilder: moitWebBuilder,
+            moitDetailBuilder: moitDetailBuilder
         )
     }
 }

@@ -16,7 +16,9 @@ import RxRelay
 
 protocol MOITListRouting: ViewableRouting {
     func attachRegisterMOIT()
-    func detaachRegisterMOIT(withPop: Bool)
+    func detachRegisterMOIT(withPop: Bool)
+    func attachMOITDetail(id: String)
+    func detachMOITDetail()
 }
 
 protocol MOITListPresentable: Presentable {
@@ -126,9 +128,8 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .withLatestFrom(moitList) { index, moits in
                 moits[index]
             }
-            .subscribe(onNext: { selectedMoit in
-                // TODO: - MOITDetail로 보내기
-                print("selectedMoit: \(selectedMoit)")
+            .subscribe(onNext: { [weak self] selectedMoit in
+                self?.router?.attachMOITDetail(id: "\(selectedMoit)")
             })
             .disposeOnDeactivate(interactor: self)
         
@@ -234,6 +235,6 @@ extension MOITListInteractor {
     func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
     }
     func shouldDetach(withPop: Bool) {
-        self.router?.detaachRegisterMOIT(withPop: withPop)
+        self.router?.detachRegisterMOIT(withPop: withPop)
     }
 }
