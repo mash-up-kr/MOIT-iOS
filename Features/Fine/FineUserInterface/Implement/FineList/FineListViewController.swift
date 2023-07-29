@@ -92,8 +92,8 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 				flex.addItem(fineAmountLabel)
 				flex.addItem(fineUnitLabel)
 			}
-
-			flex.addItem(fineListScrollView).marginTop(20).grow(1)
+				
+			flex.addItem(fineListScrollView).marginTop(20)
 		}
 	}
 	
@@ -115,6 +115,8 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		)
 		
 		fineListScrollView.configureView(with: viewModel)
+		fineListScrollView.flex.markDirty()
+		self.view.setNeedsLayout()
 	}
 }
 

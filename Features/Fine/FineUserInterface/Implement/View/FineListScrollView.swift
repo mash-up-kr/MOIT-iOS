@@ -63,12 +63,11 @@ final class FineListScrollView: UIView {
 		super.layoutSubviews()
 
 		flexRootContainer.pin.all()
-		flexRootContainer.flex.layout()
-		
+		contentView.pin.all()
 		contentView.flex.layout(mode: .adjustWidth)
 		
 		scrollView.contentSize = contentView.frame.size
-		scrollView.flex.layout()
+		flexRootContainer.flex.layout()
 	}
 	
 // MARK: - private
@@ -79,19 +78,19 @@ final class FineListScrollView: UIView {
 		flexRootContainer.flex
 			.define { flex in
 				flex.addItem(segmentPager)
-				flex.addItem(scrollView).grow(1)
+				flex.addItem(scrollView)
+					.marginVertical(20)
 			}
 		
 		scrollView.flex
 			.define { flex in
-				flex.addItem(contentView).grow(1).marginVertical(20)
+				flex.addItem(contentView)
 			}
 
 		contentView.flex
 			.direction(.row)
 			.define { flex in
 				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width - 40)
-//					.height(2000)
 				flex.addItem(paymentListView).width(UIScreen.main.bounds.width - 40)
 			}
 	}
@@ -114,10 +113,13 @@ final class FineListScrollView: UIView {
 			with: fineInfo.myNotPaidFineListViewModel,
 			othersFineItem: fineInfo.othersNotPaidFineListViewModel
 		)
+		defaulterListView.flex.markDirty()
 
 		paymentListView.configurePaymentCompletedFineListView(
 			with: fineInfo.paymentCompletedFineListViewModel
 		)
+		paymentListView.flex.markDirty()
+		setNeedsLayout()
 	}
 }
 

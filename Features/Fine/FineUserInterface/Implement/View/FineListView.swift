@@ -73,9 +73,10 @@ final class FineListView: UIView {
 	
 		scrollView.pin.all()
 		contentView.pin.top().horizontally().bottom()
-		scrollView.flex.layout(mode: .adjustHeight)
+		contentView.flex.layout()
 
 		scrollView.contentSize = contentView.frame.size
+		scrollView.flex.layout(mode: .adjustHeight)
 	}
 	
 	private func configureLayout() {
@@ -120,18 +121,18 @@ final class FineListView: UIView {
 					flex.addItem(emptyLabel).marginVertical(43)
 				}
 		} else {
-//			contentView.flex
-//				.define { flex in
-//					let notPaidFineListViews = fineList.map { NotPaidFineListView(fineViewModel: $0) }
-//					
-//					for (index, list) in fineList.enumerated() {
-//						if index == 0 {
-//							flex.addItem(list)
-//						} else {
-//							flex.addItem(list).marginTop(20)
-//						}
-//					}
-//				}
+			contentView.flex
+				.define { flex in
+					let paymentComptetedFineListViews = fineList.map { PaymentCompletedFineListView(fineViewModel: $0) }
+					
+					for (index, list) in paymentComptetedFineListViews.enumerated() {
+						if index == 0 {
+							flex.addItem(list)
+						} else {
+							flex.addItem(list).marginTop(20)
+						}
+					}
+				}
 		}
 	}
 }
