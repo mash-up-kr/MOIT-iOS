@@ -32,8 +32,8 @@ final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
 					FineItemEntity(
 						id: 1,
 						fineAmount: 2000,
-						userID: 1,
-						userNickname: "나나나",
+						userID: 0,
+						userNickname: "가가가",
 						attendanceStatus: .LATE,
 						studyOrder: 2,
 						approveAt: "2023.07.29",

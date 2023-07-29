@@ -23,7 +23,7 @@ struct AuthorizePaymentViewModel {
 	/// 벌금 미납자 이름
 	let userNickName: String
 	/// 스터디 n차
-	let studyOrder: String
+	let studyOrder: Int
 	let buttonTitle: String?
 	let approveStatus: FineApproveStatus
 }

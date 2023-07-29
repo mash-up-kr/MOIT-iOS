@@ -13,6 +13,7 @@ import DesignSystem
 
 import RIBs
 import RxSwift
+import Kingfisher
 
 protocol AuthorizePaymentRouting: ViewableRouting { }
 
@@ -55,6 +56,8 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
         super.willResignActive()
     }
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 // MARK: - private
 	
 	private func fetchData() {
@@ -68,10 +71,12 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		.subscribe(
 			onSuccess: { [weak self] viewModel in
 				self?.presenter.configure(viewModel)
+			},
+			onDisposed: {
+				debugPrint("this subscription has terminated!!!!")
 			}
 		)
 		.disposeOnDeactivate(interactor: self)
-		// TODO: UI 업데이트
 	}
 	
 	private func convertFineItemEntityToViewModel(
@@ -89,7 +94,7 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 			fineAmount: "\(entity.fineAmount)원", // TODO: numberFormatter 필요
 			chipType: dependency.convertAttendanceStatusUseCase.execute(attendanceStatus: entity.attendanceStatus),
 			userNickName: entity.userNickname,
-			studyOrder: "\(entity.studyOrder)차 스터디",
+			studyOrder: entity.studyOrder,
 			buttonTitle: buttonTitle,
 			approveStatus: entity.fineApproveStatus
 		)

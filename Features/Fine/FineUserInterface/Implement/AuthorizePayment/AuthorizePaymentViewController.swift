@@ -15,6 +15,7 @@ import RIBs
 import RxSwift
 import FlexLayout
 import PinLayout
+import Kingfisher
 
 protocol AuthorizePaymentPresentableListener: AnyObject {
 	func dismissButtonDidTap()
@@ -33,12 +34,18 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		rightItems: []
 	)
 	
-	private let fineDetailList = MOITList(
+	private var fineDetailList = MOITList(
 		type: .sendMoney,
 		title: "김모잇",
 		detail: "15,000원",
 		chipType: .late,
-		studyOrder: 1
+		studyOrder: 1,
+		button: MOITButton(
+			type: .mini,
+			title: "사진 재등록하기",
+			titleColor: ResourceKitAsset.Color.white.color,
+			backgroundColor: ResourceKitAsset.Color.gray900.color
+		)
 	)
 	
 	private let fineImageView = FineImageView()
@@ -50,6 +57,12 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		titleColor: ResourceKitAsset.Color.gray700.color,
 		backgroundColor: ResourceKitAsset.Color.gray200.color
 	)
+	
+	private var fineImage: UIImage? {
+		didSet {
+			activateAuthorizeButton()
+		}
+	}
 	
 // MARK: - property
 	
@@ -80,6 +93,37 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 	
 	func configure(_ viewModel: AuthorizePaymentViewModel) {
 		debugPrint("viewModel: \(viewModel)")
+
+		fineDetailList.configure(
+			title: viewModel.userNickName,
+			detail: viewModel.fineAmount,
+			chipType: viewModel.chipType,
+			isButtonHidden: viewModel.buttonTitle == nil,
+			buttonTitle: viewModel.buttonTitle,
+			studyOrder: viewModel.studyOrder
+		)
+		
+		if let imageURL = viewModel.imageURL {
+			fineImageView.kf.setImage(
+				with: URL(string: imageURL)) { [weak self] result in
+					switch result {
+					case .success(let imageResult):
+						self?.fineImageView.hideGuideComponents()
+						self?.fineImage = imageResult.image.imageWithoutBaseline()
+					case .failure:
+						break
+					}
+				}
+		}
+		
+		self.view.setNeedsLayout()
+	}
+	
+	func activateAuthorizeButton() {
+		authenticateButton.configure(
+			titleColor: ResourceKitAsset.Color.white,
+			backgroundColor: ResourceKitAsset.Color.blue800
+		)
 	}
 
 	

@@ -100,9 +100,11 @@ final class FineImageView: UIImageView {
 			}
 	}
 	
-	private func hideGuideComponents() {
+	func hideGuideComponents() {
 		uploadIconImageView.flex.display(.none).markDirty()
 		uploadGuideLabel.flex.display(.none).markDirty()
+		
+		self.setNeedsLayout()
 	}
 	
 // MARK: - internal
