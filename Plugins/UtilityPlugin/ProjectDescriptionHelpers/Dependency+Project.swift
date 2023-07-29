@@ -18,9 +18,7 @@ extension TargetDependency {
 		}
 		
 		public struct MOITShare {
-			public struct Data {}
-			public struct Domain {}
-			public struct UserInterface {}
+            public struct Domain {}
 		}
 		
 		public struct MOITParticipate {
@@ -32,7 +30,6 @@ extension TargetDependency {
 		public struct MOITDetail {
 			public struct Data {}
 			public struct Domain {}
-			public struct Interface {}
 		}
 	}
 
@@ -236,6 +233,15 @@ extension TargetDependency.Feature.MOITDetail {
             path: .relativeToRoot("Features/MOITDetail/\(moduleName)")
         )
     }
+    
+    public static let Interface: TargetDependency = .project(
+        target: "MOITDetail",
+        path: .relativeToRoot("Features/MOITDetail/MOITDetail")
+    )
+    public static let Implement: TargetDependency = .project(
+        target: "MOITDetailImpl",
+        path: .relativeToRoot("Features/MOITDetail/MOITDetail")
+    )
 }
 
 public extension TargetDependency.Feature.MOITDetail.Data {
@@ -248,7 +254,20 @@ public extension TargetDependency.Feature.MOITDetail.Domain {
     static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: false)
 }
 
-public extension TargetDependency.Feature.MOITDetail.Interface {
-	static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: true)
-	static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: false)
+// MARK: - MOITShare
+public extension TargetDependency.Feature.MOITShare {
+    static let Interface: TargetDependency = .project(target: "MOITShare", path: .relativeToRoot("Features/MOITShare/MOITShare"))
+    static let Implement: TargetDependency = .project(target: "MOITShareImpl", path: .relativeToRoot("Features/MOITShare/MOITShare"))
+}
+
+public extension TargetDependency.Feature.MOITShare.Domain {
+    static func project(isInterface: Bool) -> TargetDependency {
+        let postfix: String = isInterface ? "" : "Impl"
+        return .project(
+            target: "MOITShareDomain\(postfix)",
+            path: .relativeToRoot("Features/MOITShare/MOITShareDomain")
+        )
+    }
+    static let Interface = Self.project(isInterface: true)
+    static let Implement = Self.project(isInterface: false)
 }

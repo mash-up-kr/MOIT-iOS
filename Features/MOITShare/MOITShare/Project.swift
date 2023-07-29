@@ -12,9 +12,8 @@ import UtilityPlugin
 
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITShare",
-    platform: .iOS,
-    iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
+        .ThirdParty.RIBs,
     ],
     implementDependencies: [
         .ThirdParty.RIBs,
@@ -25,7 +24,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RxGesture,
         .ResourceKit,
         .DesignSystem,
+        .Feature.MOITShare.Domain.Implement
     ],
     isUserInterface: true
 )
-

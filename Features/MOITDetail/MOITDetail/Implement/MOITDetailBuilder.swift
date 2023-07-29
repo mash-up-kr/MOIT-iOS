@@ -10,10 +10,13 @@ import RIBs
 import MOITDetail
 import MOITDetailData
 import MOITDetailDomain
+import MOITShareImpl
+import MOITShare
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
-                                MOITUsersDependency {
+                                 MOITUsersDependency,
+                                 ShareDependency {
     
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
@@ -24,11 +27,11 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 
 public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
                                       MOITDetailBuildable {
-
+    
     public override init(dependency: MOITDetailDependency) {
         super.init(dependency: dependency)
     }
-
+    
     public func build(
         withListener listener: MOITDetailListener,
         moitID: String
@@ -47,12 +50,14 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         
         let attendanceBuiler = MOITDetailAttendanceBuilder(dependency: component)
         let moitUserBuilder = MOITUsersBuilder(dependency: component)
+        let shareBuilder = ShareBuilder(dependency: component)
         
         return MOITDetailRouter(
             interactor: interactor,
             viewController: viewController,
             attendanceBuiler: attendanceBuiler,
-            moitUserBuilder: moitUserBuilder
+            moitUserBuilder: moitUserBuilder,
+            shareBuilder: shareBuilder
         )
     }
 }

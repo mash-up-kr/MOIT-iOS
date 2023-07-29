@@ -25,12 +25,12 @@ public final class MOITShareView: UIView {
     private let invitationCodeBackgroundView = UIView()
     private let invitationCodeTitleLabel = UILabel()
     private let invitationCodeLabel = UILabel()
-    fileprivate let kakaoTalkShareButton = MOITButton(
+    fileprivate let shareButton = MOITButton(
         type: .large,
-        image: ResourceKitAsset.Icon.kakaotalk.image,
-        title: "카카오톡으로 공유하기",
-        titleColor: .black,
-        backgroundColor: ResourceKitAsset.Color.kakao.color
+        image: ResourceKitAsset.Icon.share2.image,
+        title: "공유하기",
+        titleColor: .white,
+        backgroundColor: ResourceKitAsset.Color.blue800.color
     )
     fileprivate let linkCopyButton = MOITButton(
         type: .large,
@@ -120,7 +120,7 @@ public final class MOITShareView: UIView {
                     .alignSelf(.center)
                     .marginHorizontal(16)
                     .define { flex in
-                        flex.addItem(self.kakaoTalkShareButton)
+                        flex.addItem(self.shareButton)
                             .marginTop(20)
                         flex.addItem(self.linkCopyButton)
                             .marginTop(10)
@@ -132,8 +132,8 @@ public final class MOITShareView: UIView {
 }
 
 extension Reactive where Base: MOITShareView {
-    public var didTapKakaoTalkShareButton: Observable<Void> {
-        self.base.kakaoTalkShareButton.rx.tap
+    public var didTapShareButton: Observable<Void> {
+        self.base.shareButton.rx.tap
     }
     public var didTapLinkCopyButton: Observable<Void> {
         self.base.linkCopyButton.rx.tap
