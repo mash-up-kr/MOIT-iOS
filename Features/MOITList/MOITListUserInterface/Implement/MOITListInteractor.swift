@@ -18,7 +18,11 @@ protocol MOITListRouting: ViewableRouting {
     func attachRegisterMOIT()
     func detachRegisterMOIT(withPop: Bool)
     func attachMOITDetail(id: String)
-    func detachMOITDetail()
+    func detachMOITDetail(withPop: Bool)
+    func attachInputParticipateCode()
+    func detachInputParticipateCode()
+    func attachSetting()
+    func detachSetting(withPop: Bool)
 }
 
 protocol MOITListPresentable: Presentable {
@@ -166,7 +170,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         participateButtonTapped
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                // TODO: - 참여하기로 보내기
+                owner.router?.attachInputParticipateCode()
             })
             .disposeOnDeactivate(interactor: self)
     }
@@ -225,6 +229,10 @@ extension MOITListInteractor: MOITListPresentableListener {
     func didTapMOIT(index: Int) {
         self.selectedMoitIndex.accept(index)
     }
+    
+    func didTapSetting() {
+        router?.attachSetting()
+    }
 }
 
 // MARK: - MOITWebListener
@@ -236,5 +244,27 @@ extension MOITListInteractor {
     }
     func shouldDetach(withPop: Bool) {
         self.router?.detachRegisterMOIT(withPop: withPop)
+    }
+}
+
+// MARK: - MOITSettingListener
+
+extension MOITListInteractor {
+    func didTapBackButton() {
+        self.router?.detachSetting(withPop: true)
+    }
+    func didSwipeBack() {
+        self.router?.detachSetting(withPop: false)
+    }
+}
+
+// MARK: - MOITDetail
+extension MOITListInteractor {
+    func moitDetailDidSwipeBack() {
+        self.router?.detachMOITDetail(withPop: false)
+    }
+    
+    func moitDetailDidTapBackButton() {
+        self.router?.detachMOITDetail(withPop: true)
     }
 }

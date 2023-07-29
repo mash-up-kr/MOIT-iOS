@@ -69,11 +69,13 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         self.viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
     
-    func detachMOITUsers() {
+    func detachMOITUsers(withPop: Bool) {
         guard let moitUserRouter else { return }
         self.moitUserRouter = nil
         self.detachChild(moitUserRouter)
-        self.viewController.uiviewController.navigationController?.popViewController(animated: true)
+        if withPop {
+            self.viewController.uiviewController.navigationController?.popViewController(animated: true)
+        }
     }
     
     

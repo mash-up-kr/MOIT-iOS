@@ -28,6 +28,7 @@ final class MOITListComponent: Component<MOITListDependency>,
     var fetchBannersUseCase: FetchBannersUseCase { dependency.fetchPaneltyToBePaiedUseCase }
     
     var fetchMOITListsUseCase: FetchMoitListUseCase { dependency.fetchMOITListsUseCase }
+    var moitDetailUseCase: MOITDetailUsecase { dependency.moitDetailUseCase }
 }
 
 // MARK: - Builder
@@ -49,12 +50,16 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         
         let moitWebBuilder = MOITWebBuilder(dependency: component)
         let moitDetailBuilder = MOITDetailBuilder(dependency: component)
+        let inputParticipateCodeBuilder = InputParticipateCodeBuilder(dependency: component)
+        let settingBuilder = MOITSettingBuilder(dependency: component)
         
         return MOITListRouter(
             interactor: interactor,
             viewController: viewController,
             moitWebBuilder: moitWebBuilder,
-            moitDetailBuilder: moitDetailBuilder
+            moitDetailBuilder: moitDetailBuilder,
+            inputParticipateCodeBuilder: inputParticipateCodeBuilder,
+            settingBuilder: settingBuilder
         )
     }
 }

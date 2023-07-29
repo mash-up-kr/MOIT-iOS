@@ -18,6 +18,7 @@ import ResourceKit
 protocol MOITUsersPresentableListener: AnyObject {
     func viewDidLoad()
     func didTapBackButton()
+    func didSwipeBack()
 }
 
 final class MOITUsersViewController: UIViewController,
@@ -65,6 +66,13 @@ final class MOITUsersViewController: UIViewController,
         super.viewDidLayoutSubviews()
         flexRootView.pin.top(self.view.pin.safeArea).bottom().horizontally()
         flexRootView.flex.layout()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isMovingFromParent {
+            self.listener?.didSwipeBack()
+        }
     }
     
     private func define() {

@@ -16,6 +16,7 @@ public protocol MOITListDependency: Dependency {
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
     var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase { get }
+    var moitDetailUseCase: MOITDetailUsecase { get }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitUserusecase: MOITUserUsecase { get }
     var moitDetailUsecase: MOITDetailUsecase { get }
