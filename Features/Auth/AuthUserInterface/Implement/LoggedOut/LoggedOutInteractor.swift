@@ -71,11 +71,13 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	
 	func didSignIn(with token: String) {
 		dependency.saveTokenUseCase.execute(token: token)
+        router?.detachSignInWeb()
         listener?.didCompleteAuth()
 	}
     
     // MARK: - SignUp
     func didCompleteSignUp() {
+        router?.detachSignInWeb()
         listener?.didCompleteAuth()
     }
 }

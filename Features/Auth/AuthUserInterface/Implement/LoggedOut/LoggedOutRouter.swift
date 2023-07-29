@@ -27,7 +27,7 @@ protocol LoggedOutViewControllable: ViewControllable {
 final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutViewControllable>, LoggedOutRouting {
 
 	private let signInWebBuildable: MOITWebBuildable
-	private var signInWebRouting: Routing?
+	private var signInWebRouting: ViewableRouting?
 	
 	private let signUpBuildable: SignUpBuildable
 	private var signUpRouting: Routing?
@@ -53,10 +53,10 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 			path: .signIn
 		)
         
-		let viewController = router.viewControllable
-		router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen
-		viewControllable.present(
-			viewController,
+//		let viewController = router.viewControllable
+		router.viewControllable.uiviewController.modalPresentationStyle = .overFullScreen
+        viewController.uiviewController.navigationController?.present(
+            router.viewControllable.uiviewController,
 			animated: true,
 			completion: nil
 		)
@@ -68,7 +68,7 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
 	func detachSignInWeb() {
 		guard let router = signInWebRouting else { return }
 		
-		viewControllable.dismiss(completion: nil)
+        viewControllable.uiviewController.dismiss(animated: true, completion: nil)
 		signInWebRouting = nil
 		detachChild(router)
 	}
