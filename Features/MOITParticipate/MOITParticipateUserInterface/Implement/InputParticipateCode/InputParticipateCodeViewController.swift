@@ -15,6 +15,7 @@ import Utils
 import RIBs
 import RxCocoa
 import RxSwift
+import Toast
 
 protocol InputParticipateCodePresentableListener: AnyObject {
 	func completeButtonDidTap(with code: String)
@@ -65,6 +66,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
+	private var keyboardHeight: CGFloat = 0
 	
 // MARK: - override
 	
@@ -94,6 +96,23 @@ public final class InputParticipateCodeViewController: UIViewController,
 		super.viewWillDisappear(animated)
 		
 		deleteKeyboardNotification()
+	}
+	
+// MARK: - internal
+	func showErrorToast() {
+		// TODO: Point 수정 필요ㅜ
+		let spaceBetweenButtonAndToast: CGFloat = 10
+		let toastHeight: CGFloat = 64
+		
+		let verticalPoint = UIScreen.main.bounds.height - (
+			keyboardHeight + completeButton.bounds.height + spaceBetweenButtonAndToast + toastHeight * 2
+		)
+		let horizontalPoint = UIScreen.main.bounds.width / 2
+
+		self.flexRootContainer.showToast(
+			MOITToast(toastType: .fail, text: StringResource.errorToast.value),
+			point: CGPoint(x: horizontalPoint, y: verticalPoint)
+		)
 	}
 	
 // MARK: - private
@@ -164,6 +183,7 @@ public final class InputParticipateCodeViewController: UIViewController,
 	@objc private func keyboardWillShow(_ notification: Notification) {
 		if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 			let keyboardHeight = keyboardFrame.cgRectValue.height - UIDevice.safeAreaBottomPadding
+			self.keyboardHeight = keyboardHeight
 
 			completeButton.flex.marginBottom(keyboardHeight)
 			completeButton.flex.markDirty()
@@ -178,6 +198,7 @@ extension InputParticipateCodeViewController {
 		case title
 		case placeHolder
 		case buttonTitle
+		case errorToast
 		
 		var value: String {
 			switch self {
@@ -189,6 +210,8 @@ extension InputParticipateCodeViewController {
 				return "초대코드를 입력해주세요."
 			case .buttonTitle:
 				return "완료"
+			case .errorToast:
+				return "존재하지 않는 스터디이에요!"
 			}
 		}
 	}

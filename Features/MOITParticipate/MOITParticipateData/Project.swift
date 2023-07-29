@@ -15,12 +15,12 @@ let project = Project.invertedDualTargetProject(
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
+		.Feature.MOITDetail.Data.Interface,
+		
 		.MOITNetwork.Interface,
 		.ThirdParty.RxSwift
     ],
     implementDependencies: [
-		.MOITNetwork.Interface,
-		.ThirdParty.RxSwift
     ]
 )
 

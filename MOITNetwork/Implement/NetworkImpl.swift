@@ -24,35 +24,29 @@ public final class NetworkImpl: Network {
 
 	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
 		do {
-			var urlRequest = try endpoint.toURLRequest()
-            let token = """
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1
-"""
-            let token2 = """
-rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY
-"""
-            let token3 = """
-29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc
-"""
-            urlRequest.setValue("Bearer \(token)\(token2)\(token3)", forHTTPHeaderField: "Authorization")
-            print("---------urlRequest---------")
-            print(urlRequest)
-            print("----------------------------")
-			return Single.create { single in
-				self.session.dataTask(with: urlRequest) {  data, response, error in
-                    
+			let urlRequest = try endpoint.toURLRequest()
+			
+			Logger.debug("requested url: \(urlRequest.url)")
+			Logger.debug(
+				"header: \(urlRequest.value(forHTTPHeaderField: "authorization") ?? "")"
+			)
+			Logger.debug(
+				"requested httpBody: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))"
+			)
+
+			return Single.create { [weak self] single in
+				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
+					guard let self else { return }
 					let result = self.checkError(with: data, response, error, E.Response.self)
 
 					switch result {
 					case .success(let response):
+						Logger.debug("👍 success: \(response)")
+						
 						single(.success(response))
-                        print("---------success---------")
-                        print(response)
-                        print("-------------------------")
 					case .failure(let error):
-                        print("--------- error ---------")
-                        print(error)
-                        print("-------------------------")
+						Logger.debug("💥 error: \(error)")
+						
 						single(.failure(error))
 					}
 				}.resume()
@@ -83,8 +77,9 @@ rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJ
 			return .failure(NetworkError.emptyData)
 		}
 		
-		Logger.debug("✨ status code: \(response.statusCode)")
-		
+		Logger.debug("🧐 response data: \(String(decoding: data, as: UTF8.self))")
+		Logger.debug("👀 statusCode: \(response.statusCode)")
+
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
 			

@@ -22,6 +22,7 @@ fileprivate enum DesignSystemType: String,
     case bottomSheet
     case alarmView
     case profile
+	case toast
 }
 
 final class DesignSystemViewController: UITableViewController {
@@ -87,6 +88,8 @@ final class DesignSystemViewController: UITableViewController {
             self.navigationController?.pushViewController(ProfileDemoViewController(), animated: true)
 		case .list:
 			self.navigationController?.pushViewController(MOITListDemoViewController(), animated: true)
+		case .toast:
+			self.navigationController?.pushViewController(MOITToastDemoViewController(), animated: true)
         default: return
         }
     }

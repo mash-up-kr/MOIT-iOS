@@ -8,6 +8,11 @@
 
 import RIBs
 
+import MOITDetail
+
 public protocol ParticipationSuccessBuildable: Buildable {
-	func build(withListener listener: ParticipationSuccessListener) -> ViewableRouting
+	func build(
+		withListener listener: ParticipationSuccessListener,
+		withViewModel viewModel: MOITDetailProfileInfoViewModel
+	) -> ViewableRouting
 }
