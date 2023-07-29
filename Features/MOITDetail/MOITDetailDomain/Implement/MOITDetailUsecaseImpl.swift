@@ -13,50 +13,61 @@ import RxSwift
 import MOITFoundation
 
 public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
-    private let repository: MOITDetailRepository
-    
-    public init(repository: MOITDetailRepository) {
-        self.repository = repository
-    }
-    
-    public func moitDetail(with ID: String) -> Single<MOITDetailEntity> {
-        return self.repository.fetchDetail(moitID: ID)
-            .compactMap { [weak self] response -> MOITDetailEntity? in
-                guard let self = self else { return nil }
-                let scheduleDescription = self.moitScheduleDescription(
-                    scheduleDayOfWeeks: response.scheduleDayOfWeeks,
-                    scheduleRepeatCycle: response.scheduleRepeatCycle,
-                    scheduleStartTime: response.scheduleStartTime,
-                    scheduleEndTime: response.scheduleEndTime
-                )
-                let ruleShortDescription = self.ruleShortDescription(
-                    fineLateTime: response.fineLateTime,
-                    fineAbsenceTime: response.fineAbsenceTime
-                )
-                let ruleLongDescription = self.ruleLongDescription(
-                    fineLateTime: response.fineLateTime,
-                    fineLateAmount: response.fineLateAmount,
-                    fineAbsenceTime: response.fineAbsenceTime,
-                    fineAbsenceAmount: response.fineAbsenceAmount
-                )
-                let periodDescription = self.periodDescription(
-                    startDate: response.startDate,
-                    endDate: response.endDate
-                )
-                return MOITDetailEntity(
-                    moitID: "\(response.moitID)",
-                    moitName: response.name,
-                    masterID: "\(response.masterID)",
-                    description: self.moitDescription(response.description),
-                    imageURL: response.imageURL,
-                    scheduleDescription: scheduleDescription,
-                    ruleShortDescription: ruleShortDescription,
-                    ruleLoneDescription: ruleLongDescription,
-                    periodDescription: periodDescription
-                )
-            }.asObservable()
-            .asSingle()
-    }
+	private let repository: MOITDetailRepository
+	
+	public init(repository: MOITDetailRepository) {
+		self.repository = repository
+	}
+	
+	public func moitDetail(with ID: String) -> Single<MOITDetailEntity> {
+		return self.repository.fetchDetail(moitID: ID)
+			.compactMap { [weak self] response -> MOITDetailEntity? in
+				guard let self = self else { return nil }
+				return self.convertToMOITDetailEntity(from: response)
+			}.asObservable()
+			.asSingle()
+	}
+	
+	public func convertToMOITDetailEntity(
+		from moitDetailModel: MOITDetailModel
+	) -> MOITDetailEntity {
+		let scheduleDescription = self.moitScheduleDescription(
+			scheduleDayOfWeeks: moitDetailModel.scheduleDayOfWeeks,
+			scheduleRepeatCycle: moitDetailModel.scheduleRepeatCycle,
+			scheduleStartTime: moitDetailModel.scheduleStartTime,
+			scheduleEndTime: moitDetailModel.scheduleEndTime
+		)
+		let ruleShortDescription = self.ruleShortDescription(
+			fineLateTime: moitDetailModel.fineLateTime,
+			fineAbsenceTime: moitDetailModel.fineAbsenceTime
+		)
+		let ruleLongDescription = self.ruleLongDescription(
+			fineLateTime: moitDetailModel.fineLateTime,
+			fineLateAmount: moitDetailModel.fineLateAmount,
+			fineAbsenceTime: moitDetailModel.fineAbsenceTime,
+			fineAbsenceAmount: moitDetailModel.fineAbsenceAmount
+		)
+		let notificationDescription = self.notificationDescription(
+			remindOption: moitDetailModel.notificationRemindOption
+		)
+		let periodDescription = self.periodDescription(
+			startDate: moitDetailModel.startDate,
+			endDate: moitDetailModel.endDate
+		)
+		return MOITDetailEntity(
+			moitID: "\(moitDetailModel.moitID)",
+			moitName: moitDetailModel.name,
+			masterID: "\(moitDetailModel.masterID)",
+			description: self.moitDescription(moitDetailModel.description),
+			imageURL: moitDetailModel.imageURL,
+			scheduleDescription: scheduleDescription,
+			ruleShortDescription: ruleShortDescription,
+			ruleLoneDescription: ruleLongDescription,
+			isNotificationActive: moitDetailModel.notificationIsRemindActive,
+			notificationDescription: notificationDescription,
+			periodDescription: periodDescription
+		)
+	}
     
     private func moitDescription(_ description: String) -> String? {
         description.isEmpty ? nil : description
@@ -106,4 +117,10 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
     ) -> String {
         return "\(startDate.dateKORString) - \(endDate.dateKORString)"
     }
+	
+	private func notificationDescription(
+		remindOption: String
+	) -> String {
+		return NotificationRemindOption(fromRawValue: remindOption).toKor
+	}
 }

@@ -7,8 +7,12 @@
 //
 
 import Foundation
+
+import MOITDetailData
+
 import RxSwift
 
 public protocol MOITDetailUsecase {
     func moitDetail(with ID: String) -> Single<MOITDetailEntity>
+	func convertToMOITDetailEntity(from moitDetailModel: MOITDetailModel) -> MOITDetailEntity
 }

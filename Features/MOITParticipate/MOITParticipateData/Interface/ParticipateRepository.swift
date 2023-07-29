@@ -8,8 +8,10 @@
 
 import Foundation
 
+import MOITDetailData
+
 import RxSwift
 
 public protocol ParticipateRepository {
-	func postParticipateCode(with request: MOITParticipateRequest) -> Single<MOITParticipateDTO>
+	func postParticipateCode(with request: MOITParticipateRequest) -> Single<MOITDetailModel>
 }

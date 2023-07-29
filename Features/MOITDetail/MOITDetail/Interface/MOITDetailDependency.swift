@@ -7,9 +7,12 @@
 //
 
 import Foundation
-import RIBs
+
+import MOITNetwork
 import MOITDetailDomain
 import MOITDetailData
+
+import RIBs
 
 public protocol MOITDetailDependency: Dependency {
     var tabTypes: [MOITDetailTab] { get }

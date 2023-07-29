@@ -14,6 +14,7 @@ import FlexLayout
 import PinLayout
 import RxSwift
 import RxGesture
+import Kingfisher
 
 public final class MOITProfileView: UIView {
     
@@ -28,15 +29,18 @@ public final class MOITProfileView: UIView {
     
     // MARK: - Properties
     public private(set) var profileImageType: ProfileImageType?
+	private var urlString: String?
     private let profileType: ProfileType
     fileprivate let containAddButton: Bool
     
     // MARK: - Initializers
     
     public init (
+		urlString: String? = nil,
         profileType: ProfileType,
         addButton: Bool = false
     ) {
+		self.urlString = urlString
         self.profileType = profileType
         self.containAddButton = addButton
         
@@ -46,10 +50,12 @@ public final class MOITProfileView: UIView {
     }
     
     public init (
+		urlString: String? = nil,
         profileImageType: ProfileImageType,
         profileType: ProfileType,
         addButton: Bool = false
     ) {
+		self.urlString = urlString
         self.profileImageType = profileImageType
         self.profileType = profileType
         self.containAddButton = addButton
@@ -83,6 +89,11 @@ public final class MOITProfileView: UIView {
         self.profileImageType = profileImageType
         profileImageView.image = profileImageType.image
     }
+	
+	public func configureImage(with imageUrl: String?) {
+		self.urlString = imageUrl
+		configureAttributes()
+	}
     
     private func configureLayout() {
         addSubview(profileImageView)
@@ -92,6 +103,15 @@ public final class MOITProfileView: UIView {
         profileImageView.layer.borderColor = ResourceKitAsset.Color.gray100.color.cgColor
         profileImageView.flex.size(profileType.size)
     }
+	
+	private func configureAttributes() {
+		if let urlString {
+			profileImageView.kf.setImage(
+				with: URL(string: urlString),
+				placeholder: nil
+			)
+		}
+	}
 }
 
 public extension Reactive where Base: MOITProfileView {

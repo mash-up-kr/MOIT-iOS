@@ -28,16 +28,15 @@ extension TargetDependency {
 			public struct Domain {}
 			public struct UserInterface {}
 		}
-    
-    public struct MOITDetail {
-      public struct Data {}
-      public struct Domain {}
-    }
+		
+		public struct MOITDetail {
+			public struct Data {}
+			public struct Domain {}
+			public struct Interface {}
+		}
 	}
 
-  public struct Core {
-        
-    }
+    public struct Core { }
     
     public struct MOITNetwork {}
 	
@@ -53,7 +52,7 @@ extension TargetDependency {
         path: .relativeToRoot("DesignSystem")
     )
 
-    public struct ThirdParty {}
+	public struct ThirdParty {}
 }
 
 public extension TargetDependency.Core {
@@ -187,6 +186,7 @@ public extension TargetDependency.ThirdParty {
     static let Nimble = TargetDependency.external(name: "Nimble")
     static let SkeletonView = TargetDependency.external(name: "SkeletonView")
     static let Collections = TargetDependency.external(name: "Collections")
+	static let Toast = TargetDependency.external(name: "Toast")
 }
 
 public extension TargetDependency.ThirdParty {
@@ -236,15 +236,6 @@ extension TargetDependency.Feature.MOITDetail {
             path: .relativeToRoot("Features/MOITDetail/\(moduleName)")
         )
     }
-    
-    public static let Interface: TargetDependency = .project(
-        target: "MOITDetail",
-        path: .relativeToRoot("Features/MOITDetail")
-    )
-    public static let Implement: TargetDependency = .project(
-        target: "MOITDetailImpl",
-        path: .relativeToRoot("Features/MOITDetail")
-    )
 }
 
 public extension TargetDependency.Feature.MOITDetail.Data {
@@ -255,4 +246,9 @@ public extension TargetDependency.Feature.MOITDetail.Data {
 public extension TargetDependency.Feature.MOITDetail.Domain {
     static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: true)
     static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: false)
+}
+
+public extension TargetDependency.Feature.MOITDetail.Interface {
+	static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: true)
+	static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: false)
 }
