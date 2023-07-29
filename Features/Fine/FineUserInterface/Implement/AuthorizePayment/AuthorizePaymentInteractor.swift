@@ -17,12 +17,23 @@ protocol AuthorizePaymentPresentable: Presentable {
     var listener: AuthorizePaymentPresentableListener? { get set }
 }
 
+protocol AuthorizePaymentInteractorDependency {
+	var fineID: Int { get }
+	var moitID: Int { get }
+}
+
 final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPresentable>, AuthorizePaymentInteractable, AuthorizePaymentPresentableListener {
 
     weak var router: AuthorizePaymentRouting?
     weak var listener: AuthorizePaymentListener?
+	
+	private let dependency: AuthorizePaymentInteractorDependency
 
-    override init(presenter: AuthorizePaymentPresentable) {
+    init(
+		presenter: AuthorizePaymentPresentable,
+		dependency: AuthorizePaymentInteractorDependency
+	) {
+		self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }

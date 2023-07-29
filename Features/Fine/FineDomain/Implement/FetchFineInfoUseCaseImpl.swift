@@ -23,7 +23,7 @@ public final class FetchFineInfoUseCaseImpl: FetchFineInfoUseCase {
 		self.fineRepository = fineRepository
 	}
 	
-	public func execute(moitID: String) -> Single<FineInfoEntity> {
+	public func execute(moitID: Int) -> Single<FineInfoEntity> {
 		return fineRepository.fetchFineInfo(moitID: moitID)
 			.compactMap { FineInfoEntity(fineInfo: $0) }
 			.asObservable().asSingle()

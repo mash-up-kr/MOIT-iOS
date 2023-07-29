@@ -16,7 +16,7 @@ import DesignSystem
 import ResourceKit
 
 protocol FineListRouting: ViewableRouting {
-	func attachAuthorizePayment()
+	func attachAuthorizePayment(moitID: Int, fineID: Int)
 	func detachAuthorizePayment()
 }
 
@@ -30,7 +30,7 @@ public protocol FineListInteractorDependency {
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
-	var moitID: String { get }
+	var moitID: Int { get }
 }
 
 final class FineListInteractor: PresentableInteractor<FineListPresentable>, FineListInteractable, FineListPresentableListener {
@@ -56,10 +56,6 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
     override func willResignActive() {
         super.willResignActive()
     }
-	
-//	func fineListDidTap(with fineItem: FineItem) {
-//		router?.attachAuthorizePayment()
-//	}
 	
 	func authorizePaymentDismissButtonDidTap() {
 		router?.detachAuthorizePayment()
@@ -239,5 +235,15 @@ extension FineListInteractor {
 			case .waiting: return ResourceKitAsset.Color.gray700
 			}
 		}
+	}
+}
+
+// MARK: - FineListPresentableListener
+extension FineListInteractor {
+	func fineListDidTap(fineID: Int) {
+		router?.attachAuthorizePayment(
+			moitID: dependency.moitID,
+			fineID: fineID
+		)
 	}
 }

@@ -23,7 +23,7 @@ public final class FineRepositoryImpl: FineRepository {
 		self.network = network
 	}
 	
-	public func fetchFineInfo(moitID: String) -> Single<FineInfo> {
+	public func fetchFineInfo(moitID: Int) -> Single<FineInfo> {
 		let endPoint = FineEndpoint.fetchFineInfo(moitId: moitID)
 		
 		return network.request(with: endPoint)

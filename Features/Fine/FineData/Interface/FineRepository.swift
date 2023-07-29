@@ -12,6 +12,6 @@ import RxSwift
 
 public protocol FineRepository {
 	
-	func fetchFineInfo(moitID: String) -> Single<FineInfo>
+	func fetchFineInfo(moitID: Int) -> Single<FineInfo>
 	func fetchFineItem(moitID: Int, fineID: Int) -> Single<FineItem>
 }

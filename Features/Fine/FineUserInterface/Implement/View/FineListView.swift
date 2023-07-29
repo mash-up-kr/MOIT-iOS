@@ -13,6 +13,8 @@ import Utils
 
 import FlexLayout
 import PinLayout
+import RxCocoa
+import RxSwift
 
 enum FineListViewType {
 	case defaulter
@@ -57,6 +59,11 @@ final class FineListView: UIView {
 		view.backgroundColor = ResourceKitAsset.Color.gray100.color
 		return view
 	}()
+	
+	fileprivate var fineListViews: [NotPaidFineListView] = []
+	
+	let selectedFineIDRelay = PublishRelay<Int>()
+	private let disposeBag = DisposeBag()
 	
 // MARK: - property
 	
@@ -109,6 +116,14 @@ final class FineListView: UIView {
 					let myFineListViews = myFineItem.map { NotPaidFineListView(fineViewModel: $0) }
 					let othersFineListViews = othersFineItem.map { NotPaidFineListView(fineViewModel: $0) }
 					
+					self.fineListViews = myFineListViews + othersFineListViews
+					
+					fineListViews.forEach { view in
+						view.rx.tappedFineID
+							.bind(to: selectedFineIDRelay)
+							.disposed(by: disposeBag)
+					}
+					
 					for (index, list) in myFineListViews.enumerated() {
 						if index == 0 {
 							flex.addItem(list)
@@ -155,3 +170,5 @@ final class FineListView: UIView {
 		}
 	}
 }
+
+

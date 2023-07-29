@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol FetchFineInfoUseCase {
-	func execute(moitID: String) -> Single<FineInfoEntity>
+	func execute(moitID: Int) -> Single<FineInfoEntity>
 }

@@ -79,7 +79,7 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         self.viewController.uiviewController.navigationController?.popViewController(animated: true)
     }
 	
-	func attachFineList(moitID: String) {
+	func attachFineList(moitID: Int) {
 		guard fineListRouter == nil else { return }
 		
 		let router = fineListBuilder.build(

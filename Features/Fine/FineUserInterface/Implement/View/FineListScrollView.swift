@@ -38,6 +38,8 @@ final class FineListScrollView: UIView {
 	private let segmentPager = MOITSegmentPager(
 		pages: [StringResource.defaulter.value, StringResource.paymentList.value]
 	)
+	
+	let selectedFineIDRelay = PublishRelay<Int>()
 
 // MARK: - property
 	
@@ -93,6 +95,10 @@ final class FineListScrollView: UIView {
 				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width - 40)
 				flex.addItem(paymentListView).width(UIScreen.main.bounds.width - 40)
 			}
+		
+		defaulterListView.selectedFineIDRelay
+			.bind(to: selectedFineIDRelay)
+		.disposed(by: disposeBag)
 	}
 	
 	private func bind() {
@@ -137,19 +143,4 @@ extension FineListScrollView {
 			}
 		}
 	}
-}
-
-// MARK: - Reactive
-extension Reactive where Base: FineListScrollView {
-	
-	// TODO: 여기서 index만 넘길까?
-//	var tappedListItem: Observable<FineItem> {
-//		
-//		let observables = base.myDefaulterList.map { list in
-//			list.rx.tap
-//				.map { _ in list.item }
-//		}
-//
-//		return Observable.merge(observables)
-//	}
 }

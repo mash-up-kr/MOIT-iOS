@@ -11,6 +11,6 @@ import RIBs
 public protocol FineListBuildable: Buildable {
 	func build(
 		withListener listener: FineListListener,
-		moitID: String
+		moitID: Int
 	) -> ViewableRouting
 }

@@ -17,7 +17,7 @@ protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
     func attachMOITUsers(moitID: String)
     func detachMOITUsers()
-	func attachFineList(moitID: String)
+	func attachFineList(moitID: Int)
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -168,7 +168,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
         self.tabTypes.forEach { type  in
             switch type {
             case .attendance: self.router?.attachAttendance(moitID: self.moitID)
-			case .fine: self.router?.attachFineList(moitID: self.moitID)
+			case .fine: self.router?.attachFineList(moitID: Int(self.moitID) ?? 0)
             }
         }
     }

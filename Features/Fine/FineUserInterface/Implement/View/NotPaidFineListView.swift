@@ -11,12 +11,14 @@ import UIKit
 import DesignSystem
 import ResourceKit
 
+import RxSwift
+
 final class NotPaidFineListView: MOITList {
 	var item: NotPaidFineListViewModel {
 		self.fineViewModel
 	}
 	
-	private let fineViewModel: NotPaidFineListViewModel
+	fileprivate let fineViewModel: NotPaidFineListViewModel
 	
 	private let button: MOITButton?
 	
@@ -49,5 +51,14 @@ final class NotPaidFineListView: MOITList {
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+}
+
+extension Reactive where Base: NotPaidFineListView {
+	var tappedFineID: Observable<Int> {
+		return self.base.rx.tap
+			.compactMap { _ -> Int in
+				self.base.fineViewModel.fineID
+			}
 	}
 }

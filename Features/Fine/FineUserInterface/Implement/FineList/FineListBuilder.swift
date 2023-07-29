@@ -17,11 +17,11 @@ final class FineListComponent: Component<FineListDependency>,
 	var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
-	let moitID: String
+	let moitID: Int
 	
 	init(
 		dependency: FineListDependency,
-		moitID: String
+		moitID: Int
 	) {
 		self.moitID = moitID
 		super.init(dependency: dependency)
@@ -38,7 +38,7 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
 
 	public func build(
 		withListener listener: FineListListener,
-		moitID: String
+		moitID: Int
 	) -> ViewableRouting {
         let component = FineListComponent(
 			dependency: dependency,

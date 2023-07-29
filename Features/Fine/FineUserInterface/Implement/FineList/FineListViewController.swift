@@ -17,7 +17,7 @@ import FlexLayout
 import PinLayout
 
 protocol FineListPresentableListener: AnyObject {
-//	func fineListDidTap(with fineItem: FineItem)
+	func fineListDidTap(fineID: Int)
 	func viewDidLoad()
 }
 
@@ -98,11 +98,13 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 	}
 	
 	private func bind() {
-//		fineListScrollView.rx.tappedListItem
-//			.bind(onNext: { [weak self] item in
-//				self?.listener?.fineListDidTap(with: item)
-//			})
-//			.disposed(by: disposeBag)
+		fineListScrollView.selectedFineIDRelay
+			.subscribe(
+				onNext: { [weak self] selectedFineID in
+					self?.listener?.fineListDidTap(fineID: selectedFineID)
+				}
+			)
+			.disposed(by: disposeBag)
 	}
 	
 // MARK: - FineListPresentable

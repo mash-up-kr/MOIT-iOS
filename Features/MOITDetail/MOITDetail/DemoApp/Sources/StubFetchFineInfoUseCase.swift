@@ -13,7 +13,7 @@ import FineDomain
 import RxSwift
 
 final class StubFetchFineInfoUseCase: FetchFineInfoUseCase {
-	func execute(moitID: String) -> Single<FineInfoEntity> {
+	func execute(moitID: Int) -> Single<FineInfoEntity> {
 		.just(
 			FineInfoEntity(
 				totalFineAmount: 5000,

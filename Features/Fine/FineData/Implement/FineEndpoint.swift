@@ -12,7 +12,7 @@ import FineData
 import MOITNetwork
 
 enum FineEndpoint {
-	static func fetchFineInfo(moitId: String) -> Endpoint<FineInfo> {
+	static func fetchFineInfo(moitId: Int) -> Endpoint<FineInfo> {
 		return Endpoint(
 			path: "moit/\(moitId)/fine",
 			method: .get

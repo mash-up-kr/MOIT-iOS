@@ -12,7 +12,20 @@ import RIBs
 
 protocol AuthorizePaymentDependency: Dependency { }
 
-final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency> { }
+final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency>, AuthorizePaymentInteractorDependency {
+	let fineID: Int
+	let moitID: Int
+	
+	init(
+		dependency: AuthorizePaymentDependency,
+		fineID: Int,
+		moitID: Int
+	) {
+		self.fineID = fineID
+		self.moitID = moitID
+		super.init(dependency: dependency)
+	}
+}
 
 // MARK: - Builder
 
@@ -22,10 +35,21 @@ final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, Author
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: AuthorizePaymentListener) -> ViewableRouting {
-        let component = AuthorizePaymentComponent(dependency: dependency)
+    func build(
+		withListener listener: AuthorizePaymentListener,
+		moitID: Int,
+		fineID: Int
+	) -> ViewableRouting {
+        let component = AuthorizePaymentComponent(
+			dependency: dependency,
+			fineID: fineID,
+			moitID: moitID
+		)
         let viewController = AuthorizePaymentViewController()
-        let interactor = AuthorizePaymentInteractor(presenter: viewController)
+        let interactor = AuthorizePaymentInteractor(
+			presenter: viewController,
+			dependency: component
+		)
         interactor.listener = listener
         return AuthorizePaymentRouter(interactor: interactor, viewController: viewController)
     }
