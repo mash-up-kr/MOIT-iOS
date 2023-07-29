@@ -29,9 +29,11 @@ import RIBs
 import Toast
 
 final class MockMOITParticipateDependency: InputParticipateCodeDependency {
+    
 	let network: Network
 	let moitDetailUseCase: MOITDetailUsecase
-	
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network), moitDetailUseCase: moitDetailUseCase)
+    
 	init(
 		network: Network,
 		moitDetailUseCase: MOITDetailUsecase

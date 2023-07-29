@@ -15,10 +15,22 @@ import MOITWeb
 import RIBs
 import MOITDetailImpl
 
+import MOITSetting
+import MOITSettingImpl
+import MOITParticipateUserInterface
+import MOITParticipateUserInterfaceImpl
+
+import MOITParticipateDomain
+
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency,
                                MOITWebDependency,
-                               MOITDetailDependency {
+                               MOITDetailDependency,
+                               InputParticipateCodeDependency,
+                               MOITSettingDependency {
+    var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
+    
+    
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAllAttendanceUsecase }
     var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
     var moitDetailUsecase: MOITDetailUsecase { dependency.moitDetailUsecase }

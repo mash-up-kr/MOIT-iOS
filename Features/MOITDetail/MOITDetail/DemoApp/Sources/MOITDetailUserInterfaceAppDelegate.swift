@@ -22,6 +22,14 @@ import RxSwift
 final class MOITDetailAppDelegate: UIResponder,
                                    UIApplicationDelegate,
                                    MOITDetailListener {
+    func moitDetailDidSwipeBack() {
+        print(#function)
+    }
+    
+    func moitDetailDidTapBackButton() {
+        print(#function)
+    }
+    
     final class MockMOITDetailDependency: MOITDetailDependency {
         
         var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)}

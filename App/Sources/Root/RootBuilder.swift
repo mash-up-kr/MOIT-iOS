@@ -42,6 +42,11 @@ import MOITDetailDomainImpl
 import MOITDetailData
 import MOITDetailDataImpl
 
+import MOITParticipateDomain
+import MOITParticipateDomainImpl
+import MOITParticipateData
+import MOITParticipateDataImpl
+
 final class RootComponent: EmptyDependency,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -77,6 +82,10 @@ final class RootComponent: EmptyDependency,
     lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
     lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
     lazy var moitDetailUsecase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: moitDetailRepository)
+    
+    lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
+        participateRepository: participateRepository, moitDetailUseCase: moitDetailUseCase)
     
     // MARK: - Initializers
     

@@ -10,6 +10,7 @@ import RIBs
 //import MOITNetwork
 import MOITListDomain
 import MOITDetailDomain
+import MOITParticipateDomain
 
 public protocol MOITListDependency: Dependency {
 //    var network: Network { get }
@@ -20,4 +21,5 @@ public protocol MOITListDependency: Dependency {
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitUserusecase: MOITUserUsecase { get }
     var moitDetailUsecase: MOITDetailUsecase { get }
+    var participateUseCase: ParticipateUseCase { get }
 }
