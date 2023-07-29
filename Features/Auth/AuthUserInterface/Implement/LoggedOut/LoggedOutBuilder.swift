@@ -48,11 +48,10 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
 							presenter: viewController,
 							dependency: component
 						)
-        let moitWebBuilder = MOITWebBuilder(dependency: component)
-        let signUpBuilder = SignUpBuilder(dependency: component)
+      
         interactor.listener = listener
 		
-        let signInWebBuilder = MOITWebBuilder(dependency: component)
+        let moitWebBuilder = MOITWebBuilder(dependency: component)
         let signUpBuilder = SignUpBuilder(dependency: component)
         return LoggedOutRouter(
 			interactor: interactor,
