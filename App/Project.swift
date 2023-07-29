@@ -50,6 +50,7 @@ let project = Project(
                 .ThirdParty.RxCocoa,
                 .ThirdParty.RxSwift,
                 .ThirdParty.RxGesture,
+                .ThirdParty.FirebaseMessaging,
             ],
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),

@@ -192,6 +192,8 @@ public extension TargetDependency.ThirdParty {
     static let Nimble = TargetDependency.external(name: "Nimble")
     static let SkeletonView = TargetDependency.external(name: "SkeletonView")
     static let Collections = TargetDependency.external(name: "Collections")
+    static let FirebaseMessaging = TargetDependency.external(name: "FirebaseMessaging")
+    static let Firebase = TargetDependency.external(name: "Firebase")
 }
 
 public extension TargetDependency.ThirdParty {
