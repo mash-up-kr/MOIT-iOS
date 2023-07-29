@@ -31,6 +31,8 @@ extension TargetDependency {
 			public struct Data {}
 			public struct Domain {}
 		}
+        
+        public struct MOITSetting {}
 	}
 
     public struct Core { }
@@ -270,4 +272,10 @@ public extension TargetDependency.Feature.MOITShare.Domain {
     }
     static let Interface = Self.project(isInterface: true)
     static let Implement = Self.project(isInterface: false)
+}
+
+// MARK: - MOITSetting
+public extension TargetDependency.Feature.MOITSetting {
+    static let Interface: TargetDependency = .project(target: "MOITSetting", path: .relativeToRoot("Features/MOITSetting/MOITSetting"))
+    static let Implement: TargetDependency = .project(target: "MOITSettingImpl", path: .relativeToRoot("Features/MOITSetting/MOITSetting"))
 }
