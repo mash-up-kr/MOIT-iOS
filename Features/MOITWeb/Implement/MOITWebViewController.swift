@@ -82,7 +82,7 @@ extension MOITWebViewController {
             .domain: "dev-moit-web.vercel.app",
             .path: path,
             .name: "accessToken",
-            .value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc"
+            .value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci3shJzrpqwiLCJhdWQiOiJhcHBsZXx6MjJraDd0OTY2QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbXwyM3zshJzrpqwiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2OTA2NTQxNDIsImV4cCI6MTY5MzI0NjE0MiwiaW5mbyI6eyJpZCI6MjMsInByb3ZpZGVyVW5pcXVlS2V5IjoiYXBwbGV8ejIya2g3dDk2NkBwcml2YXRlcmVsYXkuYXBwbGVpZC5jb20iLCJuaWNrbmFtZSI6IuyEnOumrCIsInByb2ZpbGVJbWFnZSI6MCwiZW1haWwiOiJzdHJpbmciLCJyb2xlcyI6WyJVU0VSIl19fQ.aOCBK2wzqwsyjQAo9W3VFHEbHa-7mGQqb1yZaBi1JO0"
         ])
     }
     
