@@ -13,6 +13,6 @@ import MOITListDomain
 public protocol MOITListDependency: Dependency {
     
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
-    var fetchLeftTimeUseCase: FetchLeftTimeUseCase { get }
-    var fetchPaneltyToBePaiedUseCase: FetchPenaltyToBePaidUseCase { get }
+    var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
+    var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase { get }
 }

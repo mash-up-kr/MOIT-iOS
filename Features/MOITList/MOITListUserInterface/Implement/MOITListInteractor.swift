@@ -27,8 +27,8 @@ protocol MOITListPresentable: Presentable {
 
 protocol MOITListInteractorDependency {
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
-    var fetchLeftTimeUseCase: FetchLeftTimeUseCase { get }
-    var fetchPaneltyToBePaiedUSeCase: FetchPenaltyToBePaidUseCase { get }
+    var fetchBannersUseCase: FetchBannersUseCase { get }
+    var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
 //    var deleteMOITUseCase: DeleteMOITUseCase { get }
 }
 
@@ -84,30 +84,13 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .disposeOnDeactivate(interactor: self)
         
         // 알람 설정
-        let fine = dependency.fetchPaneltyToBePaiedUSeCase.execute()
-            .map {
-                AlarmViewModel(
-                    alarmType: .penalty(amount: $0.description),
-                    studyName: ""
-                )
-            }
-            .asObservable()
+        // TODO: - 알람 로직 수정
         
-        let alertMoitInfo = moitList
-            .compactMap { [weak self] moits in
-                self?.dependency.fetchLeftTimeUseCase.execute(moitList: moits)
+        let alarmList = dependency.fetchBannersUseCase.execute()
+            .map { [weak self] banners -> [AlarmViewModel] in
+                return banners.compactMap { self?.makeAlarmView(with: $0) }
             }
-            .map { moitName, date in
-                AlarmViewModel(
-                    alarmType: .attendanceCheck(
-                        remainSeconds: Int(date.description) ?? 0
-                    ),
-                    studyName: moitName
-                )
-            }
-            .asObservable()
-        
-        let alarmList = Observable.merge(fine, alertMoitInfo).toArray()
+
         
         alarmList
             .subscribe(onSuccess: { [weak self] alarms in
@@ -160,6 +143,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
                 // TODO: - 생성하기로 보내기
+                
             })
             .disposeOnDeactivate(interactor: self)
         
@@ -180,6 +164,27 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             studyName: moit.name,
             studyProgressDescription: description
         )
+    }
+    
+    // banner -> AlarmViewModel 함수
+    private func makeAlarmView(with banner: Banner) -> AlarmViewModel {
+        switch banner {
+        case .attendence(let attendenceBanner):
+            let remainSecond = self.dependency.calculateLeftTimeUseCase.execute(
+                startTime: attendenceBanner.studyStartAt,
+                lateTime: attendenceBanner.studyLateAt,
+                absenceTime: attendenceBanner.studyAbsenceAt
+            )
+            return AlarmViewModel(alarmType: .attendanceCheck(remainSeconds: remainSecond), studyName: attendenceBanner.moitName)
+        case .fine(let fineBanner):
+            return AlarmViewModel(
+                alarmType: .penalty(
+                    amount: fineBanner.fineAmount.description),
+                studyName: fineBanner.moitName
+            )
+        case .empty:
+            return AlarmViewModel(alarmType: .penalty(amount: ""), studyName: "스터디 화이팅")
+        }
     }
 }
 
