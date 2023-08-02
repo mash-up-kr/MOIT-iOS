@@ -25,4 +25,44 @@ enum FineEndpoint {
 			method: .get
 		)
 	}
+	
+	static func postFineEvaluate(
+		moitID: Int,
+		fineID: Int,
+		data: Data?
+	) -> MultipartEndpoint<Bool>? {
+		
+		if let data {
+			let formData = FormData(
+				fieldName: "image_field",
+				fileName: "finePaymentImage",
+				mimeType: "image/png",
+				fileData: data
+			)
+			
+			let multipartFormData = MultipartFormData(
+				formDatas: [formData]
+			)
+			
+			return MultipartEndpoint(
+				path: "moit/\(moitID)/fine/\(fineID)",
+				method: .post,
+				formData: multipartFormData
+			)
+		} else {
+			return nil
+		}
+	}
+	
+	static func postAuthorizeFine(
+		moitID: Int,
+		fineID: Int,
+		isConfirm: Bool
+	) -> Endpoint<Bool> {
+		return Endpoint(
+			path: "moit/\(moitID)/fine/\(fineID)",
+			method: .post,
+			parameters: .body(["confirm": isConfirm])
+		)
+	}
 }

@@ -12,6 +12,7 @@ public protocol AuthorizePaymentBuildable: Buildable {
 	func build(
 		withListener listener: AuthorizePaymentListener,
 		moitID: Int,
-		fineID: Int
+		fineID: Int,
+		isMaster: Bool
 	) -> ViewableRouting
 }

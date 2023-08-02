@@ -34,4 +34,24 @@ public final class FineRepositoryImpl: FineRepository {
 		
 		return network.request(with: endPoint)
 	}
+	
+	public func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<Bool> {
+		let multipartEndpoint = FineEndpoint.postFineEvaluate(moitID: moitID, fineID: fineID, data: data)
+		
+		if let endpoint = multipartEndpoint {
+			return network.request(with: endpoint)
+		} else {
+			return .just(false)
+		}
+	}
+	
+	public func postAuthorizeFine(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool> {
+		let endpoint = FineEndpoint.postAuthorizeFine(
+			moitID: moitID,
+			fineID: fineID,
+			isConfirm: isConfirm
+		)
+		
+		return network.request(with: endpoint)
+	}
 }

@@ -10,13 +10,21 @@ import RIBs
 
 import FineUserInterface
 import FineDomain
+import MOITDetailDomain
 
 final class FineListComponent: Component<FineListDependency>,
 							   AuthorizePaymentDependency,
 							   FineListInteractorDependency {
+	
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
 	var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
 	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
+	var fetchFineItemUseCase: FetchFineItemUseCase {
+		dependency.fetchFineItemUseCase }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase { dependency.postFineEvaluateUseCase }
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
+	
 	let moitID: Int
 	
 	init(

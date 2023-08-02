@@ -9,6 +9,7 @@
 import MOITDetail
 import MOITDetailData
 import MOITDetailDomain
+import MOITDetailDomainImpl
 import FineUserInterface
 import FineDomain
 import FineUserInterfaceImpl
@@ -24,6 +25,12 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 								ShareDependency,
 								 FineListDependency {
 	
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
+	var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase }
+	
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
+	
+	
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
 	var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
@@ -31,6 +38,9 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
     var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
     var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
+		dependency.postFineEvaluateUseCase
+	}
 }
 
 // MARK: - Builder

@@ -29,6 +29,13 @@ final class MOITDetailAppDelegate: UIResponder,
                                    MOITDetailListener {
 	final class MockMOITDetailDependency: MOITDetailDependency {
 		
+		var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase = PostMasterAuthorizeUseCaseImpl(repository: FineRepositoryImpl(network: NetworkImpl()))
+		var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase = ConvertAttendanceStatusUseCaseImpl()
+		
+//		var fetchFineItemUseCase: FetchFineItemUseCase = FetchFineItemUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		var fetchFineItemUseCase: FetchFineItemUseCase = StubFetchFineItemUseCase()
+		
+		
 		var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 		var fetchFineInfoUseCase: FetchFineInfoUseCase { StubFetchFineInfoUseCase() }
 		var filterMyFineListUseCase: FilterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: TokenManagerImpl())
@@ -43,6 +50,7 @@ final class MOITDetailAppDelegate: UIResponder,
             StubMOITUserUsecase()
         }
         var fetchFineInfoUsecase: FetchFineInfoUseCase { FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))}
+		var postFineEvaluateUseCase: PostFineEvaluateUseCase = PostFineEvaluateUseCaseImpl(repository: FineRepositoryImpl(network: NetworkImpl()))
     }
     
     var window: UIWindow?
