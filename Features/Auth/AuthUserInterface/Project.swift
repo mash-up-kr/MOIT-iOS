@@ -21,7 +21,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		
 		.Feature.MOITWeb.Interface,
 		.Feature.Auth.Domain.Interface,
-		
+        .Feature.MOITList.UserInterface.Interface,
+        .Feature.MOITList.Domain.Interface,
+        
 		.TokenManager.Interface
     ],
     implementDependencies: [
@@ -40,6 +42,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 	demoAppDependencies: [
 		.Feature.MOITWeb.Implement,
 		.Feature.Auth.Domain.Implement,
+		.Feature.Auth.Data.Implement,
+		.MOITNetwork.Implement,
 		
 		.TokenManager.Implement
 	],

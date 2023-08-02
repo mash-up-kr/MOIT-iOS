@@ -8,4 +8,7 @@
 
 import RIBs
 
-public protocol LoggedOutListener: AnyObject { }
+public protocol LoggedOutListener: AnyObject {
+    
+    func didCompleteAuth()
+}

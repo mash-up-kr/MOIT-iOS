@@ -13,8 +13,10 @@ import RIBs
 import RxSwift
 
 protocol LoggedOutRouting: ViewableRouting {
-	func attachSignInWeb()
+	
+    func attachSignInWeb()
 	func detachSignInWeb()
+    
 	func routeToSignUp(with response: MOITSignInResponse)
 }
 
@@ -24,6 +26,8 @@ protocol LoggedOutPresentable: Presentable {
 
 public protocol LoggedOutInteractorDependency: AnyObject {
 	var saveTokenUseCase: SaveTokenUseCase { get }
+	var fetchUserInfoUseCase: FetchUserInfoUseCase { get }
+	var saveUserIDUseCase: SaveUserIDUseCase { get }
 }
 
 final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, LoggedOutInteractable, LoggedOutPresentableListener {
@@ -50,12 +54,8 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
         super.willResignActive()
     }
 	
-	func kakaoSignInButtonDidTap() {
+	func signInButtonDidTap() {
 		router?.attachSignInWeb()
-	}
-	
-	func appleSignInButtonDidTap() {
-//		CSLogger.Logger.debug("appleSignIn")
 	}
 	
 // MARK: - MOITWeb
@@ -69,5 +69,20 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	
 	func didSignIn(with token: String) {
 		dependency.saveTokenUseCase.execute(token: token)
+		dependency.fetchUserInfoUseCase.execute()
+			.subscribe(
+				onSuccess: { [weak self] entity in
+					self?.dependency.saveUserIDUseCase.execute(userID: entity.userID)
+				}
+			)
+			.disposeOnDeactivate(interactor: self)
+        router?.detachSignInWeb()
+        listener?.didCompleteAuth()
 	}
+    
+    // MARK: - SignUp
+    func didCompleteSignUp() {
+        router?.detachSignInWeb()
+        listener?.didCompleteAuth()
+    }
 }

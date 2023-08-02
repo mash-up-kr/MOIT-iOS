@@ -46,11 +46,35 @@ let project = Project(
             dependencies: [
                 .ThirdParty.RIBs,
                 .ThirdParty.SkeletonView,
-                .Feature.MOITWeb.Implement,
                 .ThirdParty.RxCocoa,
                 .ThirdParty.RxSwift,
                 .ThirdParty.RxGesture,
+                
+                .Feature.MOITWeb.Implement,
+                
+                
+                .TokenManager.Implement,
+                .TokenManager.Interface,
+                
+                .MOITNetwork.Interface,
+                .MOITNetwork.Implement,
+                
+                .Feature.MOITList.Domain.Interface,
+                .Feature.MOITList.Domain.Implement,
+                .Feature.MOITList.Data.Interface,
+                .Feature.MOITList.Data.Implement,
+                .Feature.MOITList.UserInterface.Interface,
+                .Feature.MOITList.UserInterface.Implement,
+                
+                .Feature.Auth.Domain.Interface,
+                .Feature.Auth.Domain.Implement,
+                .Feature.Auth.Data.Interface,
+                .Feature.Auth.Data.Implement,
+                .Feature.Auth.UserInterface.Interface,
+                .Feature.Auth.UserInterface.Implement,
+                .ThirdParty.FirebaseMessaging,
             ],
+            
             settings: .settings(configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Debug.xcconfig")),
                 .release(name: "Release", xcconfig: .relativeToRoot("Config/Release.xcconfig")),
