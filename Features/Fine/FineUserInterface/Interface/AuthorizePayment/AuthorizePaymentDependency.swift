@@ -18,4 +18,5 @@ public protocol AuthorizePaymentDependency: Dependency {
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
 }

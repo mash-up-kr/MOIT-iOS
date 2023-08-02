@@ -53,10 +53,17 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
 		attachChild(router)
 	}
 	
-	func detachAuthorizePayment() {
+	func detachAuthorizePayment(completion: (() -> Void)?) {
 		guard let router = authorizePaymentRouting else { return }
 		
-		viewControllable.uiviewController.dismiss(animated: true)
+		viewControllable.uiviewController.dismiss(
+			animated: true,
+			completion: {
+				if let completion {
+					completion()
+				}
+			}
+		)
 		detachChild(router)
 		authorizePaymentRouting = nil
 	}

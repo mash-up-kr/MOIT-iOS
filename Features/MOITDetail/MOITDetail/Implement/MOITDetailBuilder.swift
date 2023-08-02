@@ -24,6 +24,8 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 								 MOITUsersDependency,
 								ShareDependency,
 								 FineListDependency {
+	
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
 	var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase }
 	
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }

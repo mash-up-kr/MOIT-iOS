@@ -120,6 +120,10 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		fineListScrollView.flex.markDirty()
 		self.view.setNeedsLayout()
 	}
+	
+	func showToast(message: String) {
+		print("message: \(message)")
+	}
 }
 
 extension FineListViewController {

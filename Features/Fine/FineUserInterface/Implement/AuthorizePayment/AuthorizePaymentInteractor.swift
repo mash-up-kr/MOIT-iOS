@@ -34,6 +34,7 @@ protocol AuthorizePaymentInteractorDependency {
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
 }
 
 final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPresentable>, AuthorizePaymentInteractable, AuthorizePaymentPresentableListener {
@@ -123,6 +124,23 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		.subscribe(
 			onSuccess: { [weak self] _ in
 				self?.listener?.didSuccessPostFineEvaluate()
+			},
+			onFailure: { [weak self] _ in
+				self?.presenter.showErrorToast()
+			}
+		)
+		.disposeOnDeactivate(interactor: self)
+	}
+	
+	func masterAuthorizeButtonDidTap(isConfirm: Bool) {
+		dependency.postMasterAuthorizeUseCase.execute(
+			moitID: dependency.moitID,
+			fineID: dependency.fineID,
+			isConfirm: isConfirm
+		)
+		.subscribe(
+			onSuccess: { [weak self] _ in
+				self?.listener?.didSuccessAuthorizeFine(isConfirm: isConfirm)
 			},
 			onFailure: { [weak self] _ in
 				self?.presenter.showErrorToast()

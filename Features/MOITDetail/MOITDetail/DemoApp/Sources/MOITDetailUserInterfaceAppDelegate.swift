@@ -28,6 +28,8 @@ final class MOITDetailAppDelegate: UIResponder,
                                    UIApplicationDelegate,
                                    MOITDetailListener {
 	final class MockMOITDetailDependency: MOITDetailDependency {
+		
+		var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase = PostMasterAuthorizeUseCaseImpl(repository: FineRepositoryImpl(network: NetworkImpl()))
 		var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase = ConvertAttendanceStatusUseCaseImpl()
 		
 //		var fetchFineItemUseCase: FetchFineItemUseCase = FetchFineItemUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))

@@ -11,4 +11,5 @@ import RIBs
 public protocol AuthorizePaymentListener: AnyObject {
 	func authorizePaymentDismissButtonDidTap()
 	func didSuccessPostFineEvaluate()
+	func didSuccessAuthorizeFine(isConfirm: Bool)
 }

@@ -22,6 +22,7 @@ protocol AuthorizePaymentPresentableListener: AnyObject {
 	func dismissButtonDidTap()
 	func viewDidLoad()
 	func authorizeButtonDidTap(with data: Data?)
+	func masterAuthorizeButtonDidTap(isConfirm: Bool)
 }
 
 final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPresentable, AuthorizePaymentViewControllable {
@@ -66,6 +67,8 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 			fineImageView.hideGuideComponents()
 		}
 	}
+	
+	private var masterAuthorizationView = MasterAuthorizationView(userNickname: "")
 	
 // MARK: - property
 	
@@ -120,8 +123,11 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		
 		if viewModel.isMaster && viewModel.approveStatus == .new || !viewModel.isMaster {
 			authenticateButton.flex.display(.flex)
+			masterAuthorizationView.flex.display(.none)
 		} else {
 			authenticateButton.flex.display(.none)
+			masterAuthorizationView.flex.display(.flex)
+			masterAuthorizationView.configure(nickName: viewModel.userNickName)
 		}
 		
 		self.view.setNeedsLayout()
@@ -160,6 +166,7 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				}
 			
 			flex.addItem(authenticateButton).marginHorizontal(20)
+			flex.addItem(masterAuthorizationView).marginHorizontal(20)
 		}
 	}
 	
@@ -186,6 +193,18 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				if let image = self.fineImage {
 					self.listener?.authorizeButtonDidTap(with: image.pngData())
 				}
+			})
+			.disposed(by: disposeBag)
+		
+		masterAuthorizationView.rx.didTapCancelButton
+			.bind(onNext: { [weak self] in
+				self?.listener?.masterAuthorizeButtonDidTap(isConfirm: false)
+			})
+			.disposed(by: disposeBag)
+		
+		masterAuthorizationView.rx.didTapOkButton
+			.bind(onNext: { [weak self] in
+				self?.listener?.masterAuthorizeButtonDidTap(isConfirm: true)
 			})
 			.disposed(by: disposeBag)
 	}

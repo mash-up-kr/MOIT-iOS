@@ -20,6 +20,7 @@ final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency>, Au
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
 		dependency.postFineEvaluateUseCase
 	}
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
 	
 	let fineID: Int
 	let moitID: Int

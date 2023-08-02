@@ -53,4 +53,16 @@ enum FineEndpoint {
 			return nil
 		}
 	}
+	
+	static func postAuthorizeFine(
+		moitID: Int,
+		fineID: Int,
+		isConfirm: Bool
+	) -> Endpoint<Bool> {
+		return Endpoint(
+			path: "moit/\(moitID)/fine/\(fineID)",
+			method: .post,
+			parameters: .body(["confirm": isConfirm])
+		)
+	}
 }

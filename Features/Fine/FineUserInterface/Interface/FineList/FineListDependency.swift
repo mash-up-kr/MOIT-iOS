@@ -18,4 +18,5 @@ public protocol FineListDependency: Dependency {
 	var fetchFineItemUseCase: FetchFineItemUseCase { get }
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
 }
