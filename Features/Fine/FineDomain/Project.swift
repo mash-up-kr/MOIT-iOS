@@ -15,8 +15,12 @@ let project = Project.invertedDualTargetProject(
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
+		.Feature.MOITDetail.Domain.Interface,
+		.Feature.Fine.Data.Interface,
+		.ThirdParty.RxSwift
     ],
     implementDependencies: [
+		.TokenManager.Interface
     ]
 )
 

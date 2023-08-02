@@ -6,14 +6,17 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
 import MOITDetail
+import FineUserInterface
 import MOITShare
+
+import RIBs
 
 protocol MOITDetailInteractable: Interactable,
                                  MOITDetailAttendanceListener,
                                  MOITUsersListener,
-                                 ShareListener {
+								FineListListener,
+								ShareListener {
     var router: MOITDetailRouting? { get set }
     var listener: MOITDetailListener? { get set }
 }
@@ -24,26 +27,31 @@ protocol MOITDetailViewControllable: ViewControllable {
 
 final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailViewControllable>,
                               MOITDetailRouting {
+
+    private let attendanceBuiler: MOITDetailAttendanceBuildable
+    private var attendacneRouter: ViewableRouting?
+	
+	private let fineListBuilder: FineListBuildable
+	private var fineListRouter: ViewableRouting?
     
     init(
         interactor: MOITDetailInteractable,
         viewController: MOITDetailViewControllable,
         attendanceBuiler: MOITDetailAttendanceBuildable,
         moitUserBuilder: MOITUsersBuildable,
-        shareBuilder: ShareBuildable
+		fineListBuilder: FineListBuildable,
+		shareBuilder: ShareBuildable
     ) {
         self.moitUserBuilder = moitUserBuilder
         self.attendanceBuiler = attendanceBuiler
-        self.shareBuilder = shareBuilder
+		self.fineListBuilder = fineListBuilder
+		self.shareBuilder = shareBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
     
     // MARK: - MOITDetailAttendance
-    
-    private let attendanceBuiler: MOITDetailAttendanceBuildable
-    private var attendacneRouter: ViewableRouting?
-    
+
     func attachAttendance(moitID: String) {
         guard attendacneRouter == nil else { return }
         let router = self.attendanceBuiler.build(
@@ -99,4 +107,16 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         self.viewController.uiviewController.dismiss(animated: true)
     }
     
+	
+	func attachFineList(moitID: Int) {
+		guard fineListRouter == nil else { return }
+		
+		let router = fineListBuilder.build(
+			withListener: interactor,
+			moitID: moitID
+		)
+		fineListRouter = router
+		attachChild(router)
+		viewController.addChild(viewController: router.viewControllable)
+	}
 }

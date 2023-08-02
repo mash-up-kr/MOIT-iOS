@@ -16,7 +16,6 @@ import ResourceKit
 import DesignSystem
 import Collections
 
-
 public protocol MOITDetailAttendancePresentableListener: AnyObject {
     func viewDidLoad()
     func didTapStudyView(id: String)

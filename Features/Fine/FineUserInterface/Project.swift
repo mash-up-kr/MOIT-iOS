@@ -15,7 +15,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     platform: .iOS,
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
-		.ThirdParty.RIBs
+		.ThirdParty.RIBs,
+		.Feature.Fine.Domain.Interface
     ],
     implementDependencies: [
 		.ThirdParty.FlexLayout,
@@ -27,6 +28,14 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.DesignSystem,
 		.ResourceKit
     ],
+	demoAppDependencies: [
+		.Feature.Fine.Domain.Implement,
+		.Feature.Fine.Data.Interface,
+		.Feature.Fine.Data.Implement,
+		.MOITNetwork.Interface,
+		.MOITNetwork.Implement,
+		.TokenManager.Implement
+	],
     isUserInterface: true
 )
 

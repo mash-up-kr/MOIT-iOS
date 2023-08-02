@@ -233,9 +233,9 @@ enum Formatter {
 
 
 extension MOITList {
-    public func configure(title: String, detail: String?) {
-        self.title = title
-        self.detail = detail
+    public func configure(title: String?, detail: String?) {
+        self.titleLabel?.text = title
+        self.detailLabel?.text = detail
         
         self.titleLabel?.flex.markDirty()
         self.detailLabel?.flex.markDirty()

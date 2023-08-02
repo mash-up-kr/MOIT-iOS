@@ -10,13 +10,33 @@ import UIKit
 
 import FineUserInterface
 import FineUserInterfaceImpl
+import FineDomain
+import FineDomainImpl
+import FineData
+import FineDataImpl
+import MOITNetworkImpl
+import TokenManagerImpl
 
 import RIBs
 
 @main
 final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 	
-	private final class MockFineDependency: FineListDependency { }
+	private final class MockFineDependency: FineListDependency {
+		var compareUserIDUseCase: CompareUserIDUseCase
+		var fetchFineInfoUseCase: FetchFineInfoUseCase
+		var filterMyFineListUseCase: FilterMyFineListUseCase
+		
+		init(
+			fetchFineInfoUseCase: FetchFineInfoUseCase,
+			compareUserIDUseCase: CompareUserIDUseCase,
+			filterMyFineListUseCase: FilterMyFineListUseCase
+		) {
+			self.fetchFineInfoUseCase = fetchFineInfoUseCase
+			self.compareUserIDUseCase = compareUserIDUseCase
+			self.filterMyFineListUseCase = filterMyFineListUseCase
+		}
+	}
 	
 	private final class MockFineListener: FineListListener { }
 	
@@ -27,8 +47,18 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
         
-		router = FineListBuilder(dependency: MockFineDependency())
-			.build(withListener: MockFineListener())
+		let fetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
+		let compareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
+		let filterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: TokenManagerImpl())
+		
+		router = FineListBuilder(
+			dependency: MockFineDependency(
+				fetchFineInfoUseCase: fetchFineInfoUseCase,
+				compareUserIDUseCase: compareUserIDUseCase,
+				filterMyFineListUseCase: filterMyFineListUseCase
+			)
+		)
+			.build(withListener: MockFineListener(), moitID: "2")
 		router?.interactable.activate()
 		router?.load()
 
@@ -39,4 +69,164 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
+
+// TODO: 추후 삭제
+//	fileprivate let myDefaulterList = [
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 15000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .late,
+//				studyOrder: 3,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 20000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .absent,
+//				studyOrder: 4,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 15000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .late,
+//				studyOrder: 3,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 15000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .late,
+//				studyOrder: 3,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 15000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .late,
+//				studyOrder: 3,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		),
+//		FineList(
+//			fineItem: FineItem(
+//				id: 0,
+//				fineAmount: 15000,
+//				userID: 0,
+//				userNickname: "전자군단대장",
+//				attendanceStatus: .late,
+//				studyOrder: 3,
+//				isApproved: false,
+//				approveAt: ""
+//			)
+//		)
+//	]
 

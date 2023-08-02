@@ -13,6 +13,8 @@ import Utils
 
 import FlexLayout
 import PinLayout
+import RxCocoa
+import RxSwift
 
 enum FineListViewType {
 	case defaulter
@@ -52,6 +54,17 @@ final class FineListView: UIView {
 		return label
 	}()
 	
+	private let separatorView: UIView = {
+		let view = UIView()
+		view.backgroundColor = ResourceKitAsset.Color.gray100.color
+		return view
+	}()
+	
+	fileprivate var fineListViews: [NotPaidFineListView] = []
+	
+	let selectedFineIDRelay = PublishRelay<Int>()
+	private let disposeBag = DisposeBag()
+	
 // MARK: - property
 	
 	private let type: FineListViewType
@@ -72,9 +85,11 @@ final class FineListView: UIView {
 		super.layoutSubviews()
 	
 		scrollView.pin.all()
-		contentView.pin.top().horizontally()
-		contentView.flex.layout(mode: .adjustHeight)
+		contentView.pin.top().horizontally().bottom()
+		contentView.flex.layout()
+
 		scrollView.contentSize = contentView.frame.size
+		scrollView.flex.layout(mode: .adjustHeight)
 	}
 	
 	private func configureLayout() {
@@ -82,8 +97,14 @@ final class FineListView: UIView {
 		scrollView.addSubview(contentView)
 	}
 	
-	func configureView(with fineItems: [FineList]) {
-		if fineItems.isEmpty {
+	func configureNotPaidFineListView(
+		with myFineItem: [NotPaidFineListViewModel],
+		othersFineItem: [NotPaidFineListViewModel]
+	) {
+		
+		let fineList = myFineItem + othersFineItem
+		
+		if fineList.isEmpty {
 			contentView.flex
 				.alignSelf(.center)
 				.define { flex in
@@ -92,7 +113,53 @@ final class FineListView: UIView {
 		} else {
 			contentView.flex
 				.define { flex in
-					for (index, list) in fineItems.enumerated() {
+					let myFineListViews = myFineItem.map { NotPaidFineListView(fineViewModel: $0) }
+					let othersFineListViews = othersFineItem.map { NotPaidFineListView(fineViewModel: $0) }
+					
+					self.fineListViews = myFineListViews + othersFineListViews
+					
+					fineListViews.forEach { view in
+						view.rx.tappedFineID
+							.bind(to: selectedFineIDRelay)
+							.disposed(by: disposeBag)
+					}
+					
+					for (index, list) in myFineListViews.enumerated() {
+						if index == 0 {
+							flex.addItem(list)
+						} else {
+							flex.addItem(list).marginTop(20)
+						}
+					}
+					
+					if !myFineListViews.isEmpty && !othersFineListViews.isEmpty {
+						flex.addItem(separatorView).marginTop(20).height(1)
+					}
+					
+					for (index, list) in othersFineListViews.enumerated() {
+						if myFineListViews.isEmpty && index == 0 {
+							flex.addItem(list)
+						} else {
+							flex.addItem(list).marginTop(20)
+						}
+					}
+				}
+		}
+	}
+	
+	func configurePaymentCompletedFineListView(with fineList: [PaymentCompletedFineListViewModel]) {
+		if fineList.isEmpty {
+			contentView.flex
+				.alignSelf(.center)
+				.define { flex in
+					flex.addItem(emptyLabel).marginVertical(43)
+				}
+		} else {
+			contentView.flex
+				.define { flex in
+					let paymentComptetedFineListViews = fineList.map { PaymentCompletedFineListView(fineViewModel: $0) }
+					
+					for (index, list) in paymentComptetedFineListViews.enumerated() {
 						if index == 0 {
 							flex.addItem(list)
 						} else {
@@ -103,3 +170,5 @@ final class FineListView: UIView {
 		}
 	}
 }
+
+

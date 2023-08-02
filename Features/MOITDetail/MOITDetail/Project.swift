@@ -18,10 +18,10 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RIBs,
 		.Feature.MOITDetail.Domain.Interface,
 		.Feature.MOITDetail.Data.Interface,
+		.Feature.Fine.Domain.Interface,
 		.MOITNetwork.Interface
     ],
     implementDependencies: [
-        .ThirdParty.RIBs,
         .ThirdParty.Kingfisher,
         .ThirdParty.RxSwift,
         .ThirdParty.RxCocoa,
@@ -34,10 +34,23 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .DesignSystem,
         .Feature.MOITDetail.Domain.Implement,
         .Feature.MOITDetail.Data.Implement,
+		.Feature.Fine.UserInterface.Interface,
+		.Feature.Fine.UserInterface.Implement,
+        .Feature.Fine.Domain.Interface,
+        .Feature.Fine.Domain.Implement,
+        .Feature.Fine.Data.Interface,
+        .Feature.Fine.Data.Implement,
         .ThirdParty.Collections,
-        .Feature.MOITShare.Implement,
+		.Feature.MOITShare.Implement,
         .Feature.MOITShare.Interface,
     ],
+	demoAppDependencies: [
+		.Feature.Fine.Domain.Interface,
+		.Feature.Fine.Domain.Implement,
+		.Feature.Fine.Data.Interface,
+		.Feature.Fine.Data.Implement,
+		.TokenManager.Implement
+	],
     isUserInterface: true
 )
 

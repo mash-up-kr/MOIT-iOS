@@ -27,9 +27,16 @@ extension TargetDependency {
 			public struct UserInterface {}
 		}
 		
+		public struct Fine {
+			public struct Data {}
+			public struct Domain {}
+			public struct UserInterface {}
+		}
+    
 		public struct MOITDetail {
 			public struct Data {}
 			public struct Domain {}
+			public struct Interface {}
 		}
         
         public struct MOITSetting {}
@@ -160,6 +167,31 @@ public extension TargetDependency.Feature.MOITParticipate.Data {
 	static let Implement = TargetDependency.Feature.MOITParticipate.project(name: "Data", isInterface: false)
 }
 
+// MARK: - Features/Fine
+public extension TargetDependency.Feature.Fine {
+	static let folderName = "Fine"
+	static func project(name: String, isInterface: Bool) -> TargetDependency {
+		let postfix: String = isInterface ? "" : "Impl"
+		return .project(target: "\(folderName)\(name)\(postfix)",
+						path: .relativeToRoot("Features/\(folderName)/\(folderName)\(name)"))
+	}
+}
+
+public extension TargetDependency.Feature.Fine.UserInterface {
+	static let Interface = TargetDependency.Feature.Fine.project(name: "UserInterface", isInterface: true)
+	static let Implement = TargetDependency.Feature.Fine.project(name: "UserInterface", isInterface: false)
+}
+
+public extension TargetDependency.Feature.Fine.Domain {
+	static let Interface = TargetDependency.Feature.Fine.project(name: "Domain", isInterface: true)
+	static let Implement = TargetDependency.Feature.Fine.project(name: "Domain", isInterface: false)
+}
+
+public extension TargetDependency.Feature.Fine.Data {
+	static let Interface = TargetDependency.Feature.Fine.project(name: "Data", isInterface: true)
+	static let Implement = TargetDependency.Feature.Fine.project(name: "Data", isInterface: false)
+}
+
 
 // MARK: - Network
 public extension TargetDependency.MOITNetwork {
@@ -242,15 +274,6 @@ extension TargetDependency.Feature.MOITDetail {
             path: .relativeToRoot("Features/MOITDetail/\(moduleName)")
         )
     }
-    
-    public static let Interface: TargetDependency = .project(
-        target: "MOITDetail",
-        path: .relativeToRoot("Features/MOITDetail/MOITDetail")
-    )
-    public static let Implement: TargetDependency = .project(
-        target: "MOITDetailImpl",
-        path: .relativeToRoot("Features/MOITDetail/MOITDetail")
-    )
 }
 
 public extension TargetDependency.Feature.MOITDetail.Data {
@@ -261,6 +284,11 @@ public extension TargetDependency.Feature.MOITDetail.Data {
 public extension TargetDependency.Feature.MOITDetail.Domain {
     static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: true)
     static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: false)
+}
+
+public extension TargetDependency.Feature.MOITDetail.Interface {
+	static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: true)
+	static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: false)
 }
 
 // MARK: - MOITShare

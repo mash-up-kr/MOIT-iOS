@@ -11,6 +11,7 @@ import Foundation
 import MOITNetwork
 import MOITDetailDomain
 import MOITDetailData
+import FineDomain
 
 import RIBs
 
@@ -20,4 +21,7 @@ public protocol MOITDetailDependency: Dependency {
     var moitAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitDetailRepository: MOITDetailRepository { get }
     var moitUserusecase: MOITUserUsecase { get }
+	var compareUserIDUseCase: CompareUserIDUseCase { get }
+	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
+	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
 }
