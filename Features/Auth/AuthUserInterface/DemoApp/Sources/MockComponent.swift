@@ -18,6 +18,7 @@ import MOITWeb
 import MOITWebImpl
 import TokenManager
 import TokenManagerImpl
+import MOITListDomain
 import MOITNetworkImpl
 
 import RIBs
@@ -28,15 +29,21 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 							   ProfileSelectDependency,
 							   SignUpDependency,
 							   MOITWebDependency,
-							   LoggedOutInteractorDependency {
-	
+                               LoggedOutInteractorDependency {
+//    var fetchMOITListsUseCase: FetchMoitListUseCase
+//    
+//    var fetchLeftTimeUseCase: FetchLeftTimeUseCase
+//    
+//    var fetchPaneltyToBePaiedUseCase: FetchPenaltyToBePaidUseCase
+    
+
 	init() {
 		super.init(dependency: EmptyComponent())
 	}
 	
 	var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
 	
-	var postJoinInfoUseCase: PostJoinInfoUseCase = PostJoinInfoUseCaseImpl(joinRepository: MockJoinRepository())
+	var signUpUseCase: SignUpUseCase = SignUpUseCaseImpl(authRepository: MockAuthRepository())
 	
 	var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: TokenManagerImpl())
 	
@@ -57,9 +64,10 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	var saveUserIDUseCase: SaveUserIDUseCase = SaveUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 }
 
-final class MockJoinRepository: JoinRepository {
+final class MockAuthRepository: AuthRepository {
 	
-	func post(imageIndex: Int, name: String, inviteCode: String?) -> Single<Int> {
-		Single.just(3)
-	}
+    func signUp(providerUniqueKey: String, imageIndex: Int, nickName: String, email: String, inviteCode: String?) -> Single<Void> {
+        Single.just(())
+    }
+	
 }

@@ -21,7 +21,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		
 		.Feature.MOITWeb.Interface,
 		.Feature.Auth.Domain.Interface,
-		
+        .Feature.MOITList.UserInterface.Interface,
+        .Feature.MOITList.Domain.Interface,
+        
 		.TokenManager.Interface
     ],
     implementDependencies: [

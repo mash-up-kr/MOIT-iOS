@@ -38,6 +38,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITList.Domain.Implement,
         .Feature.MOITList.Data.Implement,
         
+        .MOITNetwork.Implement,
+        .MOITNetwork.Interface,
     ],
     isUserInterface: true
 )

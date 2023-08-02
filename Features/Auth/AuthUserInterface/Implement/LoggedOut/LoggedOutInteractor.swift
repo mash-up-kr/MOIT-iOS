@@ -13,8 +13,10 @@ import RIBs
 import RxSwift
 
 protocol LoggedOutRouting: ViewableRouting {
-	func attachSignInWeb()
+	
+    func attachSignInWeb()
 	func detachSignInWeb()
+    
 	func routeToSignUp(with response: MOITSignInResponse)
 }
 
@@ -67,7 +69,6 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 	
 	func didSignIn(with token: String) {
 		dependency.saveTokenUseCase.execute(token: token)
-		
 		dependency.fetchUserInfoUseCase.execute()
 			.subscribe(
 				onSuccess: { [weak self] entity in
@@ -75,5 +76,13 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 				}
 			)
 			.disposeOnDeactivate(interactor: self)
+        router?.detachSignInWeb()
+        listener?.didCompleteAuth()
 	}
+    
+    // MARK: - SignUp
+    func didCompleteSignUp() {
+        router?.detachSignInWeb()
+        listener?.didCompleteAuth()
+    }
 }

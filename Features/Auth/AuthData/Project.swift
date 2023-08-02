@@ -18,7 +18,7 @@ let project = Project.invertedDualTargetProject(
 		.ThirdParty.RxSwift
     ],
     implementDependencies: [
-		.MOITNetwork.Interface
+        .MOITNetwork.Interface,
     ]
 )
 

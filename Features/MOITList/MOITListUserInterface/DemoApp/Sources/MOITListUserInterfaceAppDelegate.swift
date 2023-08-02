@@ -14,6 +14,8 @@ import MOITListDomain
 import MOITListDomainImpl
 import MOITListData
 import MOITListDataImpl
+import MOITNetwork
+import MOITNetworkImpl
 
 import RxSwift
 import RIBs
@@ -44,16 +46,17 @@ extension MOITListAppDelegate {
     final class MockMoitListComponent: Component<EmptyDependency>,
                                        MOITListDependency
     {
-        var fetchLeftTimeUseCase: FetchLeftTimeUseCase
+        var calculateLeftTimeUseCase: CalculateLeftTimeUseCase
         
-        var fetchPaneltyToBePaiedUseCase: FetchPenaltyToBePaidUseCase
+        var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase
         
         var fetchMOITListsUseCase: FetchMoitListUseCase
         
         init() {
-            self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MockMoitRepository())
-            self.fetchLeftTimeUseCase = MockFetchLeftTimeUseCase()
-            self.fetchPaneltyToBePaiedUseCase = MockFetchPenaltyToBePaidUseCase()
+            self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MOITRepositoryImpl(network: NetworkImpl()))
+//            self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MockMoitRepository())
+            self.fetchPaneltyToBePaiedUseCase = MockBannersUseCase()
+            self.calculateLeftTimeUseCase = CalculateLeftTimeUseCaseImpl()
             super.init(dependency: EmptyComponent())
         }
     }
@@ -95,15 +98,14 @@ extension MOITListAppDelegate {
         }
     }
     
-    private final class MockFetchPenaltyToBePaidUseCase: FetchPenaltyToBePaidUseCase {
-        func execute() -> Single<Int> {
-            return Single.just(1000)
-        }
-    }
-    
-    private final class MockFetchLeftTimeUseCase: FetchLeftTimeUseCase {
-        func execute(moitList: [MOIT]) -> (moitName: String, time: Date) {
-            return ("전전자군단", Date())
+    private final class MockBannersUseCase: FetchBannersUseCase {
+        func execute() -> Single<[Banner]> {
+            Single.just([Banner.fine(FineBanner(
+                userId: 1,
+                moitId: 1,
+                moitName: "전전전자군단",
+                fineAmount: 9000
+            ))])
         }
     }
     

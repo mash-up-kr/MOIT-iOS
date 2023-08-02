@@ -40,30 +40,26 @@ public enum ProfileType {
 
 public enum ProfileImageType: Int {
     case zero = 0
-    case one, two, three, four, five, six, seven, eight, nine
+    case one, two, three, four, five, six, seven
     // TODO: - 프로필 이미지 시안 나오면 변경
     var image: UIImage {
         switch self {
         case .zero:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile0.image
         case .one:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile1.image
         case .two:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile2.image
         case .three:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile3.image
         case .four:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile4.image
         case .five:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile5.image
         case .six:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile6.image
         case .seven:
-            return ResourceKitAsset.Icon.apple.image
-        case .eight:
-            return ResourceKitAsset.Icon.apple.image
-        case .nine:
-            return ResourceKitAsset.Icon.apple.image
+            return ResourceKitAsset.Icon.profile7.image
         }
     }
 }
