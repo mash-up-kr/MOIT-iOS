@@ -24,12 +24,11 @@ final class LoggedOutComponent: Component<LoggedOutDependency>,
                                 SignUpDependency
 {
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { dependency.fetchRandomNumberUseCase }
-    
     var signUpUseCase: SignUpUseCase { dependency.signUpUseCase }
-    
     #warning("얘 지워")
     var profileSelectBuildable: ProfileSelectBuildable { dependency.profileSelectBuildable }
-    
+	var fetchUserInfoUseCase: FetchUserInfoUseCase { dependency.fetchUserInfoUseCase }
+	var saveUserIDUseCase: SaveUserIDUseCase { dependency.saveUserIDUseCase }
 	var saveTokenUseCase: SaveTokenUseCase { dependency.saveTokenUseCase }
 }
 

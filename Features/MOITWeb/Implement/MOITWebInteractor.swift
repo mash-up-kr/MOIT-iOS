@@ -70,6 +70,8 @@ extension MOITWebInteractor {
   
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any]) {
 		let signInResponse = MOITSignInResponse(headerFields: headerFields)
+		debugPrint("---------------------Response---------------------")
+		debugPrint(signInResponse)
 		listener?.authorizationDidFinish(with: signInResponse)
 	}
 

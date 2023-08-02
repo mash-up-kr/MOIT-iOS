@@ -42,6 +42,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 	demoAppDependencies: [
 		.Feature.MOITWeb.Implement,
 		.Feature.Auth.Domain.Implement,
+		.Feature.Auth.Data.Implement,
+		.MOITNetwork.Implement,
 		
 		.TokenManager.Implement
 	],

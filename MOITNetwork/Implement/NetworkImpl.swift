@@ -26,9 +26,10 @@ public final class NetworkImpl: Network {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
 			
+			Logger.debug("endpoint: \(endpoint)")
 			Logger.debug("requested url: \(urlRequest.url)")
 			Logger.debug(
-				"header: \(urlRequest.value(forHTTPHeaderField: "authorization") ?? "")"
+				"header: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")"
 			)
 			Logger.debug(
 				"requested httpBody: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))"

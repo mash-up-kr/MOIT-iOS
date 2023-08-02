@@ -17,12 +17,8 @@ struct FetchMOITListRequestable: Requestable {
     
     // MARK: - Properties
     
-    public var baseURL: URL? {
-        return URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com") ?? URL(fileReferenceLiteralResourceName: "")
-    }
-    
     public var path: String {
-        return "/api/v1/moit"
+        return "moit"
     }
     
     public var method: HTTPMethod {
