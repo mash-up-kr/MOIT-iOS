@@ -21,6 +21,7 @@ import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
 
 import MOITParticipateDomain
+import FineDomain
 
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency,
@@ -28,6 +29,15 @@ final class MOITListComponent: Component<MOITListDependency>,
                                MOITDetailDependency,
                                InputParticipateCodeDependency,
                                MOITSettingDependency {
+    
+    var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
+    var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
+    var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
+    var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
+    var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase}
+    var postFineEvaluateUseCase: PostFineEvaluateUseCase { dependency.postFineEvaluateUseCase }
+    var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
+    
     var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
     
     

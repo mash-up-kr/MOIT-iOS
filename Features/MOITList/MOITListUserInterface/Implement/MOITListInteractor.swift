@@ -268,3 +268,10 @@ extension MOITListInteractor {
         self.router?.detachMOITDetail(withPop: true)
     }
 }
+
+// MARK: - InputParticiateCode
+extension MOITListInteractor {
+    func inputParticiateCodeDidTapBack() {
+        self.router?.detachInputParticipateCode()
+    }
+}

@@ -9,5 +9,8 @@
 import RIBs
 
 public protocol FineListBuildable: Buildable {
-	func build(withListener listener: FineListListener) -> ViewableRouting
+	func build(
+		withListener listener: FineListListener,
+		moitID: Int
+	) -> ViewableRouting
 }

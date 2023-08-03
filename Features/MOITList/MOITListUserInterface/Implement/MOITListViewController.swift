@@ -167,7 +167,7 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
         createButton.rx.tap
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.listener?.didTapSetting()
+                owner.listener?.didTapCreateButton()
             })
             .disposed(by: disposebag)
         

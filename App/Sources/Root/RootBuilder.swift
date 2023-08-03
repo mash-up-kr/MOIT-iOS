@@ -47,6 +47,11 @@ import MOITParticipateDomainImpl
 import MOITParticipateData
 import MOITParticipateDataImpl
 
+import FineDomain
+import FineDomainImpl
+
+import FineDataImpl
+
 final class RootComponent: EmptyDependency,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -55,15 +60,35 @@ final class RootComponent: EmptyDependency,
                            SignUpDependency,
                            ProfileSelectDependency {
     
+    var compareUserIDUseCase: CompareUserIDUseCase { CompareUserIDUseCaseImpl(tokenManager: tokenManager)}
+    
+    var fetchFineInfoUseCase: FetchFineInfoUseCase { FetchFineInfoUseCaseImpl(fineRepository: fineRepository)}
+    
+    var filterMyFineListUseCase: FilterMyFineListUseCase { FilterMyFineListUseCaseImpl(tokenManager: tokenManager) }
+    
+    var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { ConvertAttendanceStatusUseCaseImpl() }
+    
+    var fetchFineItemUseCase: FetchFineItemUseCase { FetchFineItemUseCaseImpl(fineRepository: fineRepository) }
+    
+    var postFineEvaluateUseCase: PostFineEvaluateUseCase { PostFineEvaluateUseCaseImpl(repository: fineRepository) }
+    
+    var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { PostMasterAuthorizeUseCaseImpl(repository: fineRepository) }
+    
+    var fetchUserInfoUseCase: FetchUserInfoUseCase { FetchUserInfoUseCaseImpl(repository: UserRepositoryImpl(network: self.network))}
+    
+    var saveUserIDUseCase: SaveUserIDUseCase { SaveUserIDUseCaseImpl(tokenManager: tokenManager) }
+    
+    
     lazy var profileSelectBuildable: AuthUserInterface.ProfileSelectBuildable = ProfileSelectBuilder(dependency: self)
     
     // MARK: - Properties
     let network: Network = NetworkImpl()
+    private lazy var fineRepository = FineRepositoryImpl(network: network)
+    private lazy var tokenManager = TokenManagerImpl()
     private lazy var moitRepository = MOITRepositoryImpl(network: network)
     private lazy var bannerRepository = BannerRepositoryImpl(network: network)
     private lazy var authRepository = AuthRepositoryImpl(network: network)
     private lazy var detailRepository = MOITDetailRepositoryImpl(network: network)
-    private lazy var tokenManager = TokenManagerImpl()
     
     lazy var fetchMOITListsUseCase: FetchMoitListUseCase = FetchMoitListUseCaseImpl(moitRepository: moitRepository)
     

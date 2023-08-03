@@ -16,46 +16,6 @@ import PinLayout
 import RxSwift
 import RxCocoa
 
-struct FineItem {
-	let id, fineAmount, userID: Int
-	let userNickname: String
-	let attendanceStatus: MOITChipType
-	let studyOrder: Int
-	let isApproved: Bool
-	let approveAt: String
-}
-
-final class FineList: MOITList {
-	var item: FineItem {
-		self.fineItem
-	}
-	
-	private let fineItem: FineItem
-	
-	private let button = MOITButton(
-		type: .mini,
-		title: "납부 인증하기",
-		titleColor: ResourceKitAsset.Color.white.color,
-		backgroundColor: ResourceKitAsset.Color.black.color
-	)
-	
-	init(fineItem: FineItem) {
-		self.fineItem = fineItem
-		super.init(
-			type: .sendMoney,
-			title: fineItem.userNickname,
-			detail: "\(fineItem.fineAmount)원",
-			chipType: fineItem.attendanceStatus,
-			studyOrder: fineItem.studyOrder,
-			button: button
-		)
-	}
-	
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-}
-
 final class FineListScrollView: UIView {
 	
 // MARK: - UI
@@ -78,169 +38,12 @@ final class FineListScrollView: UIView {
 	private let segmentPager = MOITSegmentPager(
 		pages: [StringResource.defaulter.value, StringResource.paymentList.value]
 	)
+	
+	let selectedFineIDRelay = PublishRelay<Int>()
 
 // MARK: - property
 	
 	private let disposeBag = DisposeBag()
-	// TODO: 추후 삭제
-	fileprivate let myDefaulterList = [
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 20000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .absent,
-				studyOrder: 4,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		),
-		FineList(
-			fineItem: FineItem(
-				id: 0,
-				fineAmount: 15000,
-				userID: 0,
-				userNickname: "전자군단대장",
-				attendanceStatus: .late,
-				studyOrder: 3,
-				isApproved: false,
-				approveAt: ""
-			)
-		)
-	]
 	
 // MARK: - init
 	
@@ -262,12 +65,11 @@ final class FineListScrollView: UIView {
 		super.layoutSubviews()
 
 		flexRootContainer.pin.all()
-		flexRootContainer.flex.layout()
-		
+		contentView.pin.all()
 		contentView.flex.layout(mode: .adjustWidth)
 		
 		scrollView.contentSize = contentView.frame.size
-		scrollView.flex.layout()
+		flexRootContainer.flex.layout()
 	}
 	
 // MARK: - private
@@ -277,25 +79,26 @@ final class FineListScrollView: UIView {
 		
 		flexRootContainer.flex
 			.define { flex in
-				flex.addItem(segmentPager).marginBottom(20)
-				flex.addItem(scrollView).grow(1)
+				flex.addItem(segmentPager)
+				flex.addItem(scrollView)
+					.marginVertical(20)
 			}
 		
 		scrollView.flex
 			.define { flex in
-				flex.addItem(contentView).grow(1)
+				flex.addItem(contentView)
 			}
 
 		contentView.flex
 			.direction(.row)
 			.define { flex in
-				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width)
-				flex.addItem(paymentListView).width(UIScreen.main.bounds.width)
+				flex.addItem(defaulterListView).width(UIScreen.main.bounds.width - 40)
+				flex.addItem(paymentListView).width(UIScreen.main.bounds.width - 40)
 			}
 		
-		// TODO: 추후 삭제
-		defaulterListView.configureView(with: myDefaulterList)
-		paymentListView.configureView(with: [])
+		defaulterListView.selectedFineIDRelay
+			.bind(to: selectedFineIDRelay)
+		.disposed(by: disposeBag)
 	}
 	
 	private func bind() {
@@ -308,6 +111,21 @@ final class FineListScrollView: UIView {
 				}
 			})
 			.disposed(by: disposeBag)
+	}
+	
+// MARK: - internal
+	func configureView(with fineInfo: FineInfoViewModel) {
+		defaulterListView.configureNotPaidFineListView(
+			with: fineInfo.myNotPaidFineListViewModel,
+			othersFineItem: fineInfo.othersNotPaidFineListViewModel
+		)
+		defaulterListView.flex.markDirty()
+
+		paymentListView.configurePaymentCompletedFineListView(
+			with: fineInfo.paymentCompletedFineListViewModel
+		)
+		paymentListView.flex.markDirty()
+		setNeedsLayout()
 	}
 }
 
@@ -324,19 +142,5 @@ extension FineListScrollView {
 				return "납부 내역"
 			}
 		}
-	}
-}
-
-// MARK: - Reactive
-extension Reactive where Base: FineListScrollView {
-	
-	var tappedListItem: Observable<FineItem> {
-		
-		let observables = base.myDefaulterList.map { list in
-			list.rx.tap
-				.map { _ in list.item }
-		}
-
-		return Observable.merge(observables)
 	}
 }

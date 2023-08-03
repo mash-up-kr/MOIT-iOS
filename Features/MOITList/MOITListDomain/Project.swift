@@ -3,7 +3,7 @@
 //
 //  MOITList
 //
-//  Created by kimchansoo
+//  Created by 송서영
 //
 
 import ProjectDescription
@@ -13,7 +13,6 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProject(
     name: "MOITListDomain",
     platform: .iOS,
-    iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
         .ThirdParty.RxSwift,
         

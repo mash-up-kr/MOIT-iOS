@@ -27,7 +27,7 @@ public final class MOITButton: UIView {
     // MARK: - Properties
     
     private let type: MOITButtonType
-    private let title: String
+    private var title: String
     private let titleColor: UIColor
     private let image: UIImage?
     private let _backgroundColor: UIColor
@@ -110,6 +110,24 @@ extension MOITButton {
             }
 //            .width(self.type.width)
     }
+	
+// MARK: - public
+	
+	public func configure(title: String) {
+		self.title = title
+		configureTitleLabel(
+			title: title,
+			color: titleColor
+		)
+	}
+	
+	public func configure(
+		titleColor: ResourceKitColors,
+		backgroundColor: ResourceKitColors
+	) {
+		titleLabel.textColor = titleColor.color
+		flexRootView.backgroundColor = backgroundColor.color
+	}
 }
 
 // MARK: - Reactive

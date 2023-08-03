@@ -9,6 +9,8 @@
 import Foundation
 
 import MOITDetailDomain
+import MOITDetailData
+import FineDomain
 
 import RIBs
 
@@ -16,5 +18,12 @@ public protocol MOITDetailDependency: Dependency {
     
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitUserusecase: MOITUserUsecase { get }
+	var compareUserIDUseCase: CompareUserIDUseCase { get }
+	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
+	var filterMyFineListUseCase: FilterMyFineListUseCase { get }
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
+	var fetchFineItemUseCase: FetchFineItemUseCase { get }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
     var moitDetailUsecase: MOITDetailUsecase { get }
 }

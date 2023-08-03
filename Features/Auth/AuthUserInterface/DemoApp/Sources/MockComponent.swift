@@ -13,6 +13,7 @@ import AuthUserInterfaceImpl
 import AuthDomain
 import AuthDomainImpl
 import AuthData
+import AuthDataImpl
 import MOITWeb
 import MOITWebImpl
 import TokenManager
@@ -59,6 +60,10 @@ final class MOCKAuthComponent: Component<EmptyDependency>,
 	lazy var moitWebBuildable: MOITWebBuildable = {
 		return MOITWebBuilder(dependency: self)
 	}()
+	
+	var fetchUserInfoUseCase: FetchUserInfoUseCase = FetchUserInfoUseCaseImpl(repository: UserRepositoryImpl(network: NetworkImpl()))
+	
+	var saveUserIDUseCase: SaveUserIDUseCase = SaveUserIDUseCaseImpl(tokenManager: TokenManagerImpl())
 }
 
 final class MockAuthRepository: AuthRepository {

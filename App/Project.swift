@@ -72,6 +72,7 @@ let project = Project(
                 .Feature.Auth.Data.Implement,
                 .Feature.Auth.UserInterface.Interface,
                 .Feature.Auth.UserInterface.Implement,
+                .ThirdParty.FirebaseMessaging,
             ],
             
             settings: .settings(configurations: [

@@ -9,5 +9,10 @@
 import RIBs
 
 public protocol AuthorizePaymentBuildable: Buildable {
-	func build(withListener listener: AuthorizePaymentListener) -> ViewableRouting
+	func build(
+		withListener listener: AuthorizePaymentListener,
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) -> ViewableRouting
 }

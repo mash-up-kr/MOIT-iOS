@@ -32,10 +32,19 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
         interactor.router = self
     }
 	
-	func attachAuthorizePayment() {
+	func attachAuthorizePayment(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) {
 		if authorizePaymentRouting != nil { return }
 		
-		let router = authorizePaymentBuildable.build(withListener: interactor)
+		let router = authorizePaymentBuildable.build(
+			withListener: interactor,
+			moitID: moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
 		let viewController = router.viewControllable.uiviewController
 		viewController.modalPresentationStyle = .fullScreen
 		viewControllable.uiviewController.present(viewController, animated: true)
@@ -44,10 +53,17 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
 		attachChild(router)
 	}
 	
-	func detachAuthorizePayment() {
+	func detachAuthorizePayment(completion: (() -> Void)?) {
 		guard let router = authorizePaymentRouting else { return }
 		
-		viewControllable.uiviewController.dismiss(animated: true)
+		viewControllable.uiviewController.dismiss(
+			animated: true,
+			completion: {
+				if let completion {
+					completion()
+				}
+			}
+		)
 		detachChild(router)
 		authorizePaymentRouting = nil
 	}

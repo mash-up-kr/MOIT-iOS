@@ -18,7 +18,10 @@ let project = Project.invertedDualTargetProject(
         .Feature.MOITDetail.Data.Interface,
     ],
     implementDependencies: [
-        .Core.MOITFoundation
+        .Core.MOITFoundation,
+		.ThirdParty.RxSwift,
+        
+        .Feature.MOITList.Data.Interface,
     ]
 )
 

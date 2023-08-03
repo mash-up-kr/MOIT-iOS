@@ -10,6 +10,8 @@ import Foundation
 
 public protocol TokenManager {
 	
+	//TODO: get, save, update generic method로 수정 필요
+	
 	func get(key: KeychainType) -> String?
 	
 	@discardableResult

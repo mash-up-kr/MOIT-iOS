@@ -91,7 +91,7 @@ open class MOITList: UIView {
 		return nil
 	}()
 	
-	fileprivate let button: MOITButton?
+	fileprivate var button: MOITButton?
 	
 // MARK: - property
 	
@@ -103,6 +103,7 @@ open class MOITList: UIView {
 	private var studyOrder: Int?
 	private var fine: Int?
     private var imageType: ProfileImageType?
+	private var isButtonHidden: Bool
 	
 // MARK: - init
 	public init(
@@ -113,7 +114,8 @@ open class MOITList: UIView {
 		chipType: MOITChipType? = nil,
 		studyOrder: Int? = nil,
 		fine: Int? = nil,
-		button: MOITButton? = nil
+		button: MOITButton? = nil,
+		isButtonHidden: Bool = true
 	) {
 		self.type = type
 		self.imageType = imageType
@@ -123,6 +125,7 @@ open class MOITList: UIView {
 		self.studyOrder = studyOrder
 		self.fine = fine
 		self.button = button
+		self.isButtonHidden = isButtonHidden
 		
 		super.init(frame: .zero)
 		
@@ -233,10 +236,35 @@ enum Formatter {
 
 
 extension MOITList {
-    public func configure(title: String, detail: String?) {
-        self.title = title
-        self.detail = detail
+	public func configure(
+		title: String?,
+		detail: String?,
+		chipType: MOITChipType? = nil,
+		isButtonHidden: Bool = true,
+		buttonTitle: String? = nil,
+		studyOrder: Int? = nil
+	) {
+        self.titleLabel?.text = title
+        self.detailLabel?.text = detail
+		
+		if let chipType {
+			self.chip?.setType(to: chipType)
+			self.chip?.flex.markDirty()
+		}
+		
+		if isButtonHidden {
+			button?.flex.display(.none)
+		} else if let title = buttonTitle {
+			button?.flex.display(.flex)
+			button?.configure(title: title)
+		}
+		
+		if let studyOrder {
+			self.studyOrder = studyOrder
+			self.studyOrderLabel?.flex.markDirty()
+		}
         
+		self.button?.flex.markDirty()
         self.titleLabel?.flex.markDirty()
         self.detailLabel?.flex.markDirty()
         

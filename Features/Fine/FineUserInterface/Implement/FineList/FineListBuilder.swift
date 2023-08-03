@@ -9,10 +9,32 @@
 import RIBs
 
 import FineUserInterface
+import FineDomain
+import MOITDetailDomain
 
-public protocol FineListDependency: Dependency { }
-
-final class FineListComponent: Component<FineListDependency>, AuthorizePaymentDependency { }
+final class FineListComponent: Component<FineListDependency>,
+							   AuthorizePaymentDependency,
+							   FineListInteractorDependency {
+	
+	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
+	var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
+	var fetchFineInfoUsecase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
+	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
+	var fetchFineItemUseCase: FetchFineItemUseCase {
+		dependency.fetchFineItemUseCase }
+	var postFineEvaluateUseCase: PostFineEvaluateUseCase { dependency.postFineEvaluateUseCase }
+	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
+	
+	let moitID: Int
+	
+	init(
+		dependency: FineListDependency,
+		moitID: Int
+	) {
+		self.moitID = moitID
+		super.init(dependency: dependency)
+	}
+}
 
 // MARK: - Builder
 
@@ -22,10 +44,19 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
         super.init(dependency: dependency)
     }
 
-	public func build(withListener listener: FineListListener) -> ViewableRouting {
-        let component = FineListComponent(dependency: dependency)
+	public func build(
+		withListener listener: FineListListener,
+		moitID: Int
+	) -> ViewableRouting {
+        let component = FineListComponent(
+			dependency: dependency,
+			moitID: moitID
+		)
         let viewController = FineListViewController()
-        let interactor = FineListInteractor(presenter: viewController)
+        let interactor = FineListInteractor(
+			presenter: viewController,
+			dependency: component
+		)
         interactor.listener = listener
 		
 		let authorizePaymentBuildable = AuthorizePaymentBuilder(dependency: component)

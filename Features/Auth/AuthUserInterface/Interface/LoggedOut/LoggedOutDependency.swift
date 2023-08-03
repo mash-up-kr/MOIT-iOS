@@ -16,8 +16,8 @@ import RIBs
 public protocol LoggedOutDependency: Dependency {
 	var saveTokenUseCase: SaveTokenUseCase { get }
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { get }
-    
     var signUpUseCase: SignUpUseCase { get }
-    
     var profileSelectBuildable: ProfileSelectBuildable { get }
+	var fetchUserInfoUseCase: FetchUserInfoUseCase { get }
+	var saveUserIDUseCase: SaveUserIDUseCase { get }
 }
