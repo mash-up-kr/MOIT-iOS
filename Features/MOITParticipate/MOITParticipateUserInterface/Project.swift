@@ -16,7 +16,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
 		.Feature.MOITDetail.Domain.Interface,
-		
+        
+        .Feature.MOITParticipate.Domain.Interface,
+        .Feature.MOITParticipate.Data.Interface,
 		.MOITNetwork.Interface,
 		
 		.ThirdParty.RIBs,
@@ -32,9 +34,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.ResourceKit,
 		.DesignSystem,
 		
-		.Feature.MOITParticipate.Domain.Interface,
         .Feature.MOITParticipate.Domain.Implement,
-		.Feature.MOITParticipate.Data.Interface,
+		
         .Feature.MOITParticipate.Data.Implement,
 		.Feature.MOITDetail.Interface,
     ],
