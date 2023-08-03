@@ -57,7 +57,9 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
     override func willResignActive() {
         super.willResignActive()
     }
-	
+    func didTapBackButton() {
+        self.listener?.inputParticiateCodeDidTapBack()
+    }
 	func completeButtonDidTap(with code: String) {
 		dependency.participateUseCase.execute(with: code)
 			.observe(on: MainScheduler.instance)

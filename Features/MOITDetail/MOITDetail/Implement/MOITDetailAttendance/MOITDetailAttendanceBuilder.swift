@@ -22,7 +22,7 @@ enum AttendanceTabType: CaseIterable {
     }
 }
 protocol MOITDetailAttendanceDependency: Dependency {
-    var moitDetailRepository: MOITDetailRepository { get }
+
     var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
 }
 

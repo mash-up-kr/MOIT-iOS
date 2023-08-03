@@ -63,10 +63,9 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 			scheduleDescription: scheduleDescription,
 			ruleShortDescription: ruleShortDescription,
 			ruleLoneDescription: ruleLongDescription,
-			periodDescription: periodDescription,
-			// TODO: 수정 필요할듯..?
-			invitationCode: "",
-			isNotificationActive: moitDetailModel.notificationIsRemindActive,
+            periodDescription: periodDescription,
+            invitationCode: moitDetailModel.invitationCode,
+            isNotificationActive: moitDetailModel.notificationIsRemindActive,
 			notificationDescription: notificationDescription
 		)
 	}

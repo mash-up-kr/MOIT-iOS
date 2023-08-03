@@ -8,7 +8,6 @@
 
 import Foundation
 
-import MOITNetwork
 import MOITDetailDomain
 import MOITDetailData
 import FineDomain
@@ -16,10 +15,8 @@ import FineDomain
 import RIBs
 
 public protocol MOITDetailDependency: Dependency {
-    var tabTypes: [MOITDetailTab] { get }
-    var moitDetailUsecase: MOITDetailUsecase { get }
-    var moitAttendanceUsecase: MOITAllAttendanceUsecase { get }
-    var moitDetailRepository: MOITDetailRepository { get }
+    
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
     var moitUserusecase: MOITUserUsecase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
@@ -28,4 +25,5 @@ public protocol MOITDetailDependency: Dependency {
 	var fetchFineItemUseCase: FetchFineItemUseCase { get }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
 	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
+    var moitDetailUsecase: MOITDetailUsecase { get }
 }

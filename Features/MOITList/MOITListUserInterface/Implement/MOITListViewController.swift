@@ -23,6 +23,7 @@ protocol MOITListPresentableListener: AnyObject {
     func didTapMOIT(index: Int) // MOIT 하나 탭 시 불리는 함수
     func didTapDeleteMOIT(index: Int) // MOIT 하나 삭제 시 불리는 함수
     func didTapAlarm(index: Int)
+    func didTapSetting()
     func didTapCreateButton()
     func didTapParticipateButton()
 }
@@ -148,6 +149,13 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     override func bind() {
         super.bind()
         
+        navigationBar.rightItems?[1].rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.listener?.didTapSetting()
+            })
+            .disposed(by: disposebag)
+              
         pagableAlarmView.thumbnailDidTap.asObservable()
             .withUnretained(self)
             .subscribe(onNext: { owner, index in

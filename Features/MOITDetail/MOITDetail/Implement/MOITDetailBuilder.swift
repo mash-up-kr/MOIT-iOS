@@ -7,6 +7,8 @@
 //
 
 import MOITDetail
+import MOITDetailDataImpl
+import MOITDetailDomainImpl
 import MOITDetailData
 import MOITDetailDomain
 import MOITDetailDomainImpl
@@ -30,13 +32,11 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 	
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { dependency.convertAttendanceStatusUseCase }
 	
-	
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
 	var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
 	var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }
-	
-    var moitDetailRepository: MOITDetailRepository { dependency.moitDetailRepository }
-    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAttendanceUsecase }
+    var moitDetailUsecase: MOITDetailUsecase { dependency.moitDetailUsecase }
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { dependency.moitAllAttendanceUsecase }
     var moitUserusecase: MOITUserUsecase { dependency.moitUserusecase }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
 		dependency.postFineEvaluateUseCase
@@ -64,7 +64,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
             moitID: moitID,
             tabTypes: [.attendance, .fine],
             presenter: viewController,
-            detailUsecase: dependency.moitDetailUsecase
+            detailUsecase: component.moitDetailUsecase
         )
         interactor.listener = listener
         

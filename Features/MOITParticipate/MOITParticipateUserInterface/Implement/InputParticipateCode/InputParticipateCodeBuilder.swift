@@ -14,21 +14,15 @@ import MOITParticipateData
 import MOITParticipateDomainImpl
 import MOITParticipateDomain
 
-
-
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
 										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {
-	var participateUseCase: ParticipateUseCase { ParticipateUseCaseImpl(
-		participateRepository: participateRepository,
-		moitDetailUseCase: dependency.moitDetailUseCase
-	) }
-	let participateRepository: ParticipateRepository
+    var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
 	
 	override init(
 		dependency: InputParticipateCodeDependency
 	) {
-		self.participateRepository = ParticipateRepositoryImpl(network: dependency.network)
+		
 		super.init(dependency: dependency)
 	}
 }

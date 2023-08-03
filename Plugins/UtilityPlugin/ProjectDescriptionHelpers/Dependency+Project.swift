@@ -36,7 +36,6 @@ extension TargetDependency {
 		public struct MOITDetail {
 			public struct Data {}
 			public struct Domain {}
-			public struct Interface {}
 		}
         
         public struct MOITSetting {}
@@ -286,9 +285,9 @@ public extension TargetDependency.Feature.MOITDetail.Domain {
     static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetailDomain", isInterface: false)
 }
 
-public extension TargetDependency.Feature.MOITDetail.Interface {
-	static let Interface = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: true)
-	static let Implement = TargetDependency.Feature.MOITDetail.project(moduleName: "MOITDetail", isInterface: false)
+public extension TargetDependency.Feature.MOITDetail {
+    static let Interface: TargetDependency = .project(target: "MOITDetail", path: .relativeToRoot("Features/MOITDetail/MOITDetail"))
+    static let Implement: TargetDependency = .project(target: "MOITDetailImpl", path: .relativeToRoot("Features/MOITDetail/MOITDetail"))
 }
 
 // MARK: - MOITShare

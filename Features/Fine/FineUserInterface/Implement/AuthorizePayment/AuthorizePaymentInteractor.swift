@@ -37,11 +37,6 @@ protocol AuthorizePaymentInteractorDependency {
 	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
 }
 
-protocol AuthorizePaymentInteractorDependency {
-	var fineID: Int { get }
-	var moitID: Int { get }
-}
-
 final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPresentable>, AuthorizePaymentInteractable, AuthorizePaymentPresentableListener {
 
     weak var router: AuthorizePaymentRouting?

@@ -19,6 +19,7 @@ import Toast
 
 protocol InputParticipateCodePresentableListener: AnyObject {
 	func completeButtonDidTap(with code: String)
+    func didTapBackButton()
 }
 
 public final class InputParticipateCodeViewController: UIViewController,
@@ -76,6 +77,11 @@ public final class InputParticipateCodeViewController: UIViewController,
 		configureView()
 		configureLayout()
 		bind()
+        self.navigationBar.leftItems?[0].rx.tap
+            .bind(onNext: { [weak self] _ in
+                self?.listener?.didTapBackButton()
+            })
+            .disposed(by: disposeBag)
 	}
 	
 	public override func viewDidLayoutSubviews() {

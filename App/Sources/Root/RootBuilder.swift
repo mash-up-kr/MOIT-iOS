@@ -24,11 +24,33 @@ import MOITListDomainImpl
 import MOITListData
 import MOITListDataImpl
 
+import MOITDetail
+import MOITDetailImpl
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
 import TokenManager
 import TokenManagerImpl
 
 import MOITNetwork
 import MOITNetworkImpl
+
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
+import MOITParticipateDomain
+import MOITParticipateDomainImpl
+import MOITParticipateData
+import MOITParticipateDataImpl
+
+import FineDomain
+import FineDomainImpl
+
+import FineDataImpl
 
 final class RootComponent: EmptyDependency,
                            MOITWebDependency,
@@ -36,23 +58,42 @@ final class RootComponent: EmptyDependency,
                            MOITListDependency,
                            LoggedOutDependency,
                            SignUpDependency,
-                           ProfileSelectDependency
-{
+                           ProfileSelectDependency {
+    
+    var compareUserIDUseCase: CompareUserIDUseCase { CompareUserIDUseCaseImpl(tokenManager: tokenManager)}
+    
+    var fetchFineInfoUseCase: FetchFineInfoUseCase { FetchFineInfoUseCaseImpl(fineRepository: fineRepository)}
+    
+    var filterMyFineListUseCase: FilterMyFineListUseCase { FilterMyFineListUseCaseImpl(tokenManager: tokenManager) }
+    
+    var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { ConvertAttendanceStatusUseCaseImpl() }
+    
+    var fetchFineItemUseCase: FetchFineItemUseCase { FetchFineItemUseCaseImpl(fineRepository: fineRepository) }
+    
+    var postFineEvaluateUseCase: PostFineEvaluateUseCase { PostFineEvaluateUseCaseImpl(repository: fineRepository) }
+    
+    var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { PostMasterAuthorizeUseCaseImpl(repository: fineRepository) }
+    
+    var fetchUserInfoUseCase: FetchUserInfoUseCase { FetchUserInfoUseCaseImpl(repository: UserRepositoryImpl(network: self.network))}
+    
+    var saveUserIDUseCase: SaveUserIDUseCase { SaveUserIDUseCaseImpl(tokenManager: tokenManager) }
+    
     
     lazy var profileSelectBuildable: AuthUserInterface.ProfileSelectBuildable = ProfileSelectBuilder(dependency: self)
     
     // MARK: - Properties
-    
-    private let network = NetworkImpl()
+    let network: Network = NetworkImpl()
+    private lazy var fineRepository = FineRepositoryImpl(network: network)
+    private lazy var tokenManager = TokenManagerImpl()
     private lazy var moitRepository = MOITRepositoryImpl(network: network)
     private lazy var bannerRepository = BannerRepositoryImpl(network: network)
     private lazy var authRepository = AuthRepositoryImpl(network: network)
-    private lazy var tokenManager = TokenManagerImpl()
+    private lazy var detailRepository = MOITDetailRepositoryImpl(network: network)
     
     lazy var fetchMOITListsUseCase: FetchMoitListUseCase = FetchMoitListUseCaseImpl(moitRepository: moitRepository)
     
     lazy var calculateLeftTimeUseCase: CalculateLeftTimeUseCase = CalculateLeftTimeUseCaseImpl()
-    
+    lazy var moitDetailUseCase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: detailRepository)
     lazy var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase = FetchBannersUseCaseImpl(repository: bannerRepository)
     
     lazy var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
@@ -62,11 +103,19 @@ final class RootComponent: EmptyDependency,
     lazy var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: tokenManager)
     lazy var fetchTokenUseCase: FetchTokenUseCase = FetchTokenUseCaseImpl(tokenManager: tokenManager)
     
+    lazy var moitDetailRepository = MOITDetailRepositoryImpl(network: network)
+    lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
+    lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
+    lazy var moitDetailUsecase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: moitDetailRepository)
+    
+    lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
+        participateRepository: participateRepository, moitDetailUseCase: moitDetailUseCase)
+    
     // MARK: - Initializers
     
     public init() {
-        #warning("나중에 지워")
-        tokenManager.delete(key: .authorizationToken)
+//        tokenManager.delete(key: .authorizationToken)
     }
     
     // MARK: - Methods

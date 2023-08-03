@@ -11,6 +11,9 @@ import ProjectDescriptionHelpers
 import UtilityPlugin
 
 let project = Project.invertedDualTargetProject(
-    name: "MOITShareDomain"
+    name: "MOITShareDomain",
+    interfaceDependencies: [
+        .ThirdParty.RxSwift,
+    ]
 )
 

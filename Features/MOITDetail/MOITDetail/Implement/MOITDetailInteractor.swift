@@ -16,7 +16,7 @@ import RxRelay
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
     func attachMOITUsers(moitID: String)
-    func detachMOITUsers()
+    func detachMOITUsers(withPop: Bool)
     func attachMOITShare(code: String)
     func detachMOITShare()
 	func attachFineList(moitID: Int)
@@ -190,6 +190,14 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     func didTapPager(at index: Int) {
         print(#function, index)
     }
+    
+    func didSwipeBack() {
+        self.listener?.moitDetailDidSwipeBack()
+    }
+    
+    func didTapBackButton() {
+        self.listener?.moitDetailDidTapBackButton()
+    }
 }
 
 // MARK: - MOITDetailAttendance
@@ -204,8 +212,11 @@ extension MOITDetailInteractor {
 
 // MARK: - MOITUsers
 extension MOITDetailInteractor {
-    func didTapBackButton() {
-        self.router?.detachMOITUsers()
+    func moitUserDidTapBackButton() {
+        self.router?.detachMOITUsers(withPop: true)
+    }
+    func moitUserDidSwipeBack() {
+        self.router?.detachMOITUsers(withPop: false)
     }
 }
 

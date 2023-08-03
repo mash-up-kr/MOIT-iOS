@@ -48,6 +48,9 @@ final class MOITSettingInteractor: PresentableInteractor<MOITSettingPresentable>
 
 // MARK: - MOITSettingPresentableListener
 extension MOITSettingInteractor {
+    func didSwipeBack() {
+        self.listener?.didSwipeBack()
+    }
     func didTapBackButton() {
         self.listener?.didTapBackButton()
     }

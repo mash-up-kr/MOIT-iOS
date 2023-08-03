@@ -17,6 +17,12 @@ import MOITListDataImpl
 import MOITNetwork
 import MOITNetworkImpl
 
+import MOITDetailDomain
+import MOITDetailDomainImpl
+import MOITDetailData
+import MOITDetailDataImpl
+
+
 import RxSwift
 import RIBs
 
@@ -46,6 +52,13 @@ extension MOITListAppDelegate {
     final class MockMoitListComponent: Component<EmptyDependency>,
                                        MOITListDependency
     {
+        let detailRepository = MOITDetailRepositoryImpl(network: NetworkImpl())
+        lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase = MOITAllAttendanceUsecaseImpl(repository: detailRepository)
+        
+        lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: detailRepository)
+        
+        var moitDetailUsecase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: MOITDetailRepositoryImpl(network: NetworkImpl()))
+        
         var calculateLeftTimeUseCase: CalculateLeftTimeUseCase
         
         var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase
@@ -54,7 +67,7 @@ extension MOITListAppDelegate {
         
         init() {
             self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MOITRepositoryImpl(network: NetworkImpl()))
-//            self.fetchMOITListsUseCase = FetchMoitListUseCaseImpl(moitRepository: MockMoitRepository())
+
             self.fetchPaneltyToBePaiedUseCase = MockBannersUseCase()
             self.calculateLeftTimeUseCase = CalculateLeftTimeUseCaseImpl()
             super.init(dependency: EmptyComponent())

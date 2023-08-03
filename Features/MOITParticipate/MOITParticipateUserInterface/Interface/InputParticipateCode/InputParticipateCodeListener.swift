@@ -8,4 +8,6 @@
 
 import RIBs
 
-public protocol InputParticipateCodeListener: AnyObject { }
+public protocol InputParticipateCodeListener: AnyObject {
+    func inputParticiateCodeDidTapBack()
+}

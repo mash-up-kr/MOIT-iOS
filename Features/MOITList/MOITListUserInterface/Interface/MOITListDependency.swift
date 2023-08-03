@@ -7,12 +7,27 @@
 //
 
 import RIBs
-
+//import MOITNetwork
 import MOITListDomain
+import MOITDetailDomain
+import MOITParticipateDomain
+import FineDomain
 
 public protocol MOITListDependency: Dependency {
-    
+    //    var network: Network { get }
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
     var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase { get }
+    var moitDetailUseCase: MOITDetailUsecase { get }
+    var moitAllAttendanceUsecase: MOITAllAttendanceUsecase { get }
+    var moitUserusecase: MOITUserUsecase { get }
+    var moitDetailUsecase: MOITDetailUsecase { get }
+    var participateUseCase: ParticipateUseCase { get }
+    var compareUserIDUseCase: CompareUserIDUseCase { get }
+    var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
+    var filterMyFineListUseCase: FilterMyFineListUseCase { get }
+    var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
+    var fetchFineItemUseCase: FetchFineItemUseCase { get }
+    var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
+    var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
 }
