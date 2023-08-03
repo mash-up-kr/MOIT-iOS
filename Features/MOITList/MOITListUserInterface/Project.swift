@@ -19,7 +19,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RIBs,
         .Feature.MOITDetail.Domain.Interface,
         .Feature.MOITParticipate.Domain.Interface,
-		.Feature.MOITList.Domain.Interface
+		.Feature.MOITList.Domain.Interface,
+        .Feature.Fine.Domain.Interface,
     ],
     implementDependencies: [
         .ThirdParty.RxSwift,

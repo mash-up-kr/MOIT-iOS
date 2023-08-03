@@ -16,6 +16,7 @@ let project = Project.invertedDualTargetProject(
     iOSTargetVersion: "16.0.0",
     interfaceDependencies: [
         .Feature.MOITDetail.Data.Interface,
+        .DesignSystem,
     ],
     implementDependencies: [
         .Core.MOITFoundation,

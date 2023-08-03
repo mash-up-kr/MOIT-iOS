@@ -17,7 +17,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.MOITDetail.Domain.Interface,
 		.Feature.MOITDetail.Data.Interface,
 		.Feature.Fine.Domain.Interface,
-		.MOITNetwork.Interface
+		.MOITNetwork.Interface,
+        .DesignSystem,
     ],
     implementDependencies: [
         .ThirdParty.Kingfisher,
@@ -29,7 +30,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.PinLayout,
         .ThirdParty.SkeletonView,
         .ResourceKit,
-        .DesignSystem,
+//        .DesignSystem,
         .Feature.MOITDetail.Domain.Implement,
         .Feature.MOITDetail.Data.Implement,
 		.Feature.Fine.UserInterface.Interface,
