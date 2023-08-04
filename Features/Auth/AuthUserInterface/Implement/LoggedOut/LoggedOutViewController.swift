@@ -61,6 +61,8 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 // MARK: - override
 	
 	override func viewDidLoad() {

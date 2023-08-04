@@ -45,6 +45,8 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
         super.init(presenter: presenter)
         presenter.listener = self
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 
     override func didBecomeActive() {
         super.didBecomeActive()

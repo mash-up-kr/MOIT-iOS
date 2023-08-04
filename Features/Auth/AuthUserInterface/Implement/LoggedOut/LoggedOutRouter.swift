@@ -44,6 +44,8 @@ final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutView
         interactor.router = self
     }
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 	func attachSignInWeb() {
 		if signInWebRouting != nil { return }
 		

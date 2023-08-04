@@ -39,6 +39,8 @@ public final class LoggedOutBuilder: Builder<LoggedOutDependency>, LoggedOutBuil
     override public init(dependency: LoggedOutDependency) {
         super.init(dependency: dependency)
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 
 	public func build(withListener listener: LoggedOutListener) -> ViewableRouting {
         let component = LoggedOutComponent(dependency: dependency)
