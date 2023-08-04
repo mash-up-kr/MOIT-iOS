@@ -49,7 +49,8 @@ final class InputParticipateCodeRouter: ViewableRouter<InputParticipateCodeInter
 		
 		let participationSuccessViewController = router.viewControllable.uiviewController
 		participationSuccessViewController.modalPresentationStyle = .fullScreen
-		viewController.uiviewController.present(participationSuccessViewController, animated: true)
+		
+		self.viewController.uiviewController.navigationController?.present(participationSuccessViewController, animated: true)
 		participationSuccessRouting = router
 		attachChild(router)
 	}

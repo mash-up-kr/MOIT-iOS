@@ -18,7 +18,6 @@ import RxSwift
 
 protocol InputParticipateCodeRouting: ViewableRouting {
 	func attachPariticipationSuccess(with viewModel: MOITDetailProfileInfoViewModel)
-	func detachPariticipationSuccess()
 }
 
 protocol InputParticipateCodePresentable: Presentable {
@@ -83,7 +82,7 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	}
 	
 	func participationSuccessDismissButtonDidTap() {
-		router?.detachPariticipationSuccess()
+		listener?.moveToMOITListButtonDidTap()
 	}
 
 	private func convertToMOITDetailProfileInfoViewModel(

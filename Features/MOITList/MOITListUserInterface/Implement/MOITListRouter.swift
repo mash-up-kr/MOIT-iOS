@@ -99,11 +99,17 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         attachChild(router)
 		viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
-    func detachInputParticipateCode() {
+	func detachInputParticipateCode(withPop: Bool) {
         guard let inputParticipateCodeRouter else { return }
         self.inputParticipateCodeRouter = nil
         detachChild(inputParticipateCodeRouter)
+		
 		viewController.uiviewController.navigationController?.popViewController(animated: true)
+		
+		if !withPop {
+			viewController.uiviewController.navigationController?.dismiss(animated: false)
+		}
+		
     }
     
     private let settingBuilder: MOITSettingBuildable
