@@ -33,6 +33,8 @@ final class ParticipationSuccessBuilder: Builder<ParticipationSuccessDependency>
     override init(dependency: ParticipationSuccessDependency) {
         super.init(dependency: dependency)
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 
     func build(
 		withListener listener: ParticipationSuccessListener,

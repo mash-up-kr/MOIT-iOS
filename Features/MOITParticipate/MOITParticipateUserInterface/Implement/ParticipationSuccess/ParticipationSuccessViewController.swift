@@ -100,6 +100,8 @@ public final class ParticipationSuccessViewController: UIViewController,
 		flexRootContainer.flex.layout()
 	}
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 // MARK: - private
 	
 	private func configureView() {

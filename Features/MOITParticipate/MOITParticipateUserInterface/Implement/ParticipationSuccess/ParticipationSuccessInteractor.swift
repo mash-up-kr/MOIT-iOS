@@ -39,6 +39,8 @@ final class ParticipationSuccessInteractor: PresentableInteractor<ParticipationS
         super.init(presenter: presenter)
         presenter.listener = self
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 
     override func didBecomeActive() {
         super.didBecomeActive()

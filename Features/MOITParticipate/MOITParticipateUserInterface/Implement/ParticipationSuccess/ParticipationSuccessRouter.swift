@@ -23,4 +23,6 @@ final class ParticipationSuccessRouter: ViewableRouter<ParticipationSuccessInter
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 }
