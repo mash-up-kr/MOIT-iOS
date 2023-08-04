@@ -97,16 +97,13 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         let router = inputParticipateCodeBuilder.build(withListener: interactor)
         self.inputParticipateCodeRouter = router
         attachChild(router)
-        let navi = UINavigationController(rootViewController: router.viewControllable.uiviewController)
-        navi.modalPresentationStyle = .fullScreen
-        navi.navigationBar.isHidden = true
-        viewController.uiviewController.present(navi, animated: true)
+		viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
     func detachInputParticipateCode() {
         guard let inputParticipateCodeRouter else { return }
         self.inputParticipateCodeRouter = nil
         detachChild(inputParticipateCodeRouter)
-        viewController.uiviewController.dismiss(animated: true)
+		viewController.uiviewController.navigationController?.popViewController(animated: true)
     }
     
     private let settingBuilder: MOITSettingBuildable

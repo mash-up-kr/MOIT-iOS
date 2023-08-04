@@ -46,7 +46,12 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
 @main
 final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		
-	private final class MockMOITPariticipateListener: InputParticipateCodeListener { }
+	private final class MockMOITPariticipateListener: InputParticipateCodeListener {
+		
+		func inputParticiateCodeDidTapBack() {
+			// do nothing
+		}
+	}
 	
     var window: UIWindow?
 	private var router: ViewableRouting?
