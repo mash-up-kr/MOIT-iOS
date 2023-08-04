@@ -67,7 +67,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         attachChild(router)
         let viewCon = router.viewControllable.uiviewController
         viewCon.modalPresentationStyle = .overFullScreen
-        self.viewController.uiviewController.present(router.viewControllable.uiviewController, animated: false)
+		viewControllable.uiviewController.present(router.viewControllable.uiviewController, animated: false)
         
     }
     
@@ -76,7 +76,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         
         authRouter = nil
         detachChild(router)
-        router.viewControllable.uiviewController.dismiss(animated: false)
+		viewControllable.uiviewController.dismiss(animated: false)
     }
     
     func routeToMOITList() {

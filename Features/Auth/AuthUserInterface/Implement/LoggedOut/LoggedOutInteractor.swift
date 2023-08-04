@@ -6,6 +6,8 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import Foundation
+
 import AuthUserInterface
 import AuthDomain
 
@@ -75,16 +77,17 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
 			.subscribe(
 				onSuccess: { [weak self] entity in
 					self?.dependency.saveUserIDUseCase.execute(userID: entity.userID)
+					
+					DispatchQueue.main.async { [weak self] in
+						self?.listener?.didCompleteAuth()
+					}
 				}
 			)
 			.disposeOnDeactivate(interactor: self)
-        router?.detachSignInWeb()
-        listener?.didCompleteAuth()
 	}
     
     // MARK: - SignUp
     func didCompleteSignUp() {
-        router?.detachSignInWeb()
         listener?.didCompleteAuth()
     }
 }
