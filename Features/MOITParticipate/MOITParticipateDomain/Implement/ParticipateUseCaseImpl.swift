@@ -18,32 +18,52 @@ public final class ParticipateUseCaseImpl: ParticipateUseCase {
 	
 // MARK: - properties
 	private let participateRepository: ParticipateRepository
-	private let moitDetailUseCase: MOITDetailUsecase
 	
 // MARK: - init
 	public init(
-		participateRepository: ParticipateRepository,
-		moitDetailUseCase: MOITDetailUsecase
+		participateRepository: ParticipateRepository
 	) {
 		self.participateRepository = participateRepository
-		self.moitDetailUseCase = moitDetailUseCase
 	}
 	
 // MARK: - public
-	public func execute(with code: String) -> Single<MOITDetailEntity> {
+	public func execute(with code: String) -> Single<ParticipateEntity> {
 		// ???: 이걸 여기서 만드는게 맞나?! 만드는 위치에 대한 고민...
 		// TODO: userId 불러오는 로직 추가 필요
 		let request = MOITParticipateRequest(
-			userId: 0,
+			userId: 10,
 			invitationCode: code
 		)
 		
 		return participateRepository.postParticipateCode(with: request)
-			.compactMap { [weak self] moitDetailModel -> MOITDetailEntity? in
+			.compactMap { [weak self] participateResponseDTO -> ParticipateEntity? in
 				guard let self else { return nil}
-				return self.moitDetailUseCase.convertToMOITDetailEntity(from: moitDetailModel)
+				return self.convertToParticipateEntity(from: participateResponseDTO)
 			}
 			.asObservable()
 			.asSingle()
+	}
+	
+	private func convertToParticipateEntity(
+		from response: ParticipateResponseDTO
+	) -> ParticipateEntity {
+		return ParticipateEntity(
+			moitID: response.moitID,
+			moitName: response.name,
+			description: response.description,
+			imageURL: response.imageURL,
+			scheduleDayOfWeeks: response.scheduleDayOfWeeks,
+			scheduleRepeatCycle: response.scheduleRepeatCycle,
+			scheduleStartTime: response.scheduleStartTime,
+			scheduleEndTime: response.scheduleEndTime,
+			fineLateTime: response.fineLateTime,
+			fineLateAmount: response.fineLateAmount,
+			fineAbsenceTime: response.fineAbsenceTime,
+			fineAbsenceAmount: response.fineAbsenceAmount,
+			notificationIsRemindActive: response.notificationIsRemindActive,
+			notificationRemindOption: response.notificationRemindOption,
+			startDate: response.startDate,
+			endDate: response.endDate
+		)
 	}
 }

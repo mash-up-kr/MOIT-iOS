@@ -110,7 +110,7 @@ final class RootComponent: EmptyDependency,
     
     lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
     lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
-        participateRepository: participateRepository, moitDetailUseCase: moitDetailUseCase)
+        participateRepository: participateRepository)
     
     // MARK: - Initializers
     

@@ -29,6 +29,7 @@ protocol InputParticipateCodePresentable: Presentable {
 
 protocol InputParticipateCodeInteractorDependency {
 	var participateUseCase: ParticipateUseCase { get }
+	var moitDetailUseCase: MOITDetailUsecase { get }
 }
 
 final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipateCodePresentable>, InputParticipateCodeInteractable, InputParticipateCodePresentableListener {
@@ -69,9 +70,9 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 				guard let self else { return }
 				
 				switch event {
-				case.success(let moitDetailEntity):
+				case.success(let participateEntity):
 					let moitDetailProfileInfoViewModel = self.convertToMOITDetailProfileInfoViewModel(
-						model: moitDetailEntity
+						model: participateEntity
 					)
 					self.router?.attachPariticipationSuccess(with: moitDetailProfileInfoViewModel)
 				case .failure:
@@ -86,33 +87,53 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 	}
 
 	private func convertToMOITDetailProfileInfoViewModel(
-		model: MOITDetailEntity
+		model: ParticipateEntity
 	) -> MOITDetailProfileInfoViewModel {
 		let profileViewModel = MOITProfileInfoViewModel(
 			imageUrl: model.imageURL,
 			moitName: model.moitName
 		)
 		
+		let scheduleDescription = dependency.moitDetailUseCase.moitScheduleDescription(
+			scheduleDayOfWeeks: model.scheduleDayOfWeeks,
+			scheduleRepeatCycle: model.scheduleRepeatCycle,
+			scheduleStartTime: model.scheduleStartTime,
+			scheduleEndTime: model.scheduleEndTime
+		)
+		let ruleLongDescription = dependency.moitDetailUseCase.ruleLongDescription(
+			fineLateTime: model.fineLateTime,
+			fineLateAmount: model.fineLateAmount,
+			fineAbsenceTime: model.fineAbsenceTime,
+			fineAbsenceAmount: model.fineAbsenceAmount
+		)
+		let notificationDescription = dependency.moitDetailUseCase.notificationDescription(
+			remindOption: model.notificationRemindOption
+		)
+		let periodDescription = dependency.moitDetailUseCase.periodDescription(
+			startDate: model.startDate,
+			endDate: model.endDate
+		)
+		
 		var detailViewModels = [
 			MOITDetailInfoViewModel(
 				title: "일정",
-				description: model.scheduleDescription
+				description: scheduleDescription
 			),
 			MOITDetailInfoViewModel(
 				title: "규칙",
-				description: model.ruleLongDescription
+				description: ruleLongDescription
 			),
 			MOITDetailInfoViewModel(
 				title: "기간",
-				description: model.periodDescription
+				description: periodDescription
 			)
 		]
 		
-		if model.isNotificationActive {
+		if model.isRemindActive {
 			detailViewModels.insert(
 				MOITDetailInfoViewModel(
 					title: "알람",
-					description: model.notificationDescription
+					description: notificationDescription
 				),
 				at: 2
 			)

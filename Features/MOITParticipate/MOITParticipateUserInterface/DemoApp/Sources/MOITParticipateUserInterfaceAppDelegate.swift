@@ -32,7 +32,7 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
     
 	let network: Network
 	let moitDetailUseCase: MOITDetailUsecase
-    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network), moitDetailUseCase: moitDetailUseCase)
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network))
     
 	init(
 		network: Network,

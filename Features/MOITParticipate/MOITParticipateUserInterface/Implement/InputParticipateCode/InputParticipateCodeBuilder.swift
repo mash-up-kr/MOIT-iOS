@@ -13,16 +13,17 @@ import MOITParticipateDataImpl
 import MOITParticipateData
 import MOITParticipateDomainImpl
 import MOITParticipateDomain
+import MOITDetailDomain
 
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
 										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {
+	var moitDetailUseCase: MOITDetailUsecase { dependency.moitDetailUseCase }
     var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
 	
 	override init(
 		dependency: InputParticipateCodeDependency
 	) {
-		
 		super.init(dependency: dependency)
 	}
 }

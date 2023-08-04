@@ -9,12 +9,11 @@
 import Foundation
 
 import MOITParticipateData
-import MOITDetailData
 import MOITNetwork
 
 enum ParticipateEndpoint {
 	
-	static func postParticipateCode(with request: MOITParticipateRequest) -> Endpoint<MOITDetailModel> {
+	static func postParticipateCode(with request: MOITParticipateRequest) -> Endpoint<ParticipateResponseDTO> {
 		
 		return Endpoint(
 			path: "moit/join",

@@ -13,5 +13,5 @@ import MOITDetailData
 import RxSwift
 
 public protocol ParticipateRepository {
-	func postParticipateCode(with request: MOITParticipateRequest) -> Single<MOITDetailModel>
+	func postParticipateCode(with request: MOITParticipateRequest) -> Single<ParticipateResponseDTO>
 }
