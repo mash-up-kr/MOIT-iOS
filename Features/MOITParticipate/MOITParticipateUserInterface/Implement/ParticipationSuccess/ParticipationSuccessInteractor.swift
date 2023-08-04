@@ -48,6 +48,10 @@ final class ParticipationSuccessInteractor: PresentableInteractor<ParticipationS
         super.willResignActive()
     }
 	
+	func showStudyDetailButtonDidTap() {
+		// TODO: 스터디 상세로 이동해야함
+	}
+	
 	func dismissButtonDidTap() {
 		listener?.participationSuccessDismissButtonDidTap()
 	}
