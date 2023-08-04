@@ -11,30 +11,12 @@ import Foundation
 import MOITNetwork
 import MOITListData
 
-struct FetchMOITListRequestable: Requestable {
-    
-    public typealias Response = MOITListDTO
-    
-    // MARK: - Properties
-    
-    public var path: String {
-        return "moit"
-    }
-    
-    public var method: HTTPMethod {
-        return .get
-    }
-    
-    public var headers: HTTPHeaders {
-        return [:]
-    }
-    
-    public var parameters: HTTPRequestParameter? {
-        return nil
-    }
-    
-    // mark: - Initializers
-    init() {
-    
-    }
+struct FetchMOITListEndpoint {
+	
+	static func fetchMOITList() -> Endpoint<MOITListDTO> {
+		Endpoint(
+			path: "moit",
+			method: .get
+		)
+	}
 }

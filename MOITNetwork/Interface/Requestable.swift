@@ -41,10 +41,6 @@ public extension Requestable {
 	func makeURL() -> URL? {
 		self.baseURL.append(path: path).append(queries: parameters)
 	}
-    
-    var baseURL: URL {
-		URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com/api/v1") ?? URL(fileReferenceLiteralResourceName: "")
-	}
 }
 
 extension URLRequest {

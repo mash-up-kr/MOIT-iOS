@@ -23,14 +23,18 @@ public final class MOITDetailRepositoryImpl: MOITDetailRepository {
     deinit { debugPrint("\(self) deinit") }
     
     public func fetchDetail(moitID: String) -> Single<MOITDetailModel> {
-        network.request(with: MOITDetailRequestable(moitID: moitID))
+        network.request(
+			with: MOITDetailEndpoint.fetchMOITDetail(moitID: moitID)
+		)
     }
     
     public func fetchAttendance(moitID: String) -> Single<MOITAllAttendanceModel> {
-        network.request(with: MOITAttendanceRequestable(moitID: moitID))
+        network.request(
+			with: MOITDetailEndpoint.fetchMOITAttendance(moitID: moitID)
+		)
     }
     
     public func fetchUesrs(moitID: String) -> Single<MOITUserModel> {
-        network.request(with: MOITUsersRequestable(moitID: moitID))
+		network.request(with: MOITDetailEndpoint.fetchMOITUsers(moitID: moitID))
     }
 }
