@@ -47,6 +47,13 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
 final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		
 	private final class MockMOITPariticipateListener: InputParticipateCodeListener {
+		func moveToMOITListButtonDidTap() {
+			// do nothing
+		}
+		
+		func showMOITDetailButtonDidTap(moitID: Int) {
+			// do nothing
+		}
 		
 		func inputParticiateCodeDidTapBack() {
 			// do nothing
