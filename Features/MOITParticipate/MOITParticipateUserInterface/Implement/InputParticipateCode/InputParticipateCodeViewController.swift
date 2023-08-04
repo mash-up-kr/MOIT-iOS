@@ -104,6 +104,8 @@ public final class InputParticipateCodeViewController: UIViewController,
 		deleteKeyboardNotification()
 	}
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 // MARK: - internal
 	func showErrorToast() {
 		// TODO: Point 수정 필요ㅜ

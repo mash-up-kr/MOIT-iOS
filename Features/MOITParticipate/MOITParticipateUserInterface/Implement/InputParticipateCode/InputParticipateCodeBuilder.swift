@@ -34,6 +34,8 @@ public final class InputParticipateCodeBuilder: Builder<InputParticipateCodeDepe
     override public init(dependency: InputParticipateCodeDependency) {
         super.init(dependency: dependency)
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 
     public func build(withListener listener: InputParticipateCodeListener) -> ViewableRouting {
         let component = InputParticipateCodeComponent(dependency: dependency)

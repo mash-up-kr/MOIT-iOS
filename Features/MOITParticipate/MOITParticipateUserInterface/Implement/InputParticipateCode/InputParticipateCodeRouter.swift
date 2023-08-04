@@ -35,6 +35,8 @@ final class InputParticipateCodeRouter: ViewableRouter<InputParticipateCodeInter
         interactor.router = self
     }
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 	func attachPariticipationSuccess(with viewModel: MOITDetailProfileInfoViewModel) {
 		if participationSuccessRouting != nil {
 			return
