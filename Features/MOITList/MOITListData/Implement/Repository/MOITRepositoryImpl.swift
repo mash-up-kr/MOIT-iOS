@@ -32,7 +32,7 @@ public final class MOITRepositoryImpl: MOITRepository {
     // MARK: - Methods
     public func fetchMOITList() -> Single<[MOIT]> {
         network.request(
-            with: FetchMOITListRequestable()
+			with: FetchMOITListEndpoint.fetchMOITList()
         )
         .map { $0.moits.map { $0.toMOIT() } }
     }
