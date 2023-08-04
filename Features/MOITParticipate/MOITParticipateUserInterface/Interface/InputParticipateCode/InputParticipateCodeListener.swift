@@ -11,4 +11,5 @@ import RIBs
 public protocol InputParticipateCodeListener: AnyObject {
     func inputParticiateCodeDidTapBack()
 	func moveToMOITListButtonDidTap()
+	func showMOITDetailButtonDidTap(moitID: Int)
 }

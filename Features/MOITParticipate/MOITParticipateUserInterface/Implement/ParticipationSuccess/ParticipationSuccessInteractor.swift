@@ -51,7 +51,7 @@ final class ParticipationSuccessInteractor: PresentableInteractor<ParticipationS
     }
 	
 	func showStudyDetailButtonDidTap() {
-		// TODO: 스터디 상세로 이동해야함
+		listener?.showStudyDetailButtonDidTap(moitID: dependency.viewModel.moitID)
 	}
 	
 	func dismissButtonDidTap() {

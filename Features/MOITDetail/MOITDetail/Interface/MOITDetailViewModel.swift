@@ -11,13 +11,16 @@ import Foundation
 public typealias MOITDetailInfoViewModels = [MOITDetailInfoViewModel]
 
 public struct MOITDetailProfileInfoViewModel {
+	public let moitID: Int
 	public let profileInfo: MOITProfileInfoViewModel
 	public let detailInfos: MOITDetailInfoViewModels
 	
 	public init(
+		moitID: Int,
 		profileInfo: MOITProfileInfoViewModel,
 		detailInfos: MOITDetailInfoViewModels
 	) {
+		self.moitID = moitID
 		self.profileInfo = profileInfo
 		self.detailInfos = detailInfos
 	}

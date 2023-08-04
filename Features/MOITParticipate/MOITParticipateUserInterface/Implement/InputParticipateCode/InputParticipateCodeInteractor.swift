@@ -139,8 +139,15 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 		}
 		
 		return MOITDetailProfileInfoViewModel(
+			moitID: model.moitID,
 			profileInfo: profileViewModel,
 			detailInfos: detailViewModels
 		)
+	}
+	
+	// MARK: - ParticipationSuccessListener
+	
+	func showStudyDetailButtonDidTap(moitID: Int) {
+		listener?.showMOITDetailButtonDidTap(moitID: moitID)
 	}
 }
