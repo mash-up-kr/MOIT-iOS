@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseMessaging
 import RIBs
+import UserNotifications
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -17,18 +18,21 @@ final class AppDelegate: UIResponder,
     
     var window: UIWindow?
     private var launchRouter: LaunchRouting?
+    private var builder: RootBuildable?
     
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        guard let window = self.window
-        else { return false }
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
         
-        let router = RootBuilder(dependency: EmptyComponent()).build()
+        self.builder = RootBuilder(dependency: EmptyComponent())
+        let router = builder?.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)
+        
+        self.configure(application)
         return true
     }
     

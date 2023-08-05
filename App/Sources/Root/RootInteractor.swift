@@ -14,12 +14,10 @@ import TokenManagerImpl
 import TokenManager
 
 protocol RootRouting: ViewableRouting {
-    func routeToMoitWeb(path: MOITWebPath)
-    func detachWeb(withPop: Bool)
-    
     func routeToAuth()
     func routeToMOITList()
-    func detachAuth()
+    
+    func detachAuth(_ completion: (() -> Void)?)
     func detachMOITList()
 }
 
@@ -38,7 +36,7 @@ protocol RootInteractorDependency {
 final class RootInteractor: PresentableInteractor<RootPresentable>,
                             RootInteractable,
                             RootPresentableListener {
-        
+
     // MARK: - Properties
 
     weak var router: RootRouting?
@@ -61,7 +59,7 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
     
     override func didBecomeActive() {
         super.didBecomeActive()
-        configureRIB()
+        TokenManagerImpl().save(token: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc", with: .authorizationToken)
     }
     
     override func willResignActive() {
@@ -70,61 +68,41 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
     
     // MARK: - Methods
     
-    // 로그인 여부 확인 메소드
-    
     func configureRIB() {
         // 토큰 있는지 확인 후 있으면 moitlist, 안됐으면 auth
         if dependency.fetchTokenUseCase.execute() == nil {
             router?.routeToAuth()
             return
         }
-        
         router?.routeToMOITList()
     }
-    
+}
+
+// MARK: - RootPresentable
+
+extension RootInteractor {
+    func viewDidAppear() {
+        configureRIB()
+    }
+}
+
+// MARK: - Auth Listener
+extension RootInteractor {
     func didCompleteAuth() {
-        router?.detachAuth()
-        router?.routeToMOITList()
-    }
-
-}
-
-
-
-// TODO: - 삭제
-
-extension RootInteractor {
-    func shouldDetach(withPop: Bool) {
-        self.router?.detachWeb(withPop: withPop)
+        router?.detachAuth { [weak self] in
+            self?.router?.routeToMOITList()
+        }
     }
 }
 
+// MARK: - MOITListListener
 extension RootInteractor {
-    
-    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
-        // 뭘 해야함?
+    func didLogout() {
+        self.router?.detachMOITList()
+        self.router?.routeToAuth()
     }
-    
-    func didSignIn(with token: String) {
-        // 뭘 해야함?
+    func didWithdraw() {
+        self.router?.detachMOITList()
+        self.router?.routeToAuth()
     }
-    
-    func didTapCreateButton() {
-        self.router?.routeToMoitWeb(path: .register)
-    }
-    
-    func didTapAttendanceButton() {
-        self.router?.routeToMoitWeb(path: .attendance)
-    }
-    
-    func didTapModifyButton(id: String) {
-        self.router?.routeToMoitWeb(path: .modify(id: id))
-    }
-    
-    func didTapAttendanceResultButton() {
-        self.router?.routeToMoitWeb(path: .attendanceResult)
-    }
-    
-
-
 }

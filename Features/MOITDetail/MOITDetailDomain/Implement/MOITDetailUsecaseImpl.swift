@@ -118,10 +118,10 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
     ) -> String {
         return "\(startDate.dateKORString) - \(endDate.dateKORString)"
     }
-	
-	public func notificationDescription(
-		remindOption: String
+
+	private func notificationDescription(
+		remindOption: String?
 	) -> String {
-		return NotificationRemindOption(fromRawValue: remindOption).toKor
+        return NotificationRemindOption(fromRawValue: remindOption ?? "").toKor
 	}
 }

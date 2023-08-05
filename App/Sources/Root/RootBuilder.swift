@@ -49,10 +49,10 @@ import MOITParticipateDataImpl
 
 import FineDomain
 import FineDomainImpl
-
+import FineData
 import FineDataImpl
 
-final class RootComponent: EmptyDependency,
+final class RootComponent: Component<EmptyDependency>,
                            MOITWebDependency,
                            RootInteractorDependency,
                            MOITListDependency,
@@ -60,66 +60,52 @@ final class RootComponent: EmptyDependency,
                            SignUpDependency,
                            ProfileSelectDependency {
     
-    var compareUserIDUseCase: CompareUserIDUseCase { CompareUserIDUseCaseImpl(tokenManager: tokenManager)}
-    
-    var fetchFineInfoUseCase: FetchFineInfoUseCase { FetchFineInfoUseCaseImpl(fineRepository: fineRepository)}
-    
-    var filterMyFineListUseCase: FilterMyFineListUseCase { FilterMyFineListUseCaseImpl(tokenManager: tokenManager) }
-    
-    var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { ConvertAttendanceStatusUseCaseImpl() }
-    
-    var fetchFineItemUseCase: FetchFineItemUseCase { FetchFineItemUseCaseImpl(fineRepository: fineRepository) }
-    
-    var postFineEvaluateUseCase: PostFineEvaluateUseCase { PostFineEvaluateUseCaseImpl(repository: fineRepository) }
-    
-    var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { PostMasterAuthorizeUseCaseImpl(repository: fineRepository) }
-    
-    var fetchUserInfoUseCase: FetchUserInfoUseCase { FetchUserInfoUseCaseImpl(repository: UserRepositoryImpl(network: self.network))}
-    
-    var saveUserIDUseCase: SaveUserIDUseCase { SaveUserIDUseCaseImpl(tokenManager: tokenManager) }
-    
-    
-    lazy var profileSelectBuildable: AuthUserInterface.ProfileSelectBuildable = ProfileSelectBuilder(dependency: self)
-    
-    // MARK: - Properties
     let network: Network = NetworkImpl()
+    let tokenManager: TokenManager = TokenManagerImpl()
+    
+    // MARK: Repository
     private lazy var fineRepository = FineRepositoryImpl(network: network)
-    private lazy var tokenManager = TokenManagerImpl()
-    private lazy var moitRepository = MOITRepositoryImpl(network: network)
-    private lazy var bannerRepository = BannerRepositoryImpl(network: network)
-    private lazy var authRepository = AuthRepositoryImpl(network: network)
-    private lazy var detailRepository = MOITDetailRepositoryImpl(network: network)
+    private lazy var moitRepository: MOITRepository = MOITRepositoryImpl(network: network)
+    private lazy var bannerRepository: BannerRepository = BannerRepositoryImpl(network: network)
+    private lazy var authRepository: AuthRepository = AuthRepositoryImpl(network: network)
+    private lazy var detailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: network)
+    private lazy var userRepository: UserRepository = UserRepositoryImpl(network: network)
+    private lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: network)
+    private lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
     
+    // MARK: Usecase
+    lazy var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: tokenManager)
+    lazy var fetchFineInfoUseCase: FetchFineInfoUseCase = FetchFineInfoUseCaseImpl(fineRepository: fineRepository)
+    lazy var filterMyFineListUseCase: FilterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: tokenManager)
+    lazy var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase = ConvertAttendanceStatusUseCaseImpl()
+    lazy var fetchFineItemUseCase: FetchFineItemUseCase = FetchFineItemUseCaseImpl(fineRepository: fineRepository)
+    lazy var postFineEvaluateUseCase: PostFineEvaluateUseCase = PostFineEvaluateUseCaseImpl(repository: fineRepository)
+    lazy var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase = PostMasterAuthorizeUseCaseImpl(repository: fineRepository)
+    lazy var fetchUserInfoUseCase: FetchUserInfoUseCase = FetchUserInfoUseCaseImpl(repository: userRepository)
+    lazy var saveUserIDUseCase: SaveUserIDUseCase = SaveUserIDUseCaseImpl(tokenManager: tokenManager)
     lazy var fetchMOITListsUseCase: FetchMoitListUseCase = FetchMoitListUseCaseImpl(moitRepository: moitRepository)
-    
     lazy var calculateLeftTimeUseCase: CalculateLeftTimeUseCase = CalculateLeftTimeUseCaseImpl()
     lazy var moitDetailUseCase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: detailRepository)
+    var moitDetailUsecase: MOITDetailUsecase { moitDetailUseCase }
     lazy var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase = FetchBannersUseCaseImpl(repository: bannerRepository)
-    
     lazy var fetchRandomNumberUseCase: FetchRandomNumberUseCase = FetchRandomNumberUseCaseImpl()
-    
     lazy var signUpUseCase: SignUpUseCase = SignUpUseCaseImpl(authRepository: authRepository)
-    
     lazy var saveTokenUseCase: SaveTokenUseCase = SaveTokenUseCaseImpl(tokenManager: tokenManager)
     lazy var fetchTokenUseCase: FetchTokenUseCase = FetchTokenUseCaseImpl(tokenManager: tokenManager)
-    
-    lazy var moitDetailRepository = MOITDetailRepositoryImpl(network: network)
     lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
     lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
-    lazy var moitDetailUsecase: MOITDetailUsecase = MOITDetailUsecaseImpl(repository: moitDetailRepository)
-    
-    lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
     lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
-        participateRepository: participateRepository)
+        participateRepository: participateRepository,
+        moitDetailUseCase: moitDetailUseCase
+    )
+    lazy var userUseCase: UserUseCase = UserUseCaseImpl(
+        userRepository: userRepository,
+        tokenManager: tokenManager
+    )
     
-    // MARK: - Initializers
-    
-    public init() {
-//        tokenManager.delete(key: .authorizationToken)
+    override init(dependency: EmptyDependency = EmptyComponent()) {
+        super.init(dependency: dependency)
     }
-    
-    // MARK: - Methods
-    
 }
 // MARK: - Builder
 
@@ -138,17 +124,17 @@ final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
     func build() -> LaunchRouting {
         let component = RootComponent()
         let viewController = RootViewController()
-        let interactor = RootInteractor(presenter: viewController, dependency: component)
-        
-        let webBuilder = MOITWebBuilder(dependency: component)
-        
+        let interactor = RootInteractor(
+            presenter: viewController,
+            dependency: component
+        )
+
         let moitListBuilder = MOITListBuilder(dependency: component)
         let authBuilder = LoggedOutBuilder(dependency: component)
         
         return RootRouter(
             interactor: interactor,
             viewController: viewController,
-            moitWebBuilder: webBuilder,
             moitListBuilder: moitListBuilder,
             loggedOutBuilder: authBuilder
         )

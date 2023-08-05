@@ -25,15 +25,6 @@ public final class NetworkImpl: Network {
 	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
-			
-			Logger.debug("endpoint: \(endpoint)")
-			Logger.debug("requested url: \(urlRequest.url)")
-			Logger.debug(
-				"header: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")"
-			)
-			Logger.debug(
-				"requested httpBody: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))"
-			)
 
 			return Single.create { [weak self] single in
 				self?.session.dataTask(with: urlRequest) { [weak self] data, response, error in
@@ -42,11 +33,25 @@ public final class NetworkImpl: Network {
 
 					switch result {
 					case .success(let response):
-						Logger.debug("👍 success: \(response)")
+						print("""
+                        --------------------    success  ----------------------
+                        👍 url: \(urlRequest.url!)
+                        👍 header: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")
+                        👍 body: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))
+                        👍 success: \(response)
+                        --------------------------------------------------------
+                        """)
 						
 						single(.success(response))
 					case .failure(let error):
-						Logger.debug("💥 error: \(error)")
+                        print("""
+                        ----------------------   error  ------------------------
+                        💥 url: \(urlRequest.url!)
+                        💥 header: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")
+                        💥 body: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))
+                        💥 error: \(error)
+                        --------------------------------------------------------
+                        """)
 						
 						single(.failure(error))
 					}
@@ -77,13 +82,10 @@ public final class NetworkImpl: Network {
 		guard let data = data else {
 			return .failure(NetworkError.emptyData)
 		}
-		
-		Logger.debug("🧐 response data: \(String(decoding: data, as: UTF8.self))")
-		Logger.debug("👀 statusCode: \(response.statusCode)")
 
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
-			
+			print(data)
 			if responseModel.success, let data = responseModel.data {
 				return .success(data)
 			} else {
@@ -91,7 +93,7 @@ public final class NetworkImpl: Network {
 				return .failure(NetworkError.serverError(serverError))
 			}
 		} catch {
-			return .failure(NetworkError.decodingError)
+            return .failure(NetworkError.decodingError(code: response.statusCode))
 		}
 	}
 }

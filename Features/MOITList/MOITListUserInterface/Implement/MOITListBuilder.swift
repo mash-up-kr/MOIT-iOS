@@ -14,14 +14,13 @@ import MOITWebImpl
 import MOITWeb
 import RIBs
 import MOITDetailImpl
-
 import MOITSetting
 import MOITSettingImpl
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
-
 import MOITParticipateDomain
 import FineDomain
+import AuthDomain
 
 final class MOITListComponent: Component<MOITListDependency>,
                                MOITListInteractorDependency,
@@ -30,6 +29,7 @@ final class MOITListComponent: Component<MOITListDependency>,
                                InputParticipateCodeDependency,
                                MOITSettingDependency {
     
+    var userUseCase: UserUseCase { dependency.userUseCase }
     var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
     var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
     var filterMyFineListUseCase: FilterMyFineListUseCase { dependency.filterMyFineListUseCase }

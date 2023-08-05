@@ -7,14 +7,13 @@
 //
 
 import RIBs
-//import MOITNetwork
 import MOITListDomain
 import MOITDetailDomain
 import MOITParticipateDomain
 import FineDomain
+import AuthDomain
 
 public protocol MOITListDependency: Dependency {
-    //    var network: Network { get }
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
     var calculateLeftTimeUseCase: CalculateLeftTimeUseCase { get }
     var fetchPaneltyToBePaiedUseCase: FetchBannersUseCase { get }
@@ -30,4 +29,5 @@ public protocol MOITListDependency: Dependency {
     var fetchFineItemUseCase: FetchFineItemUseCase { get }
     var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
     var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
+    var userUseCase: UserUseCase { get }
 }
