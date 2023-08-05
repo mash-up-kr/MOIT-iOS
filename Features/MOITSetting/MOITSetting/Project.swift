@@ -12,7 +12,10 @@ import UtilityPlugin
 
 let project = Project.invertedDualTargetProjectWithDemoApp(
     name: "MOITSetting",
-    interfaceDependencies: [.ThirdParty.RIBs],
+    interfaceDependencies: [
+        .ThirdParty.RIBs,
+        .Feature.Auth.Domain.Interface,
+    ],
     implementDependencies: [
         .ThirdParty.RIBs,
         .ThirdParty.RxCocoa,

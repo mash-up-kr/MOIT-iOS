@@ -95,8 +95,7 @@ final class RootComponent: Component<EmptyDependency>,
     lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
     lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
     lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
-        participateRepository: participateRepository,
-        moitDetailUseCase: moitDetailUseCase
+        participateRepository: participateRepository
     )
     lazy var userUseCase: UserUseCase = UserUseCaseImpl(
         userRepository: userRepository,
