@@ -26,7 +26,10 @@ public final class MOITSettingBuilder: Builder<MOITSettingDependency>, MOITSetti
     public func build(withListener listener: MOITSettingListener) -> ViewableRouting {
         let component = MOITSettingComponent(dependency: dependency)
         let viewController = MOITSettingViewController()
-        let interactor = MOITSettingInteractor(presenter: viewController)
+        let interactor = MOITSettingInteractor(
+            presenter: viewController,
+            userUsecase: dependency.userUseCase
+        )
         interactor.listener = listener
         
         let moitWebBuilder = MOITWebBuilder(dependency: component)

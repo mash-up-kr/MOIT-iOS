@@ -59,7 +59,6 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
     
     override func didBecomeActive() {
         super.didBecomeActive()
-//        TokenManagerImpl().delete(key: .authorizationToken)
     }
     
     override func willResignActive() {
@@ -75,7 +74,6 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
             return
         }
         router?.routeToMOITList()
-        print("deinit ::: configureRIB")
     }
 }
 
@@ -90,10 +88,20 @@ extension RootInteractor {
 // MARK: - Auth Listener
 extension RootInteractor {
     func didCompleteAuth() {
-      
-      
         router?.detachAuth { [weak self] in
             self?.router?.routeToMOITList()
         }
+    }
+}
+
+// MARK: - MOITListListener
+extension RootInteractor {
+    func didLogout() {
+        self.router?.detachMOITList()
+        self.router?.routeToAuth()
+    }
+    func didWithdraw() {
+        self.router?.detachMOITList()
+        self.router?.routeToAuth()
     }
 }

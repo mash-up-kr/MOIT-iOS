@@ -27,4 +27,9 @@ public final class UserRepositoryImpl: UserRepository {
 		let endpoint = UserEndpoint.fetchUserInfo()
 		return network.request(with: endpoint)
 	}
+    
+    public func withdraw() -> Single<Void> {
+        return network.request(with: UserEndpoint.withdraw())
+            .map { _ in return }
+    }
 }

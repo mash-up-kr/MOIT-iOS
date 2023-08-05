@@ -15,12 +15,15 @@ import MOITFoundation
 protocol MOITSettingPresentableListener: AnyObject {
     func didTapBackButton()
     func didSwipeBack()
-    func didTap프로필수정()
     func didTap개인정보처리방침()
     func didTap서비스이용약관()
     func didTap피드백()
     func didTap계정삭제()
     func didTap로그아웃()
+    func didTogglePushAlarm(isOn: Bool)
+    func viewDidLoad()
+    func appMovedToForeground()
+    
     // alert에서 누른 액션
     func didTap삭제Action()
     func didTap로그아웃Action()
@@ -41,21 +44,7 @@ final class MOITSettingViewController: UIViewController,
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
-    private var items: [MOITSettingItemType] = [
-        MOITSettingToggleItemType.앱푸시알림설정,
-        MOITSettingDividerItemType.divider,
-        MOITSettingTitleItemType.프로필수정,
-        MOITSettingDividerItemType.divider,
-        MOITSettingTitleItemType.개인정보처리방침,
-        MOITSettingDividerItemType.divider,
-        MOITSettingTitleItemType.서비스이용약관,
-        MOITSettingDividerItemType.divider,
-        MOITSettingTitleItemType.피드백,
-        MOITSettingDividerItemType.divider,
-        MOITSettingTitleItemType.계정삭제,
-        MOITSettingDividerItemType.divider,
-        MOITSettingTitleItemType.로그아웃,
-    ]
+    private var items: [MOITSettingItemType] = []
     private let dispoesBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -66,6 +55,7 @@ final class MOITSettingViewController: UIViewController,
         define()
         configureCollectionView()
         bind()
+        listener?.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -74,6 +64,9 @@ final class MOITSettingViewController: UIViewController,
         flexRootView.flex.layout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -81,6 +74,7 @@ final class MOITSettingViewController: UIViewController,
             listener?.didSwipeBack()
         }
     }
+    
     private func define() {
         view.addSubview(flexRootView)
         flexRootView.flex.define { flex in
@@ -112,6 +106,12 @@ final class MOITSettingViewController: UIViewController,
                 self?.listener?.didTapBackButton()
             })
             .disposed(by: self.dispoesBag)
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    @objc
+    private func appMovedToForeground() {
+        listener?.appMovedToForeground()
     }
 }
 
@@ -166,7 +166,23 @@ extension MOITSettingViewController: UICollectionViewDataSource {
             withReuseIdentifier: "MOITSettingToggleCollectionViewCell",
             for: indexPath
         ) as? MOITSettingToggleCollectionViewCell else { return .init() }
-        cell.configure(.init(title: item.title, description: item.description, isToggled: true))
+        switch item {
+        case let .앱푸시알림설정(isOn):
+            cell.configure(
+                .init(
+                    title: item.title,
+                    description: item.description,
+                    isToggled: isOn
+                )
+            )
+        }
+        
+        cell.rx.didToggle
+            .bind(onNext: { [weak self] in
+                self?.listener?.didTogglePushAlarm(isOn: $0)
+            })
+            .disposed(by: cell.disposeBag)
+        
         return cell
     }
     
@@ -178,7 +194,6 @@ extension MOITSettingViewController: UICollectionViewDataSource {
             withReuseIdentifier: "MOITSettingDividerCollectionViewCell",
             for: indexPath
         ) as? MOITSettingDividerCollectionViewCell else { return .init() }
-        
         return cell
     }
 }
@@ -200,8 +215,6 @@ extension MOITSettingViewController: UICollectionViewDelegate {
                 self.listener?.didTap로그아웃()
             case .서비스이용약관:
                 self.listener?.didTap서비스이용약관()
-            case .프로필수정:
-                self.listener?.didTap프로필수정()
             case .피드백:
                 self.listener?.didTap피드백()
             }
@@ -244,6 +257,12 @@ extension MOITSettingViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - MOITSettingPresentable
 
 extension MOITSettingViewController {
+    
+    func configureItems(_ items: [MOITSettingItemType]) {
+        self.items = items
+        self.collectionView.reloadData()
+    }
+    
     func showLogoutAlert(title: String, message: String) {
         let alertController = UIAlertController(
             title: title,
@@ -283,6 +302,20 @@ extension MOITSettingViewController {
         )
         alertController.addAction(removeAction)
         alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+    
+    func showErrorAlert(title: String, message: String) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(okAction)
         self.present(alertController, animated: true)
     }
 }

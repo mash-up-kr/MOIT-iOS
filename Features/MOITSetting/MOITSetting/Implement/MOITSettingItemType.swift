@@ -16,7 +16,6 @@ protocol MOITSettingItemType {
 enum MOITSettingTitleItemType: CaseIterable,
                                MOITSettingItemType {
 
-    case 프로필수정
     case 개인정보처리방침
     case 서비스이용약관
     case 피드백
@@ -30,18 +29,16 @@ enum MOITSettingTitleItemType: CaseIterable,
         case .로그아웃: return "로그아웃"
         case .피드백: return "피드백"
         case .서비스이용약관: return "서비스 이용 약관"
-        case .프로필수정: return "프로필 수정"
         }
     }
     
     var height: CGFloat { 63 }
 }
 
-enum MOITSettingToggleItemType: CaseIterable,
-                                MOITSettingItemType {
+enum MOITSettingToggleItemType: MOITSettingItemType {
     typealias CellType = MOITSettingToggleCollectionViewCell.Type
     
-    case 앱푸시알림설정
+    case 앱푸시알림설정(isOn: Bool)
     
     var title: String {
         switch self {

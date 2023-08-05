@@ -32,13 +32,6 @@ final class MOITSettingRouter: ViewableRouter<MOITSettingInteractable, MOITSetti
         interactor.router = self
     }
     
-    func routeToProfileEdit() {
-        
-    }
-    func detachProfileEdit() {
-        
-    }
-    
     private let moitWebBuilder: MOITWebBuildable
     private var moitWebRouter: ViewableRouting?
     func routeToWeb(path: MOITWebPath) {
