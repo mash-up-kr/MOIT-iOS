@@ -32,7 +32,7 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
     
 	let network: Network
 	let moitDetailUseCase: MOITDetailUsecase
-    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network), moitDetailUseCase: moitDetailUseCase)
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network))
     
 	init(
 		network: Network,
@@ -46,7 +46,19 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
 @main
 final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		
-	private final class MockMOITPariticipateListener: InputParticipateCodeListener { }
+	private final class MockMOITPariticipateListener: InputParticipateCodeListener {
+		func moveToMOITListButtonDidTap() {
+			// do nothing
+		}
+		
+		func showMOITDetailButtonDidTap(moitID: Int) {
+			// do nothing
+		}
+		
+		func inputParticiateCodeDidTapBack() {
+			// do nothing
+		}
+	}
 	
     var window: UIWindow?
 	private var router: ViewableRouting?

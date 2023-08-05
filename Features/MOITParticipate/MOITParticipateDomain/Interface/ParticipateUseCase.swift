@@ -9,10 +9,9 @@
 import Foundation
 
 import MOITParticipateData
-import MOITDetailDomain
 
 import RxSwift
 
 public protocol ParticipateUseCase {
-	func execute(with code: String) -> Single<MOITDetailEntity>
+	func execute(with code: String) -> Single<ParticipateEntity>
 }

@@ -20,6 +20,7 @@ import RxSwift
 protocol ParticipationSuccessPresentableListener: AnyObject {
 	func dismissButtonDidTap()
 	func viewDidLoad()
+	func showStudyDetailButtonDidTap()
 }
 
 public final class ParticipationSuccessViewController: UIViewController,
@@ -99,6 +100,8 @@ public final class ParticipationSuccessViewController: UIViewController,
 		flexRootContainer.flex.layout()
 	}
 	
+	deinit { debugPrint("\(self) deinit") }
+	
 // MARK: - private
 	
 	private func configureView() {
@@ -146,6 +149,12 @@ public final class ParticipationSuccessViewController: UIViewController,
 		closeButton.rx.tap
 			.bind(onNext: { [weak self] _ in
 				self?.listener?.dismissButtonDidTap()
+			})
+			.disposed(by: disposeBag)
+		
+		showStudyDetailButton.rx.tap
+			.bind(onNext: { [weak self] _ in
+				self?.listener?.showStudyDetailButtonDidTap()
 			})
 			.disposed(by: disposeBag)
 	}

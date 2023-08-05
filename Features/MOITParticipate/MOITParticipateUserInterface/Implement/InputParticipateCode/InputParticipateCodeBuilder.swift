@@ -13,16 +13,17 @@ import MOITParticipateDataImpl
 import MOITParticipateData
 import MOITParticipateDomainImpl
 import MOITParticipateDomain
+import MOITDetailDomain
 
 final class InputParticipateCodeComponent: Component<InputParticipateCodeDependency>,
 										   InputParticipateCodeInteractorDependency,
 										   ParticipationSuccessDependency {
+	var moitDetailUseCase: MOITDetailUsecase { dependency.moitDetailUseCase }
     var participateUseCase: ParticipateUseCase { dependency.participateUseCase }
 	
 	override init(
 		dependency: InputParticipateCodeDependency
 	) {
-		
 		super.init(dependency: dependency)
 	}
 }
@@ -34,6 +35,8 @@ public final class InputParticipateCodeBuilder: Builder<InputParticipateCodeDepe
     override public init(dependency: InputParticipateCodeDependency) {
         super.init(dependency: dependency)
     }
+	
+	deinit { debugPrint("\(self) deinit") }
 
     public func build(withListener listener: InputParticipateCodeListener) -> ViewableRouting {
         let component = InputParticipateCodeComponent(dependency: dependency)

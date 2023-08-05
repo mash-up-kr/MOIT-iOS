@@ -24,7 +24,7 @@ public final class ParticipateRepositoryImpl: ParticipateRepository {
 	
 	public func postParticipateCode(
 		with request: MOITParticipateRequest
-	) -> Single<MOITDetailModel> {
+	) -> Single<ParticipateResponseDTO> {
 		let endpoint = ParticipateEndpoint.postParticipateCode(with: request)
 		return network.request(with: endpoint)
 	}

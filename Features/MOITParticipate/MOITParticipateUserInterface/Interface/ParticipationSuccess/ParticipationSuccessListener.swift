@@ -10,4 +10,5 @@ import RIBs
 
 public protocol ParticipationSuccessListener: AnyObject {
 	func participationSuccessDismissButtonDidTap()
+	func showStudyDetailButtonDidTap(moitID: Int)
 }

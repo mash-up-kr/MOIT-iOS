@@ -14,5 +14,24 @@ import RxSwift
 
 public protocol MOITDetailUsecase {
     func moitDetail(with ID: String) -> Single<MOITDetailEntity>
-	func convertToMOITDetailEntity(from moitDetailModel: MOITDetailModel) -> MOITDetailEntity
+	func moitDescription(_ description: String) -> String?
+	func moitScheduleDescription(
+		scheduleDayOfWeeks: [String],
+		scheduleRepeatCycle: String,
+		scheduleStartTime: String,
+		scheduleEndTime: String
+	) -> String
+	func ruleLongDescription(
+		fineLateTime: Int,
+		fineLateAmount: Int,
+		fineAbsenceTime: Int,
+		fineAbsenceAmount: Int
+	) -> String
+	func periodDescription(
+		startDate: String,
+		endDate: String
+	) -> String
+	func notificationDescription(
+		remindOption: String
+	) -> String
 }

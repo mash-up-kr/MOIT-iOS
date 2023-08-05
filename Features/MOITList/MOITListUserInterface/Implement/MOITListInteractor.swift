@@ -20,7 +20,7 @@ protocol MOITListRouting: ViewableRouting {
     func attachMOITDetail(id: String)
     func detachMOITDetail(withPop: Bool)
     func attachInputParticipateCode()
-    func detachInputParticipateCode()
+	func detachInputParticipateCode(onlyPop: Bool)
     func attachSetting()
     func detachSetting(withPop: Bool)
     func attachAlarm()
@@ -277,6 +277,15 @@ extension MOITListInteractor {
 // MARK: - InputParticiateCode
 extension MOITListInteractor {
     func inputParticiateCodeDidTapBack() {
-        self.router?.detachInputParticipateCode()
+		self.router?.detachInputParticipateCode(onlyPop: true)
     }
+	
+	func moveToMOITListButtonDidTap() {
+		self.router?.detachInputParticipateCode(onlyPop: false)
+	}
+	
+	func showMOITDetailButtonDidTap(moitID: Int) {
+		self.router?.detachInputParticipateCode(onlyPop: false)
+		self.router?.attachMOITDetail(id: "\(moitID)")
+	}
 }

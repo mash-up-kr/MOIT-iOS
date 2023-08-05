@@ -102,7 +102,13 @@ public final class InputParticipateCodeViewController: UIViewController,
 		super.viewWillDisappear(animated)
 		
 		deleteKeyboardNotification()
+		
+		if self.isMovingFromParent {
+			self.listener?.didTapBackButton()
+		}
 	}
+	
+	deinit { debugPrint("\(self) deinit") }
 	
 // MARK: - internal
 	func showErrorToast() {

@@ -28,7 +28,7 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 			.asSingle()
 	}
 	
-	public func convertToMOITDetailEntity(
+	private func convertToMOITDetailEntity(
 		from moitDetailModel: MOITDetailModel
 	) -> MOITDetailEntity {
 		let scheduleDescription = self.moitScheduleDescription(
@@ -70,11 +70,11 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 		)
 	}
     
-    private func moitDescription(_ description: String) -> String? {
+	public func moitDescription(_ description: String) -> String? {
         description.isEmpty ? nil : description
     }
     
-    private func moitScheduleDescription(
+	public func moitScheduleDescription(
         scheduleDayOfWeeks: [String],
         scheduleRepeatCycle: String,
         scheduleStartTime: String,
@@ -93,32 +93,32 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
         return "\(repeatCycle) \(days) \(scheduleStartTime) - \(scheduleEndTime)"
     }
     
-    private func ruleShortDescription(
+	private func ruleShortDescription(
         fineLateTime: Int,
         fineAbsenceTime: Int
     ) -> String {
         return "지각 \(fineLateTime)분 부터, 결석 \(fineAbsenceTime)분 부터"
     }
     
-    private func ruleLongDescription(
+    public func ruleLongDescription(
         fineLateTime: Int,
         fineLateAmount: Int,
         fineAbsenceTime: Int,
         fineAbsenceAmount: Int
     ) -> String {
         return """
-        지각 \(fineLateTime)분 부터 \(fineAbsenceAmount.toDecimalString)원
+        지각 \(fineLateTime)분 부터 \(fineLateAmount.toDecimalString)원
         결석 \(fineAbsenceTime)분 부터 \(fineAbsenceAmount.toDecimalString)원
         """
     }
     
-    private func periodDescription(
+    public func periodDescription(
         startDate: String,
         endDate: String
     ) -> String {
         return "\(startDate.dateKORString) - \(endDate.dateKORString)"
     }
-	
+
 	private func notificationDescription(
 		remindOption: String?
 	) -> String {
