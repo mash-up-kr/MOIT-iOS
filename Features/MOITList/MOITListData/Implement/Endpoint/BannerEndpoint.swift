@@ -15,7 +15,7 @@ struct BannerEndpoint {
     
     static func fetchBannerList() -> Endpoint<BannerDTO> {
         Endpoint(
-            path: "banner",
+            path: "/api/v1/banner",
             method: .get
         )
     }

@@ -18,7 +18,7 @@ struct FetchMOITListRequestable: Requestable {
     // MARK: - Properties
     
     public var path: String {
-        return "moit"
+        return "/api/v1/moit"
     }
     
     public var method: HTTPMethod {
