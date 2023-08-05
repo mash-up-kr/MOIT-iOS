@@ -18,6 +18,5 @@ public protocol SignUpDependency: Dependency
     
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { get }
     var signUpUseCase: SignUpUseCase { get }
-    var profileSelectBuildable: ProfileSelectBuildable { get }
     var saveTokenUseCase: SaveTokenUseCase { get }
 }

@@ -31,56 +31,70 @@ public protocol LoggedOutInteractorDependency: AnyObject {
 }
 
 final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, LoggedOutInteractable, LoggedOutPresentableListener {
-
+    
     weak var router: LoggedOutRouting?
     weak var listener: LoggedOutListener?
-	
-	private let dependency: LoggedOutInteractorDependency
-
+    
+    private let dependency: LoggedOutInteractorDependency
+    
     init(
-		presenter: LoggedOutPresentable,
-		dependency: LoggedOutInteractorDependency
-	) {
-		self.dependency = dependency
+        presenter: LoggedOutPresentable,
+        dependency: LoggedOutInteractorDependency
+    ) {
+        self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
     }
-
+    
+    deinit { debugPrint("\(self) deinit") }
+    
     override func didBecomeActive() {
         super.didBecomeActive()
     }
-
+    
     override func willResignActive() {
         super.willResignActive()
     }
-	
-	func signInButtonDidTap() {
-		router?.attachSignInWeb()
-	}
-	
-// MARK: - MOITWeb
-	func shouldDetach(withPop: Bool) {
-		router?.detachSignInWeb()
-	}
+}
 
-	func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
-		router?.routeToSignUp(with: signInResponse)
-	}
-	
-	func didSignIn(with token: String) {
-		dependency.saveTokenUseCase.execute(token: token)
-		dependency.fetchUserInfoUseCase.execute()
-			.subscribe(
-				onSuccess: { [weak self] entity in
-					self?.dependency.saveUserIDUseCase.execute(userID: entity.userID)
-				}
-			)
-			.disposeOnDeactivate(interactor: self)
+// MARK: - LoggedOutPresenterListener
+
+extension LoggedOutInteractor {
+    func signInButtonDidTap() {
+        router?.attachSignInWeb()
+    }
+}
+
+// MARK: - MOITWebListenter
+
+extension LoggedOutInteractor {
+    func shouldDetach(withPop: Bool) {
         router?.detachSignInWeb()
-        listener?.didCompleteAuth()
-	}
+    }
     
-    // MARK: - SignUp
+    func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
+        router?.routeToSignUp(with: signInResponse)
+    }
+    
+    func didSignIn(with token: String) {
+        self.router?.detachSignInWeb()
+        dependency.saveTokenUseCase.execute(token: token)
+        dependency.fetchUserInfoUseCase.execute()
+            .debug(":")
+            .do(onSuccess: { [weak self] entity in
+                self?.dependency.saveUserIDUseCase.execute(userID: entity.userID)
+            })
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] _ in
+                    self?.listener?.didCompleteAuth()
+                }
+            )
+            .disposeOnDeactivate(interactor: self)
+    }
+}
+
+// MARK: - SignUp
+extension LoggedOutInteractor {
     func didCompleteSignUp() {
         router?.detachSignInWeb()
         listener?.didCompleteAuth()

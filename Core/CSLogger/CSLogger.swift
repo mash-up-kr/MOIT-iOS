@@ -215,7 +215,7 @@ extension Logger {
         ret += " \(file.components(separatedBy: "/").last ?? "Some File"):\(line) "
         ret += "\(function)"
         ret += ">"
-        array.forEach { ret += " \($0)\n" }
+        array.forEach { ret += " \($0)" }
         return ret
     }
     

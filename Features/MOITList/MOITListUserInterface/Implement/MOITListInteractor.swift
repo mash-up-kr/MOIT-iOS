@@ -65,25 +65,28 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         presenter.listener = self
     }
     
+    deinit { debugPrint("\(self) deinit") }
+    
     // MARK: - Methods
     
     override func didBecomeActive() {
         super.didBecomeActive()
-        
-        bind()
     }
     
     override func willResignActive() {
         super.willResignActive()
     }
     
+    func viewDidLoad() {
+        bind()
+    }
     private func bind() {
         let moitList = dependency.fetchMOITListsUseCase.execute()
         
         // moitlist 보내주기
         moitList
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] moitList in
-                print("fetchMOITListsUseCase list: \(moitList)")
                 
                 let moitPreviewList = moitList.compactMap { self?.makeMoitPreview(with: $0)}
                 self?.presenter.didReceiveMOITList(moitList: moitPreviewList)

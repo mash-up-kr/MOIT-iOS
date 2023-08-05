@@ -12,11 +12,11 @@ import AuthDomain
 import RIBs
 
 public final class SignUpComponent: Component<SignUpDependency>,
-                                    SignUpInteractorDependency {
+                                    SignUpInteractorDependency,
+                                    ProfileSelectDependency {
     
     var fetchRandomNumberUseCase: FetchRandomNumberUseCase { dependency.fetchRandomNumberUseCase }
     var signUpUseCase: SignUpUseCase { dependency.signUpUseCase }
-    var profileSelectBuildable: ProfileSelectBuildable { dependency.profileSelectBuildable }
     var saveTokenUseCase: SaveTokenUseCase { dependency.saveTokenUseCase }
     
     let signInResponse: MOITSignInResponse
@@ -53,10 +53,13 @@ public final class SignUpBuilder: Builder<SignUpDependency>,
             dependency: component
         )
         interactor.listener = listener
+        
+        let profileSelectBuilder = ProfileSelectBuilder(dependency: component)
+        
         return SignUpRouter(
             interactor: interactor,
             viewController: viewController,
-            profileSelectBuildable: dependency.profileSelectBuildable
+            profileSelectBuildable: profileSelectBuilder
         )
     }
 }

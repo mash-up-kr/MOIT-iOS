@@ -27,6 +27,8 @@ public final class MOITRepositoryImpl: MOITRepository {
         self.network = network
     }
     
+    deinit { debugPrint("\(self) deinit") }
+    
     // MARK: - Lifecycle
     
     // MARK: - Methods

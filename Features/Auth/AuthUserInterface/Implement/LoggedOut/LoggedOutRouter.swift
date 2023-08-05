@@ -25,51 +25,61 @@ protocol LoggedOutViewControllable: ViewControllable {
 }
 
 final class LoggedOutRouter: ViewableRouter<LoggedOutInteractable, LoggedOutViewControllable>, LoggedOutRouting {
-
-	private let signInWebBuildable: MOITWebBuildable
-	private var signInWebRouting: ViewableRouting?
-	
-	private let signUpBuildable: SignUpBuildable
-	private var signUpRouting: Routing?
-	
+    
+    private let signInWebBuildable: MOITWebBuildable
+    private var signInWebRouting: ViewableRouting?
+    
+    private let signUpBuildable: SignUpBuildable
+    private var signUpRouting: Routing?
+    
     init(
-		interactor: LoggedOutInteractable,
-		viewController: LoggedOutViewControllable,
-		signInWebBuildable: MOITWebBuildable,
-		signUpBuildable: SignUpBuildable
-	) {
-		self.signInWebBuildable = signInWebBuildable
-		self.signUpBuildable = signUpBuildable
+        interactor: LoggedOutInteractable,
+        viewController: LoggedOutViewControllable,
+        signInWebBuildable: MOITWebBuildable,
+        signUpBuildable: SignUpBuildable
+    ) {
+        self.signInWebBuildable = signInWebBuildable
+        self.signUpBuildable = signUpBuildable
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
-	
-	func attachSignInWeb() {
-		if signInWebRouting != nil { return }
-		
-		let router = signInWebBuildable.build(
+    
+    deinit { debugPrint("\(self) deinit") }
+}
+
+// MARK: - Web
+extension LoggedOutRouter {
+    
+    func attachSignInWeb() {
+        if signInWebRouting != nil { return }
+        
+        let router = signInWebBuildable.build(
             withListener: interactor,
             domain: .backend,
-			path: .signIn
-		)
+            path: .signIn
+        )
         
-		router.viewControllable.uiviewController.modalPresentationStyle = .overFullScreen
         signInWebRouting = router
         attachChild(router)
+        
+        router.viewControllable.uiviewController.modalPresentationStyle = .fullScreen
         viewController.uiviewController.present(
             router.viewControllable.uiviewController,
-			animated: true,
-			completion: nil
-		)
-	}
-	
-	func detachSignInWeb() {
-		guard let router = signInWebRouting else { return }
+            animated: true,
+            completion: nil
+        )
+    }
+    
+    func detachSignInWeb() {
+        guard let router = signInWebRouting else { return }
+        viewController.uiviewController.dismiss(animated: true)
         signInWebRouting = nil
         detachChild(router)
-        viewController.uiviewController.dismiss(animated: false)
-	}
-	
+    }
+}
+
+// MARK: - SignUp
+extension LoggedOutRouter {
 	func routeToSignUp(with response: MOITSignInResponse) {
 		detachSignInWeb()
 		attachSignUp(with: response)

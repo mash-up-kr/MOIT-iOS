@@ -25,7 +25,7 @@ public extension MOITListDTO {
         let dayOfWeeks: [String]
         let startTime: String
         let endTime: String
-        let dday: Int
+        let dday: Int?
         
         public func toMOIT() -> MOIT {
             MOIT(
@@ -37,7 +37,7 @@ public extension MOITListDTO {
                 dayOfWeeks: self.dayOfWeeks,
                 startTime: self.startTime,
                 endTime: self.endTime,
-                dday: self.dday
+                dday: self.dday ?? 0
             )
         }
     }
