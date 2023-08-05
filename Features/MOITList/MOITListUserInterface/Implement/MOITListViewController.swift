@@ -19,7 +19,7 @@ import FlexLayout
 import PinLayout
 
 protocol MOITListPresentableListener: AnyObject {
-    
+    func viewDidLoad()
     func didTapMOIT(index: Int) // MOIT 하나 탭 시 불리는 함수
     func didTapDeleteMOIT(index: Int) // MOIT 하나 삭제 시 불리는 함수
     func didTapAlarm(index: Int)
@@ -76,7 +76,7 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     
     private lazy var moitList: [MOITList] = []
     
-    // MARK: - Initializers
+    // MARK: - Initializersot
     public init(listener: MOITListPresentableListener? = nil) {
         self.listener = listener
         super.init()
@@ -88,6 +88,8 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
         
         self.view.backgroundColor = ResourceKitAsset.Color.gray100.color
         self.flexRootView.backgroundColor = ResourceKitAsset.Color.gray100.color
+        
+        self.listener?.viewDidLoad()
     }
     
     public override func viewDidLayoutSubviews() {

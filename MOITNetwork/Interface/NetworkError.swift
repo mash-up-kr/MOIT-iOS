@@ -11,9 +11,9 @@ import Foundation
 public enum NetworkError: Error {
 	case unknownError
 	case invalidURL
-	case decodingError
+    case decodingError(code: Int)
 	case emptyData
-	case serverError(ServerError)
+    case serverError(ServerError)
 }
 
 public enum ServerError: Int {

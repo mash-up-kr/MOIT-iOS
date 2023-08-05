@@ -15,7 +15,7 @@ struct FetchMOITListEndpoint {
 	
 	static func fetchMOITList() -> Endpoint<MOITListDTO> {
 		Endpoint(
-			path: "moit",
+			path: "/api/v1/moit",
 			method: .get
 		)
 	}

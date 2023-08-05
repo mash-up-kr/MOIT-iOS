@@ -120,8 +120,8 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
     }
 	
 	private func notificationDescription(
-		remindOption: String
+		remindOption: String?
 	) -> String {
-		return NotificationRemindOption(fromRawValue: remindOption).toKor
+        return NotificationRemindOption(fromRawValue: remindOption ?? "").toKor
 	}
 }

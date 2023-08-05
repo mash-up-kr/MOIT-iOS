@@ -60,6 +60,8 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+    
+    deinit { debugPrint("\(self) deinit") }
 	
 // MARK: - override
 	

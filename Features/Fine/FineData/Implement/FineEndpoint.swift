@@ -14,7 +14,7 @@ import MOITNetwork
 enum FineEndpoint {
 	static func fetchFineInfo(moitId: Int) -> Endpoint<FineInfo> {
 		return Endpoint(
-			path: "moit/\(moitId)/fine",
+			path: "/api/v1/moit/\(moitId)/fine",
 			method: .get
 		)
 	}

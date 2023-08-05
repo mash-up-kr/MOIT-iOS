@@ -62,9 +62,6 @@ extension MOITWebViewController {
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
 		webView.navigationDelegate = self
-//        if #available(iOS 16.4, *) {
-//            webView.isInspectable = true
-//        }
         self.view.addSubview(webView)
 
         guard let url = URL(string: "\(domain)\(path)") else { return }
@@ -177,7 +174,7 @@ extension MOITWebViewController: WKNavigationDelegate {
 		Logger.debug(response.statusCode)
 		
 		let headerFields = response.allHeaderFields
-		
+
 		switch response.statusCode {
 		case (200...299):
 			listener?.registeredMemberDidSignIn(with: headerFields)
