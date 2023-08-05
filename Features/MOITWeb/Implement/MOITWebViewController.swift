@@ -15,12 +15,16 @@ import Utils
 import RIBs
 import RxSwift
 
+import DesignSystem
+import Toast
+
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
 	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
     func didTapBackButton()
 	func didTapErrorAlertOkButton()
+    func didTapShare(with code: String)
 }
 
 final class MOITWebViewController: UIViewController,
@@ -111,7 +115,6 @@ enum Command: String {
     case toast
     case close
     case alert
-    case keypad
     case share
 }
 
@@ -125,18 +128,49 @@ extension MOITWebViewController: WKScriptMessageHandler {
             let cmd = messages["command"] as? String,
             let command = Command(rawValue: cmd) else { return }
         
+        print(cmd)
+        print(command)
         switch command {
         case .close:
-            self.listener?.didTapBackButton()
-        default:
-            let value = messages["body"]
-            let alertController = UIAlertController(
-                title: "\(cmd)",
-                message: "\(value)", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "확인", style: .default)
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true)
+            didReceiveCloseCommand()
+            
+        case .alert:
+           didReceiveAlertCommand(messages: messages)
+            
+        case .toast:
+            didReceiveToastCommand(messages: messages)
+            
+        case .share:
+            didReceiveShareCommand(messages: messages)
         }
+    }
+    
+    private func didReceiveCloseCommand() {
+        self.listener?.didTapBackButton()
+    }
+    
+    private func didReceiveAlertCommand(messages: [String: Any]) {
+        guard let value = messages["value"] as? String else { return }
+        let alertController = UIAlertController(
+            title: "타이틀",
+            message: value,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true)
+    }
+    
+    private func didReceiveToastCommand(messages: [String: Any]) {
+        guard let value = messages["value"] as? String else { return }
+        let toast = MOITToast(toastType: .success, text: value)
+        self.view.showToast(toast, point: view.center)
+    }
+    
+    private func didReceiveShareCommand(messages: [String: Any]) {
+        var invitationCode = messages["value"] as? String ?? "전ㅈr군단"
+        if invitationCode.isEmpty { invitationCode = "전ㅈr군단" }
+        self.listener?.didTapShare(with: invitationCode)
     }
 }
 

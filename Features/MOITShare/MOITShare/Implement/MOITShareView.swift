@@ -117,8 +117,8 @@ public final class MOITShareView: UIView {
                     .width(224)
                 
                 flex.addItem()
-                    .alignSelf(.center)
-                    .marginHorizontal(16)
+                    .alignSelf(.stretch)
+                    .marginHorizontal(20)
                     .define { flex in
                         flex.addItem(self.shareButton)
                             .marginTop(20)

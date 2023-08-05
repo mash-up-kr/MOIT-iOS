@@ -15,7 +15,10 @@ import RIBs
 import RxSwift
 
 
-protocol MOITWebRouting: ViewableRouting { }
+protocol MOITWebRouting: ViewableRouting {
+    func routeToShare(invitationCode: String)
+    func detachShare()
+}
 
 protocol MOITWebPresentable: Presentable {
     var listener: MOITWebPresentableListener? { get set }
@@ -90,4 +93,20 @@ extension MOITWebInteractor {
 	func didTapErrorAlertOkButton() {
 		self.listener?.shouldDetach(withPop: false)
 	}
+    
+    func didTapShare(with code: String) {
+        self.router?.routeToShare(invitationCode: code)
+    }
+}
+
+// MARK: - ShareListener
+
+extension MOITWebInteractor {
+    func didTapDimmedView() {
+        self.router?.detachShare()
+    }
+    
+    func didSuccessLinkCopy() {
+        self.router?.detachShare()
+    }
 }

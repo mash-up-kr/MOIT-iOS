@@ -20,6 +20,7 @@ protocol SharePresentableListener: AnyObject {
     func didTapDimmedView()
     func didTapShareButton()
     func didShareSuccess()
+    func didTapAlertOkAction()
 }
 
 public final class ShareViewController: BottomSheetViewController,
@@ -69,6 +70,22 @@ public final class ShareViewController: BottomSheetViewController,
     
     func presentActivity(code: String) {
         self.presentUIActivity(item: code)
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        ) { [weak self] _ in
+            self?.listener?.didTapAlertOkAction()
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
     }
     
     private func presentUIActivity(item: String) {

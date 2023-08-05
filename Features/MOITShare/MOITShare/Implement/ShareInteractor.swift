@@ -17,6 +17,7 @@ protocol ShareRouting: ViewableRouting {
 protocol SharePresentable: Presentable {
     var listener: SharePresentableListener? { get set }
     func presentActivity(code: String)
+    func showAlert(title: String, message: String)
 }
 
 final class ShareInteractor: PresentableInteractor<SharePresentable>, ShareInteractable, SharePresentableListener {
@@ -55,10 +56,16 @@ extension ShareInteractor {
     func didTapLinkCopyButton() {
         self.shareUsecase.copyLink(invitationCode)
             .subscribe { [weak self] _ in
-                // TODO: 토스트 띄우기
-                self?.listener?.didSuccessLinkCopy()
+                self?.presenter.showAlert(
+                    title: "초대 코드 복사 완료",
+                    message: "스터디 초대 코드가 복사되었습니다."
+                )
             }
             .disposeOnDeactivate(interactor: self)
+    }
+    
+    func didTapAlertOkAction() {
+        self.listener?.didSuccessLinkCopy()
     }
     
     func didShareSuccess() {
