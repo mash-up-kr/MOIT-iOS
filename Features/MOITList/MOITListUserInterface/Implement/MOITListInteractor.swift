@@ -23,6 +23,7 @@ protocol MOITListRouting: ViewableRouting {
     func detachInputParticipateCode()
     func attachSetting()
     func detachSetting(withPop: Bool)
+    func attachAlarm()
 }
 
 protocol MOITListPresentable: Presentable {
@@ -88,7 +89,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] moitList in
                 
-                let moitPreviewList = moitList.compactMap { self?.makeMoitPreview(with: $0)}
+                let moitPreviewList = moitList.compactMap { MOITPreviewViewModel(moit: $0)}
                 self?.presenter.didReceiveMOITList(moitList: moitPreviewList)
             })
             .disposeOnDeactivate(interactor: self)
@@ -178,16 +179,6 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .disposeOnDeactivate(interactor: self)
     }
     
-    private func makeMoitPreview(with moit: MOIT) -> MOITPreviewViewModel {
-        let description = "\(moit.repeatCycle)마다 \(moit.dayOfWeeks) \(moit.startTime) - \( moit.endTime)"
-        return MOITPreviewViewModel(
-            remainingDate: moit.dday,
-            profileUrlString: moit.profileUrl,
-            studyName: moit.name,
-            studyProgressDescription: description
-        )
-    }
-    
     // banner -> AlarmViewModel 함수
     private func makeAlarmView(with banner: Banner) -> AlarmViewModel {
         switch banner {
@@ -235,6 +226,10 @@ extension MOITListInteractor: MOITListPresentableListener {
     
     func didTapSetting() {
         router?.attachSetting()
+    }
+    
+    func didTapNavigationAlarm() {
+        router?.attachAlarm()
     }
 }
 
