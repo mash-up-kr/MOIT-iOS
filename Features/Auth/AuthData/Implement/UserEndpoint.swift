@@ -14,8 +14,15 @@ import AuthData
 enum UserEndpoint {
 	static func fetchUserInfo() -> Endpoint<UserInfoDTO> {
 		return Endpoint(
-			path: "user",
+			path: "/api/v1/user",
 			method: .get
 		)
 	}
+    
+    static func withdraw() -> Endpoint<EmptyResponse> {
+        return Endpoint(
+            path: "/api/v1/user",
+            method: .delete
+        )
+    }
 }

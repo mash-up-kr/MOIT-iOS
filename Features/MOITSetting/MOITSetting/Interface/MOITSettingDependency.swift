@@ -8,6 +8,8 @@
 
 import Foundation
 import RIBs
+import AuthDomain
 
 public protocol MOITSettingDependency: Dependency {
+    var userUseCase: UserUseCase { get }
 }

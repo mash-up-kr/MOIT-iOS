@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import ResourceKit
 import DesignSystem
+import RxSwift
 
 struct MOITSettingToggleItem {
     let title: String
@@ -37,13 +38,15 @@ final class MOITSettingToggleCollectionViewCell: UICollectionViewCell {
         label.lineBreakMode = .byCharWrapping
         return label
     }()
-    private let toggle: UISwitch = {
+    fileprivate let toggle: UISwitch = {
         let toggle = UISwitch()
         toggle.tintColor = ResourceKitAsset.Color.blue800.color
         toggle.onTintColor = ResourceKitAsset.Color.blue800.color
+        toggle.isUserInteractionEnabled = false
         return toggle
     }()
     
+    private(set) var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,6 +62,11 @@ final class MOITSettingToggleCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         flexRootView.pin.all()
         flexRootView.flex.layout()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.disposeBag = .init()
     }
     
     private func define() {
@@ -88,5 +96,14 @@ final class MOITSettingToggleCollectionViewCell: UICollectionViewCell {
         titleLabel.flex.markDirty()
         toggle.flex.markDirty()
         self.setNeedsLayout()
+    }
+}
+
+extension Reactive where Base: MOITSettingToggleCollectionViewCell {
+    var didToggle: Observable<Bool> {
+        base.toggle.rx.tapGesture()
+            .when(.recognized)
+            .map { _ in return base.toggle.isOn }
+            .asObservable()
     }
 }

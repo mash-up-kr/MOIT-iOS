@@ -12,4 +12,5 @@ import RxSwift
 
 public protocol UserRepository {
 	func fetchUserInfo() -> Single<UserInfoDTO>
+    func withdraw() -> Single<Void>
 }

@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseMessaging
 import RIBs
+import UserNotifications
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -30,6 +31,8 @@ final class AppDelegate: UIResponder,
         let router = builder?.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)
+        
+        self.configure(application)
         return true
     }
     

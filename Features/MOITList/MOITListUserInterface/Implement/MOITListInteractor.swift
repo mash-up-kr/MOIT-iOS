@@ -254,6 +254,13 @@ extension MOITListInteractor {
     func didSwipeBack() {
         self.router?.detachSetting(withPop: false)
     }
+    
+    func didLogout() {
+        self.listener?.didLogout()
+    }
+    func didWithdraw() {
+        self.listener?.didWithdraw()
+    }
 }
 
 // MARK: - MOITDetail

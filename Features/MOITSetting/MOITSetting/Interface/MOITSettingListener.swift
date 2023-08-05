@@ -11,4 +11,6 @@ import Foundation
 public protocol MOITSettingListener: AnyObject {
     func didTapBackButton()
     func didSwipeBack()
+    func didWithdraw()
+    func didLogout()
 }

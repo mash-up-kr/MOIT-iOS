@@ -61,10 +61,10 @@ final class RootComponent: Component<EmptyDependency>,
                            ProfileSelectDependency {
     
     let network: Network = NetworkImpl()
+    let tokenManager: TokenManager = TokenManagerImpl()
     
     // MARK: Repository
     private lazy var fineRepository = FineRepositoryImpl(network: network)
-    private lazy var tokenManager: TokenManager = TokenManagerImpl()
     private lazy var moitRepository: MOITRepository = MOITRepositoryImpl(network: network)
     private lazy var bannerRepository: BannerRepository = BannerRepositoryImpl(network: network)
     private lazy var authRepository: AuthRepository = AuthRepositoryImpl(network: network)
@@ -97,6 +97,10 @@ final class RootComponent: Component<EmptyDependency>,
     lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
         participateRepository: participateRepository,
         moitDetailUseCase: moitDetailUseCase
+    )
+    lazy var userUseCase: UserUseCase = UserUseCaseImpl(
+        userRepository: userRepository,
+        tokenManager: tokenManager
     )
     
     override init(dependency: EmptyDependency = EmptyComponent()) {
