@@ -137,7 +137,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                 moits[index]
             }
             .subscribe(onNext: { [weak self] selectedMoit in
-                self?.router?.attachMOITDetail(id: "\(selectedMoit)")
+                self?.router?.attachMOITDetail(id: "\(selectedMoit.id)")
             })
             .disposeOnDeactivate(interactor: self)
         
