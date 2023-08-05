@@ -28,6 +28,5 @@ public final class FetchMoitListUseCaseImpl: FetchMoitListUseCase {
     // MARK: - Methods
     public func execute() -> Single<[MOIT]> {
         moitRepository.fetchMOITList()
-            .map { _ in return [] }
     }
 }
