@@ -9,7 +9,11 @@
 import RIBs
 import MOITWeb
 
-final class MOITWebComponent: Component<MOITWebDependency> {
+import MOITShare
+import MOITShareImpl
+
+final class MOITWebComponent: Component<MOITWebDependency>,
+                              ShareDependency {
 }
 
 // MARK: - Builder
@@ -38,9 +42,11 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
         )
         interactor.listener = listener
         
+        let shareBuilder = ShareBuilder(dependency: component)
         return MOITWebRouter(
             interactor: interactor,
-            viewController: viewController
+            viewController: viewController,
+            shareBuilder: shareBuilder
         )
     }
 }
