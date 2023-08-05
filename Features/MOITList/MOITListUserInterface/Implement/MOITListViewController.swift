@@ -24,13 +24,26 @@ protocol MOITListPresentableListener: AnyObject {
     func didTapDeleteMOIT(index: Int) // MOIT 하나 삭제 시 불리는 함수
     func didTapAlarm(index: Int)
     func didTapSetting()
+    func didTapNavigationAlarm()
     func didTapCreateButton()
     func didTapParticipateButton()
 }
 
-final class MOITListViewController: BaseViewController, MOITListPresentable, MOITListViewControllable {
+final class MOITListViewController: UIViewController, MOITListPresentable, MOITListViewControllable {
     
     // MARK: - UI
+    public let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.contentInsetAdjustmentBehavior = .never
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        return view
+    }()
+    
+    public let flexRootView = UIView()
+    let contentView = UIView()
+    public lazy var navigationBar = MOITNavigationBar()
+    
     private let alarmRootView = UIView()
     private let pagableAlarmView = PagableCollectionView(frame: .zero)
     
@@ -72,6 +85,9 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     )
     
     // MARK: - Properties
+
+    public var disposebag = DisposeBag()
+
     weak var listener: MOITListPresentableListener?
     
     private lazy var moitList: [MOITList] = []
@@ -79,7 +95,11 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
     // MARK: - Initializersot
     public init(listener: MOITListPresentableListener? = nil) {
         self.listener = listener
-        super.init()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Lifecycle
@@ -89,29 +109,69 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
         self.view.backgroundColor = ResourceKitAsset.Color.gray100.color
         self.flexRootView.backgroundColor = ResourceKitAsset.Color.gray100.color
         
+        self.configureConstraints()
+        self.bind()
         self.listener?.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
     }
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        configureNavigationBar(
-            leftItems: [.logo],
-            title: "",
-            rightItems: [
-                .alarm,
-                .setting
-            ]
-        )
+        self.flexRootView.pin.all()
+        self.scrollView.contentSize = contentView.frame.size
+    }
+    
+    override func loadView() {
+        self.view = self.flexRootView
     }
     
     // MARK: - Methods
-    override func configureConstraints() {
-        super.configureConstraints()
+    private func configureConstraints() {
+        navigationBar.configure(
+            leftItems: [
+                .logo
+            ],
+            title: "",
+            rightItems: [
+                .alarm,
+                .setting,
+            ]
+        )
         
-        flexRootView.flex
+        self.flexRootView.flex
+            .direction(.column)
+            .justifyContent(.start)
+            .alignItems(.stretch)
+            .define { flex in
+                flex.addItem(self.scrollView)
+                    .position(.absolute)
+                    .height(UIScreen.main.bounds.height)
+                    .width(100%)
+                    
+                flex.addItem(self.navigationBar)
+                    .height(56)
+                    .marginTop(56)
+            }
+        
+        self.scrollView.flex
+            .justifyContent(.start)
+            .alignItems(.stretch)
+            .define { flex in
+                flex.addItem(contentView)
+                    .width(100%)
+                    .grow(1)
+            }
+                
+        contentView.flex
             .paddingHorizontal(20)
-            .paddingTop(20)
+            .paddingTop(112)
+            .paddingBottom(15)
+            .backgroundColor(ResourceKitAsset.Color.gray100.color)
             .define { flex in
                 // 알람
                 flex.addItem(alarmRootView)
@@ -146,15 +206,26 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
                             .width(47%)
                     }
             }
+        // make contentView height dynamic
+        // make view scrollable
+        
+        
+        contentView.flex.layout(mode: .adjustHeight)
     }
     
-    override func bind() {
-        super.bind()
+    private func bind() {
         
         navigationBar.rightItems?[1].rx.tap
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
                 owner.listener?.didTapSetting()
+            })
+            .disposed(by: disposebag)
+        
+        navigationBar.rightItems?[0].rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.listener?.didTapNavigationAlarm()
             })
             .disposed(by: disposebag)
               
@@ -180,23 +251,7 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
             })
             .disposed(by: disposebag)
         
-        moitPreviewList.enumerated().forEach { index, preview in
-            // 탭
-            preview.rx.didTap
-                .withUnretained(self)
-                .subscribe(onNext: { owner, _ in
-                    owner.listener?.didTapMOIT(index: index)
-                })
-                .disposed(by: disposebag)
-            
-            // 삭제
-            preview.rx.didConfirmDelete
-                .withUnretained(self)
-                .subscribe(onNext: { owner, _ in
-                    owner.listener?.didTapDeleteMOIT(index: index)
-                })
-                .disposed(by: disposebag)
-        }
+
     }
     
     func didReceiveMOITList(moitList: [MOITPreviewViewModel]) {
@@ -221,9 +276,32 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
                     .marginBottom(10)
             }
         }
+        
+        bindPreviewList()
         listRootView.flex.markDirty()
         listRootView.flex.layout()
         flexRootView.flex.layout()
+    }
+    
+    private func bindPreviewList() {
+        print("moitPreviewList: \(moitPreviewList)")
+        moitPreviewList.enumerated().forEach { index, preview in
+            // 탭
+            preview.rx.didTap
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.listener?.didTapMOIT(index: index)
+                })
+                .disposed(by: disposebag)
+            
+            // 삭제
+            preview.rx.didConfirmDelete
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.listener?.didTapDeleteMOIT(index: index)
+                })
+                .disposed(by: disposebag)
+        }
     }
     
     func didReceiveAlarm(alarms: [AlarmViewModel]) {
@@ -235,8 +313,8 @@ final class MOITListViewController: BaseViewController, MOITListPresentable, MOI
         }
         
         // TODO: - flexRootView.flex.layout만 해도 레이아웃 잡히는지 실 데이터 받을 때 확인
-        pagableAlarmView.flex.markDirty()
-        alarmRootView.flex.markDirty()
+//        pagableAlarmView.flex.markDirty()
+//        alarmRootView.flex.markDirty()
         flexRootView.flex.layout()
     }
     
