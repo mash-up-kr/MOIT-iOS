@@ -96,11 +96,11 @@ public final class MOITStudyPreview: UIView {
     }
 
     private func setupGesture() {
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        tapGestureRecognizer.delegate = self
-        panGestureRecognizer.delegate = self
-        flexRootView.addGestureRecognizer(panGestureRecognizer)
+//        tapGestureRecognizer.delegate = self
+//        panGestureRecognizer.delegate = self
+//        flexRootView.addGestureRecognizer(panGestureRecognizer)
         flexRootView.addGestureRecognizer(tapGestureRecognizer)
     }
     
@@ -170,10 +170,13 @@ public final class MOITStudyPreview: UIView {
            let url = URL(string: profileURLString) {
             profileImageView.kf.setImage(
                 with: url,
-                options: [.processor(RoundCornerImageProcessor(cornerRadius: 20))]
+                options: [.processor(RoundCornerImageProcessor(cornerRadius: 40))]
             )
         }
-        
+
+        profileImageView.layer.cornerRadius = 30
+        profileImageView.clipsToBounds = true
+
         studyNameLabel.text = studyName
         
         studyDescriptionLabel.text = studyProgressDescription
@@ -236,18 +239,18 @@ public final class MOITStudyPreview: UIView {
 }
 
 // MARK: - UIGestureRecognizerDelegate
-extension MOITStudyPreview: UIGestureRecognizerDelegate {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
-    }
-    
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer is UIPanGestureRecognizer {
-            return otherGestureRecognizer is UITapGestureRecognizer
-        }
-        return false
-    }
-}
+//extension MOITStudyPreview: UIGestureRecognizerDelegate {
+//    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return false
+//    }
+//
+//    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if gestureRecognizer is UIPanGestureRecognizer {
+//            return otherGestureRecognizer is UITapGestureRecognizer
+//        }
+//        return false
+//    }
+//}
 
 // MARK: - Reactive
 public extension Reactive where Base: MOITStudyPreview {
@@ -258,5 +261,9 @@ public extension Reactive where Base: MOITStudyPreview {
     
     var didTap: Observable<Void> {
         return base.didTapSubject.asObservable()
+    }
+    
+    var tap: Observable<Void> {
+        return base.rx.tap.asObservable()
     }
 }

@@ -127,4 +127,8 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }
     }
+    
+    func attachAlarm() {
+        // TODO: - 알람 리스트 띄워주기
+    }
 }
