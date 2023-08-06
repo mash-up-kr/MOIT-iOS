@@ -6,19 +6,19 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
-import RxSwift
 import UIKit
+
 import DesignSystem
 import ResourceKit
-import FlexLayout
-import PinLayout
 import MOITFoundation
 
+import FlexLayout
+import PinLayout
+import RIBs
+import RxSwift
+
 protocol MOITAlarmPresentableListener: AnyObject {
-    // TODO: Declare properties and methods that the view controller can invoke to perform
-    // business logic, such as signIn(). This protocol is implemented by the corresponding
-    // interactor class.
+    func didSwipeBack()
 }
 
 final class MOITAlarmViewController: UIViewController,
@@ -31,6 +31,7 @@ final class MOITAlarmViewController: UIViewController,
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
+	private let disposeBag = DisposeBag()
     
     private var items: [MOITAlarmCollectionViewCellItem] = [
         MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이댜fealfijaelfieajhlfiajflieglaigjaleigaeligalghelighagleiglaihgeilhglei러미랴더ㅣ랴ㅓㅁ랴ㅣㄷㅁ너리먀ㅓ랴ㅣㄷ러미ㅑㄷ러미ㅑ럼디ㅑ럼디이이이이이이이", time: "1시간전"),
@@ -55,6 +56,7 @@ final class MOITAlarmViewController: UIViewController,
         configureCollectionView()
         define()
         collectionView.reloadData()
+		bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,6 +64,14 @@ final class MOITAlarmViewController: UIViewController,
         flexRootView.pin.all(view.safeAreaInsets)
         flexRootView.flex.layout()
     }
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if self.isMovingFromParent {
+			self.listener?.didSwipeBack()
+		}
+	}
     
     private func configureCollectionView() {
         collectionView.dataSource = self
@@ -80,6 +90,12 @@ final class MOITAlarmViewController: UIViewController,
                 .grow(1)
         }
     }
+	
+	private func bind() {
+		self.navigationView.leftItems?[0].rx.tap.subscribe(onNext: { [weak self] in
+			self?.listener?.didSwipeBack()
+		}).disposed(by: self.disposeBag)
+	}
 }
 
 extension MOITAlarmViewController: UICollectionViewDataSource {

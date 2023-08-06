@@ -9,7 +9,4 @@
 import Foundation
 import RIBs
 
-public protocol MOITAlarmDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
+public protocol MOITAlarmDependency: Dependency { }

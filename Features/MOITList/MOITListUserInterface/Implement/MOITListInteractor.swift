@@ -24,6 +24,7 @@ protocol MOITListRouting: ViewableRouting {
     func attachSetting()
     func detachSetting(withPop: Bool)
     func attachAlarm()
+	func detachAlarm(withPop: Bool)
 }
 
 protocol MOITListPresentable: Presentable {
@@ -287,5 +288,11 @@ extension MOITListInteractor {
 	func showMOITDetailButtonDidTap(moitID: Int) {
 		self.router?.detachInputParticipateCode(onlyPop: false)
 		self.router?.attachMOITDetail(id: "\(moitID)")
+	}
+	
+// MARK: - Alarm
+	
+	func didSwipeBackAlarm() {
+		self.router?.detachAlarm(withPop: true)
 	}
 }

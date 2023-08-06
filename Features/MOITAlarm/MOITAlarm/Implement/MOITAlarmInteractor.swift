@@ -11,7 +11,7 @@ import RxSwift
 import MOITAlarm
 
 protocol MOITAlarmRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    
 }
 
 protocol MOITAlarmPresentable: Presentable {
@@ -24,8 +24,6 @@ final class MOITAlarmInteractor: PresentableInteractor<MOITAlarmPresentable>, MO
     weak var router: MOITAlarmRouting?
     weak var listener: MOITAlarmListener?
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
     override init(presenter: MOITAlarmPresentable) {
         super.init(presenter: presenter)
         presenter.listener = self
@@ -40,4 +38,8 @@ final class MOITAlarmInteractor: PresentableInteractor<MOITAlarmPresentable>, MO
         super.willResignActive()
         // TODO: Pause any business logic.
     }
+	
+	func didSwipeBack() {
+		listener?.didSwipeBackAlarm()
+	}
 }
