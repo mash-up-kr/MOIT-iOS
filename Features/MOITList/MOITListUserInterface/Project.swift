@@ -44,6 +44,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITParticipate.UserInterface.Interface,
         .Feature.MOITSetting.Interface,
         .Feature.MOITSetting.Implement,
+		.Feature.MOITAlarm.Interface
     ],
     demoAppDependencies: [
         .Feature.MOITList.Domain.Implement,
