@@ -11,6 +11,7 @@ import Firebase
 import FirebaseMessaging
 import RIBs
 import UserNotifications
+import TokenManagerImpl
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -50,32 +51,33 @@ final class AppDelegate: UIResponder,
 private extension AppDelegate {
     func requestAuthorization() {
         UNUserNotificationCenter.current().delegate = self
-
+        
         let authOptions: UNAuthorizationOptions = [
-          .alert,
-          .badge,
-          .sound
+            .alert,
+            .badge,
+            .sound
         ]
         UNUserNotificationCenter.current().requestAuthorization(
-          options: authOptions,
-          completionHandler: { _, _ in }
+            options: authOptions,
+            completionHandler: { _, _ in }
         )
     }
     
     func apnsToken(_ token: Data) {
         let token = token.reduce("") {
-                $0 + String(format: "%02X", $1)
-            }
+            $0 + String(format: "%02X", $1)
+        }
         print("🤖 apns callback token: ", token)
     }
     
     func getFCMToken() {
         Messaging.messaging().token { token, error in
-          if let error = error {
-            print("🤖 Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-            print("🤖 FCM registration token: \(token)")
-          }
+            if let error = error {
+                print("🤖 Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                print("🤖 FCM registration token: \(token)")
+                TokenManagerImpl().save(token: token, with: .fcmToken)
+            }
         }
     }
     
@@ -98,7 +100,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         guard let urlString = response.notification.request.content.userInfo["url"] as? String else { return }
-              let path = String(urlString.split(separator: "://").last ?? "")
+        let path = String(urlString.split(separator: "://").last ?? "")
         
         guard let type = DeepLinkType(rawValue: path) else { return }
         
@@ -116,6 +118,9 @@ extension AppDelegate: MessagingDelegate {
         _ messaging: Messaging,
         didReceiveRegistrationToken fcmToken: String?
     ) {
-      print("Firebase registration token: \(String(describing: fcmToken))")
+        guard let fcmToken else { return }
+        TokenManagerImpl().save(token: fcmToken, with: .fcmToken)
+        // TODO: - fcmToken 새걸로 업데이트
+        
     }
 }
