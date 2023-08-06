@@ -97,19 +97,19 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         let router = inputParticipateCodeBuilder.build(withListener: interactor)
         self.inputParticipateCodeRouter = router
         attachChild(router)
-		viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
-	func detachInputParticipateCode(onlyPop: Bool) {
+    func detachInputParticipateCode(onlyPop: Bool) {
         guard let inputParticipateCodeRouter else { return }
         self.inputParticipateCodeRouter = nil
         detachChild(inputParticipateCodeRouter)
-		
-		viewController.uiviewController.navigationController?.popViewController(animated: true)
-		
-		if !onlyPop {
-			viewController.uiviewController.navigationController?.dismiss(animated: false)
-		}
-		
+        
+        viewController.uiviewController.navigationController?.popViewController(animated: true)
+        
+        if !onlyPop {
+            viewController.uiviewController.navigationController?.dismiss(animated: false)
+        }
+        
     }
     
     private let settingBuilder: MOITSettingBuildable
@@ -131,7 +131,41 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         }
     }
     
+    // 키워드 입력, 결과
     func attachAlarm() {
-        // TODO: - 알람 리스트 띄워주기
+        guard moitWebRouter == nil else { return }
+        let router = moitWebBuilder.build(
+            withListener: interactor,
+            domain: .frontend,
+            path: .attendance(keyboardHeight: getKeyboardHeight())
+        )
+        self.moitWebRouter = router
+        attachChild(router)
+        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+    }
+    
+    func detachAlarm(withPop: Bool) {
+        guard let moitWebRouter else { return }
+        self.moitWebRouter = nil
+        detachChild(moitWebRouter)
+        if withPop {
+            viewController.uiviewController.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func getKeyboardHeight()->CGFloat{
+        
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return getWidth() < getHeight() ? 216 : 162
+        } else{
+            return getWidth() < getHeight() ? 265 : 353
+            
+        }
+    }
+    private func getWidth() -> CGFloat{
+        return UIScreen.main.bounds.width
+    }
+    private func getHeight() -> CGFloat{
+        return UIScreen.main.bounds.height
     }
 }

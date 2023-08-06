@@ -117,6 +117,7 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		)
 		
 		fineListScrollView.configureView(with: viewModel)
+		fineAmountLabel.flex.markDirty()
 		fineListScrollView.flex.markDirty()
 		self.view.setNeedsLayout()
 	}
