@@ -12,10 +12,14 @@ import MOITWeb
 import AuthDomain
 import TokenManagerImpl
 import TokenManager
+import MOITListUserInterface
+import RxRelay
 
 protocol RootRouting: ViewableRouting {
     func routeToAuth()
-    func routeToMOITList()
+    
+    @discardableResult
+    func routeToMOITList() -> MOITListActionableItem?
     
     func detachAuth(_ completion: (() -> Void)?)
     func detachMOITList()
@@ -29,7 +33,6 @@ protocol RootListener: AnyObject {
 }
 
 protocol RootInteractorDependency {
-    
     var fetchTokenUseCase: FetchTokenUseCase { get }
 }
 
@@ -41,6 +44,7 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
 
     weak var router: RootRouting?
     private let dependency: RootInteractorDependency
+    private let waitForLoginSubject = ReplaySubject<RootActionableItem>.create(bufferSize: 1)
     
     // MARK: - Initializers
     
@@ -74,6 +78,7 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
             return
         }
         router?.routeToMOITList()
+        self.waitForLoginSubject.onNext(self)
     }
 }
 
@@ -89,7 +94,9 @@ extension RootInteractor {
 extension RootInteractor {
     func didCompleteAuth() {
         router?.detachAuth { [weak self] in
-            self?.router?.routeToMOITList()
+            guard let self else { return }
+            self.waitForLoginSubject.onNext(self)
+            self.router?.routeToMOITList()
         }
     }
 }
@@ -103,5 +110,37 @@ extension RootInteractor {
     func didWithdraw() {
         self.router?.detachMOITList()
         self.router?.routeToAuth()
+    }
+}
+
+// MARK: - RootActionableItem
+
+extension RootInteractor: RootActionableItem {
+    func waitForLogin() -> Observable<(RootActionableItem, ())> {
+        waitForLoginSubject
+            .asObservable()
+            .map { actionableItem -> (RootActionableItem, ()) in
+                return (actionableItem, ())
+            }
+    }
+    
+    func routeToMOITList() -> Observable<(MOITListActionableItem, ())> {
+        guard let item = router?.routeToMOITList() else { fatalError() }
+        return Observable.just((item, ()))
+    }
+}
+
+// MARK: - Deeplinkable
+extension RootInteractor: Deeplinkable {
+    func routeToMOITList() {
+        RootWorkflow()
+            .subscribe(self)
+            .disposeOnDeactivate(interactor: self)
+    }
+    
+    func routeToDetail(id: String) {
+        MOITDetailWorkflow(id: id)
+            .subscribe(self)
+            .disposeOnDeactivate(interactor: self)
     }
 }

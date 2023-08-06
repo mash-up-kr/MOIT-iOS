@@ -13,16 +13,22 @@ import AuthDomain
 import RIBs
 import RxSwift
 import RxRelay
+import MOITDetail
 
 protocol MOITListRouting: ViewableRouting {
     func attachRegisterMOIT()
     func detachRegisterMOIT(withPop: Bool)
-    func attachMOITDetail(id: String)
+    
+    @discardableResult
+    func attachMOITDetail(id: String) -> MOITDetailActionableItem?
     func detachMOITDetail(withPop: Bool)
+    
     func attachInputParticipateCode()
 	func detachInputParticipateCode(onlyPop: Bool)
+    
     func attachSetting()
     func detachSetting(withPop: Bool)
+    
     func attachAlarm()
 }
 
@@ -298,4 +304,13 @@ extension MOITListInteractor {
 		self.router?.detachInputParticipateCode(onlyPop: false)
 		self.router?.attachMOITDetail(id: "\(moitID)")
 	}
+}
+
+// MARK: - MOITListActionableItem
+extension MOITListInteractor: MOITListActionableItem {
+    func routeToDetail(id: String) -> Observable<(MOITDetailActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITDetail(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
 }

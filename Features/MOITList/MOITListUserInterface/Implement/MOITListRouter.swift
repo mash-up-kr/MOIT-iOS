@@ -7,7 +7,7 @@
 //
 
 import MOITListUserInterface
-
+import Utils
 import RIBs
 import MOITWeb
 import MOITDetail
@@ -71,19 +71,24 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
     }
     
     private let moitDetailBuilder: MOITDetailBuildable
-    private var moitDetailRouter: ViewableRouting?
+    private var moitDetailRouters: [ViewableRouting] = []
     
-    func attachMOITDetail(id: String) {
-        guard moitDetailRouter == nil else { return }
-        let router = moitDetailBuilder.build(withListener: interactor, moitID: id)
-        self.moitDetailRouter = router
+    @discardableResult
+    func attachMOITDetail(id: String) -> MOITDetailActionableItem? {
+        let (router, interactor) = moitDetailBuilder.build(withListener: interactor, moitID: id)
+        
+        self.moitDetailRouters.append(router)
         attachChild(router)
-        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+        viewController.uiviewController.navigationController?.pushViewController(
+            router.viewControllable.uiviewController,
+            animated: true
+        )
+        return interactor
     }
+    
     func detachMOITDetail(withPop: Bool) {
-        guard let moitDetailRouter else { return }
-        self.moitDetailRouter = nil
-        detachChild(moitDetailRouter)
+        guard let lastMOITDetailRouter = moitDetailRouters.popLast() else { return }
+        detachChild(lastMOITDetailRouter)
         if withPop {
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }

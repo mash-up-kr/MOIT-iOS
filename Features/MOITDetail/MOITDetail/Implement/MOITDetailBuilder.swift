@@ -18,7 +18,6 @@ import FineUserInterfaceImpl
 import FineDomain
 import MOITShareImpl
 import MOITShare
-
 import RIBs
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
@@ -55,7 +54,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
     public func build(
         withListener listener: MOITDetailListener,
         moitID: String
-    ) -> ViewableRouting {
+    ) -> (router: ViewableRouting, actionableItem: MOITDetailActionableItem) {
         
         let component = MOITDetailComponent(dependency: dependency)
         let viewController = MOITDetailViewController()
@@ -73,7 +72,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
 		let fineListBuilder = FineListBuilder(dependency: component)
         let shareBuilder = ShareBuilder(dependency: component)
         
-        return MOITDetailRouter(
+        let router = MOITDetailRouter(
             interactor: interactor,
             viewController: viewController,
             attendanceBuiler: attendanceBuiler,
@@ -81,5 +80,6 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
 			fineListBuilder: fineListBuilder,
 			shareBuilder: shareBuilder
         )
+        return (router, interactor)
     }
 }

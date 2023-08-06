@@ -78,16 +78,19 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
     
     private let moitListBuilder: MOITListBuildable
     private var moitListRouter: ViewableRouting?
+    private var moitListActionableItem: MOITListActionableItem?
     
-    func routeToMOITList() {
-        guard moitListRouter == nil else { return }
-//        if let _ = self.viewController.uiviewController.presentedViewController {
-//            self.viewController.uiviewController.dismiss(animated: false)
-//        }
+    @discardableResult
+    func routeToMOITList() -> MOITListActionableItem? {
+        if moitListRouter != nil {
+            guard let navigationController = self.viewController.uiviewController.presentedViewController as? UINavigationController else { return nil }
+            navigationController.popToRootViewController(animated: true)
+            return moitListActionableItem
+        }
         
-        let router = moitListBuilder.build(withListener: interactor)
-        
-        self.moitListRouter = router
+        let (router, actionableItem) = moitListBuilder.build(withListener: interactor)
+        moitListActionableItem = actionableItem
+        moitListRouter = router
         attachChild(router)
         
         let navigationController = UINavigationController(
@@ -100,6 +103,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
             navigationController,
             animated: false
         )
+        return actionableItem
     }
     
     func detachMOITList() {

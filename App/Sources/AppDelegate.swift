@@ -19,6 +19,7 @@ final class AppDelegate: UIResponder,
     var window: UIWindow?
     private var launchRouter: LaunchRouting?
     private var builder: RootBuildable?
+    private var deeplinkable: Deeplinkable?
     
     func application(
         _ application: UIApplication,
@@ -27,10 +28,12 @@ final class AppDelegate: UIResponder,
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        self.builder = RootBuilder(dependency: EmptyComponent())
-        let router = builder?.build()
+        let builder = RootBuilder(dependency: EmptyComponent())
+        self.builder = builder
+        let (router, interactor) = builder.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)
+        self.deeplinkable = interactor
         
         self.configure(application)
         return true
@@ -104,8 +107,32 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         // TODO: type에 따라 이동하는 로직 필요
         switch type {
-        default: print(type)
+        case .home:
+            self.deeplinkable?.routeToMOITList()
+        case .detail:
+            self.deeplinkable?.routeToDetail(id: "85")
+        default: print("😲😲 DEEPLINK TYPE", type)
         }
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        // 2. 받은 URL이 딥링크인지 확인
+        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) else { return false }
+        print(components)
+        guard let path = components.host else { return false }
+        print(path)
+    
+        guard let type = DeepLinkType(rawValue: path) else { return false }
+        print(type)
+        // TODO: type에 따라 이동하는 로직 필요
+        switch type {
+        case .home:
+            self.deeplinkable?.routeToMOITList()
+        case .detail:
+            self.deeplinkable?.routeToDetail(id: "85")
+        default: print("😲😲 DEEPLINK TYPE", type)
+        }
+        return true
     }
 }
 
@@ -118,4 +145,9 @@ extension AppDelegate: MessagingDelegate {
     ) {
       print("Firebase registration token: \(String(describing: fcmToken))")
     }
+}
+
+protocol Deeplinkable: AnyObject {
+    func routeToMOITList()
+    func routeToDetail(id: String)
 }

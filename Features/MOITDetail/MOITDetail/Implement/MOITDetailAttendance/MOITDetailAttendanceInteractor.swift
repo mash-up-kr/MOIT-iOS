@@ -10,6 +10,7 @@ import RIBs
 import RxSwift
 import MOITDetailDomain
 import Collections
+import MOITDetail
 
 protocol MOITDetailAttendanceRouting: ViewableRouting {
 }
@@ -158,4 +159,8 @@ extension MOITDetailAttendanceInteractor {
         case .UNDECIDED: return .attend
         }
     }
+}
+
+extension MOITDetailInteractor: MOITDetailActionableItem {
+    
 }

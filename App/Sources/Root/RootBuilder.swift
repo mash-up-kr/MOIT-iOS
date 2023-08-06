@@ -109,7 +109,7 @@ final class RootComponent: Component<EmptyDependency>,
 // MARK: - Builder
 
 protocol RootBuildable: Buildable {
-    func build() -> LaunchRouting
+    func build() -> (LaunchRouting, Deeplinkable)
 }
 
 final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
@@ -120,7 +120,7 @@ final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
     
     deinit { debugPrint("\(self) deinit") }
     
-    func build() -> LaunchRouting {
+    func build() -> (LaunchRouting, Deeplinkable) {
         let component = RootComponent()
         let viewController = RootViewController()
         let interactor = RootInteractor(
@@ -131,11 +131,12 @@ final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
         let moitListBuilder = MOITListBuilder(dependency: component)
         let authBuilder = LoggedOutBuilder(dependency: component)
         
-        return RootRouter(
+        let router = RootRouter(
             interactor: interactor,
             viewController: viewController,
             moitListBuilder: moitListBuilder,
             loggedOutBuilder: authBuilder
         )
+        return (router, interactor)
     }
 }
