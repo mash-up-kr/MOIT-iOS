@@ -142,6 +142,7 @@ extension MOITSettingInteractor {
     
     func didTap삭제Action() {
         self.userUsecase.withdraw()
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] _ in
                 self?.listener?.didWithdraw()
             }, onFailure: { [weak self] _ in
