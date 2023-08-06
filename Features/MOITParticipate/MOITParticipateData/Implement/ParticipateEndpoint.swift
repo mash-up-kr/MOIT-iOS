@@ -16,7 +16,7 @@ enum ParticipateEndpoint {
 	static func postParticipateCode(with request: MOITParticipateRequest) -> Endpoint<ParticipateResponseDTO> {
 		
 		return Endpoint(
-			path: "moit/join",
+			path: "/api/v1/moit/join",
 			method: .post,
 			parameters: .body(request)
 		)
