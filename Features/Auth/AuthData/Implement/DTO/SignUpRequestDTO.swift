@@ -8,12 +8,15 @@
 
 import Foundation
 
+import TokenManagerImpl
+
 struct SignUpRequestDTO: Encodable {
     let providerUniqueKey: String
     let nickname: String
     let email: String
     let profileImage: Int
-    let inviteCode: String?
+    let moitInvitationCode: String?
+    let fcmToken: String?
     
     init(
         providerUniqueKey: String,
@@ -26,6 +29,7 @@ struct SignUpRequestDTO: Encodable {
         self.nickname = nickname
         self.email = email
         self.profileImage = profileImage
-        self.inviteCode = inviteCode
+        self.moitInvitationCode = inviteCode
+        self.fcmToken = TokenManagerImpl().get(key: .fcmToken)
     }
 }
