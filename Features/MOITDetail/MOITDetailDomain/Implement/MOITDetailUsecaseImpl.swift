@@ -58,7 +58,7 @@ public final class MOITDetailUsecaseImpl: MOITDetailUsecase {
 			moitID: "\(moitDetailModel.moitID)",
 			moitName: moitDetailModel.name,
 			masterID: "\(moitDetailModel.masterID)",
-			description: self.moitDescription(moitDetailModel.description),
+			description: self.moitDescription(moitDetailModel.description ?? "전ㅈr군단"),
 			imageURL: moitDetailModel.imageURL,
 			scheduleDescription: scheduleDescription,
 			ruleShortDescription: ruleShortDescription,
