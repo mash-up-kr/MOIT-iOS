@@ -197,6 +197,7 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
                 
                 // 참여, 생성 버튼
                 flex.addItem()
+                    .marginTop(10)
                     .direction(.row)
                     .justifyContent(.spaceBetween)
                     .define { flex in
@@ -206,11 +207,13 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
                             .width(47%)
                     }
             }
-        // make contentView height dynamic
-        // make view scrollable
-        
         
         contentView.flex.layout(mode: .adjustHeight)
+        listRootView.flex.markDirty()
+        moitCountLabel.flex.markDirty()
+        listRootView.flex.layout()
+        flexRootView.flex.layout()
+
     }
     
     private func bind() {
@@ -257,12 +260,14 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
     func didReceiveMOITList(moitList: [MOITPreviewViewModel]) {
         print(#function, "previewViewModel: \(moitList)")
         
-        if moitList.isEmpty { return }
+//        if moitList.isEmpty { return }
         
         moitCountLabel.text = moitList.count.description
         moitCountLabel.flex.markDirty()
         
-        emptyMOITView.flex.display(.none)
+        if !moitList.isEmpty {
+            emptyMOITView.flex.display(.none)
+        }
         
         // TODO: - studypreview 모아서 저장해두고 걔를 additem
         let moitPreviewList = moitList.map { makeStudyPreview(with: $0) }

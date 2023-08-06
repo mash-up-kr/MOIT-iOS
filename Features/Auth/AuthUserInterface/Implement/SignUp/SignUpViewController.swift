@@ -82,6 +82,17 @@ public final class SignUpViewController: BaseViewController, SignUpViewControlla
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow(_:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
@@ -165,5 +176,16 @@ extension SignUpViewController: SignUpPresentable {
     func updateProfileIndex(index: Int) {
         guard let imageType = ProfileImageType(rawValue: index) else { return }
         self.profileView.configureImage(with: imageType)
+    }
+}
+
+extension SignUpViewController {
+    @objc func keyboardWillShow(_ notification:NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            print("keyboardHeight = \(keyboardHeight)")
+            UserDefaults.standard.set(keyboardHeight, forKey: "keyboardHeight")
+        }
     }
 }
