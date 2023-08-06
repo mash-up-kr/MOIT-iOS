@@ -266,7 +266,7 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         
         moitCountLabel.text = moitList.count.description
         moitCountLabel.flex.markDirty()
-        
+        listRootView.subviews.forEach { $0.removeFromSuperview() }
         if !moitList.isEmpty {
             emptyMOITView.flex.display(.none)
         }
