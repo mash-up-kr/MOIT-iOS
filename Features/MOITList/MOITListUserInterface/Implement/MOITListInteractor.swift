@@ -55,6 +55,8 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     private let createButtonTapped = PublishRelay<Void>()
     private let participateButtonTapped = PublishRelay<Void>()
     
+    private var moitList = PublishRelay<[MOIT]>()
+    
     // MARK: - Initializers
     
     public init(
@@ -81,13 +83,21 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     func viewDidLoad() {
         bind()
     }
+    
+    func viewWillAppear() {
+        dependency.fetchMOITListsUseCase.execute()
+            .subscribe(onSuccess: { [weak self] moits in
+                self?.moitList.accept(moits)
+            })
+            .disposeOnDeactivate(interactor: self)
+    }
+    
     private func bind() {
-        let moitList = dependency.fetchMOITListsUseCase.execute()
         
         // moitlist 보내주기
         moitList
             .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] moitList in
+            .subscribe(onNext: { [weak self] moitList in
                 
                 let moitPreviewList = moitList.compactMap { MOITPreviewViewModel(moit: $0)}
                 self?.presenter.didReceiveMOITList(moitList: moitPreviewList)

@@ -20,6 +20,7 @@ import PinLayout
 
 protocol MOITListPresentableListener: AnyObject {
     func viewDidLoad()
+    func viewWillAppear()
     func didTapMOIT(index: Int) // MOIT 하나 탭 시 불리는 함수
     func didTapDeleteMOIT(index: Int) // MOIT 하나 삭제 시 불리는 함수
     func didTapAlarm(index: Int)
@@ -114,9 +115,10 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         self.listener?.viewDidLoad()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        self.listener?.viewWillAppear()
     }
     
     public override func viewDidLayoutSubviews() {
