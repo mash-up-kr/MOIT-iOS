@@ -153,19 +153,11 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         }
     }
     
-    private func getKeyboardHeight()->CGFloat{
-        
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return getWidth() < getHeight() ? 216 : 162
-        } else{
-            return getWidth() < getHeight() ? 265 : 353
-            
+    private func getKeyboardHeight() -> CGFloat {
+        guard let height = UserDefaults.standard.object(forKey: "keyboardHeight") as? CGFloat else {
+            return 301
         }
-    }
-    private func getWidth() -> CGFloat{
-        return UIScreen.main.bounds.width
-    }
-    private func getHeight() -> CGFloat{
-        return UIScreen.main.bounds.height
+        
+        return height
     }
 }
