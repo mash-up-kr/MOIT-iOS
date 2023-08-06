@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import TokenManager
+import TokenManagerImpl
 
 public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 
@@ -23,18 +25,22 @@ public struct MultipartEndpoint<R>: MultipartRequestable where R: Decodable {
 		baseURL: URL = URL(string: "http://moit-backend-eb-env.eba-qtcnkjjy.ap-northeast-2.elasticbeanstalk.com") ?? URL(fileReferenceLiteralResourceName: ""),
 		path: String,
 		method: HTTPMethod,
-		headers: HTTPHeaders = [
-			// TODO: 추후 헤더 삭제 필요
-			"authorization" : "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci1kZWZhdWx0IiwiYXVkIjoiYXV0aDB8YWJjQG5hdmVyLmNvbXw3fGRlZmF1bHQiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2ODg4ODkyOTMsImV4cCI6MTY5MTQ4MTI5MywiaW5mbyI6eyJpZCI6NywicHJvdmlkZXJVbmlxdWVLZXkiOiJhdXRoMHxhYmNAbmF2ZXIuY29tIiwibmlja25hbWUiOiJkZWZhdWx0IiwicHJvZmlsZUltYWdlIjowLCJlbWFpbCI6ImFiY0BuYXZlci5jb20iLCJyb2xlcyI6WyJVU0VSIl19fQ.o9WjiGqNOZSkHGDKQ54b50TUEy-oWvPo1-5Egjw1HXc",
-			"Content-Type": "multipart/form-data"
-		],
 		parameters: HTTPRequestParameter? = nil,
 		formData: MultipartFormData
 	) {
+        
+        if let token = TokenManagerImpl().get(key: .authorizationToken),
+           !token.isEmpty {
+            self.headers = [
+                "Authorization": "\(token)",
+                "Content-Type": "multipart/form-data"
+            ]
+        } else {
+            self.headers = ["Content-Type": "multipart/form-data"]
+        }
 		self.baseURL = baseURL
 		self.path = path
 		self.method = method
-		self.headers = headers
 		self.parameters = parameters
 		self.formData = formData
 	}

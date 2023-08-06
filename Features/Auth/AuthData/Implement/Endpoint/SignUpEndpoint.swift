@@ -14,7 +14,7 @@ enum SignUpEndpoint {
     
     static func signUp(dto: SignUpRequestDTO) -> Endpoint<TokenDTO> {
         return Endpoint<TokenDTO>(
-            path: "auth/signup",
+            path: "/api/v1/auth/sign-up",
             method: .post,
             parameters: .body(dto)
         )

@@ -126,6 +126,7 @@ final class SignUpInteractor: PresentableInteractor<SignUpPresentable>,
             .withLatestFrom(profileImageIndex)
             .withUnretained(self)
             .debug()
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, index in
                 owner.router?.attachProfileSelect(currentImageIndex: index)
             })

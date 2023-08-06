@@ -18,6 +18,7 @@ import RxSwift
 import DesignSystem
 import Toast
 
+
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
 	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])

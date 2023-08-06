@@ -31,7 +31,7 @@ public struct MOITAllAttendanceModel: Decodable {
             public let nickname: String
             public let profileImage: Int
             public let status: String
-            public let attendanceAt: String
+            public let attendanceAt: String?
             
             enum CodingKeys: String, CodingKey {
                 case userID = "userId"

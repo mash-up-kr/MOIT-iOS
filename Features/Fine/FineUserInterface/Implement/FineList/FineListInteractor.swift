@@ -77,6 +77,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
                 self?.isMaster = false
                 return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: false)
             }
+            .observe(on: MainScheduler.instance)
             .subscribe(
                 onSuccess: { [weak self] fineInfoViewModel in
                     debugPrint("------------FineInfoViewModel-------------")

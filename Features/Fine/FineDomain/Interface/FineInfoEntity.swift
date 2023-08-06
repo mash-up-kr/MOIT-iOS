@@ -63,9 +63,9 @@ public struct FineItemEntity {
 		self.userNickname = fineItem.userNickname
 		self.attendanceStatus = AttendanceStatus(fromRawValue: fineItem.attendanceStatus)
 		self.studyOrder = fineItem.studyOrder + 1
-		self.approveAt = fineItem.approveAt
+		self.approveAt = fineItem.approveAt ?? ""
 		self.fineApproveStatus = FineApproveStatus(fromRawValue: fineItem.approveStatus)
-		self.imageURL = fineItem.paymentImageUrl
+		self.imageURL = fineItem.paymentImageUrl ?? ""
 	}
 	
 	public init(

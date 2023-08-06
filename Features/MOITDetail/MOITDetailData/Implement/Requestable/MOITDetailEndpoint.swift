@@ -15,21 +15,21 @@ enum MOITDetailEndpoint {
 	
 	static func fetchMOITAttendance(moitID: String) -> Endpoint<MOITAllAttendanceModel> {
 		return Endpoint(
-			path: "moit/\(moitID)/attendance",
+			path: "/api/v1/moit/\(moitID)/attendance",
 			method: .get
 		)
 	}
 	
 	static func fetchMOITDetail(moitID: String) -> Endpoint<MOITDetailModel> {
 		return Endpoint(
-			path: "moit/\(moitID)",
+			path: "/api/v1/moit/\(moitID)",
 			method: .get
 		)
 	}
 	
 	static func fetchMOITUsers(moitID: String) -> Endpoint<MOITUserModel> {
 		return Endpoint(
-			path: "moit/\(moitID)/users",
+			path: "/api/v1/moit/\(moitID)/users",
 			method: .get
 		)
 	}

@@ -28,8 +28,8 @@ public struct FineItem: Decodable {
 	public let userNickname, attendanceStatus: String
 	public let studyOrder: Int
 	public let approveStatus: String
-	public let approveAt: String
-	public let paymentImageUrl: String
+	public let approveAt: String?
+	public let paymentImageUrl: String?
 
 	public enum CodingKeys: String, CodingKey {
 		case id, fineAmount

@@ -72,7 +72,7 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
                         nickname: attendance.nickname,
                         profileImage: attendance.profileImage,
                         status: AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED,
-                        attendanceAt: attendance.attendanceAt.dateString
+                        attendanceAt: attendance.attendanceAt?.dateString ?? ""
                     )
                 }
             }
@@ -85,7 +85,7 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
                 nickname: attendance.nickname,
                 profileImage: attendance.profileImage,
                 status: AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED,
-                attendanceAt: attendance.attendanceAt.dateString
+                attendanceAt: attendance.attendanceAt?.dateString ?? ""
             )
         }
     }
