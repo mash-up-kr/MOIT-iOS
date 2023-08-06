@@ -7,6 +7,11 @@
 //
 
 import Foundation
+
+import MOITAlarmDomain
+
 import RIBs
 
-public protocol MOITAlarmDependency: Dependency { }
+public protocol MOITAlarmDependency: Dependency {
+	var fetchNotificationUseCase: FetchNotificationListUseCase { get }
+}

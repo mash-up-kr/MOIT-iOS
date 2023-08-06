@@ -21,6 +21,7 @@ import MOITParticipateUserInterfaceImpl
 import MOITParticipateDomain
 import MOITAlarm
 import MOITAlarmImpl
+import MOITAlarmDomain
 import FineDomain
 import AuthDomain
 
@@ -31,7 +32,7 @@ final class MOITListComponent: Component<MOITListDependency>,
                                InputParticipateCodeDependency,
                                MOITSettingDependency,
 							   MOITAlarmDependency {
-    
+	var fetchNotificationUseCase: FetchNotificationListUseCase { dependency.fetchNotificationUseCase }
     var userUseCase: UserUseCase { dependency.userUseCase }
     var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
     var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }

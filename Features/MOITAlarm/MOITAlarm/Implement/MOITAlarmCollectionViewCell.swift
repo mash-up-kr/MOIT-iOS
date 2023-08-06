@@ -14,7 +14,7 @@ struct MOITAlarmCollectionViewCellItem {
     let isRead: Bool
     let title: String
     let description: String
-    let time: String
+	let urlScheme: String
 }
 final class MOITAlarmCollectionViewCell: UICollectionViewCell {
     
@@ -23,12 +23,6 @@ final class MOITAlarmCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = ResourceKitFontFamily.p2
         label.textColor = ResourceKitAsset.Color.gray800.color
-        return label
-    }()
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.font = ResourceKitFontFamily.p3
-        label.textColor = ResourceKitAsset.Color.gray600.color
         return label
     }()
     private let descriptionLabel: UILabel = {
@@ -59,7 +53,6 @@ final class MOITAlarmCollectionViewCell: UICollectionViewCell {
     func configure(item: MOITAlarmCollectionViewCellItem) {
         self.titleLabel.text = item.title
         self.descriptionLabel.text = item.description
-        self.timeLabel.text = item.time
         if item.isRead {
             flexRootView.backgroundColor = .white
         } else {
@@ -67,7 +60,6 @@ final class MOITAlarmCollectionViewCell: UICollectionViewCell {
         }
         self.titleLabel.flex.markDirty()
         self.descriptionLabel.flex.markDirty()
-        self.timeLabel.flex.markDirty()
         self.setNeedsLayout()
     }
 }
@@ -80,14 +72,7 @@ private extension MOITAlarmCollectionViewCell {
         flexRootView.flex
             .padding(20)
             .define { flex in
-            flex.addItem()
-                .direction(.row)
-                .define { flex in
-                    flex.addItem(titleLabel)
-                        .grow(1)
-                    flex.addItem(timeLabel)
-                }
-            
+			flex.addItem(titleLabel)
             flex.addItem(descriptionLabel)
                 .marginTop(10)
         }

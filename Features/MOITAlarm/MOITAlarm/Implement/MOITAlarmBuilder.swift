@@ -6,10 +6,14 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
 import MOITAlarm
+import MOITAlarmDomain
 
-final class MOITAlarmComponent: Component<MOITAlarmDependency> {
+import RIBs
+
+final class MOITAlarmComponent: Component<MOITAlarmDependency>,
+								MOITAlarmInteractorDependency {
+	var fetchNotificationUseCase: FetchNotificationListUseCase { dependency.fetchNotificationUseCase }
 }
 
 // MARK: - Builder
@@ -23,7 +27,10 @@ public final class MOITAlarmBuilder: Builder<MOITAlarmDependency>, MOITAlarmBuil
     public func build(withListener listener: MOITAlarmListener) -> ViewableRouting {
         let component = MOITAlarmComponent(dependency: dependency)
         let viewController = MOITAlarmViewController()
-        let interactor = MOITAlarmInteractor(presenter: viewController)
+        let interactor = MOITAlarmInteractor(
+			presenter: viewController,
+			dependency: component
+		)
         interactor.listener = listener
         return MOITAlarmRouter(interactor: interactor, viewController: viewController)
     }

@@ -21,6 +21,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITParticipate.Domain.Interface,
 		.Feature.MOITList.Domain.Interface,
         .Feature.Fine.Domain.Interface,
+		.Feature.MOITAlarm.Domain.Interface
     ],
     implementDependencies: [
         .ThirdParty.RxSwift,
