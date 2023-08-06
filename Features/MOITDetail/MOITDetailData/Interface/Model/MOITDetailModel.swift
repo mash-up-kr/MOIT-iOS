@@ -15,7 +15,7 @@ public struct MOITDetailModel: Decodable {
     /// moit장아이디
     public let masterID: Int
     /// moit 설명 (optional)
-    public let description: String
+    public let description: String?
     /// moit 이미지
     public let imageURL: String?
     /// moit 반복 요일
