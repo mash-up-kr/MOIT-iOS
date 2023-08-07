@@ -50,6 +50,7 @@ public final class NetworkImpl: Network {
                         💥 header: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")
                         💥 body: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))
                         💥 error: \(error)
+                        💥 response: \(String(data: data ?? Data(), encoding: .utf8))
                         --------------------------------------------------------
                         """)
 						
