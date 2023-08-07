@@ -75,10 +75,10 @@ final class MasterAuthorizationView: UIView {
 			flex.addItem()
 				.marginTop(10)
 				.direction(.row)
-				.justifyContent(.center)
+				.justifyContent(.spaceBetween)
 				.define { flex in
-					flex.addItem(cancelButton)
-					flex.addItem(okButton).marginLeft(9)
+					flex.addItem(cancelButton).width(47%)
+					flex.addItem(okButton).width(47%)
 				}
 		}
 	}
