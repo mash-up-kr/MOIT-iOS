@@ -485,4 +485,8 @@ extension MOITDetailViewController {
         self.contentView.flex.markDirty()
         self.view.setNeedsLayout()
     }
+	
+	func showToast(message: String) {
+		print("message: \(message)")
+	}
 }

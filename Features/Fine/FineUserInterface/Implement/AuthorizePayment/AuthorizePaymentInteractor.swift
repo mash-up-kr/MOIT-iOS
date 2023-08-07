@@ -115,6 +115,10 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		fetchData()
 	}
 	
+	func didSwipeBack() {
+		listener?.authorizePaymentDidSwipeBack()
+	}
+	
 	func authorizeButtonDidTap(with data: Data?) {
 		dependency.postFineEvaluateUseCase.execute(
 			moitID: dependency.moitID,

@@ -23,6 +23,7 @@ protocol AuthorizePaymentPresentableListener: AnyObject {
 	func viewDidLoad()
 	func authorizeButtonDidTap(with data: Data?)
 	func masterAuthorizeButtonDidTap(isConfirm: Bool)
+	func didSwipeBack()
 }
 
 final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPresentable, AuthorizePaymentViewControllable {
@@ -92,6 +93,14 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		
 		flexRootContainer.pin.all(view.pin.safeArea)
 		flexRootContainer.flex.layout()
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if self.isMovingFromParent {
+			listener?.didSwipeBack()
+		}
 	}
 	
 	

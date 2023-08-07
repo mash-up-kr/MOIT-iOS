@@ -15,16 +15,12 @@ import MOITDetailDomain
 import DesignSystem
 import ResourceKit
 
-protocol FineListRouting: ViewableRouting {
-    func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool)
-    func detachAuthorizePayment(completion: (() -> Void)?)
-}
+protocol FineListRouting: ViewableRouting { }
 
 protocol FineListPresentable: Presentable {
     var listener: FineListPresentableListener? { get set }
     
     func configure(_ viewModel: FineInfoViewModel)
-    func showToast(message: String)
 }
 
 public protocol FineListInteractorDependency {
@@ -59,15 +55,6 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
         super.willResignActive()
     }
     
-    func authorizePaymentDismissButtonDidTap() {
-        router?.detachAuthorizePayment(completion: nil)
-    }
-    
-    func didSuccessPostFineEvaluate() {
-        // TODO: completion에 음..토스트 ?
-        router?.detachAuthorizePayment(completion: nil)
-    }
-    
 // MARK: - FineListPresentableListener
     
     func viewDidLoad() {
@@ -87,17 +74,6 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
                 }
             )
             .disposeOnDeactivate(interactor: self)
-    }
-    
-// MARK: - authorizePaymentListener
-    
-    func didSuccessAuthorizeFine(isConfirm: Bool) {
-        router?.detachAuthorizePayment(completion: { [weak self] in
-            guard let self else { return }
-            
-            let message = isConfirm ? StringResource.successConfirmFine.value : StringResource.successRejectFine.value
-            self.presenter.showToast(message: message)
-        })
     }
     
 // MARK: - private
@@ -261,30 +237,10 @@ extension FineListInteractor {
 // MARK: - FineListPresentableListener
 extension FineListInteractor {
     func fineListDidTap(fineID: Int) {
-        router?.attachAuthorizePayment(
-            moitID: dependency.moitID,
-            fineID: fineID,
-            isMaster: isMaster
-        )
-    }
-}
-
-extension FineListInteractor {
-    enum StringResource {
-        case successConfirmFine
-        case successRejectFine
-        case successEvaluateFine
-        
-        var value: String {
-            switch self {
-            case .successConfirmFine:
-                return "납부 완료 확인이 완료되었어요!"
-            case .successRejectFine:
-                // TODO: 닉네임 받아야함
-                return "김모잇님께 납부 요청 알림이 다시 갔어요!"
-            case .successEvaluateFine:
-                return "벌금 납부 인증이 업로드되었어요!"
-            }
-        }
+		listener?.fineListViewDidTap(
+			moitID: dependency.moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
     }
 }

@@ -13,7 +13,6 @@ import MOITDetailData
 import MOITDetailDomain
 import MOITDetailDomainImpl
 import FineUserInterface
-import FineDomain
 import FineUserInterfaceImpl
 import FineDomain
 import MOITShareImpl
@@ -24,8 +23,9 @@ import RIBs
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
 								 MOITUsersDependency,
-								ShareDependency,
-								 FineListDependency {
+								 ShareDependency,
+								 FineListDependency,
+								 AuthorizePaymentDependency {
 	
 	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
 	var fetchFineItemUseCase: FetchFineItemUseCase { dependency.fetchFineItemUseCase }
@@ -72,6 +72,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         let moitUserBuilder = MOITUsersBuilder(dependency: component)
 		let fineListBuilder = FineListBuilder(dependency: component)
         let shareBuilder = ShareBuilder(dependency: component)
+		let authorizePaymentBuilder = AuthorizePaymentBuilder(dependency: component)
         
         return MOITDetailRouter(
             interactor: interactor,
@@ -79,7 +80,8 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
             attendanceBuiler: attendanceBuiler,
             moitUserBuilder: moitUserBuilder,
 			fineListBuilder: fineListBuilder,
-			shareBuilder: shareBuilder
+			shareBuilder: shareBuilder,
+			authorizePaymentBuilder: authorizePaymentBuilder
         )
     }
 }

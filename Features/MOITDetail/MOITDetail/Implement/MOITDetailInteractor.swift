@@ -20,6 +20,8 @@ protocol MOITDetailRouting: ViewableRouting {
     func attachMOITShare(code: String)
     func detachMOITShare()
 	func attachFineList(moitID: Int)
+	func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool)
+	func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool)
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -28,11 +30,12 @@ protocol MOITDetailPresentable: Presentable {
     func update(infoViewModel: MOITDetailInfosViewModel)
     func showAlert(message: String)
     func shouldLayout()
+	func showToast(message: String)
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                                   MOITDetailInteractable,
-                                  MOITDetailPresentableListener {
+								  MOITDetailPresentableListener {
     
     func didTapInfoButton(type: MOITDetailInfoViewButtonType) {
         switch type {
@@ -228,4 +231,61 @@ extension MOITDetailInteractor {
     func didTapDimmedView() {
         self.router?.detachMOITShare()
     }
+}
+
+// MARK: - FineListListener
+extension MOITDetailInteractor {
+	func fineListViewDidTap(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) {
+		router?.attachAuthorizePayment(
+			moitID: moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+	}
+	
+	func authorizePaymentDidSwipeBack() {
+		router?.detachAuthorizePayment(completion: nil, withPop: false)
+	}
+	
+	func authorizePaymentDismissButtonDidTap() {
+		router?.detachAuthorizePayment(completion: nil, withPop: true)
+	}
+	
+	func didSuccessPostFineEvaluate() {
+		// TODO: completion에 toast띄우는거~
+		router?.detachAuthorizePayment(completion: nil, withPop: true)
+	}
+	
+	func didSuccessAuthorizeFine(isConfirm: Bool) {
+		router?.detachAuthorizePayment(completion: { [weak self] in
+			guard let self else { return }
+			
+			let message = isConfirm ? StringResource.successConfirmFine.value : StringResource.successRejectFine.value
+			self.presenter.showToast(message: message)
+		}, withPop: true)
+	}
+}
+
+extension MOITDetailInteractor {
+	enum StringResource {
+		case successConfirmFine
+		case successRejectFine
+		case successEvaluateFine
+		
+		var value: String {
+			switch self {
+			case .successConfirmFine:
+				return "납부 완료 확인이 완료되었어요!"
+			case .successRejectFine:
+				// TODO: 닉네임 받아야함
+				return "김모잇님께 납부 요청 알림이 다시 갔어요!"
+			case .successEvaluateFine:
+				return "벌금 납부 인증이 업로드되었어요!"
+			}
+		}
+	}
 }
