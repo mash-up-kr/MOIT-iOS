@@ -9,7 +9,10 @@
 import Foundation
 import MOITDetail
 import RxSwift
+import MOITWeb
 
 public protocol MOITListActionableItem: AnyObject {
     func routeToDetail(id: String) -> Observable<(MOITDetailActionableItem, ())>
+    func routeToMOITAttendance(id: String) -> Observable<(MOITWebActionableItem, ())>
+    func routeToAttendanceResult(id: String) -> Observable<(MOITWebActionableItem, ())>
 }

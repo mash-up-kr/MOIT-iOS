@@ -14,5 +14,5 @@ public protocol MOITWebBuildable: Buildable {
         withListener listener: MOITWebListener,
         domain: WebDomain,
         path: MOITWebPath
-    ) -> ViewableRouting
+    ) -> (router: ViewableRouting, actionableItem: MOITWebActionableItem)
 }

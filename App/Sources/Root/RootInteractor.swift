@@ -143,4 +143,16 @@ extension RootInteractor: Deeplinkable {
             .subscribe(self)
             .disposeOnDeactivate(interactor: self)
     }
+    
+    func routeToAttendance(id: String) {
+        MOITAttendanceWorkflow(id: id)
+            .subscribe(self)
+            .disposeOnDeactivate(interactor: self)
+    }
+    
+    func routeToAttendanceResult(id: String) {
+        AttendanceResultWorkflow(id: id)
+            .subscribe(self)
+            .disposeOnDeactivate(interactor: self)
+    }
 }

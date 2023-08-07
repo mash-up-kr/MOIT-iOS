@@ -80,6 +80,10 @@ private extension AppDelegate {
             print("🤖 FCM registration token: \(token)")
           }
         }
+        
+        Messaging.messaging().subscribe(toTopic: "MOIT-80") { error in
+          print("🤖 error", error)
+        }
     }
     
     func configure(_ application: UIApplication) {
@@ -94,18 +98,19 @@ private extension AppDelegate {
 }
 
 // MARK: - UNUserNotificationCenterDelegate
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
+        print("🤖", #function)
         guard let urlString = response.notification.request.content.userInfo["url"] as? String else { return }
               let path = String(urlString.split(separator: "://").last ?? "")
         
         guard let type = DeepLinkType(rawValue: path) else { return }
         
-        // TODO: type에 따라 이동하는 로직 필요
         switch type {
         case .home:
             self.deeplinkable?.routeToMOITList()
@@ -120,6 +125,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
+        print("🤖", #function)
         guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) else { return false }
         guard let path = components.host else { return false }
         print(components)
@@ -129,11 +135,21 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         switch type {
         case .home:
             self.deeplinkable?.routeToMOITList()
+            
         case .detail:
             guard let query = components.query,
                   let id = query.split(separator: "=").last else { return false }
             self.deeplinkable?.routeToDetail(id: "\(id)")
+            
         case .attendance:
+            guard let query = components.query,
+                  let id = query.split(separator: "=").last else { return false }
+            self.deeplinkable?.routeToAttendance(id: "\(id)")
+            
+        case .attendanceResult:
+            guard let query = components.query,
+                  let id = query.split(separator: "=").last else { return false }
+            self.deeplinkable?.routeToAttendanceResult(id: "\(id)")
             
         default: print("😲😲 DEEPLINK TYPE", type)
         }
@@ -148,11 +164,13 @@ extension AppDelegate: MessagingDelegate {
         _ messaging: Messaging,
         didReceiveRegistrationToken fcmToken: String?
     ) {
-      print("Firebase registration token: \(String(describing: fcmToken))")
+      print("🤖 Firebase registration token observing: \(String(describing: fcmToken))")
     }
 }
 
 protocol Deeplinkable: AnyObject {
     func routeToMOITList()
     func routeToDetail(id: String)
+    func routeToAttendance(id: String)
+    func routeToAttendanceResult(id: String)
 }

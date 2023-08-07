@@ -32,7 +32,7 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
         withListener listener: MOITWebListener,
         domain: WebDomain,
         path: MOITWebPath
-    ) -> ViewableRouting {
+    ) -> (router: ViewableRouting, actionableItem: MOITWebActionableItem) {
         let component = MOITWebComponent(dependency: dependency)
         
         let viewController = MOITWebViewController()
@@ -44,10 +44,11 @@ public final class MOITWebBuilder: Builder<MOITWebDependency>,
         interactor.listener = listener
         
         let shareBuilder = ShareBuilder(dependency: component)
-        return MOITWebRouter(
+        let router = MOITWebRouter(
             interactor: interactor,
             viewController: viewController,
             shareBuilder: shareBuilder
         )
+        return (router, interactor)
     }
 }

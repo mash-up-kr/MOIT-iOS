@@ -47,28 +47,68 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         interactor.router = self
     }
     
+    // MARK: - MOITWeb
+    
     private let moitWebBuilder: MOITWebBuildable
-    private var moitWebRouter: ViewableRouting?
+    private var moitWebRouters: [ViewableRouting] = []
     
     func attachRegisterMOIT() {
-        guard moitWebRouter == nil else { return }
-        let router = moitWebBuilder.build(
+        let (router, _) = moitWebBuilder.build(
             withListener: interactor,
             domain: .frontend,
             path: .register
         )
-        self.moitWebRouter = router
+        self.moitWebRouters.append(router)
         attachChild(router)
         viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
-    func detachRegisterMOIT(withPop: Bool) {
-        guard let moitWebRouter else { return }
-        self.moitWebRouter = nil
-        detachChild(moitWebRouter)
+    func detachMOITWeb(withPop: Bool) {
+        guard let lastMOITWebRouter = moitWebRouters.popLast() else { return }
+        detachChild(lastMOITWebRouter)
         if withPop {
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }
     }
+    private func getKeyboardHeight() -> CGFloat {
+        guard let height = UserDefaults.standard.object(forKey: "keyboardHeight") as? CGFloat else {
+            return 301
+        }
+        return height
+    }
+    
+    @discardableResult
+    func attachMOITAttendance(id: String) -> MOITWebActionableItem? {
+        let (router, actionableItem) = moitWebBuilder.build(
+            withListener: interactor,
+            domain: .frontend,
+            path: .attendance(id: id, keyboardHeight: self.getKeyboardHeight())
+        )
+        self.moitWebRouters.append(router)
+        attachChild(router)
+        viewController.uiviewController.navigationController?.pushViewController(
+            router.viewControllable.uiviewController,
+            animated: true
+        )
+        return actionableItem
+    }
+    
+    @discardableResult
+    func attachMOITAttendanceResult(id: String) -> MOITWebActionableItem? {
+        let (router, actionableItem) = moitWebBuilder.build(
+            withListener: interactor,
+            domain: .frontend,
+            path: .attendanceResult(id: id)
+        )
+        self.moitWebRouters.append(router)
+        attachChild(router)
+        viewController.uiviewController.navigationController?.pushViewController(
+            router.viewControllable.uiviewController,
+            animated: true
+        )
+        return actionableItem
+    }
+    
+    // MARK: - MOITDetail
     
     private let moitDetailBuilder: MOITDetailBuildable
     private var moitDetailRouters: [ViewableRouting] = []
@@ -94,6 +134,8 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         }
     }
     
+    // MARK: - InputParticipateCode
+    
     private let inputParticipateCodeBuilder: InputParticipateCodeBuildable
     private var inputParticipateCodeRouter: ViewableRouting?
     
@@ -117,6 +159,8 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         
     }
     
+    // MARK: - Setting
+    
     private let settingBuilder: MOITSettingBuildable
     private var settingRouter: ViewableRouting?
     
@@ -136,33 +180,10 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         }
     }
     
-    // 키워드 입력, 결과
+    // MARK: - Alarm
     func attachAlarm() {
-        guard moitWebRouter == nil else { return }
-        let router = moitWebBuilder.build(
-            withListener: interactor,
-            domain: .frontend,
-            path: .attendance(keyboardHeight: getKeyboardHeight())
-        )
-        self.moitWebRouter = router
-        attachChild(router)
-        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
     
     func detachAlarm(withPop: Bool) {
-        guard let moitWebRouter else { return }
-        self.moitWebRouter = nil
-        detachChild(moitWebRouter)
-        if withPop {
-            viewController.uiviewController.navigationController?.popViewController(animated: true)
-        }
-    }
-    
-    private func getKeyboardHeight() -> CGFloat {
-        guard let height = UserDefaults.standard.object(forKey: "keyboardHeight") as? CGFloat else {
-            return 301
-        }
-        
-        return height
     }
 }
