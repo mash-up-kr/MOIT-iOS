@@ -30,11 +30,11 @@ enum FineEndpoint {
 		moitID: Int,
 		fineID: Int,
 		data: Data?
-	) -> MultipartEndpoint<Bool>? {
+	) -> MultipartEndpoint<FineItem>? {
 		
 		if let data {
 			let formData = FormData(
-				fieldName: "image_field",
+				fieldName: "finePaymentImage",
 				fileName: "finePaymentImage",
 				mimeType: "image/png",
 				fileData: data

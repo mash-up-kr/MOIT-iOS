@@ -128,6 +128,7 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 				fineID: dependency.fineID,
 				data: data
 			)
+			.observe(on: MainScheduler.instance)
 			.subscribe(
 				onSuccess: { [weak self] _ in
 					self?.listener?.didSuccessPostFineEvaluate()

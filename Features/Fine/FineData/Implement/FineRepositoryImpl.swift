@@ -37,13 +37,13 @@ public final class FineRepositoryImpl: FineRepository {
 			.compactMap { $0 }.asObservable().asSingle()
 	}
 	
-	public func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<Bool?> {
+	public func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<FineItem?> {
 		let multipartEndpoint = FineEndpoint.postFineEvaluate(moitID: moitID, fineID: fineID, data: data)
 		
 		if let endpoint = multipartEndpoint {
 			return network.request(with: endpoint)
 		} else {
-			return .just(false)
+			return .just(nil)
 		}
 	}
 	

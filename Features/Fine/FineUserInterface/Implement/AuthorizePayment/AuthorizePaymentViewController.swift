@@ -216,6 +216,12 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				self?.listener?.masterAuthorizeButtonDidTap(isConfirm: true)
 			})
 			.disposed(by: disposeBag)
+		
+		fineDetailList.rx.tap
+			.bind(onNext: { [weak self] in
+				self?.presentImagePicker()
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	private func presentImagePicker() {
