@@ -160,7 +160,3 @@ extension MOITDetailAttendanceInteractor {
         }
     }
 }
-
-extension MOITDetailInteractor: MOITDetailActionableItem {
-    
-}

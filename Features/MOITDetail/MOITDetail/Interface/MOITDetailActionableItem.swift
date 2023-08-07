@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import FineUserInterface
+import RxSwift
 
 public protocol MOITDetailActionableItem: AnyObject {
-    
+    func routeToFine() -> Observable<(FineActionableItem, ())>
 }

@@ -20,7 +20,7 @@ protocol FineListViewControllable: ViewControllable { }
 final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewControllable>, FineListRouting {
 
 	private let authorizePaymentBuildable: AuthorizePaymentBuildable
-	private var authorizePaymentRouting: Routing?
+	private var authorizePaymentRouters: [ViewableRouting] = []
 	
     init(
 		authorizePaymentBuildable: AuthorizePaymentBuildable,
@@ -32,14 +32,13 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
         interactor.router = self
     }
 	
+    @discardableResult
 	func attachAuthorizePayment(
 		moitID: Int,
 		fineID: Int,
 		isMaster: Bool
-	) {
-		if authorizePaymentRouting != nil { return }
-		
-		let router = authorizePaymentBuildable.build(
+	) -> AuthorizePaymentActionableItem? {
+		let (router, interactor) = authorizePaymentBuildable.build(
 			withListener: interactor,
 			moitID: moitID,
 			fineID: fineID,
@@ -49,12 +48,13 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
 		viewController.modalPresentationStyle = .fullScreen
 		viewControllable.uiviewController.present(viewController, animated: true)
 	
-		authorizePaymentRouting = router
+        authorizePaymentRouters.append(router)
 		attachChild(router)
+        return interactor
 	}
 	
 	func detachAuthorizePayment(completion: (() -> Void)?) {
-		guard let router = authorizePaymentRouting else { return }
+        guard let router = authorizePaymentRouters.popLast() else { return }
 		
 		viewControllable.uiviewController.dismiss(
 			animated: true,
@@ -65,6 +65,5 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
 			}
 		)
 		detachChild(router)
-		authorizePaymentRouting = nil
 	}
 }

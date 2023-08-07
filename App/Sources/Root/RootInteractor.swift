@@ -155,4 +155,10 @@ extension RootInteractor: Deeplinkable {
             .subscribe(self)
             .disposeOnDeactivate(interactor: self)
     }
+    
+    func routeToFine(moitID: String, fineID: String) {
+        FineWorkflow(moitID: moitID, fineID: fineID)
+            .subscribe(self)
+            .disposeOnDeactivate(interactor: self)
+    }
 }

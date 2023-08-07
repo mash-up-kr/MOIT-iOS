@@ -12,6 +12,7 @@ import MOITDetail
 import Foundation
 import MOITDetailDomain
 import RxRelay
+import FineUserInterface
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
@@ -19,7 +20,8 @@ protocol MOITDetailRouting: ViewableRouting {
     func detachMOITUsers(withPop: Bool)
     func attachMOITShare(code: String)
     func detachMOITShare()
-	func attachFineList(moitID: Int)
+    @discardableResult
+    func attachFineList(moitID: Int) -> FineActionableItem?
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -227,5 +229,15 @@ extension MOITDetailInteractor {
     }
     func didTapDimmedView() {
         self.router?.detachMOITShare()
+    }
+}
+
+// MARK: - MOITDetailActionableItem
+
+extension MOITDetailInteractor: MOITDetailActionableItem {
+    func routeToFine() -> Observable<(FineActionableItem, ())> {
+        if let actionableItem = self.router?.attachFineList(moitID: Int(self.moitID) ?? 0) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
     }
 }

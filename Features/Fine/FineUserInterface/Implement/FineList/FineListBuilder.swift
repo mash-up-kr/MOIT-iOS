@@ -45,9 +45,9 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
     }
 
 	public func build(
-		withListener listener: FineListListener,
-		moitID: Int
-	) -> ViewableRouting {
+        withListener listener: FineListListener,
+        moitID: Int
+    ) -> (router: ViewableRouting, actionableItem: FineActionableItem) {
         let component = FineListComponent(
 			dependency: dependency,
 			moitID: moitID
@@ -60,10 +60,11 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
         interactor.listener = listener
 		
 		let authorizePaymentBuildable = AuthorizePaymentBuilder(dependency: component)
-		return FineListRouter(
+		let router = FineListRouter(
 			authorizePaymentBuildable: authorizePaymentBuildable,
 			interactor: interactor,
 			viewController: viewController
 		)
+        return (router, interactor)
     }
 }
