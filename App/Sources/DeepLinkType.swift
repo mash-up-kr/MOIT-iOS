@@ -7,6 +7,12 @@
 
 import Foundation
 
+/*
+ 홈: moit://home
+ 모잇상세 : moit://detail?moitId=\(id)
+ 벌급납부 : moit://fine?moidId=\(id)&fineId=\(id)
+ 출석하기 : moit://attendance?moitId=\(id)
+ */
 enum DeepLinkType: String {
     case home
     case detail // 스터디아이디필요

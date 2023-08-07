@@ -74,6 +74,10 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
         }
     }
     
+    private func detachAll() {
+        
+    }
+    
     // MARK: - MOITList
     
     private let moitListBuilder: MOITListBuildable
@@ -83,8 +87,6 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
     @discardableResult
     func routeToMOITList() -> MOITListActionableItem? {
         if moitListRouter != nil {
-            guard let navigationController = self.viewController.uiviewController.presentedViewController as? UINavigationController else { return nil }
-            navigationController.popToRootViewController(animated: true)
             return moitListActionableItem
         }
         

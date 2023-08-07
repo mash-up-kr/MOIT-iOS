@@ -115,21 +115,26 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        // 2. 받은 URL이 딥링크인지 확인
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
         guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) else { return false }
-        print(components)
         guard let path = components.host else { return false }
-        print(path)
-    
+        print(components)
         guard let type = DeepLinkType(rawValue: path) else { return false }
         print(type)
-        // TODO: type에 따라 이동하는 로직 필요
+        
         switch type {
         case .home:
             self.deeplinkable?.routeToMOITList()
         case .detail:
-            self.deeplinkable?.routeToDetail(id: "85")
+            guard let query = components.query,
+                  let id = query.split(separator: "=").last else { return false }
+            self.deeplinkable?.routeToDetail(id: "\(id)")
+        case .attendance:
+            
         default: print("😲😲 DEEPLINK TYPE", type)
         }
         return true

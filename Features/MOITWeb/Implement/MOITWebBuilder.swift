@@ -12,6 +12,7 @@ import MOITWeb
 import MOITShare
 import MOITShareImpl
 
+
 final class MOITWebComponent: Component<MOITWebDependency>,
                               ShareDependency {
 }
