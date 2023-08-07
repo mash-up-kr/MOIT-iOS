@@ -36,7 +36,7 @@ public final class MOITRepositoryImpl: MOITRepository {
         network.request(
 			with: FetchMOITListEndpoint.fetchMOITList()
         )
-        .map { $0.moits.map { $0.toMOIT() } }
+		.compactMap { $0?.moits.compactMap { $0.toMOIT() } }.asObservable().asSingle()
     }
     
     public func deleteMoit(id: Int) -> Single<Void> {

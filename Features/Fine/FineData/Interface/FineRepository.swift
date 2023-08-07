@@ -15,6 +15,6 @@ public protocol FineRepository {
 	func fetchFineInfo(moitID: Int) -> Single<FineInfo>
 	func fetchFineItem(moitID: Int, fineID: Int) -> Single<FineItem>
 	// TODO: EmptyDTO로 변경 필요
-	func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<Bool>
-	func postAuthorizeFine(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool>
+	func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<Bool?>
+	func postAuthorizeFine(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool?>
 }

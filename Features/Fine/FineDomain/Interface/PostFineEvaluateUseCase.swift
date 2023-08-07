@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol PostFineEvaluateUseCase {
-	func execute(moitID: Int, fineID: Int, data: Data?) -> Single<Bool>
+	func execute(moitID: Int, fineID: Int, data: Data?) -> Single<Bool?>
 }
