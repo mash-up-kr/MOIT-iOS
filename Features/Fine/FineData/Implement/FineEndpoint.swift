@@ -60,7 +60,7 @@ enum FineEndpoint {
 		isConfirm: Bool
 	) -> Endpoint<Bool> {
 		return Endpoint(
-			path: "/api/v1/moit/\(moitID)/fine/\(fineID)",
+			path: "/api/v1/moit/\(moitID)/fine/\(fineID)/evaluate",
 			method: .post,
 			parameters: .body(["confirm": isConfirm])
 		)

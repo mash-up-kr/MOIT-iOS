@@ -89,8 +89,8 @@ public final class NetworkImpl: Network {
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
 			print(data)
-			if responseModel.success, let data = responseModel.data {
-				return .success(data)
+			if responseModel.success {
+				return .success(responseModel.data)
 			} else {
 				let serverError = ServerError(fromRawValue: response.statusCode)
 				return .failure(NetworkError.serverError(serverError))
