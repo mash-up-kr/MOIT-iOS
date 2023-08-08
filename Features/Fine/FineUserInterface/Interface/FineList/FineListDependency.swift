@@ -11,6 +11,8 @@ import RIBs
 import FineDomain
 import MOITDetailDomain
 
+import RxRelay
+
 public protocol FineListDependency: Dependency {
 	var fetchFineInfoUseCase: FetchFineInfoUseCase { get }
 	var compareUserIDUseCase: CompareUserIDUseCase { get }
@@ -19,4 +21,5 @@ public protocol FineListDependency: Dependency {
 	var convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase { get }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
 	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
+	var isMasterPublishRelay: PublishRelay<Bool> { get }
 }

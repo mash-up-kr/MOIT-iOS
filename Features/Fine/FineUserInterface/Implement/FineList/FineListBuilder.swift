@@ -6,11 +6,12 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
-
 import FineUserInterface
 import FineDomain
 import MOITDetailDomain
+
+import RIBs
+import RxRelay
 
 final class FineListComponent: Component<FineListDependency>,
 							   AuthorizePaymentDependency,
@@ -24,6 +25,7 @@ final class FineListComponent: Component<FineListDependency>,
 		dependency.fetchFineItemUseCase }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { dependency.postFineEvaluateUseCase }
 	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
+	var isMasterPublishRelay: PublishRelay<Bool> { dependency.isMasterPublishRelay }
 	
 	let moitID: Int
 	
