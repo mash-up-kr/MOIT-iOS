@@ -58,25 +58,41 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 // MARK: - FineListPresentableListener
     
     func viewDidLoad() {
-        dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
-            .compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
-                // TODO: isMaster값 스트림에서받아서 수정 필요
-                self?.isMaster = false
-                return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: false)
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(
-                onSuccess: { [weak self] fineInfoViewModel in
-                    debugPrint("------------FineInfoViewModel-------------")
-                    debugPrint(fineInfoViewModel)
-                    debugPrint("------------------------------------------")
-                    self?.presenter.configure(fineInfoViewModel)
-                }
-            )
-            .disposeOnDeactivate(interactor: self)
+        fetchFineInfo()
     }
+	
+	func viewWillAppear() {
+		fetchFineInfo()
+	}
+	
+	func fineListDidTap(fineID: Int) {
+		listener?.fineListViewDidTap(
+			moitID: dependency.moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+	}
     
 // MARK: - private
+	
+	private func fetchFineInfo() {
+		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
+			.compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
+				// TODO: isMaster값 스트림에서받아서 수정 필요
+				self?.isMaster = true
+				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: true)
+			}
+			.observe(on: MainScheduler.instance)
+			.subscribe(
+				onSuccess: { [weak self] fineInfoViewModel in
+					debugPrint("------------FineInfoViewModel-------------")
+					debugPrint(fineInfoViewModel)
+					debugPrint("------------------------------------------")
+					self?.presenter.configure(fineInfoViewModel)
+				}
+			)
+			.disposeOnDeactivate(interactor: self)
+	}
     
     /// FineInfoEntity -> FineInfoViewModel
     private func convertToFineInfoViewModel(
@@ -231,16 +247,5 @@ extension FineListInteractor {
             case .waiting: return ResourceKitAsset.Color.gray700
             }
         }
-    }
-}
-
-// MARK: - FineListPresentableListener
-extension FineListInteractor {
-    func fineListDidTap(fineID: Int) {
-		listener?.fineListViewDidTap(
-			moitID: dependency.moitID,
-			fineID: fineID,
-			isMaster: isMaster
-		)
     }
 }

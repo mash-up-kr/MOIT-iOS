@@ -101,6 +101,7 @@ final class FineListView: UIView {
 		with myFineItem: [NotPaidFineListViewModel],
 		othersFineItem: [NotPaidFineListViewModel]
 	) {
+		contentView.subviews.forEach { $0.removeFromSuperview() }
 		
 		let fineList = myFineItem + othersFineItem
 		
@@ -148,6 +149,8 @@ final class FineListView: UIView {
 	}
 	
 	func configurePaymentCompletedFineListView(with fineList: [PaymentCompletedFineListViewModel]) {
+		contentView.subviews.forEach { $0.removeFromSuperview() }
+		
 		if fineList.isEmpty {
 			contentView.flex
 				.alignSelf(.center)
