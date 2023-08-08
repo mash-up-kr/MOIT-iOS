@@ -89,10 +89,6 @@ private extension AppDelegate {
                 print("🤖 FCM registration token: \(token)")
             }
         }
-        
-        Messaging.messaging().subscribe(toTopic: "MOIT-80") { error in
-            print("🤖 error", error)
-        }
     }
     
     func configure(_ application: UIApplication) {

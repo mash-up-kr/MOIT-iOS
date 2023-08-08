@@ -15,6 +15,7 @@ import RxSwift
 import DesignSystem
 import Toast
 import TokenManagerImpl
+import FirebaseMessaging
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
@@ -116,6 +117,7 @@ enum Command: String {
     case close
     case alert
     case share
+    case didRegisterMOIT
 }
 
 extension MOITWebViewController: WKScriptMessageHandler {
@@ -130,6 +132,7 @@ extension MOITWebViewController: WKScriptMessageHandler {
         
         print(cmd)
         print(command)
+        print(messages["value"])
         switch command {
         case .close:
             didReceiveCloseCommand()
@@ -142,6 +145,9 @@ extension MOITWebViewController: WKScriptMessageHandler {
             
         case .share:
             didReceiveShareCommand(messages: messages)
+            
+        case .didRegisterMOIT:
+            didRegisterMOITCommand(messages: messages)
         }
     }
     
@@ -171,6 +177,13 @@ extension MOITWebViewController: WKScriptMessageHandler {
         var invitationCode = messages["value"] as? String ?? "전ㅈr군단"
         if invitationCode.isEmpty { invitationCode = "전ㅈr군단" }
         self.listener?.didTapShare(with: invitationCode)
+    }
+    
+    private func didRegisterMOITCommand(messages: [String: Any]) {
+        let moitID = messages["value"] as? Int ?? 0
+        Messaging.messaging().subscribe(toTopic: "MOIT-\(moitID)") { error in
+            print("register topic subscribe error is 👉", error)
+        }
     }
 }
 
