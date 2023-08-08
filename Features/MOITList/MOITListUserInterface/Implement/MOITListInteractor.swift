@@ -56,6 +56,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     private let participateButtonTapped = PublishRelay<Void>()
     
     private var moitList = PublishRelay<[MOIT]>()
+    private var bannerList = PublishRelay<[Banner]>()
     
     // MARK: - Initializers
     
@@ -90,6 +91,12 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                 self?.moitList.accept(moits)
             })
             .disposeOnDeactivate(interactor: self)
+        
+        dependency.fetchBannersUseCase.execute()
+            .subscribe(onSuccess: { [weak self] banners in
+                self?.bannerList.accept(banners)
+            })
+            .disposeOnDeactivate(interactor: self)
     }
     
     private func bind() {
@@ -107,9 +114,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         // 알람 설정
         // TODO: - 알람 로직 수정
         
-        let bannerInfos = dependency.fetchBannersUseCase.execute()
-        
-        let alarmList = bannerInfos
+        let alarmList = bannerList
             .map { [weak self] banners -> [AlarmViewModel] in
                 return banners.compactMap { self?.makeAlarmView(with: $0) }
             }
@@ -117,11 +122,10 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         
         alarmList
             .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] alarms in
+            .subscribe(onNext: { [weak self] alarms in
                 self?.presenter.didReceiveAlarm(alarms: alarms)
             })
             .disposeOnDeactivate(interactor: self)
-        
         
         
         // moit 삭제
@@ -155,7 +159,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         
         // 알람 탭
         selectedAlarmIndex
-            .withLatestFrom(bannerInfos) { index, bannerInfos in
+            .withLatestFrom(bannerList) { index, bannerInfos in
                 bannerInfos[index]
             }
             .subscribe(onNext: { bannerInfo in
