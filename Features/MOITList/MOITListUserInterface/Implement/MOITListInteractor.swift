@@ -35,6 +35,7 @@ protocol MOITListRouting: ViewableRouting {
     func detachSetting(withPop: Bool)
     
     func attachAlarm()
+	func detachAlarm(withPop: Bool)
 }
 
 protocol MOITListPresentable: Presentable {
@@ -309,6 +310,33 @@ extension MOITListInteractor {
 		self.router?.detachInputParticipateCode(onlyPop: false)
 		self.router?.attachMOITDetail(id: "\(moitID)")
 	}
+	
+// MARK: - Alarm
+	
+	func didSwipeBackAlarm() {
+		self.router?.detachAlarm(withPop: true)
+	}
+}
+
+// MARK: - MOITListActionableItem
+extension MOITListInteractor: MOITListActionableItem {
+    func routeToDetail(id: String) -> Observable<(MOITDetailActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITDetail(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
+    
+    func routeToMOITAttendance(id: String) -> Observable<(MOITWebActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITAttendance(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
+    
+    func routeToAttendanceResult(id: String) -> Observable<(MOITWebActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITAttendanceResult(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
 }
 
 // MARK: - MOITListActionableItem

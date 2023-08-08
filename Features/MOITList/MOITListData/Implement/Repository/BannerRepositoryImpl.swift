@@ -29,11 +29,16 @@ public final class BannerRepositoryImpl: BannerRepository {
     public func fetchBannerList() -> Single<[Banner]> {
         let endpoint = BannerEndpoint.fetchBannerList()
         return network.request(with: endpoint)
-            .map { (bannerDto: BannerDTO) -> [Banner] in
-                let attendanceBanners = bannerDto.attendanceBanners.map { $0.toBanner() }
-                let fineBanners = bannerDto.fineBanners.map { $0.toBanner() }
-                let defaultBanners = bannerDto.defaultBanners.map { $0.toBanner() }
-                return attendanceBanners + fineBanners + defaultBanners
-            }
+			.compactMap { bannerDto -> [Banner]? in
+				let attendanceBanners = bannerDto?.attendanceBanners.map { $0.toBanner() }
+				let fineBanners = bannerDto?.fineBanners.map { $0.toBanner() }
+				let defaultBanners = bannerDto?.defaultBanners.map { $0.toBanner() }
+				
+				if let attendanceBanners, let fineBanners, let defaultBanners {
+					return attendanceBanners + fineBanners + defaultBanners
+				} else {
+					return nil
+				}
+			}.asObservable().asSingle()
     }
 }

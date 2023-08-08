@@ -261,6 +261,7 @@ extension MOITList {
 		
 		if let studyOrder {
 			self.studyOrder = studyOrder
+			self.studyOrderLabel?.text = "\(studyOrder)차 스터디"
 			self.studyOrderLabel?.flex.markDirty()
 		}
         

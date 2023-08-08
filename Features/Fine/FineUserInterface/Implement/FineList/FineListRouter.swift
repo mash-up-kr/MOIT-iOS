@@ -10,7 +10,7 @@ import RIBs
 
 import FineUserInterface
 
-protocol FineListInteractable: Interactable, AuthorizePaymentListener {
+protocol FineListInteractable: Interactable {
     var router: FineListRouting? { get set }
     var listener: FineListListener? { get set }
 }
@@ -31,7 +31,7 @@ final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewCon
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
-	
+
     @discardableResult
 	func attachAuthorizePayment(
 		moitID: Int,

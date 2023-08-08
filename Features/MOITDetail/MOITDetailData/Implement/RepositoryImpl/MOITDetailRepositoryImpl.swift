@@ -26,15 +26,18 @@ public final class MOITDetailRepositoryImpl: MOITDetailRepository {
         network.request(
 			with: MOITDetailEndpoint.fetchMOITDetail(moitID: moitID)
 		)
+		.compactMap { $0 }.asObservable().asSingle()
     }
     
     public func fetchAttendance(moitID: String) -> Single<MOITAllAttendanceModel> {
         network.request(
 			with: MOITDetailEndpoint.fetchMOITAttendance(moitID: moitID)
 		)
+		.compactMap { $0 }.asObservable().asSingle()
     }
     
     public func fetchUesrs(moitID: String) -> Single<MOITUserModel> {
 		network.request(with: MOITDetailEndpoint.fetchMOITUsers(moitID: moitID))
+			.compactMap { $0 }.asObservable().asSingle()
     }
 }

@@ -23,7 +23,7 @@ public final class PostFineEvaluateUseCaseImpl: PostFineEvaluateUseCase {
 		self.repository = repository
 	}
 	
-	public func execute(moitID: Int, fineID: Int, data: Data?) -> Single<Bool> {
+	public func execute(moitID: Int, fineID: Int, data: Data?) -> Single<FineItem?> {
 		return repository.postFineEvaluate(
 			moitID: moitID,
 			fineID: fineID,

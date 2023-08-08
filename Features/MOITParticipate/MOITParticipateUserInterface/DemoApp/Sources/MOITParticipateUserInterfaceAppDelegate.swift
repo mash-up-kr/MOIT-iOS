@@ -86,7 +86,6 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension MOITParticipateAppDelegate {
-	// TODO: 추후 setting 위치 변경 필요
 	private func setToastStyle() {
 		var style = ToastStyle()
 		style.backgroundColor = ResourceKitAsset.Color.gray800.color

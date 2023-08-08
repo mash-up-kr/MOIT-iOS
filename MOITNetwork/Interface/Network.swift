@@ -10,5 +10,5 @@ import Foundation
 import RxSwift
 
 public protocol Network {
-	func request<E: Requestable>(with endpoint: E) -> Single<E.Response>
+	func request<E: Requestable>(with endpoint: E) -> Single<E.Response?>
 }

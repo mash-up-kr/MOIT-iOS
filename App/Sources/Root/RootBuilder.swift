@@ -52,6 +52,11 @@ import FineDomainImpl
 import FineData
 import FineDataImpl
 
+import MOITAlarmData
+import MOITAlarmDataImpl
+import MOITAlarmDomain
+import MOITAlarmDomainImpl
+
 final class RootComponent: Component<EmptyDependency>,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -72,6 +77,7 @@ final class RootComponent: Component<EmptyDependency>,
     private lazy var userRepository: UserRepository = UserRepositoryImpl(network: network)
     private lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: network)
     private lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
+	private lazy var alarmRepository: MOITAlarmRepositoryImpl = MOITAlarmRepositoryImpl(network: network)
     
     // MARK: Usecase
     lazy var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: tokenManager)
@@ -95,12 +101,16 @@ final class RootComponent: Component<EmptyDependency>,
     lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
     lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
     lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
-        participateRepository: participateRepository
+        participateRepository: participateRepository,
+		tokenManager: tokenManager
     )
     lazy var userUseCase: UserUseCase = UserUseCaseImpl(
         userRepository: userRepository,
         tokenManager: tokenManager
     )
+	lazy var fetchNotificationUseCase: FetchNotificationListUseCase = FetchNotificationListUseCaseImpl(
+		repository: alarmRepository
+	)
     
     override init(dependency: EmptyDependency = EmptyComponent()) {
         super.init(dependency: dependency)

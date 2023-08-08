@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol PostMasterAuthorizeUseCase {
-	func execute(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool>
+	func execute(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool?>
 }

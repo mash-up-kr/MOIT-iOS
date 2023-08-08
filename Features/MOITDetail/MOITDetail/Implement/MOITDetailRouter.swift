@@ -15,8 +15,9 @@ import RIBs
 protocol MOITDetailInteractable: Interactable,
                                  MOITDetailAttendanceListener,
                                  MOITUsersListener,
-								FineListListener,
-								ShareListener {
+								 FineListListener,
+								 ShareListener,
+								 AuthorizePaymentListener {
     var router: MOITDetailRouting? { get set }
     var listener: MOITDetailListener? { get set }
 }
@@ -26,13 +27,10 @@ protocol MOITDetailViewControllable: ViewControllable {
 }
 
 final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailViewControllable>,
-                              MOITDetailRouting {
+							  MOITDetailRouting {
 
     private let attendanceBuiler: MOITDetailAttendanceBuildable
     private var attendacneRouter: ViewableRouting?
-	
-	private let fineListBuilder: FineListBuildable
-	private var fineListRouter: ViewableRouting?
     
     init(
         interactor: MOITDetailInteractable,
@@ -40,12 +38,14 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         attendanceBuiler: MOITDetailAttendanceBuildable,
         moitUserBuilder: MOITUsersBuildable,
 		fineListBuilder: FineListBuildable,
-		shareBuilder: ShareBuildable
+		shareBuilder: ShareBuildable,
+		authorizePaymentBuilder: AuthorizePaymentBuildable
     ) {
         self.moitUserBuilder = moitUserBuilder
         self.attendanceBuiler = attendanceBuiler
 		self.fineListBuilder = fineListBuilder
 		self.shareBuilder = shareBuilder
+		self.authorizePaymentBuilder = authorizePaymentBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -123,5 +123,42 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
 		attachChild(router)
 		viewController.addChild(viewController: router.viewControllable)
         return interactor
+	}
+
+	// MARK: - AuthorizePayment
+	
+	private let authorizePaymentBuilder: AuthorizePaymentBuildable
+	private var authorizePaymentRouter: ViewableRouting?
+	
+	func attachAuthorizePayment(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) {
+		if authorizePaymentRouter != nil { return }
+		
+		let router = authorizePaymentBuilder.build(
+			withListener: interactor,
+			moitID: moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+		authorizePaymentRouter = router
+		attachChild(router)
+		
+		self.viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+	}
+	
+	func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool) {
+		guard let router = authorizePaymentRouter else { return }
+		
+		authorizePaymentRouter = nil
+		detachChild(router)
+		
+		if withPop {
+			self.viewController.uiviewController.navigationController?.popViewController(animated: true)
+		}
+		
+		if let completion { completion() }
 	}
 }
