@@ -12,6 +12,7 @@ import MOITDetailDomain
 import MOITParticipateDomain
 import FineDomain
 import AuthDomain
+import MOITAlarmDomain
 
 public protocol MOITListDependency: Dependency {
     var fetchMOITListsUseCase: FetchMoitListUseCase { get }
@@ -30,4 +31,5 @@ public protocol MOITListDependency: Dependency {
     var postFineEvaluateUseCase: PostFineEvaluateUseCase { get }
     var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { get }
     var userUseCase: UserUseCase { get }
+	var fetchNotificationUseCase: FetchNotificationListUseCase { get }
 }

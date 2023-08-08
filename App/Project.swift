@@ -74,6 +74,11 @@ let project = Project(
                 .Feature.Auth.UserInterface.Interface,
                 .Feature.Auth.UserInterface.Implement,
                 .ThirdParty.FirebaseMessaging,
+				
+				.Feature.MOITAlarm.Data.Interface,
+				.Feature.MOITAlarm.Data.Implement,
+				.Feature.MOITAlarm.Domain.Interface,
+				.Feature.MOITAlarm.Domain.Implement,
             ],
             
             settings: .settings(configurations: [

@@ -52,6 +52,11 @@ import FineDomainImpl
 import FineData
 import FineDataImpl
 
+import MOITAlarmData
+import MOITAlarmDataImpl
+import MOITAlarmDomain
+import MOITAlarmDomainImpl
+
 final class RootComponent: Component<EmptyDependency>,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -72,6 +77,7 @@ final class RootComponent: Component<EmptyDependency>,
     private lazy var userRepository: UserRepository = UserRepositoryImpl(network: network)
     private lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: network)
     private lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
+	private lazy var alarmRepository: MOITAlarmRepositoryImpl = MOITAlarmRepositoryImpl(network: network)
     
     // MARK: Usecase
     lazy var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: tokenManager)
@@ -101,6 +107,9 @@ final class RootComponent: Component<EmptyDependency>,
         userRepository: userRepository,
         tokenManager: tokenManager
     )
+	lazy var fetchNotificationUseCase: FetchNotificationListUseCase = FetchNotificationListUseCaseImpl(
+		repository: alarmRepository
+	)
     
     override init(dependency: EmptyDependency = EmptyComponent()) {
         super.init(dependency: dependency)

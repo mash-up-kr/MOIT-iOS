@@ -326,11 +326,11 @@ extension TargetDependency.Feature.MOITAlarm {
     
     public static let Interface: TargetDependency = .project(
         target: "MOITAlarm",
-        path: .relativeToRoot("Features/MOITAlarm")
+        path: .relativeToRoot("Features/MOITAlarm/MOITAlarm")
     )
     public static let Implement: TargetDependency = .project(
         target: "MOITAlarmImpl",
-        path: .relativeToRoot("Features/MOITAlarm")
+        path: .relativeToRoot("Features/MOITAlarm/MOITAlarm")
     )
 }
 
