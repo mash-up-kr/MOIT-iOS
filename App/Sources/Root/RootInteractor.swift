@@ -7,6 +7,7 @@
 
 import RIBs
 import RxSwift
+import RxRelay
 import MOITWebImpl
 import MOITWeb
 import AuthDomain
@@ -15,7 +16,7 @@ import TokenManager
 import MOITListUserInterface
 import RxRelay
 
-protocol RootRouting: ViewableRouting {
+protocol RootRouting: Routing {
     func routeToAuth()
     
     @discardableResult
@@ -34,6 +35,7 @@ protocol RootListener: AnyObject {
 
 protocol RootInteractorDependency {
     var fetchTokenUseCase: FetchTokenUseCase { get }
+    var fcmTokenObservable: Observable<String> { get }
 }
 
 final class RootInteractor: PresentableInteractor<RootPresentable>,
@@ -79,6 +81,14 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
         }
         router?.routeToMOITList()
         self.waitForLoginSubject.onNext(self)
+    }
+    
+    private func configureFCMToken() {
+        dependency.fcmTokenObservable
+            .subscribe(onNext: { token in
+                // TODO: - 보내라 토큰
+            })
+            .disposeOnDeactivate(interactor: self)
     }
 }
 

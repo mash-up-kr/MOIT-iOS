@@ -83,7 +83,7 @@ final class AlarmViewDemoViewController: UIViewController {
     
     private func attendanceRating() -> MOITAlarmView {
         MOITAlarmView(
-            type: .attendanceRating(percent: "99%"),
+            type: .attendanceRating,
             studyName: "영일이삼사오육칠팔구십"
         )
     }

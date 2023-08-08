@@ -36,6 +36,11 @@ public final class AuthRepositoryImpl: AuthRepository {
         email: String,
         inviteCode: String?
     ) -> Single<String> {
+        var inviteCode = inviteCode
+        if inviteCode == "" {
+            inviteCode = nil
+        }
+        
         let dto = SignUpRequestDTO(
             providerUniqueKey: providerUniqueKey,
             nickname: nickName,

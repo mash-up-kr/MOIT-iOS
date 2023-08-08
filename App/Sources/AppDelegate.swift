@@ -14,6 +14,9 @@ import ResourceKit
 import Firebase
 import FirebaseMessaging
 import RIBs
+import UserNotifications
+import TokenManagerImpl
+import RxRelay
 import Toast
 
 @UIApplicationMain
@@ -23,6 +26,7 @@ final class AppDelegate: UIResponder,
     var window: UIWindow?
     private var launchRouter: LaunchRouting?
     private var builder: RootBuildable?
+    var fcmToken = PublishRelay<String>()
     private var deeplinkable: Deeplinkable?
     
     func application(
@@ -35,9 +39,14 @@ final class AppDelegate: UIResponder,
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        let builder = RootBuilder(dependency: EmptyComponent())
+        
+        
+        let builder = RootBuilder(
+            dependency: AppComponent(fcmToken: self.fcmToken)
+        )
         self.builder = builder
         let (router, interactor) = builder.build()
+//        let router = builder?.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)
         self.deeplinkable = interactor
@@ -87,6 +96,7 @@ private extension AppDelegate {
                 print("🤖 Error fetching FCM registration token: \(error)")
             } else if let token = token {
                 print("🤖 FCM registration token: \(token)")
+                TokenManagerImpl().save(token: token, with: .fcmToken)
             }
         }
     }
@@ -174,7 +184,10 @@ extension AppDelegate: MessagingDelegate {
         _ messaging: Messaging,
         didReceiveRegistrationToken fcmToken: String?
     ) {
-        print("🤖 Firebase registration token observing: \(String(describing: fcmToken))")
+        guard let fcmToken else { return }
+        TokenManagerImpl().save(token: fcmToken, with: .fcmToken)
+        // TODO: - fcmToken 새걸로 업데이트
+        
     }
 }
 

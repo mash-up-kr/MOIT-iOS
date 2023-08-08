@@ -41,7 +41,7 @@ protocol MOITListRouting: ViewableRouting {
 protocol MOITListPresentable: Presentable {
     var listener: MOITListPresentableListener? { get set }
     
-    func didReceiveMOITList(moitList: [MOITPreviewViewModel]) // MOITList 받아오는
+    func didReceiveMOITList(moitList: [MOITPreviewViewModel])
     func didReceiveAlarm(alarms: [AlarmViewModel])
 }
 
@@ -68,6 +68,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     private let participateButtonTapped = PublishRelay<Void>()
     
     private var moitList = PublishRelay<[MOIT]>()
+    private var bannerList = PublishRelay<[Banner]>()
     
     // MARK: - Initializers
     
@@ -102,6 +103,12 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                 self?.moitList.accept(moits)
             })
             .disposeOnDeactivate(interactor: self)
+        
+        dependency.fetchBannersUseCase.execute()
+            .subscribe(onSuccess: { [weak self] banners in
+                self?.bannerList.accept(banners)
+            })
+            .disposeOnDeactivate(interactor: self)
     }
     
     private func bind() {
@@ -119,20 +126,18 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         // 알람 설정
         // TODO: - 알람 로직 수정
         
-        let bannerInfos = dependency.fetchBannersUseCase.execute()
-        
-        let alarmList = bannerInfos
+        let alarmList = bannerList
             .map { [weak self] banners -> [AlarmViewModel] in
                 return banners.compactMap { self?.makeAlarmView(with: $0) }
             }
 
         
         alarmList
-            .subscribe(onSuccess: { [weak self] alarms in
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] alarms in
                 self?.presenter.didReceiveAlarm(alarms: alarms)
             })
             .disposeOnDeactivate(interactor: self)
-        
         
         
         // moit 삭제
@@ -146,6 +151,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
 ////                return owner.dependency.deleteMOITUseCase.execute(moitId: deleteMoit.id)
 //
 //            }
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, deleteMoit in
                 print("성공")
             }, onError: { _ in
@@ -165,7 +171,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
         
         // 알람 탭
         selectedAlarmIndex
-            .withLatestFrom(bannerInfos) { index, bannerInfos in
+            .withLatestFrom(bannerList) { index, bannerInfos in
                 bannerInfos[index]
             }
             .subscribe(onNext: { bannerInfo in
@@ -218,7 +224,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                 studyName: fineBanner.moitName
             )
         case .empty:
-            return AlarmViewModel(alarmType: .penalty(amount: ""), studyName: "스터디 화이팅")
+            return AlarmViewModel(alarmType: .attendanceRating, studyName: "")
         }
     }
 }
