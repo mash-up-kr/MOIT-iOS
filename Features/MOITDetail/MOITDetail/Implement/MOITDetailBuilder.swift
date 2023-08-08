@@ -43,6 +43,7 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 	}
     fileprivate let isMasterRelay = PublishRelay<Bool>()
     var isMasterUsecase: CompareUserIDUseCase { compareUserIDUseCase }
+	var isMasterPublishRelay: PublishRelay<Bool> { isMasterRelay }
 }
 
 // MARK: - Builder

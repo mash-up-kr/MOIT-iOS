@@ -14,7 +14,9 @@ let project = Project.invertedDualTargetProject(
 	platform: .iOS,
 	interfaceDependencies: [
 		.ThirdParty.RxSwift,
-		.ThirdParty.RxCocoa
+		.ThirdParty.RxCocoa,
+		.TokenManager.Interface,
+		.TokenManager.Implement
 	],
 	implementDependencies: [
 		.Core.CSLogger
