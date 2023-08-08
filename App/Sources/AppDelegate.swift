@@ -12,6 +12,7 @@ import FirebaseMessaging
 import RIBs
 import UserNotifications
 import TokenManagerImpl
+import RxRelay
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -20,6 +21,7 @@ final class AppDelegate: UIResponder,
     var window: UIWindow?
     private var launchRouter: LaunchRouting?
     private var builder: RootBuildable?
+    var fcmToken = PublishRelay<String>()
     
     func application(
         _ application: UIApplication,
@@ -28,7 +30,9 @@ final class AppDelegate: UIResponder,
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        self.builder = RootBuilder(dependency: EmptyComponent())
+        self.builder = RootBuilder(
+            dependency: AppComponent(fcmToken: self.fcmToken)
+        )
         let router = builder?.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)

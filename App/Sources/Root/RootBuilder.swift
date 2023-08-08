@@ -6,6 +6,8 @@
 //
 
 import RIBs
+import RxSwift
+import RxRelay
 
 import MOITWebImpl
 import MOITWeb
@@ -52,7 +54,7 @@ import FineDomainImpl
 import FineData
 import FineDataImpl
 
-final class RootComponent: Component<EmptyDependency>,
+final class RootComponent: Component<AppDependency>,
                            MOITWebDependency,
                            RootInteractorDependency,
                            MOITListDependency,
@@ -102,7 +104,11 @@ final class RootComponent: Component<EmptyDependency>,
         tokenManager: tokenManager
     )
     
-    override init(dependency: EmptyDependency = EmptyComponent()) {
+    var fcmToken: PublishRelay<String> { dependency.fcmToken }
+    
+    var fcmTokenObservable: Observable<String> { dependency.fcmToken.asObservable() }
+    
+    override init(dependency: AppDependency) {
         super.init(dependency: dependency)
     }
 }
@@ -112,16 +118,16 @@ protocol RootBuildable: Buildable {
     func build() -> LaunchRouting
 }
 
-final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
+final class RootBuilder: Builder<AppDependency>, RootBuildable {
     
-    override init(dependency: EmptyDependency) {
+    override init(dependency: AppDependency) {
         super.init(dependency: dependency)
     }
     
     deinit { debugPrint("\(self) deinit") }
     
     func build() -> LaunchRouting {
-        let component = RootComponent()
+        let component = RootComponent(dependency: dependency)
         let viewController = RootViewController()
         let interactor = RootInteractor(
             presenter: viewController,
