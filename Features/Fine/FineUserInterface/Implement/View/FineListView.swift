@@ -170,6 +170,7 @@ final class FineListView: UIView {
 						}
 					}
 				}
+				.width(UIScreen.main.bounds.width - 40)
 		}
 	}
 }
