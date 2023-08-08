@@ -116,6 +116,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
 
         
         alarmList
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] alarms in
                 self?.presenter.didReceiveAlarm(alarms: alarms)
             })
@@ -134,6 +135,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
 ////                return owner.dependency.deleteMOITUseCase.execute(moitId: deleteMoit.id)
 //
 //            }
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, deleteMoit in
                 print("성공")
             }, onError: { _ in
@@ -206,7 +208,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                 studyName: fineBanner.moitName
             )
         case .empty:
-            return AlarmViewModel(alarmType: .penalty(amount: ""), studyName: "스터디 화이팅")
+            return AlarmViewModel(alarmType: .attendanceRating, studyName: "")
         }
     }
 }

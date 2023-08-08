@@ -207,8 +207,8 @@ extension MOITAlarmView {
             self.mainLabel.text = self.generateTimerString(remainSeconds: remainSeconds, second: 0)
         case .penalty(let amount):
             self.mainLabel.text = amount
-        case .attendanceRating(let percent):
-            self.mainLabel.text = percent
+        case .attendanceRating:
+            self.mainLabel.text = ""
         }
     
         self.mainLabel.font = ResourceKitFontFamily.h2
