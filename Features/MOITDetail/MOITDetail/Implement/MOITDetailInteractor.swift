@@ -12,6 +12,8 @@ import MOITDetail
 import Foundation
 import MOITDetailDomain
 import RxRelay
+import FineUserInterface
+import FineDomain
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
@@ -19,7 +21,8 @@ protocol MOITDetailRouting: ViewableRouting {
     func detachMOITUsers(withPop: Bool)
     func attachMOITShare(code: String)
     func detachMOITShare()
-	func attachFineList(moitID: Int)
+    @discardableResult
+    func attachFineList(moitID: Int) -> FineActionableItem?
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -68,7 +71,9 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     
     private let tabTypes: [MOITDetailTab]
     private let detailUsecase: MOITDetailUsecase
+    private let isMasterUsecase: CompareUserIDUseCase
     private let moitID: String
+    private let isMasterRelay: PublishRelay<Bool>
     
     private var scheduleDescription: String?
     private var longRuleDescription: String?
@@ -81,11 +86,15 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
         moitID: String,
         tabTypes: [MOITDetailTab],
         presenter: MOITDetailPresentable,
-        detailUsecase: MOITDetailUsecase
+        detailUsecase: MOITDetailUsecase,
+        isMasterUsecase: CompareUserIDUseCase,
+        isMasterRelay: PublishRelay<Bool>
     ) {
+        self.isMasterRelay = isMasterRelay
         self.moitID = moitID
         self.detailUsecase = detailUsecase
         self.tabTypes = tabTypes
+        self.isMasterUsecase = isMasterUsecase
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -97,14 +106,18 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     override func willResignActive() {
         super.willResignActive()
     }
+    
     private func fetchMOITDetail(with id: String) {
         self.detailUsecase.moitDetail(with: id)
             .do(onSuccess: { [weak self] in
-                self?.scheduleDescription = $0.scheduleDescription
-                self?.longRuleDescription = $0.ruleLongDescription
-                self?.shortRuleDescription = $0.ruleShortDescription
-                self?.periodDescription = $0.periodDescription
-                self?.invitationCode = $0.invitationCode
+                guard let self else { return }
+                self.scheduleDescription = $0.scheduleDescription
+                self.longRuleDescription = $0.ruleLongDescription
+                self.shortRuleDescription = $0.ruleShortDescription
+                self.periodDescription = $0.periodDescription
+                self.invitationCode = $0.invitationCode
+                let isMaster = self.isMasterUsecase.execute(with: Int($0.masterID) ?? 0)
+                self.isMasterRelay.accept(isMaster)
             })
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] in
@@ -116,6 +129,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
             })
             .disposeOnDeactivate(interactor: self)
     }
+    
     func viewDidLoad() {
         self.fetchMOITDetail(with: self.moitID)
     }
@@ -125,9 +139,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     }
     
     private func isMOITMasterUser(_ moitMasterID: String) -> Bool {
-        //TODO: 로컬디비에서 내 아이디 가져오는 로직 필요
-        let myID = "aaaa"
-        return moitMasterID == myID
+        self.isMasterUsecase.execute(with: Int(moitMasterID) ?? 0)
     }
     
     private func configureViewModel(response: MOITDetailEntity) -> MOITDetailViewModel {
@@ -227,5 +239,15 @@ extension MOITDetailInteractor {
     }
     func didTapDimmedView() {
         self.router?.detachMOITShare()
+    }
+}
+
+// MARK: - MOITDetailActionableItem
+
+extension MOITDetailInteractor: MOITDetailActionableItem {
+    func routeToFine() -> Observable<(FineActionableItem, ())> {
+        if let actionableItem = self.router?.attachFineList(moitID: Int(self.moitID) ?? 0) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
     }
 }

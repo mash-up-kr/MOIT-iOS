@@ -65,7 +65,7 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         super.init(dependency: dependency)
     }
     
-    public func build(withListener listener: MOITListListener) -> ViewableRouting {
+    public func build(withListener listener: MOITListListener) -> (ViewableRouting, MOITListActionableItem) {
         let component = MOITListComponent(dependency: dependency)
         let viewController = MOITListViewController()
         let interactor = MOITListInteractor(
@@ -80,7 +80,7 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         let settingBuilder = MOITSettingBuilder(dependency: component)
 		let alarmBuilder = MOITAlarmBuilder(dependency: component)
         
-        return MOITListRouter(
+        let router = MOITListRouter(
             interactor: interactor,
             viewController: viewController,
             moitWebBuilder: moitWebBuilder,
@@ -89,5 +89,6 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
             settingBuilder: settingBuilder,
 			alarmBuilder: alarmBuilder
         )
+        return (router, interactor)
     }
 }

@@ -110,3 +110,7 @@ extension MOITWebInteractor {
         self.router?.detachShare()
     }
 }
+
+// MARK: - MOITWebActionableItem
+extension MOITWebInteractor: MOITWebActionableItem {
+}

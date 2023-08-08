@@ -10,6 +10,7 @@ import RIBs
 import RxSwift
 import MOITDetailDomain
 import Collections
+import MOITDetail
 
 protocol MOITDetailAttendanceRouting: ViewableRouting {
 }

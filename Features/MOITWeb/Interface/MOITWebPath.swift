@@ -11,8 +11,8 @@ import Foundation
 public enum MOITWebPath {
     case register
     case modify(id: String)
-    case attendance(keyboardHeight: CGFloat)
-    case attendanceResult
+    case attendance(id: String, keyboardHeight: CGFloat)
+    case attendanceResult(id: String)
     
 	case signIn
     
@@ -21,10 +21,10 @@ public enum MOITWebPath {
     
     public var path: String {
         switch self {
-        case let .attendance(keyboardHeight): return "/attendance?keyboardHeight=\(keyboardHeight)"
+        case let .attendance(id, keyboardHeight): return "/attendance?studyId=\(id)&keyboardHeight=\(keyboardHeight)"
         case .register: return "/register"
-        case .modify(let id): return "/register?id=\(id)"
-        case .attendanceResult: return "/attendanceResult"
+        case .modify(let id): return "/register?studyId=\(id)"
+        case .attendanceResult(let id): return "/attendanceResult?studyId=\(id)"
 		case .signIn: return "/api/v1/auth/sign-in"
         case .개인정보처리방침: return "/3d5044b71c9c4b1c887706c9d9e6ffc4"
         case .서비스이용약관: return "/3d5044b71c9c4b1c887706c9d9e6ffc4"

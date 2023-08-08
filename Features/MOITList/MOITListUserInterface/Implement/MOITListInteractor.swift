@@ -13,16 +13,27 @@ import AuthDomain
 import RIBs
 import RxSwift
 import RxRelay
+import MOITDetail
+import MOITWeb
 
 protocol MOITListRouting: ViewableRouting {
     func attachRegisterMOIT()
-    func detachRegisterMOIT(withPop: Bool)
-    func attachMOITDetail(id: String)
+    @discardableResult
+    func attachMOITAttendance(id: String) -> MOITWebActionableItem?
+    @discardableResult
+    func attachMOITAttendanceResult(id: String) -> MOITWebActionableItem?
+    func detachMOITWeb(withPop: Bool)
+    
+    @discardableResult
+    func attachMOITDetail(id: String) -> MOITDetailActionableItem?
     func detachMOITDetail(withPop: Bool)
+    
     func attachInputParticipateCode()
 	func detachInputParticipateCode(onlyPop: Bool)
+    
     func attachSetting()
     func detachSetting(withPop: Bool)
+    
     func attachAlarm()
 	func detachAlarm(withPop: Bool)
 }
@@ -252,7 +263,7 @@ extension MOITListInteractor {
     func authorizationDidFinish(with signInResponse: MOITSignInResponse) {
     }
     func shouldDetach(withPop: Bool) {
-        self.router?.detachRegisterMOIT(withPop: withPop)
+        self.router?.detachMOITWeb(withPop: withPop)
     }
 }
 
@@ -305,4 +316,25 @@ extension MOITListInteractor {
 	func didSwipeBackAlarm() {
 		self.router?.detachAlarm(withPop: true)
 	}
+}
+
+// MARK: - MOITListActionableItem
+extension MOITListInteractor: MOITListActionableItem {
+    func routeToDetail(id: String) -> Observable<(MOITDetailActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITDetail(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
+    
+    func routeToMOITAttendance(id: String) -> Observable<(MOITWebActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITAttendance(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
+    
+    func routeToAttendanceResult(id: String) -> Observable<(MOITWebActionableItem, ())> {
+        if let actionableItem = self.router?.attachMOITAttendanceResult(id: id) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
+    }
 }

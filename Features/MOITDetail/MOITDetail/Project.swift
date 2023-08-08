@@ -19,6 +19,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.Fine.Domain.Interface,
 		.MOITNetwork.Interface,
         .DesignSystem,
+        .Feature.Fine.UserInterface.Interface,
     ],
     implementDependencies: [
         .ThirdParty.Kingfisher,

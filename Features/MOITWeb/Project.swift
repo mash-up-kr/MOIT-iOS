@@ -19,12 +19,11 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
     implementDependencies: [
         .ThirdParty.PinLayout,
         .ThirdParty.FlexLayout,
-		
 		.Core.CSLogger,
-		.Core.Utils
+		.Core.Utils,
+        .Feature.MOITShare.Implement,
+        .Feature.MOITShare.Interface,
     ],
-	demoAppDependencies: [
-	],
     useTestTarget: true,
     isUserInterface: true
 )
