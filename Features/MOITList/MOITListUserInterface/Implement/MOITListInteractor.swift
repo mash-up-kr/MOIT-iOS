@@ -174,16 +174,15 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
             .withLatestFrom(bannerList) { index, bannerInfos in
                 bannerInfos[index]
             }
-            .subscribe(onNext: { bannerInfo in
+            .subscribe(onNext: { [weak self] bannerInfo in
                 // TODO: - alarm 타입에 따라서 벌금, 출첵으로 나눠서 보내기
                 print("bannerInfo: \(bannerInfo)")
                 switch bannerInfo {
                 case .fine(let banner):
                     // 화면 전환
-                    fatalError("화면 전환")
+                    self?.router?.attachMOITDetail(id: "\(banner.moitId)")
                 case .attendence(let banner):
-                    // 화면 전환
-                    fatalError("화면 전환")
+                    self?.router?.attachMOITAttendance(id: "\(banner.moitId)")
                 case .empty:
                     return
                 }
