@@ -90,7 +90,7 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		
 		let isMyFine = dependency.compareUserIDUseCase.execute(with: entity.userID)
 		self.isMyFine = isMyFine
-		let buttonTitle = (isMyFine && entity.fineApproveStatus == .inProgress) ? "사진 재등록하기" : nil
+		let buttonTitle = (isMyFine && [FineApproveStatus.inProgress, FineApproveStatus.rejected].contains(where: { $0 == entity.fineApproveStatus })) ? "사진 재등록하기" : nil
 		
 		return AuthorizePaymentViewModel(
 			isMaster: dependency.isMaster,

@@ -179,9 +179,9 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
             }
         } else {
             switch status {
-            case .new:
+			case .new, .rejected:
                 return isMyFineItem ? "납부 인증하기" : nil
-            case .inProgress, .rejected:
+            case .inProgress:
                 return isMyFineItem ? "인증 대기 중" : nil
             default:
                 return nil
@@ -206,9 +206,9 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
             }
         } else {
             switch status {
-            case .new:
+            case .new, .rejected:
                 return isMyFineItem ? .active : nil
-            case .inProgress, .rejected:
+            case .inProgress:
                 return isMyFineItem ? .waiting : nil
             default:
                 return nil
