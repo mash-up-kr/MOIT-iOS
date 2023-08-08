@@ -110,7 +110,7 @@ final class RootRouter: LaunchRouter<RootInteractable, RootViewControllable>,
     
     func detachMOITList() {
         guard let router = moitListRouter else { return }
-        
+        self.moitListActionableItem = nil
         moitListRouter = nil
         detachChild(router)
         viewControllable.dismiss(completion: nil)
