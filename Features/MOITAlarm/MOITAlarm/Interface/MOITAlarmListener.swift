@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol MOITAlarmListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    func didSwipeBackAlarm()
 }

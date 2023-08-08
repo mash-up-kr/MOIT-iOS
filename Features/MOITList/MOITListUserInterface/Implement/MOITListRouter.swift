@@ -6,20 +6,24 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import UIKit
+
 import MOITListUserInterface
-import Utils
-import RIBs
 import MOITWeb
 import MOITDetail
 import MOITParticipateUserInterface
-import UIKit
 import MOITSetting
+import MOITAlarm
+import Utils
+
+import RIBs
 
 protocol MOITListInteractable: Interactable,
                                MOITWebListener,
                                MOITDetailListener,
                                InputParticipateCodeListener,
-                               MOITSettingListener {
+                               MOITSettingListener,
+							   MOITAlarmListener {
     
     var router: MOITListRouting? { get set }
     var listener: MOITListListener? { get set }
@@ -37,12 +41,14 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         moitWebBuilder: MOITWebBuildable,
         moitDetailBuilder: MOITDetailBuildable,
         inputParticipateCodeBuilder: InputParticipateCodeBuildable,
-        settingBuilder: MOITSettingBuildable
+        settingBuilder: MOITSettingBuildable,
+		alarmBuilder: MOITAlarmBuildable
     ) {
         self.moitWebBuilder = moitWebBuilder
         self.moitDetailBuilder = moitDetailBuilder
         self.inputParticipateCodeBuilder = inputParticipateCodeBuilder
         self.settingBuilder = settingBuilder
+		self.alarmBuilder = alarmBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -170,6 +176,17 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         settingRouter = router
         attachChild(router)
         viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+		
+// 서영이 웹뷰 테스트용 ><
+//        guard moitWebRouter == nil else { return }
+//        let router = moitWebBuilder.build(
+//            withListener: interactor,
+//            domain: .frontend,
+//            path: .attendance(keyboardHeight: getKeyboardHeight())
+//        )
+//        self.moitWebRouter = router
+//        attachChild(router)
+//        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
     func detachSetting(withPop: Bool) {
         guard let settingRouter else { return }
@@ -178,12 +195,43 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         if withPop {
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }
+		
+// 서영이 웹뷰 테스트용 ><
+//        guard let moitWebRouter else { return }
+//        self.moitWebRouter = nil
+//        detachChild(moitWebRouter)
+//        if withPop {
+//            viewController.uiviewController.navigationController?.popViewController(animated: true)
+//        }
     }
+	
+	private let alarmBuilder: MOITAlarmBuildable
+	private var alarmRouter: ViewableRouting?
     
     // MARK: - Alarm
     func attachAlarm() {
+		if alarmRouter != nil { return }
+		
+		let router = alarmBuilder.build(withListener: interactor)
+		alarmRouter = router
+		attachChild(router)
+		viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
     }
     
     func detachAlarm(withPop: Bool) {
+		guard let alarmRouter else { return }
+		self.alarmRouter = nil
+		detachChild(alarmRouter)
+		if withPop {
+			viewController.uiviewController.navigationController?.popViewController(animated: true)
+		}
+    }
+    
+    private func getKeyboardHeight() -> CGFloat {
+        guard let height = UserDefaults.standard.object(forKey: "keyboardHeight") as? CGFloat else {
+            return 301
+        }
+        
+        return height
     }
 }
