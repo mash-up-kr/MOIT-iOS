@@ -29,7 +29,7 @@ protocol MOITListRouting: ViewableRouting {
 protocol MOITListPresentable: Presentable {
     var listener: MOITListPresentableListener? { get set }
     
-    func didReceiveMOITList(moitList: [MOITPreviewViewModel]) // MOITList 받아오는
+    func didReceiveMOITList(moitList: [MOITPreviewViewModel])
     func didReceiveAlarm(alarms: [AlarmViewModel])
 }
 

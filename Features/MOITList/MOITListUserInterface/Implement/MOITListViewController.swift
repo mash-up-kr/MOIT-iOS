@@ -162,7 +162,7 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
                     .position(.absolute)
                     .height(100%)
                     .width(100%)
-                    .backgroundColor(.red)
+                    .backgroundColor(ResourceKitAsset.Color.gray100.color)
                     
                 flex.addItem(self.navigationBar)
                     .height(56)
