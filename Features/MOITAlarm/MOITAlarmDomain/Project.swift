@@ -13,8 +13,10 @@ import UtilityPlugin
 let project = Project.invertedDualTargetProject(
     name: "MOITAlarmDomain",
     interfaceDependencies: [
+        .ThirdParty.RxSwift,
     ],
     implementDependencies: [
+        .ThirdParty.RxSwift,
     ]
 )
 

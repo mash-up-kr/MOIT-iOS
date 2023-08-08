@@ -6,11 +6,12 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
-
 import FineUserInterface
 import FineDomain
 import MOITDetailDomain
+
+import RIBs
+import RxRelay
 
 final class FineListComponent: Component<FineListDependency>,
 							   AuthorizePaymentDependency,
@@ -24,6 +25,7 @@ final class FineListComponent: Component<FineListDependency>,
 		dependency.fetchFineItemUseCase }
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase { dependency.postFineEvaluateUseCase }
 	var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase { dependency.postMasterAuthorizeUseCase }
+	var isMasterPublishRelay: PublishRelay<Bool> { dependency.isMasterPublishRelay }
 	
 	let moitID: Int
 	
@@ -47,7 +49,7 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
 	public func build(
         withListener listener: FineListListener,
         moitID: Int
-    ) -> (router: ViewableRouting, actionableItem: FineActionableItem) {
+    ) -> ViewableRouting {
         let component = FineListComponent(
 			dependency: dependency,
 			moitID: moitID
@@ -61,10 +63,9 @@ public final class FineListBuilder: Builder<FineListDependency>, FineListBuildab
 		
 		let authorizePaymentBuildable = AuthorizePaymentBuilder(dependency: component)
 		let router = FineListRouter(
-			authorizePaymentBuildable: authorizePaymentBuildable,
 			interactor: interactor,
 			viewController: viewController
 		)
-        return (router, interactor)
+        return router
     }
 }

@@ -6,8 +6,6 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
-import RxSwift
 
 import FineUserInterface
 import FineDomain
@@ -16,10 +14,11 @@ import DesignSystem
 import ResourceKit
 import MOITFoundation
 
+import RIBs
+import RxSwift
+import RxRelay
+
 protocol FineListRouting: ViewableRouting {
-    @discardableResult
-    func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool) -> AuthorizePaymentActionableItem?
-    func detachAuthorizePayment(completion: (() -> Void)?)
 }
 
 protocol FineListPresentable: Presentable {
@@ -33,6 +32,7 @@ public protocol FineListInteractorDependency {
     var compareUserIDUseCase: CompareUserIDUseCase { get }
     var filterMyFineListUseCase: FilterMyFineListUseCase { get }
     var moitID: Int { get }
+	var isMasterPublishRelay: PublishRelay<Bool> { get }
 }
 
 final class FineListInteractor: PresentableInteractor<FineListPresentable>, FineListInteractable, FineListPresentableListener {
@@ -63,7 +63,12 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 // MARK: - FineListPresentableListener
     
     func viewDidLoad() {
-        fetchFineInfo()
+		dependency.isMasterPublishRelay
+			.bind(onNext: { [weak self] isMaster in
+				self?.isMaster = isMaster
+				self?.fetchFineInfo()
+			})
+			.disposeOnDeactivate(interactor: self)
     }
 	
 	func viewWillAppear() {
@@ -83,9 +88,13 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
 	private func fetchFineInfo() {
 		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
 			.compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
-				// TODO: isMaster값 스트림에서받아서 수정 필요
-				self?.isMaster = true
-				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: true)
+				guard let self else { return FineInfoViewModel(
+					totalFineAmountText: "",
+					myNotPaidFineListViewModel: [],
+					othersNotPaidFineListViewModel: [],
+					paymentCompletedFineListViewModel: []
+				) }
+				return self.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: self.isMaster)
 			}
 			.observe(on: MainScheduler.instance)
 			.subscribe(
@@ -267,24 +276,10 @@ extension FineListInteractor {
                 return "납부 완료 확인이 완료되었어요!"
             case .successRejectFine:
                 // TODO: 닉네임 받아야함
-                return "김모잇님께 납부 요청 알림이 다시 갔어요!"
+                return "납부 요청 알림이 다시 갔어요!"
             case .successEvaluateFine:
                 return "벌금 납부 인증이 업로드되었어요!"
             }
         }
-    }
-}
-
-// MARK: - FineActionableItem
-
-extension FineListInteractor: FineActionableItem {
-    func routeToAuthorizePayment(moitID: String, fineID: String) -> Observable<(AuthorizePaymentActionableItem, ())> {
-        if let actionableItem = self.router?.attachAuthorizePayment(
-            moitID: Int(moitID) ?? 0,
-            fineID: Int(fineID) ?? 0,
-            isMaster: isMaster
-        ) {
-            return Observable.just((actionableItem, ()))
-        } else { fatalError() }
     }
 }
