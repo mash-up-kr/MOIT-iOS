@@ -20,14 +20,14 @@ final class MasterAuthorizationView: UIView {
 	
 	fileprivate let cancelButton = MOITButton(
 		type: .small,
-		title: "취소",
+		title: "인증 재요청",
 		titleColor: ResourceKitAsset.Color.gray200.color,
 		backgroundColor: ResourceKitAsset.Color.gray700.color
 	)
 	
 	fileprivate let okButton = MOITButton(
 		type: .small,
-		title: "인증",
+		title: "인증 확인",
 		titleColor: ResourceKitAsset.Color.white.color,
 		backgroundColor: ResourceKitAsset.Color.blue800.color
 	)
