@@ -19,6 +19,7 @@ import FineDomain
 import MOITShareImpl
 import MOITShare
 import RIBs
+import RxRelay
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
@@ -40,6 +41,8 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
 		dependency.postFineEvaluateUseCase
 	}
+    fileprivate let isMasterRelay = PublishRelay<Bool>()
+    var isMasterUsecase: CompareUserIDUseCase { compareUserIDUseCase }
 }
 
 // MARK: - Builder
@@ -63,7 +66,9 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
             moitID: moitID,
             tabTypes: [.attendance, .fine],
             presenter: viewController,
-            detailUsecase: component.moitDetailUsecase
+            detailUsecase: component.moitDetailUsecase,
+            isMasterUsecase: component.isMasterUsecase,
+            isMasterRelay: component.isMasterRelay
         )
         interactor.listener = listener
         
