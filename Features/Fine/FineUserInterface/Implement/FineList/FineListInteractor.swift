@@ -14,6 +14,7 @@ import FineDomain
 import MOITDetailDomain
 import DesignSystem
 import ResourceKit
+import MOITFoundation
 
 protocol FineListRouting: ViewableRouting { }
 
@@ -105,7 +106,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
         )
         
         return FineInfoViewModel(
-            totalFineAmountText: "\(entity.totalFineAmount)",
+			totalFineAmountText: entity.totalFineAmount.toDecimalString,
             myNotPaidFineListViewModel: filteredFineListEntity.myFineList.map { convertToNotPaidFineListViewModel(from: $0, isMaster: isMaster) },
             othersNotPaidFineListViewModel: filteredFineListEntity.othersFineList.map { convertToNotPaidFineListViewModel(from: $0, isMaster: isMaster) },
             paymentCompletedFineListViewModel: entity.paymentCompletedFineList.map { convertToPaymentCompletedFineListViewModel(from: $0) }

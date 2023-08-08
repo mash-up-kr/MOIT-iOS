@@ -12,6 +12,7 @@ import FineUserInterface
 import FineDomain
 import MOITDetailDomain
 import DesignSystem
+import MOITFoundation
 
 import RIBs
 import RxSwift
@@ -96,7 +97,7 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 			imageURL: entity.imageURL,
 			imageFile: nil,
 			fineID: entity.id,
-			fineAmount: "\(entity.fineAmount)원", // TODO: numberFormatter 필요
+			fineAmount: "\(entity.fineAmount.toDecimalString)원",
 			chipType: dependency.convertAttendanceStatusUseCase.execute(attendanceStatus: entity.attendanceStatus),
 			userNickName: entity.userNickname,
 			studyOrder: entity.studyOrder,
