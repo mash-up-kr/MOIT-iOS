@@ -21,7 +21,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.FlexLayout,
 		
 		.Core.CSLogger,
-		.Core.Utils
+		.Core.Utils,
+		
+		.Feature.MOITShare.Implement,
     ],
 	demoAppDependencies: [
 	],
