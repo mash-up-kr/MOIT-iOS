@@ -67,7 +67,7 @@ public final class ParticipateUseCaseImpl: ParticipateUseCase {
 			fineAbsenceTime: response.fineAbsenceTime,
 			fineAbsenceAmount: response.fineAbsenceAmount,
 			notificationIsRemindActive: response.notificationIsRemindActive,
-			notificationRemindOption: response.notificationRemindOption,
+			notificationRemindOption: response.notificationRemindOption ?? "",
 			startDate: response.startDate,
 			endDate: response.endDate
 		)
