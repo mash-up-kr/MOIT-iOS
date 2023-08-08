@@ -50,8 +50,6 @@ public final class AuthRepositoryImpl: AuthRepository {
         )
         let endpoint = SignUpEndpoint.signUp(dto: dto)
         return network.request(with: endpoint)
-            .map { (dto: TokenDTO) -> String in
-                dto.token
-            }
+			.compactMap { $0?.token }.asObservable().asSingle()
     }
 }

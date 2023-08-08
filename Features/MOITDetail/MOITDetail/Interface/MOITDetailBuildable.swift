@@ -13,5 +13,5 @@ public protocol MOITDetailBuildable: Buildable {
     func build(
         withListener listener: MOITDetailListener,
         moitID: String
-    ) -> ViewableRouting
+    ) -> (router: ViewableRouting, actionableItem: MOITDetailActionableItem)
 }

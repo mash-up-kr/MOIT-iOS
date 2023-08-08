@@ -22,7 +22,7 @@ public final class NetworkImpl: Network {
 		self.session = session
 	}
 
-	public func request<E>(with endpoint: E) -> Single<E.Response> where E: Requestable {
+	public func request<E>(with endpoint: E) -> Single<E.Response?> where E: Requestable {
 		do {
 			let urlRequest = try endpoint.toURLRequest()
 
@@ -47,9 +47,12 @@ public final class NetworkImpl: Network {
                         print("""
                         ----------------------   error  ------------------------
                         💥 url: \(urlRequest.url!)
-                        💥 header: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")
+                        💥 headerToken: \(urlRequest.value(forHTTPHeaderField: "Authorization") ?? "")
+                        💥 method: \(urlRequest.httpMethod)
+                        💥 total header: \(urlRequest.allHTTPHeaderFields)
                         💥 body: \(String(decoding: urlRequest.httpBody ?? Data(), as: UTF8.self))
                         💥 error: \(error)
+                        💥 response: \(String(data: data ?? Data(), encoding: .utf8))
                         --------------------------------------------------------
                         """)
 						
@@ -70,7 +73,7 @@ public final class NetworkImpl: Network {
 		_ response: URLResponse?,
 		_ error: Error?,
 		_ model: M.Type
-	) -> Result<M, Error> {
+	) -> Result<M?, Error> {
 		if let error = error {
 			return .failure(error)
 		}
@@ -86,8 +89,8 @@ public final class NetworkImpl: Network {
 		do {
 			let responseModel = try JSONDecoder().decode(MOITResponse<M>.self, from: data)
 			print(data)
-			if responseModel.success, let data = responseModel.data {
-				return .success(data)
+			if responseModel.success {
+				return .success(responseModel.data)
 			} else {
 				let serverError = ServerError(fromRawValue: response.statusCode)
 				return .failure(NetworkError.serverError(serverError))

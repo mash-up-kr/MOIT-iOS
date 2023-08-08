@@ -17,12 +17,14 @@ import RxSwift
 import FlexLayout
 import PinLayout
 import Kingfisher
+import Toast
 
 protocol AuthorizePaymentPresentableListener: AnyObject {
 	func dismissButtonDidTap()
 	func viewDidLoad()
 	func authorizeButtonDidTap(with data: Data?)
 	func masterAuthorizeButtonDidTap(isConfirm: Bool)
+	func didSwipeBack()
 }
 
 final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPresentable, AuthorizePaymentViewControllable {
@@ -94,6 +96,14 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 		flexRootContainer.flex.layout()
 	}
 	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if self.isMovingFromParent {
+			listener?.didSwipeBack()
+		}
+	}
+	
 	
 // MARK: - AuthorizePaymentPresentable
 	
@@ -141,7 +151,11 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 	}
 	
 	func showErrorToast() {
-		print("에러 발생....ㅜㅜ")
+		let errorToastView = MOITToast(toastType: .fail, text: "에러가 발생했습니다! 다시 시도해주세요,.")
+		self.view.showToast(
+			errorToastView,
+			position: .bottom
+		)
 	}
 	
 // MARK: - private
@@ -207,6 +221,12 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 				self?.listener?.masterAuthorizeButtonDidTap(isConfirm: true)
 			})
 			.disposed(by: disposeBag)
+		
+		fineDetailList.rx.tap
+			.bind(onNext: { [weak self] in
+				self?.presentImagePicker()
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	private func presentImagePicker() {
@@ -242,7 +262,7 @@ extension AuthorizePaymentViewController: PHPickerViewControllerDelegate {
 			}
 		} else {
 			self.showAlert(
-				message: "에러발생~ 다시 해주세염~",
+				message: "사진을 다시 선택해주세요!",
 				type: .single
 			)
 		}

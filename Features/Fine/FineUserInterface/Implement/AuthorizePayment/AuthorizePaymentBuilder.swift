@@ -41,18 +41,18 @@ final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency>, Au
 
 // MARK: - Builder
 
-final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, AuthorizePaymentBuildable {
+public final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, AuthorizePaymentBuildable {
 
-    override init(dependency: AuthorizePaymentDependency) {
+    public override init(dependency: AuthorizePaymentDependency) {
         super.init(dependency: dependency)
     }
 
-    func build(
-		withListener listener: AuthorizePaymentListener,
-		moitID: Int,
-		fineID: Int,
-		isMaster: Bool
-	) -> ViewableRouting {
+    public func build(
+        withListener listener: AuthorizePaymentListener,
+        moitID: Int,
+        fineID: Int,
+        isMaster: Bool
+    ) -> (router: ViewableRouting, actionableItem: AuthorizePaymentActionableItem) {
         let component = AuthorizePaymentComponent(
 			dependency: dependency,
 			fineID: fineID,
@@ -65,6 +65,10 @@ final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, Author
 			dependency: component
 		)
         interactor.listener = listener
-        return AuthorizePaymentRouter(interactor: interactor, viewController: viewController)
+        let router = AuthorizePaymentRouter(
+            interactor: interactor,
+            viewController: viewController
+        )
+        return (router, interactor)
     }
 }

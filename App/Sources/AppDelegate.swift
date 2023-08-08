@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import UserNotifications
+
+import ResourceKit
+
 import Firebase
 import FirebaseMessaging
 import RIBs
 import UserNotifications
 import TokenManagerImpl
 import RxRelay
+import Toast
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -22,20 +27,29 @@ final class AppDelegate: UIResponder,
     private var launchRouter: LaunchRouting?
     private var builder: RootBuildable?
     var fcmToken = PublishRelay<String>()
+    private var deeplinkable: Deeplinkable?
     
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+		
+		setToastStyle()
+		
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        self.builder = RootBuilder(
+        
+        
+        let builder = RootBuilder(
             dependency: AppComponent(fcmToken: self.fcmToken)
         )
-        let router = builder?.build()
+        self.builder = builder
+        let (router, interactor) = builder.build()
+//        let router = builder?.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)
+        self.deeplinkable = interactor
         
         self.configure(application)
         return true
@@ -51,6 +65,8 @@ final class AppDelegate: UIResponder,
         getFCMToken()
     }
 }
+
+// MARK: - Private functions
 
 private extension AppDelegate {
     func requestAuthorization() {
@@ -94,24 +110,70 @@ private extension AppDelegate {
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
     }
+    
+    @discardableResult
+    func processDeeplink(query: String, type: DeepLinkType) -> Bool {
+        switch type {
+        case .home:
+            self.deeplinkable?.routeToMOITList()
+            
+        case .detail:
+            guard let id = query.split(separator: "=").last else { return false }
+            self.deeplinkable?.routeToDetail(id: "\(id)")
+            
+        case .attendance:
+            guard let id = query.split(separator: "=").last else { return false }
+            self.deeplinkable?.routeToAttendance(id: "\(id)")
+            
+        case .attendanceResult:
+            guard let id = query.split(separator: "=").last else { return false }
+            self.deeplinkable?.routeToAttendanceResult(id: "\(id)")
+            
+        case .fine:
+            let params = query.split(separator: "&")
+            let moitId = params.first?.split(separator: "=").last ?? ""
+            let fineId = params.last?.split(separator: "=").last ?? ""
+            
+            self.deeplinkable?.routeToFine(moitID: "\(moitId)", fineID: "\(fineId)")
+        }
+        
+        return true
+    }
 }
 
 // MARK: - UNUserNotificationCenterDelegate
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
+        print("🤖", #function)
         guard let urlString = response.notification.request.content.userInfo["url"] as? String else { return }
-        let path = String(urlString.split(separator: "://").last ?? "")
+        guard let path = urlString.split(separator: "://").last?.split(separator: "?").first as? String,
+              let qeury = urlString.split(separator: "://").last?.split(separator: "?").last as? String else { return }
         
         guard let type = DeepLinkType(rawValue: path) else { return }
         
-        // TODO: type에 따라 이동하는 로직 필요
-        switch type {
-        default: print(type)
-        }
+        processDeeplink(query: qeury, type: type)
+    }
+    
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        print("🤖", #function)
+        guard let components = NSURLComponents(
+            url: url,
+            resolvingAgainstBaseURL: true
+        ),
+              let query = components.query,
+              let path = components.host,
+              let type = DeepLinkType(rawValue: path) else { return false }
+        print(type, query)
+        return processDeeplink(query: query, type: type)
     }
 }
 
@@ -127,4 +189,17 @@ extension AppDelegate: MessagingDelegate {
         // TODO: - fcmToken 새걸로 업데이트
         
     }
+}
+
+extension AppDelegate {
+	private func setToastStyle() {
+		var style = ToastStyle()
+		style.backgroundColor = ResourceKitAsset.Color.gray800.color
+		style.cornerRadius = 10
+		style.imageSize = CGSize(width: 24, height: 24)
+		style.verticalPadding = 20
+		style.messageFont = ResourceKitFontFamily.p2
+		ToastManager.shared.style = style
+		ToastManager.shared.duration = 5.0
+	}
 }

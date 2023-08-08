@@ -15,8 +15,9 @@ import RIBs
 protocol MOITDetailInteractable: Interactable,
                                  MOITDetailAttendanceListener,
                                  MOITUsersListener,
-								FineListListener,
-								ShareListener {
+								 FineListListener,
+								 ShareListener,
+								 AuthorizePaymentListener {
     var router: MOITDetailRouting? { get set }
     var listener: MOITDetailListener? { get set }
 }
@@ -26,13 +27,10 @@ protocol MOITDetailViewControllable: ViewControllable {
 }
 
 final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailViewControllable>,
-                              MOITDetailRouting {
+							  MOITDetailRouting {
 
     private let attendanceBuiler: MOITDetailAttendanceBuildable
     private var attendacneRouter: ViewableRouting?
-	
-	private let fineListBuilder: FineListBuildable
-	private var fineListRouter: ViewableRouting?
     
     init(
         interactor: MOITDetailInteractable,
@@ -40,12 +38,14 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         attendanceBuiler: MOITDetailAttendanceBuildable,
         moitUserBuilder: MOITUsersBuildable,
 		fineListBuilder: FineListBuildable,
-		shareBuilder: ShareBuildable
+		shareBuilder: ShareBuildable,
+		authorizePaymentBuilder: AuthorizePaymentBuildable
     ) {
         self.moitUserBuilder = moitUserBuilder
         self.attendanceBuiler = attendanceBuiler
 		self.fineListBuilder = fineListBuilder
 		self.shareBuilder = shareBuilder
+		self.authorizePaymentBuilder = authorizePaymentBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
@@ -109,9 +109,11 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         self.viewController.uiviewController.dismiss(animated: true)
     }
     
-	
+    private let fineListBuilder: FineListBuildable
+    private var fineListRouter: ViewableRouting?
+    
 	func attachFineList(moitID: Int) {
-		guard fineListRouter == nil else { return }
+        guard fineListRouter == nil else { return }
 		
 		let router = fineListBuilder.build(
 			withListener: interactor,
@@ -120,5 +122,41 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
 		fineListRouter = router
 		attachChild(router)
 		viewController.addChild(viewController: router.viewControllable)
+	}
+
+	// MARK: - AuthorizePayment
+	
+	private let authorizePaymentBuilder: AuthorizePaymentBuildable
+	private var authorizePaymentRouters: [ViewableRouting] = []
+    
+    @discardableResult
+	func attachAuthorizePayment(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) -> AuthorizePaymentActionableItem? {
+		let (router, interactor) = authorizePaymentBuilder.build(
+			withListener: interactor,
+			moitID: moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+        authorizePaymentRouters.append(router)
+		attachChild(router)
+		
+		self.viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+        return interactor
+	}
+	
+	func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool) {
+        guard let router = authorizePaymentRouters.popLast() else { return }
+		
+		detachChild(router)
+		
+		if withPop {
+			self.viewController.uiviewController.navigationController?.popViewController(animated: true)
+		}
+		
+		if let completion { completion() }
 	}
 }

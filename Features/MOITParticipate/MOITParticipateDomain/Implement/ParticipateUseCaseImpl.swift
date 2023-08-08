@@ -11,6 +11,7 @@ import Foundation
 import MOITParticipateData
 import MOITParticipateDomain
 import MOITDetailDomain
+import TokenManager
 
 import RxSwift
 
@@ -18,20 +19,25 @@ public final class ParticipateUseCaseImpl: ParticipateUseCase {
 	
 // MARK: - properties
 	private let participateRepository: ParticipateRepository
+	private let tokenManager: TokenManager
 	
 // MARK: - init
 	public init(
-		participateRepository: ParticipateRepository
+		participateRepository: ParticipateRepository,
+		tokenManager: TokenManager
 	) {
 		self.participateRepository = participateRepository
+		self.tokenManager = tokenManager
 	}
 	
 // MARK: - public
 	public func execute(with code: String) -> Single<ParticipateEntity> {
-		// ???: 이걸 여기서 만드는게 맞나?! 만드는 위치에 대한 고민...
-		// TODO: userId 불러오는 로직 추가 필요
+		
+		let userIDString: String = tokenManager.get(key: .userID) ?? "0"
+		let userID = Int(userIDString) ?? 0
+		
 		let request = MOITParticipateRequest(
-			userId: 10,
+			userId: userID,
 			invitationCode: code
 		)
 		

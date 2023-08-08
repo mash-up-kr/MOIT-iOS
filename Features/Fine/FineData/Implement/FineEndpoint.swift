@@ -21,7 +21,7 @@ enum FineEndpoint {
 	
 	static func fetchFineItem(moitID: Int, fineID: Int) -> Endpoint<FineItem> {
 		return Endpoint(
-			path: "moit/\(moitID)/fine/\(fineID)",
+			path: "/api/v1/moit/\(moitID)/fine/\(fineID)",
 			method: .get
 		)
 	}
@@ -30,11 +30,11 @@ enum FineEndpoint {
 		moitID: Int,
 		fineID: Int,
 		data: Data?
-	) -> MultipartEndpoint<Bool>? {
+	) -> MultipartEndpoint<FineItem>? {
 		
 		if let data {
 			let formData = FormData(
-				fieldName: "image_field",
+				fieldName: "finePaymentImage",
 				fileName: "finePaymentImage",
 				mimeType: "image/png",
 				fileData: data
@@ -45,7 +45,7 @@ enum FineEndpoint {
 			)
 			
 			return MultipartEndpoint(
-				path: "moit/\(moitID)/fine/\(fineID)",
+				path: "/api/v1/moit/\(moitID)/fine/\(fineID)",
 				method: .post,
 				formData: multipartFormData
 			)
@@ -60,7 +60,7 @@ enum FineEndpoint {
 		isConfirm: Bool
 	) -> Endpoint<Bool> {
 		return Endpoint(
-			path: "moit/\(moitID)/fine/\(fineID)",
+			path: "/api/v1/moit/\(moitID)/fine/\(fineID)/evaluate",
 			method: .post,
 			parameters: .body(["confirm": isConfirm])
 		)

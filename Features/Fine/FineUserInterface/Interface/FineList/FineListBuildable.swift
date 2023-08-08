@@ -12,5 +12,5 @@ public protocol FineListBuildable: Buildable {
 	func build(
 		withListener listener: FineListListener,
 		moitID: Int
-	) -> ViewableRouting
+    ) -> ViewableRouting
 }

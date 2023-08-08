@@ -10,6 +10,7 @@ import UIKit
 
 import DesignSystem
 import ResourceKit
+import MOITFoundation
 
 import RxSwift
 
@@ -42,7 +43,7 @@ final class NotPaidFineListView: MOITList {
 		super.init(
 			type: .sendMoney,
 			title: fineViewModel.userNickName,
-			detail: "\(fineViewModel.fineAmount)원",
+			detail: "\(fineViewModel.fineAmount.toDecimalString)원",
 			chipType: fineViewModel.chipType,
 			studyOrder: fineViewModel.studyOrder,
 			button: button

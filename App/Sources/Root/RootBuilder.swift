@@ -54,6 +54,11 @@ import FineDomainImpl
 import FineData
 import FineDataImpl
 
+import MOITAlarmData
+import MOITAlarmDataImpl
+import MOITAlarmDomain
+import MOITAlarmDomainImpl
+
 final class RootComponent: Component<AppDependency>,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -74,6 +79,7 @@ final class RootComponent: Component<AppDependency>,
     private lazy var userRepository: UserRepository = UserRepositoryImpl(network: network)
     private lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: network)
     private lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
+	private lazy var alarmRepository: MOITAlarmRepositoryImpl = MOITAlarmRepositoryImpl(network: network)
     
     // MARK: Usecase
     lazy var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: tokenManager)
@@ -97,12 +103,16 @@ final class RootComponent: Component<AppDependency>,
     lazy var moitAllAttendanceUsecase: MOITAllAttendanceUsecase =  MOITAllAttendanceUsecaseImpl(repository: moitDetailRepository)
     lazy var moitUserusecase: MOITUserUsecase = MOITUserUsecaseImpl(repository: moitDetailRepository)
     lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(
-        participateRepository: participateRepository
+        participateRepository: participateRepository,
+		tokenManager: tokenManager
     )
     lazy var userUseCase: UserUseCase = UserUseCaseImpl(
         userRepository: userRepository,
         tokenManager: tokenManager
     )
+	lazy var fetchNotificationUseCase: FetchNotificationListUseCase = FetchNotificationListUseCaseImpl(
+		repository: alarmRepository
+	)
     
     var fcmToken: PublishRelay<String> { dependency.fcmToken }
     
@@ -115,7 +125,7 @@ final class RootComponent: Component<AppDependency>,
 // MARK: - Builder
 
 protocol RootBuildable: Buildable {
-    func build() -> LaunchRouting
+    func build() -> (LaunchRouting, Deeplinkable)
 }
 
 final class RootBuilder: Builder<AppDependency>, RootBuildable {
@@ -126,8 +136,8 @@ final class RootBuilder: Builder<AppDependency>, RootBuildable {
     
     deinit { debugPrint("\(self) deinit") }
     
-    func build() -> LaunchRouting {
-        let component = RootComponent(dependency: dependency)
+    func build() -> (LaunchRouting, Deeplinkable) {
+        let component = RootComponent(dependency: AppComponent(fcmToken: dependency.fcmToken))
         let viewController = RootViewController()
         let interactor = RootInteractor(
             presenter: viewController,
@@ -137,11 +147,12 @@ final class RootBuilder: Builder<AppDependency>, RootBuildable {
         let moitListBuilder = MOITListBuilder(dependency: component)
         let authBuilder = LoggedOutBuilder(dependency: component)
         
-        return RootRouter(
+        let router = RootRouter(
             interactor: interactor,
             viewController: viewController,
             moitListBuilder: moitListBuilder,
             loggedOutBuilder: authBuilder
         )
+        return (router, interactor)
     }
 }

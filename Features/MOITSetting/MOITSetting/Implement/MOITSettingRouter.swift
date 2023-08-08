@@ -36,7 +36,7 @@ final class MOITSettingRouter: ViewableRouter<MOITSettingInteractable, MOITSetti
     private var moitWebRouter: ViewableRouting?
     func routeToWeb(path: MOITWebPath) {
         guard moitWebRouter == nil else { return }
-        let router = moitWebBuilder.build(
+        let (router, _) = moitWebBuilder.build(
             withListener: interactor,
             domain: .setting,
             path: path

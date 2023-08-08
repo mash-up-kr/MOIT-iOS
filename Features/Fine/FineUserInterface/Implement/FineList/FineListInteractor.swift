@@ -14,17 +14,15 @@ import FineDomain
 import MOITDetailDomain
 import DesignSystem
 import ResourceKit
+import MOITFoundation
 
 protocol FineListRouting: ViewableRouting {
-    func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool)
-    func detachAuthorizePayment(completion: (() -> Void)?)
 }
 
 protocol FineListPresentable: Presentable {
     var listener: FineListPresentableListener? { get set }
     
     func configure(_ viewModel: FineInfoViewModel)
-    func showToast(message: String)
 }
 
 public protocol FineListInteractorDependency {
@@ -59,48 +57,44 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
         super.willResignActive()
     }
     
-    func authorizePaymentDismissButtonDidTap() {
-        router?.detachAuthorizePayment(completion: nil)
-    }
-    
-    func didSuccessPostFineEvaluate() {
-        // TODO: completion에 음..토스트 ?
-        router?.detachAuthorizePayment(completion: nil)
-    }
-    
 // MARK: - FineListPresentableListener
     
     func viewDidLoad() {
-        dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
-            .compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
-                // TODO: isMaster값 스트림에서받아서 수정 필요
-                self?.isMaster = false
-                return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: false)
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(
-                onSuccess: { [weak self] fineInfoViewModel in
-                    debugPrint("------------FineInfoViewModel-------------")
-                    debugPrint(fineInfoViewModel)
-                    debugPrint("------------------------------------------")
-                    self?.presenter.configure(fineInfoViewModel)
-                }
-            )
-            .disposeOnDeactivate(interactor: self)
+        fetchFineInfo()
     }
-    
-// MARK: - authorizePaymentListener
-    
-    func didSuccessAuthorizeFine(isConfirm: Bool) {
-        router?.detachAuthorizePayment(completion: { [weak self] in
-            guard let self else { return }
-            
-            let message = isConfirm ? StringResource.successConfirmFine.value : StringResource.successRejectFine.value
-            self.presenter.showToast(message: message)
-        })
-    }
+	
+	func viewWillAppear() {
+		fetchFineInfo()
+	}
+	
+	func fineListDidTap(fineID: Int) {
+		listener?.fineListViewDidTap(
+			moitID: dependency.moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+	}
     
 // MARK: - private
+	
+	private func fetchFineInfo() {
+		dependency.fetchFineInfoUsecase.execute(moitID: dependency.moitID)
+			.compactMap { [weak self] fineInfoEntity -> FineInfoViewModel? in
+				// TODO: isMaster값 스트림에서받아서 수정 필요
+				self?.isMaster = true
+				return self?.convertToFineInfoViewModel(from: fineInfoEntity, isMaster: true)
+			}
+			.observe(on: MainScheduler.instance)
+			.subscribe(
+				onSuccess: { [weak self] fineInfoViewModel in
+					debugPrint("------------FineInfoViewModel-------------")
+					debugPrint(fineInfoViewModel)
+					debugPrint("------------------------------------------")
+					self?.presenter.configure(fineInfoViewModel)
+				}
+			)
+			.disposeOnDeactivate(interactor: self)
+	}
     
     /// FineInfoEntity -> FineInfoViewModel
     private func convertToFineInfoViewModel(
@@ -113,7 +107,7 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
         )
         
         return FineInfoViewModel(
-            totalFineAmountText: "\(entity.totalFineAmount)",
+			totalFineAmountText: entity.totalFineAmount.toDecimalString,
             myNotPaidFineListViewModel: filteredFineListEntity.myFineList.map { convertToNotPaidFineListViewModel(from: $0, isMaster: isMaster) },
             othersNotPaidFineListViewModel: filteredFineListEntity.othersFineList.map { convertToNotPaidFineListViewModel(from: $0, isMaster: isMaster) },
             paymentCompletedFineListViewModel: entity.paymentCompletedFineList.map { convertToPaymentCompletedFineListViewModel(from: $0) }
@@ -186,9 +180,9 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
             }
         } else {
             switch status {
-            case .new:
+			case .new, .rejected:
                 return isMyFineItem ? "납부 인증하기" : nil
-            case .inProgress, .rejected:
+            case .inProgress:
                 return isMyFineItem ? "인증 대기 중" : nil
             default:
                 return nil
@@ -213,9 +207,9 @@ final class FineListInteractor: PresentableInteractor<FineListPresentable>, Fine
             }
         } else {
             switch status {
-            case .new:
+            case .new, .rejected:
                 return isMyFineItem ? .active : nil
-            case .inProgress, .rejected:
+            case .inProgress:
                 return isMyFineItem ? .waiting : nil
             default:
                 return nil
@@ -255,17 +249,6 @@ extension FineListInteractor {
             case .waiting: return ResourceKitAsset.Color.gray700
             }
         }
-    }
-}
-
-// MARK: - FineListPresentableListener
-extension FineListInteractor {
-    func fineListDidTap(fineID: Int) {
-        router?.attachAuthorizePayment(
-            moitID: dependency.moitID,
-            fineID: fineID,
-            isMaster: isMaster
-        )
     }
 }
 

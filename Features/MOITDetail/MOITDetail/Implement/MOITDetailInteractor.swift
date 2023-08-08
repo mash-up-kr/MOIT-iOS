@@ -6,20 +6,32 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import Foundation
+
+import MOITDetail
+import MOITDetailDomain
+import DesignSystem
+
 import RIBs
 import RxSwift
-import MOITDetail
-import Foundation
-import MOITDetailDomain
 import RxRelay
+import FineUserInterface
+import FineDomain
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
+    
     func attachMOITUsers(moitID: String)
     func detachMOITUsers(withPop: Bool)
+    
     func attachMOITShare(code: String)
     func detachMOITShare()
-	func attachFineList(moitID: Int)
+    
+    @discardableResult
+    func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool) -> AuthorizePaymentActionableItem?
+    func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool)
+    
+    func attachFineList(moitID: Int)
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -28,11 +40,12 @@ protocol MOITDetailPresentable: Presentable {
     func update(infoViewModel: MOITDetailInfosViewModel)
     func showAlert(message: String)
     func shouldLayout()
+	func showToast(message: String, type: MOITToastType)
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                                   MOITDetailInteractable,
-                                  MOITDetailPresentableListener {
+								  MOITDetailPresentableListener {
     
     func didTapInfoButton(type: MOITDetailInfoViewButtonType) {
         switch type {
@@ -68,7 +81,10 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     
     private let tabTypes: [MOITDetailTab]
     private let detailUsecase: MOITDetailUsecase
+    private let isMasterUsecase: CompareUserIDUseCase
     private let moitID: String
+    private let isMasterRelay: PublishRelay<Bool>
+    private var isMaster: Bool = false
     
     private var scheduleDescription: String?
     private var longRuleDescription: String?
@@ -81,11 +97,15 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
         moitID: String,
         tabTypes: [MOITDetailTab],
         presenter: MOITDetailPresentable,
-        detailUsecase: MOITDetailUsecase
+        detailUsecase: MOITDetailUsecase,
+        isMasterUsecase: CompareUserIDUseCase,
+        isMasterRelay: PublishRelay<Bool>
     ) {
+        self.isMasterRelay = isMasterRelay
         self.moitID = moitID
         self.detailUsecase = detailUsecase
         self.tabTypes = tabTypes
+        self.isMasterUsecase = isMasterUsecase
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -97,14 +117,20 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     override func willResignActive() {
         super.willResignActive()
     }
+    
     private func fetchMOITDetail(with id: String) {
         self.detailUsecase.moitDetail(with: id)
             .do(onSuccess: { [weak self] in
-                self?.scheduleDescription = $0.scheduleDescription
-                self?.longRuleDescription = $0.ruleLongDescription
-                self?.shortRuleDescription = $0.ruleShortDescription
-                self?.periodDescription = $0.periodDescription
-                self?.invitationCode = $0.invitationCode
+                guard let self else { return }
+                self.scheduleDescription = $0.scheduleDescription
+                self.longRuleDescription = $0.ruleLongDescription
+                self.shortRuleDescription = $0.ruleShortDescription
+                self.periodDescription = $0.periodDescription
+                self.invitationCode = $0.invitationCode
+                
+                let isMaster = self.isMasterUsecase.execute(with: Int($0.masterID) ?? 0)
+                self.isMaster = isMaster
+                self.isMasterRelay.accept(isMaster)
             })
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] in
@@ -116,6 +142,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
             })
             .disposeOnDeactivate(interactor: self)
     }
+    
     func viewDidLoad() {
         self.fetchMOITDetail(with: self.moitID)
     }
@@ -125,9 +152,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     }
     
     private func isMOITMasterUser(_ moitMasterID: String) -> Bool {
-        //TODO: 로컬디비에서 내 아이디 가져오는 로직 필요
-        let myID = "aaaa"
-        return moitMasterID == myID
+        self.isMasterUsecase.execute(with: Int(moitMasterID) ?? 0)
     }
     
     private func configureViewModel(response: MOITDetailEntity) -> MOITDetailViewModel {
@@ -227,5 +252,90 @@ extension MOITDetailInteractor {
     }
     func didTapDimmedView() {
         self.router?.detachMOITShare()
+    }
+}
+
+// MARK: - FineListListener
+extension MOITDetailInteractor {
+	func fineListViewDidTap(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) {
+		router?.attachAuthorizePayment(
+			moitID: moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+	}
+	
+	func authorizePaymentDidSwipeBack() {
+		router?.detachAuthorizePayment(completion: nil, withPop: false)
+	}
+	
+	func authorizePaymentDismissButtonDidTap() {
+		router?.detachAuthorizePayment(completion: nil, withPop: true)
+	}
+	
+	/// 스터디원이 벌금 납부 인증 사진 등록 완료했을 때
+	func didSuccessPostFineEvaluate() {
+		router?.detachAuthorizePayment(completion: { [weak self] in
+			self?.presenter.showToast(
+				message: StringResource.successEvaluateFine.value,
+				type: .success
+			)
+		}, withPop: true)
+	}
+	
+	/// 스터디장이 벌금 납부 승인했을 때
+	func didSuccessAuthorizeFine(isConfirm: Bool) {
+		router?.detachAuthorizePayment(completion: { [weak self] in
+			guard let self else { return }
+			
+			if isConfirm {
+				self.presenter.showToast(
+					message: StringResource.successConfirmFine.value,
+					type: .success
+				)
+			} else {
+				self.presenter.showToast(
+					message: StringResource.successRejectFine.value,
+					type: .fail
+				)
+			}
+		}, withPop: true)
+	}
+}
+
+extension MOITDetailInteractor {
+	enum StringResource {
+		case successConfirmFine
+		case successRejectFine
+		case successEvaluateFine
+		
+		var value: String {
+			switch self {
+			case .successConfirmFine:
+				return "납부 완료 확인이 완료되었어요!"
+			case .successRejectFine:
+				// TODO: 닉네임 받아야함
+				return "김모잇님께 납부 요청 알림이 다시 갔어요!"
+			case .successEvaluateFine:
+				return "벌금 납부 인증이 업로드되었어요!"
+			}
+		}
+	}
+}
+
+// MARK: - MOITDetailActionableItem
+extension MOITDetailInteractor: MOITDetailActionableItem {
+    func routeToAuthorizePayment(moitID: String, fineID: String) -> Observable<(AuthorizePaymentActionableItem, ())> {
+        if let actionableItem = self.router?.attachAuthorizePayment(
+            moitID: Int(moitID) ?? 0,
+            fineID: Int(fineID) ?? 0,
+            isMaster: self.isMaster
+        ) {
+            return Observable.just((actionableItem, ()))
+        } else { fatalError() }
     }
 }

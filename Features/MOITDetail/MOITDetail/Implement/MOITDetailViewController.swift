@@ -6,15 +6,18 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
-import RIBs
-import RxSwift
 import UIKit
+
 import ResourceKit
 import DesignSystem
+
 import FlexLayout
 import PinLayout
 import SkeletonView
+import RIBs
+import RxSwift
 import Kingfisher
+import Toast
 
 protocol MOITDetailPresentableListener: AnyObject {
     func didTapInfoButton(type: MOITDetailInfoViewButtonType)
@@ -37,8 +40,8 @@ struct MOITDetailViewModel {
 
 final class MOITDetailViewController: UIViewController,
                                       MOITDetailPresentable,
-                                      MOITDetailViewControllable {
-    
+									  MOITDetailViewControllable {
+	
     // MARK: - UIComponents
     
     private let flexRootView: UIView = {
@@ -485,4 +488,12 @@ extension MOITDetailViewController {
         self.contentView.flex.markDirty()
         self.view.setNeedsLayout()
     }
+	
+	func showToast(
+		message: String,
+		type: MOITToastType
+	) {
+		let toast = MOITToast(toastType: type, text: message)
+		self.view.showToast(toast, point: view.center)
+	}
 }
