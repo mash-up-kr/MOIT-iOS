@@ -226,12 +226,4 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
 			viewController.uiviewController.navigationController?.popViewController(animated: true)
 		}
     }
-    
-    private func getKeyboardHeight() -> CGFloat {
-        guard let height = UserDefaults.standard.object(forKey: "keyboardHeight") as? CGFloat else {
-            return 301
-        }
-        
-        return height
-    }
 }

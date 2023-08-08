@@ -47,9 +47,7 @@ public final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>,
         super.init(dependency: dependency)
     }
 
-
-  // TODO: AuthorizePayment 
-    func build(
+    public func build(
         withListener listener: AuthorizePaymentListener,
         moitID: Int,
         fineID: Int,

@@ -24,5 +24,6 @@ public final class MOITAlarmRepositoryImpl: MOITAlarmRepository {
 	public func fetchNotificationList() -> Single<NotificationModel> {
 		let endpoint = MOITAlarmEndpoint.fetchNotificationList()
 		return network.request(with: endpoint)
+			.compactMap { $0 }.asObservable().asSingle()
 	}
 }
