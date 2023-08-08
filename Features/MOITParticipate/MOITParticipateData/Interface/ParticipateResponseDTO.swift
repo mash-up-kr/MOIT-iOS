@@ -35,7 +35,7 @@ public struct ParticipateResponseDTO: Decodable {
 	/// moit 알람 리마인드 on/off
 	public let notificationIsRemindActive: Bool
 	/// moit 알람 리마인드 시간
-	public let notificationRemindOption: String
+	public let notificationRemindOption: String?
 	/// moit 시작 일자 (YYYY-MM-dd)
 	public let startDate: String
 	/// moit 종료 일자 (YYYY-MM-dd)

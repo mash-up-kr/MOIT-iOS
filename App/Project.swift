@@ -11,10 +11,10 @@ import ProjectDescriptionHelpers
 import UtilityPlugin
 
 let project = Project(
-    name: "App",
+    name: "MOIT",
     targets: [
         Target(
-            name: "App",
+            name: "MOIT",
             platform: .iOS,
             product: .app,
             bundleId: "com.chansoo.MOIT",
