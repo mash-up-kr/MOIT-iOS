@@ -15,7 +15,7 @@ struct SignUpRequestDTO: Encodable {
     let nickname: String
     let email: String
     let profileImage: Int
-    let moitInvitationCode: String?
+    var moitInvitationCode: String?
     let fcmToken: String?
     
     init(

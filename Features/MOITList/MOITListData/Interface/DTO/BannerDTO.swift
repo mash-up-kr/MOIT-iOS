@@ -10,20 +10,26 @@ import Foundation
 
 import MOITListDomain
 
-public struct BannerDTO: Codable {
+public struct BannerDTO: Decodable {
     public let attendanceBanners: [AttendanceBannerDTO]
     public let fineBanners: [FineBannerDTO]
     public let defaultBanners: [DefaultBannerDTO]
+    
+    enum CodingKeys: String, CodingKey {
+        case attendanceBanners = "studyAttendanceStartBanners"
+        case fineBanners = "moitUnapprovedFineExistBanners"
+        case defaultBanners = "defaultBanners"
+    }
 }
 
-public struct AttendanceBannerDTO: Codable {
+public struct AttendanceBannerDTO: Decodable {
     let userId: Int
     let moitId: Int
     let moitName: String
     let studyId: Int
-    let studyStartAt: Date
-    let studyLateAt: Date
-    let studyAbsenceAt: Date
+    let studyStartAt: String
+    let studyLateAt: String
+    let studyAbsenceAt: String
     
     public func toBanner() -> Banner {
         Banner.attendence(
@@ -40,7 +46,7 @@ public struct AttendanceBannerDTO: Codable {
     }
 }
 
-public struct FineBannerDTO: Codable {
+public struct FineBannerDTO: Decodable {
     let userId: Int
     let moitId: Int
     let moitName: String
@@ -58,7 +64,7 @@ public struct FineBannerDTO: Codable {
     }
 }
 
-public struct DefaultBannerDTO: Codable {
+public struct DefaultBannerDTO: Decodable {
     let userId: Int
     
     public func toBanner() -> Banner {

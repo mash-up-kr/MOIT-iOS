@@ -30,17 +30,25 @@ public struct AttendenceBanner {
         moitId: Int,
         moitName: String,
         studyId: Int,
-        studyStartAt: Date,
-        studyLateAt: Date,
-        studyAbsenceAt: Date
+        studyStartAt: String,
+        studyLateAt: String,
+        studyAbsenceAt: String
     ) {
         self.userId = userId
         self.moitId = moitId
         self.moitName = moitName
         self.studyId = studyId
-        self.studyStartAt = studyStartAt
-        self.studyLateAt = studyLateAt
-        self.studyAbsenceAt = studyAbsenceAt
+        self.studyStartAt = studyStartAt.toDate()
+        self.studyLateAt = studyLateAt.toDate()
+        self.studyAbsenceAt = studyAbsenceAt.toDate()
+    }
+}
+
+extension String {
+    func toDate() -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return dateFormatter.date(from: self)!
     }
 }
 
