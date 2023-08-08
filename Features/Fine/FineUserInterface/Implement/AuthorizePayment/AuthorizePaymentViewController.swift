@@ -257,7 +257,7 @@ extension AuthorizePaymentViewController: PHPickerViewControllerDelegate {
 			}
 		} else {
 			self.showAlert(
-				message: "에러발생~ 다시 해주세염~",
+				message: "사진을 다시 선택해주세요!",
 				type: .single
 			)
 		}

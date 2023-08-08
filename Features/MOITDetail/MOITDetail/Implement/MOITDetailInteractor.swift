@@ -6,11 +6,14 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import Foundation
+
+import MOITDetail
+import MOITDetailDomain
+import DesignSystem
+
 import RIBs
 import RxSwift
-import MOITDetail
-import Foundation
-import MOITDetailDomain
 import RxRelay
 
 protocol MOITDetailRouting: ViewableRouting {
@@ -30,7 +33,7 @@ protocol MOITDetailPresentable: Presentable {
     func update(infoViewModel: MOITDetailInfosViewModel)
     func showAlert(message: String)
     func shouldLayout()
-	func showToast(message: String)
+	func showToast(message: String, type: MOITToastType)
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
@@ -255,17 +258,32 @@ extension MOITDetailInteractor {
 		router?.detachAuthorizePayment(completion: nil, withPop: true)
 	}
 	
+	/// 스터디원이 벌금 납부 인증 사진 등록 완료했을 때
 	func didSuccessPostFineEvaluate() {
-		// TODO: completion에 toast띄우는거~
-		router?.detachAuthorizePayment(completion: nil, withPop: true)
+		router?.detachAuthorizePayment(completion: { [weak self] in
+			self?.presenter.showToast(
+				message: StringResource.successEvaluateFine.value,
+				type: .success
+			)
+		}, withPop: true)
 	}
 	
+	/// 스터디장이 벌금 납부 승인했을 때
 	func didSuccessAuthorizeFine(isConfirm: Bool) {
 		router?.detachAuthorizePayment(completion: { [weak self] in
 			guard let self else { return }
 			
-			let message = isConfirm ? StringResource.successConfirmFine.value : StringResource.successRejectFine.value
-			self.presenter.showToast(message: message)
+			if isConfirm {
+				self.presenter.showToast(
+					message: StringResource.successConfirmFine.value,
+					type: .success
+				)
+			} else {
+				self.presenter.showToast(
+					message: StringResource.successRejectFine.value,
+					type: .fail
+				)
+			}
 		}, withPop: true)
 	}
 }
