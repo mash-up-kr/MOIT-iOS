@@ -23,7 +23,7 @@ public final class PostMasterAuthorizeUseCaseImpl: PostMasterAuthorizeUseCase {
 		self.repository = repository
 	}
 	
-	public func execute(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool> {
+	public func execute(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool?> {
 		return repository.postAuthorizeFine(moitID: moitID, fineID: fineID, isConfirm: isConfirm)
 	}
 	

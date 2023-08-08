@@ -27,25 +27,27 @@ public final class FineRepositoryImpl: FineRepository {
 		let endPoint = FineEndpoint.fetchFineInfo(moitId: moitID)
 		
 		return network.request(with: endPoint)
+			.compactMap { $0 }.asObservable().asSingle()
 	}
 	
 	public func fetchFineItem(moitID: Int, fineID: Int) -> Single<FineItem> {
 		let endPoint = FineEndpoint.fetchFineItem(moitID: moitID, fineID: fineID)
 		
 		return network.request(with: endPoint)
+			.compactMap { $0 }.asObservable().asSingle()
 	}
 	
-	public func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<Bool> {
+	public func postFineEvaluate(moitID: Int, fineID: Int, data: Data?) -> Single<FineItem?> {
 		let multipartEndpoint = FineEndpoint.postFineEvaluate(moitID: moitID, fineID: fineID, data: data)
 		
 		if let endpoint = multipartEndpoint {
 			return network.request(with: endpoint)
 		} else {
-			return .just(false)
+			return .just(nil)
 		}
 	}
 	
-	public func postAuthorizeFine(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool> {
+	public func postAuthorizeFine(moitID: Int, fineID: Int, isConfirm: Bool) -> Single<Bool?> {
 		let endpoint = FineEndpoint.postAuthorizeFine(
 			moitID: moitID,
 			fineID: fineID,

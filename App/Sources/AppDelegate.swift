@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import UserNotifications
+
+import ResourceKit
+
 import Firebase
 import FirebaseMessaging
 import RIBs
-import UserNotifications
+import Toast
 
 @UIApplicationMain
 final class AppDelegate: UIResponder,
@@ -25,6 +29,9 @@ final class AppDelegate: UIResponder,
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+		
+		setToastStyle()
+		
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
@@ -173,4 +180,17 @@ extension AppDelegate: MessagingDelegate {
     ) {
         print("🤖 Firebase registration token observing: \(String(describing: fcmToken))")
     }
+}
+
+extension AppDelegate {
+	private func setToastStyle() {
+		var style = ToastStyle()
+		style.backgroundColor = ResourceKitAsset.Color.gray800.color
+		style.cornerRadius = 10
+		style.imageSize = CGSize(width: 24, height: 24)
+		style.verticalPadding = 20
+		style.messageFont = ResourceKitFontFamily.p2
+		ToastManager.shared.style = style
+		ToastManager.shared.duration = 5.0
+	}
 }

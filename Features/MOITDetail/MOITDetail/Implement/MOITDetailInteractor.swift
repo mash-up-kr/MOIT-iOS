@@ -6,11 +6,14 @@
 //  Copyright © 2023 chansoo.MOIT. All rights reserved.
 //
 
+import Foundation
+
+import MOITDetail
+import MOITDetailDomain
+import DesignSystem
+
 import RIBs
 import RxSwift
-import MOITDetail
-import Foundation
-import MOITDetailDomain
 import RxRelay
 import FineUserInterface
 import FineDomain
@@ -21,6 +24,9 @@ protocol MOITDetailRouting: ViewableRouting {
     func detachMOITUsers(withPop: Bool)
     func attachMOITShare(code: String)
     func detachMOITShare()
+	func attachFineList(moitID: Int)
+	func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool)
+	func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool)
     @discardableResult
     func attachFineList(moitID: Int) -> FineActionableItem?
 }
@@ -31,11 +37,12 @@ protocol MOITDetailPresentable: Presentable {
     func update(infoViewModel: MOITDetailInfosViewModel)
     func showAlert(message: String)
     func shouldLayout()
+	func showToast(message: String, type: MOITToastType)
 }
 
 final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                                   MOITDetailInteractable,
-                                  MOITDetailPresentableListener {
+								  MOITDetailPresentableListener {
     
     func didTapInfoButton(type: MOITDetailInfoViewButtonType) {
         switch type {
@@ -242,8 +249,79 @@ extension MOITDetailInteractor {
     }
 }
 
-// MARK: - MOITDetailActionableItem
+// MARK: - FineListListener
+extension MOITDetailInteractor {
+	func fineListViewDidTap(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	) {
+		router?.attachAuthorizePayment(
+			moitID: moitID,
+			fineID: fineID,
+			isMaster: isMaster
+		)
+	}
+	
+	func authorizePaymentDidSwipeBack() {
+		router?.detachAuthorizePayment(completion: nil, withPop: false)
+	}
+	
+	func authorizePaymentDismissButtonDidTap() {
+		router?.detachAuthorizePayment(completion: nil, withPop: true)
+	}
+	
+	/// 스터디원이 벌금 납부 인증 사진 등록 완료했을 때
+	func didSuccessPostFineEvaluate() {
+		router?.detachAuthorizePayment(completion: { [weak self] in
+			self?.presenter.showToast(
+				message: StringResource.successEvaluateFine.value,
+				type: .success
+			)
+		}, withPop: true)
+	}
+	
+	/// 스터디장이 벌금 납부 승인했을 때
+	func didSuccessAuthorizeFine(isConfirm: Bool) {
+		router?.detachAuthorizePayment(completion: { [weak self] in
+			guard let self else { return }
+			
+			if isConfirm {
+				self.presenter.showToast(
+					message: StringResource.successConfirmFine.value,
+					type: .success
+				)
+			} else {
+				self.presenter.showToast(
+					message: StringResource.successRejectFine.value,
+					type: .fail
+				)
+			}
+		}, withPop: true)
+	}
+}
 
+extension MOITDetailInteractor {
+	enum StringResource {
+		case successConfirmFine
+		case successRejectFine
+		case successEvaluateFine
+		
+		var value: String {
+			switch self {
+			case .successConfirmFine:
+				return "납부 완료 확인이 완료되었어요!"
+			case .successRejectFine:
+				// TODO: 닉네임 받아야함
+				return "김모잇님께 납부 요청 알림이 다시 갔어요!"
+			case .successEvaluateFine:
+				return "벌금 납부 인증이 업로드되었어요!"
+			}
+		}
+	}
+}
+
+// MARK: - MOITDetailActionableItem
 extension MOITDetailInteractor: MOITDetailActionableItem {
     func routeToFine() -> Observable<(FineActionableItem, ())> {
         if let actionableItem = self.router?.attachFineList(moitID: Int(self.moitID) ?? 0) {

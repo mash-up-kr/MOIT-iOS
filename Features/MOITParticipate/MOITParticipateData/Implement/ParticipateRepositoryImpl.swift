@@ -27,5 +27,6 @@ public final class ParticipateRepositoryImpl: ParticipateRepository {
 	) -> Single<ParticipateResponseDTO> {
 		let endpoint = ParticipateEndpoint.postParticipateCode(with: request)
 		return network.request(with: endpoint)
+			.compactMap { $0 }.asObservable().asSingle()
 	}
 }

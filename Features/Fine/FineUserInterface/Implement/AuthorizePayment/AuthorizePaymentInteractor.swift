@@ -12,6 +12,7 @@ import FineUserInterface
 import FineDomain
 import MOITDetailDomain
 import DesignSystem
+import MOITFoundation
 
 import RIBs
 import RxSwift
@@ -43,6 +44,7 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
     weak var listener: AuthorizePaymentListener?
 	
 	private let dependency: AuthorizePaymentInteractorDependency
+	private var isMyFine: Bool?
 
     init(
 		presenter: AuthorizePaymentPresentable,
@@ -73,12 +75,10 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		.compactMap { [weak self] entity -> AuthorizePaymentViewModel? in
 			return self?.convertFineItemEntityToViewModel(entity: entity)
 		}
+		.observe(on: MainScheduler.instance)
 		.subscribe(
 			onSuccess: { [weak self] viewModel in
 				self?.presenter.configure(viewModel)
-			},
-			onDisposed: {
-				debugPrint("this subscription has terminated!!!!")
 			}
 		)
 		.disposeOnDeactivate(interactor: self)
@@ -89,14 +89,15 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 	) -> AuthorizePaymentViewModel {
 		
 		let isMyFine = dependency.compareUserIDUseCase.execute(with: entity.userID)
-		let buttonTitle = (isMyFine && entity.fineApproveStatus == .inProgress) ? "사진 재등록하기" : nil
+		self.isMyFine = isMyFine
+		let buttonTitle = (isMyFine && [FineApproveStatus.inProgress, FineApproveStatus.rejected].contains(where: { $0 == entity.fineApproveStatus })) ? "사진 재등록하기" : nil
 		
 		return AuthorizePaymentViewModel(
 			isMaster: dependency.isMaster,
 			imageURL: entity.imageURL,
 			imageFile: nil,
 			fineID: entity.id,
-			fineAmount: "\(entity.fineAmount)원", // TODO: numberFormatter 필요
+			fineAmount: "\(entity.fineAmount.toDecimalString)원",
 			chipType: dependency.convertAttendanceStatusUseCase.execute(attendanceStatus: entity.attendanceStatus),
 			userNickName: entity.userNickname,
 			studyOrder: entity.studyOrder,
@@ -115,29 +116,43 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		fetchData()
 	}
 	
+	func didSwipeBack() {
+		listener?.authorizePaymentDidSwipeBack()
+	}
+	
 	func authorizeButtonDidTap(with data: Data?) {
-		dependency.postFineEvaluateUseCase.execute(
-			moitID: dependency.moitID,
-			fineID: dependency.fineID,
-			data: data
-		)
-		.subscribe(
-			onSuccess: { [weak self] _ in
-				self?.listener?.didSuccessPostFineEvaluate()
-			},
-			onFailure: { [weak self] _ in
-				self?.presenter.showErrorToast()
-			}
-		)
-		.disposeOnDeactivate(interactor: self)
+		if let isMyFine, dependency.isMaster && isMyFine {
+			masterAuthorizeFine(isConfirm: true)
+		} else {
+			dependency.postFineEvaluateUseCase.execute(
+				moitID: dependency.moitID,
+				fineID: dependency.fineID,
+				data: data
+			)
+			.observe(on: MainScheduler.instance)
+			.subscribe(
+				onSuccess: { [weak self] _ in
+					self?.listener?.didSuccessPostFineEvaluate()
+				},
+				onFailure: { [weak self] _ in
+					self?.presenter.showErrorToast()
+				}
+			)
+			.disposeOnDeactivate(interactor: self)
+		}
 	}
 	
 	func masterAuthorizeButtonDidTap(isConfirm: Bool) {
+		masterAuthorizeFine(isConfirm: isConfirm)
+	}
+	
+	private func masterAuthorizeFine(isConfirm: Bool) {
 		dependency.postMasterAuthorizeUseCase.execute(
 			moitID: dependency.moitID,
 			fineID: dependency.fineID,
 			isConfirm: isConfirm
 		)
+		.observe(on: MainScheduler.instance)
 		.subscribe(
 			onSuccess: { [weak self] _ in
 				self?.listener?.didSuccessAuthorizeFine(isConfirm: isConfirm)

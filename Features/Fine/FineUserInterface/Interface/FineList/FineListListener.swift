@@ -8,4 +8,10 @@
 
 import RIBs
 
-public protocol FineListListener: AnyObject { }
+public protocol FineListListener: AnyObject {
+	func fineListViewDidTap(
+		moitID: Int,
+		fineID: Int,
+		isMaster: Bool
+	)
+}

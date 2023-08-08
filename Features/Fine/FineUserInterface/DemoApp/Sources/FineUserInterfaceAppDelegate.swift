@@ -25,6 +25,8 @@ import RIBs
 final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	private final class MockFineDependency: FineListDependency {
+		var postFineEvaluateUseCase: PostFineEvaluateUseCase
+		var postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase
 		var compareUserIDUseCase: CompareUserIDUseCase
 		var fetchFineInfoUseCase: FetchFineInfoUseCase
 		var filterMyFineListUseCase: FilterMyFineListUseCase
@@ -36,17 +38,25 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 			compareUserIDUseCase: CompareUserIDUseCase,
 			filterMyFineListUseCase: FilterMyFineListUseCase,
 			fetchFineItemUseCase: FetchFineItemUseCase,
-			convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase
+			convertAttendanceStatusUseCase: ConvertAttendanceStatusUseCase,
+			postFineEvaluateUseCase: PostFineEvaluateUseCase,
+			postMasterAuthorizeUseCase: PostMasterAuthorizeUseCase
 		) {
 			self.fetchFineInfoUseCase = fetchFineInfoUseCase
 			self.compareUserIDUseCase = compareUserIDUseCase
 			self.filterMyFineListUseCase = filterMyFineListUseCase
 			self.fetchFineItemUseCase = fetchFineItemUseCase
 			self.convertAttendanceStatusUseCase = convertAttendanceStatusUseCase
+			self.postFineEvaluateUseCase = postFineEvaluateUseCase
+			self.postMasterAuthorizeUseCase = postMasterAuthorizeUseCase
 		}
 	}
 	
-	private final class MockFineListener: FineListListener { }
+	private final class MockFineListener: FineListListener {
+		func fineListViewDidTap(moitID: Int, fineID: Int, isMaster: Bool) {
+			//
+		}
+	}
 	
     var window: UIWindow?
 	
@@ -60,6 +70,8 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 		let filterMyFineListUseCase = FilterMyFineListUseCaseImpl(tokenManager: TokenManagerImpl())
 		let fetchFineItemUseCase = FetchFineItemUseCaseImpl(fineRepository: FineRepositoryImpl(network: NetworkImpl()))
 		let convertAttendanceStatusUseCase = ConvertAttendanceStatusUseCaseImpl()
+		let postFineEvaluateUseCase = PostFineEvaluateUseCaseImpl(repository: FineRepositoryImpl(network: NetworkImpl()))
+		let postMasterAuthorizeUseCase = PostMasterAuthorizeUseCaseImpl(repository: FineRepositoryImpl(network: NetworkImpl()))
 		
 		router = FineListBuilder(
 			dependency: MockFineDependency(
@@ -67,7 +79,9 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
 				compareUserIDUseCase: compareUserIDUseCase,
 				filterMyFineListUseCase: filterMyFineListUseCase,
 				fetchFineItemUseCase: fetchFineItemUseCase,
-				convertAttendanceStatusUseCase: convertAttendanceStatusUseCase
+				convertAttendanceStatusUseCase: convertAttendanceStatusUseCase,
+				postFineEvaluateUseCase: postFineEvaluateUseCase,
+				postMasterAuthorizeUseCase: postMasterAuthorizeUseCase
 			)
 		)
 			.build(withListener: MockFineListener(), moitID: 2)
@@ -81,164 +95,3 @@ final class FineAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
-
-// TODO: 추후 삭제
-//	fileprivate let myDefaulterList = [
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 15000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .late,
-//				studyOrder: 3,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 20000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .absent,
-//				studyOrder: 4,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 15000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .late,
-//				studyOrder: 3,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 15000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .late,
-//				studyOrder: 3,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 15000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .late,
-//				studyOrder: 3,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		),
-//		FineList(
-//			fineItem: FineItem(
-//				id: 0,
-//				fineAmount: 15000,
-//				userID: 0,
-//				userNickname: "전자군단대장",
-//				attendanceStatus: .late,
-//				studyOrder: 3,
-//				isApproved: false,
-//				approveAt: ""
-//			)
-//		)
-//	]
-

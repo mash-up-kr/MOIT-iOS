@@ -24,7 +24,7 @@ final class PaymentCompletedFineListView: MOITList {
 		super.init(
 			type: .myMoney,
 			title: fineViewModel.useNickName,
-			detail: "\(fineViewModel.approvedDate)원",
+			detail: "\(fineViewModel.approvedDate)",
 			chipType: fineViewModel.chipType,
 			fine: fineViewModel.fineAmount
 		)

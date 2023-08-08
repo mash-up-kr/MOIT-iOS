@@ -26,6 +26,7 @@ public final class UserRepositoryImpl: UserRepository {
 	public func fetchUserInfo() -> Single<UserInfoDTO> {
 		let endpoint = UserEndpoint.fetchUserInfo()
 		return network.request(with: endpoint)
+			.compactMap { $0 }.asObservable().asSingle()
 	}
     
     public func withdraw() -> Single<Void> {

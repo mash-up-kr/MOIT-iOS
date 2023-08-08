@@ -19,6 +19,7 @@ import PinLayout
 protocol FineListPresentableListener: AnyObject {
 	func fineListDidTap(fineID: Int)
 	func viewDidLoad()
+	func viewWillAppear()
 }
 
 final class FineListViewController: UIViewController, FineListPresentable, FineListViewControllable {
@@ -75,6 +76,11 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		flexRootContainer.flex.layout()
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		listener?.viewWillAppear()
+	}
+	
 // MARK: - private
 	
 	private func configureView() {
@@ -120,10 +126,6 @@ final class FineListViewController: UIViewController, FineListPresentable, FineL
 		fineAmountLabel.flex.markDirty()
 		fineListScrollView.flex.markDirty()
 		self.view.setNeedsLayout()
-	}
-	
-	func showToast(message: String) {
-		print("message: \(message)")
 	}
 }
 

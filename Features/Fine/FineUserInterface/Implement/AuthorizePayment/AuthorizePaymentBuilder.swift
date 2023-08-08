@@ -41,12 +41,14 @@ final class AuthorizePaymentComponent: Component<AuthorizePaymentDependency>, Au
 
 // MARK: - Builder
 
-final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, AuthorizePaymentBuildable {
+public final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>, AuthorizePaymentBuildable {
 
-    override init(dependency: AuthorizePaymentDependency) {
+    public override init(dependency: AuthorizePaymentDependency) {
         super.init(dependency: dependency)
     }
 
+
+  // TODO: AuthorizePayment 
     func build(
         withListener listener: AuthorizePaymentListener,
         moitID: Int,
