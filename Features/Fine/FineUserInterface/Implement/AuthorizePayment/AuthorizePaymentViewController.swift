@@ -17,6 +17,7 @@ import RxSwift
 import FlexLayout
 import PinLayout
 import Kingfisher
+import Toast
 
 protocol AuthorizePaymentPresentableListener: AnyObject {
 	func dismissButtonDidTap()
@@ -150,7 +151,11 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 	}
 	
 	func showErrorToast() {
-		print("에러 발생....ㅜㅜ")
+		let errorToastView = MOITToast(toastType: .fail, text: "에러가 발생했습니다! 다시 시도해주세요,.")
+		self.view.showToast(
+			errorToastView,
+			position: .bottom
+		)
 	}
 	
 // MARK: - private
