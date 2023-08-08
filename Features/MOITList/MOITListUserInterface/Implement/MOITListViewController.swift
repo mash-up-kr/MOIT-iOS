@@ -125,7 +125,15 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         super.viewDidLayoutSubviews()
         
         self.flexRootView.pin.all()
-        self.scrollView.contentSize = contentView.frame.size
+        
+        contentView.pin.top().horizontally().bottom()
+        self.contentView.flex.layout(mode: .adjustHeight)
+        
+        self.scrollView.pin.all()
+        contentView.flex.layout(mode: .adjustHeight)
+        
+        self.flexRootView.flex.layout()
+        self.scrollView.contentSize = self.contentView.frame.size
     }
     
     override func loadView() {
@@ -152,12 +160,14 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
             .define { flex in
                 flex.addItem(self.scrollView)
                     .position(.absolute)
-                    .height(UIScreen.main.bounds.height)
+                    .height(100%)
                     .width(100%)
+                    .backgroundColor(.red)
                     
                 flex.addItem(self.navigationBar)
                     .height(56)
-                    .marginTop(56)
+                    .width(100%)
+                    .marginTop(self.view.safeAreaInsets.top + 56)
             }
         
         self.scrollView.flex
@@ -215,7 +225,7 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         moitCountLabel.flex.markDirty()
         listRootView.flex.layout()
         flexRootView.flex.layout()
-
+        flexRootView.setNeedsLayout()
     }
     
     private func bind() {
@@ -266,9 +276,17 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         
         moitCountLabel.text = moitList.count.description
         moitCountLabel.flex.markDirty()
-        listRootView.subviews.forEach { $0.removeFromSuperview() }
-        if !moitList.isEmpty {
-            emptyMOITView.flex.display(.none)
+        
+        listRootView.subviews.forEach { $0.removeFromSuperview()}
+
+        listRootView.flex.layout()
+        
+        if moitList.isEmpty {
+            listRootView.flex.define { flex in
+                flex.addItem(emptyMOITView)
+                    .height(108)
+                    .width(100%)
+            }
         }
         
         // TODO: - studypreview 모아서 저장해두고 걔를 additem
@@ -286,12 +304,13 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         
         bindPreviewList()
         listRootView.flex.markDirty()
-        listRootView.flex.layout()
-        flexRootView.flex.layout()
+        listRootView.flex.layout(mode: .adjustHeight)
+        flexRootView.flex.layout(mode: .adjustHeight)
     }
     
     private func bindPreviewList() {
         print("moitPreviewList: \(moitPreviewList)")
+        
         moitPreviewList.enumerated().forEach { index, preview in
             // 탭
             preview.rx.didTap
@@ -312,17 +331,20 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
     }
     
     func didReceiveAlarm(alarms: [AlarmViewModel]) {
+        if alarms.count == 1 {
+            return
+        }
         
         self.pagableAlarmView.configure(alarmViewModels: alarms)
-        
+
         alarmRootView.flex.define { flex in
             flex.addItem(pagableAlarmView)
         }
-        
+
         // TODO: - flexRootView.flex.layout만 해도 레이아웃 잡히는지 실 데이터 받을 때 확인
-//        pagableAlarmView.flex.markDirty()
-//        alarmRootView.flex.markDirty()
-        flexRootView.flex.layout()
+        moitCountLabel.flex.markDirty()
+        alarmRootView.flex.layout(mode: .adjustHeight)
+        flexRootView.flex.layout(mode: .adjustHeight)
     }
     
 }
