@@ -35,9 +35,6 @@ final class FineWorkflow: Workflow<RootActionableItem> {
             guard let self else { return .empty() }
             return listActionableItem.routeToDetail(id: self.moitID)
         })
-        .onStep { [weak self] detailActionableItem, _ -> Observable<(FineActionableItem, ())> in
-            return detailActionableItem.routeToFine()
-        }
         .onStep({ [weak self] fineActionableItem, _ -> Observable<(AuthorizePaymentActionableItem, ())> in
             guard let self else { return .empty() }
             return fineActionableItem.routeToAuthorizePayment(

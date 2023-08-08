@@ -20,15 +20,18 @@ import FineDomain
 
 protocol MOITDetailRouting: ViewableRouting {
     func attachAttendance(moitID: String)
+    
     func attachMOITUsers(moitID: String)
     func detachMOITUsers(withPop: Bool)
+    
     func attachMOITShare(code: String)
     func detachMOITShare()
-	func attachFineList(moitID: Int)
-	func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool)
-	func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool)
+    
     @discardableResult
-    func attachFineList(moitID: Int) -> FineActionableItem?
+    func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool) -> AuthorizePaymentActionableItem?
+    func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool)
+    
+    func attachFineList(moitID: Int)
 }
 
 protocol MOITDetailPresentable: Presentable {
@@ -81,6 +84,7 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
     private let isMasterUsecase: CompareUserIDUseCase
     private let moitID: String
     private let isMasterRelay: PublishRelay<Bool>
+    private var isMaster: Bool = false
     
     private var scheduleDescription: String?
     private var longRuleDescription: String?
@@ -123,7 +127,9 @@ final class MOITDetailInteractor: PresentableInteractor<MOITDetailPresentable>,
                 self.shortRuleDescription = $0.ruleShortDescription
                 self.periodDescription = $0.periodDescription
                 self.invitationCode = $0.invitationCode
+                
                 let isMaster = self.isMasterUsecase.execute(with: Int($0.masterID) ?? 0)
+                self.isMaster = isMaster
                 self.isMasterRelay.accept(isMaster)
             })
             .observe(on: MainScheduler.instance)
@@ -323,8 +329,12 @@ extension MOITDetailInteractor {
 
 // MARK: - MOITDetailActionableItem
 extension MOITDetailInteractor: MOITDetailActionableItem {
-    func routeToFine() -> Observable<(FineActionableItem, ())> {
-        if let actionableItem = self.router?.attachFineList(moitID: Int(self.moitID) ?? 0) {
+    func routeToAuthorizePayment(moitID: String, fineID: String) -> Observable<(AuthorizePaymentActionableItem, ())> {
+        if let actionableItem = self.router?.attachAuthorizePayment(
+            moitID: Int(moitID) ?? 0,
+            fineID: Int(fineID) ?? 0,
+            isMaster: self.isMaster
+        ) {
             return Observable.just((actionableItem, ()))
         } else { fatalError() }
     }

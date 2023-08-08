@@ -11,5 +11,5 @@ import FineUserInterface
 import RxSwift
 
 public protocol MOITDetailActionableItem: AnyObject {
-    func routeToFine() -> Observable<(FineActionableItem, ())>
+    func routeToAuthorizePayment(moitID: String, fineID: String) -> Observable<(AuthorizePaymentActionableItem, ())>
 }

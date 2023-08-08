@@ -17,9 +17,6 @@ import ResourceKit
 import MOITFoundation
 
 protocol FineListRouting: ViewableRouting {
-    @discardableResult
-    func attachAuthorizePayment(moitID: Int, fineID: Int, isMaster: Bool) -> AuthorizePaymentActionableItem?
-    func detachAuthorizePayment(completion: (() -> Void)?)
 }
 
 protocol FineListPresentable: Presentable {
@@ -272,19 +269,5 @@ extension FineListInteractor {
                 return "벌금 납부 인증이 업로드되었어요!"
             }
         }
-    }
-}
-
-// MARK: - FineActionableItem
-
-extension FineListInteractor: FineActionableItem {
-    func routeToAuthorizePayment(moitID: String, fineID: String) -> Observable<(AuthorizePaymentActionableItem, ())> {
-        if let actionableItem = self.router?.attachAuthorizePayment(
-            moitID: Int(moitID) ?? 0,
-            fineID: Int(fineID) ?? 0,
-            isMaster: isMaster
-        ) {
-            return Observable.just((actionableItem, ()))
-        } else { fatalError() }
     }
 }

@@ -109,50 +109,48 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
         self.viewController.uiviewController.dismiss(animated: true)
     }
     
-    private var fineActionableItem: FineActionableItem?
-    @discardableResult
-	func attachFineList(moitID: Int) -> FineActionableItem? {
-        guard fineListRouter == nil else { return self.fineActionableItem }
+    private let fineListBuilder: FineListBuildable
+    private var fineListRouter: ViewableRouting?
+    
+	func attachFineList(moitID: Int) {
+        guard fineListRouter == nil else { return }
 		
-		let (router, interactor) = fineListBuilder.build(
+		let router = fineListBuilder.build(
 			withListener: interactor,
 			moitID: moitID
 		)
-        fineActionableItem = interactor
 		fineListRouter = router
 		attachChild(router)
 		viewController.addChild(viewController: router.viewControllable)
-        return interactor
 	}
 
 	// MARK: - AuthorizePayment
 	
 	private let authorizePaymentBuilder: AuthorizePaymentBuildable
-	private var authorizePaymentRouter: ViewableRouting?
-	
+	private var authorizePaymentRouters: [ViewableRouting] = []
+    
+    @discardableResult
 	func attachAuthorizePayment(
 		moitID: Int,
 		fineID: Int,
 		isMaster: Bool
-	) {
-		if authorizePaymentRouter != nil { return }
-		
-		let router = authorizePaymentBuilder.build(
+	) -> AuthorizePaymentActionableItem? {
+		let (router, interactor) = authorizePaymentBuilder.build(
 			withListener: interactor,
 			moitID: moitID,
 			fineID: fineID,
 			isMaster: isMaster
 		)
-		authorizePaymentRouter = router
+        authorizePaymentRouters.append(router)
 		attachChild(router)
 		
 		self.viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+        return interactor
 	}
 	
 	func detachAuthorizePayment(completion: (() -> Void)?, withPop: Bool) {
-		guard let router = authorizePaymentRouter else { return }
+        guard let router = authorizePaymentRouters.popLast() else { return }
 		
-		authorizePaymentRouter = nil
 		detachChild(router)
 		
 		if withPop {

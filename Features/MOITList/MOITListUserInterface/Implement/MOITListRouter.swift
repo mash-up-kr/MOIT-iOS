@@ -15,7 +15,7 @@ import MOITParticipateUserInterface
 import MOITSetting
 import MOITAlarm
 import Utils
-
+import Foundation
 import RIBs
 
 protocol MOITListInteractable: Interactable,
@@ -75,6 +75,7 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }
     }
+    
     private func getKeyboardHeight() -> CGFloat {
         guard let height = UserDefaults.standard.object(forKey: "keyboardHeight") as? CGFloat else {
             return 301
@@ -176,17 +177,7 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         settingRouter = router
         attachChild(router)
         viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
-		
-// 서영이 웹뷰 테스트용 ><
-//        guard moitWebRouter == nil else { return }
-//        let router = moitWebBuilder.build(
-//            withListener: interactor,
-//            domain: .frontend,
-//            path: .attendance(keyboardHeight: getKeyboardHeight())
-//        )
-//        self.moitWebRouter = router
-//        attachChild(router)
-//        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController, animated: true)
+
     }
     func detachSetting(withPop: Bool) {
         guard let settingRouter else { return }
@@ -195,14 +186,6 @@ final class MOITListRouter: ViewableRouter<MOITListInteractable, MOITListViewCon
         if withPop {
             viewController.uiviewController.navigationController?.popViewController(animated: true)
         }
-		
-// 서영이 웹뷰 테스트용 ><
-//        guard let moitWebRouter else { return }
-//        self.moitWebRouter = nil
-//        detachChild(moitWebRouter)
-//        if withPop {
-//            viewController.uiviewController.navigationController?.popViewController(animated: true)
-//        }
     }
 	
 	private let alarmBuilder: MOITAlarmBuildable

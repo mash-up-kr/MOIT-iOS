@@ -338,24 +338,3 @@ extension MOITListInteractor: MOITListActionableItem {
         } else { fatalError() }
     }
 }
-
-// MARK: - MOITListActionableItem
-extension MOITListInteractor: MOITListActionableItem {
-    func routeToDetail(id: String) -> Observable<(MOITDetailActionableItem, ())> {
-        if let actionableItem = self.router?.attachMOITDetail(id: id) {
-            return Observable.just((actionableItem, ()))
-        } else { fatalError() }
-    }
-    
-    func routeToMOITAttendance(id: String) -> Observable<(MOITWebActionableItem, ())> {
-        if let actionableItem = self.router?.attachMOITAttendance(id: id) {
-            return Observable.just((actionableItem, ()))
-        } else { fatalError() }
-    }
-    
-    func routeToAttendanceResult(id: String) -> Observable<(MOITWebActionableItem, ())> {
-        if let actionableItem = self.router?.attachMOITAttendanceResult(id: id) {
-            return Observable.just((actionableItem, ()))
-        } else { fatalError() }
-    }
-}

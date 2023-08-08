@@ -8,8 +8,6 @@
 
 import Foundation
 
-import MOITNetwork
-
 import RxSwift
 
 public protocol MOITAlarmRepository {

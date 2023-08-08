@@ -19,51 +19,11 @@ protocol FineListViewControllable: ViewControllable { }
 
 final class FineListRouter: ViewableRouter<FineListInteractable, FineListViewControllable>, FineListRouting {
 
-	private let authorizePaymentBuildable: AuthorizePaymentBuildable
-	private var authorizePaymentRouters: [ViewableRouting] = []
-	
-    init(
-		authorizePaymentBuildable: AuthorizePaymentBuildable,
+    override init(
 		interactor: FineListInteractable,
 		viewController: FineListViewControllable
 	) {
-		self.authorizePaymentBuildable = authorizePaymentBuildable
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
-
-    @discardableResult
-	func attachAuthorizePayment(
-		moitID: Int,
-		fineID: Int,
-		isMaster: Bool
-	) -> AuthorizePaymentActionableItem? {
-		let (router, interactor) = authorizePaymentBuildable.build(
-			withListener: interactor,
-			moitID: moitID,
-			fineID: fineID,
-			isMaster: isMaster
-		)
-		let viewController = router.viewControllable.uiviewController
-		viewController.modalPresentationStyle = .fullScreen
-		viewControllable.uiviewController.present(viewController, animated: true)
-	
-        authorizePaymentRouters.append(router)
-		attachChild(router)
-        return interactor
-	}
-	
-	func detachAuthorizePayment(completion: (() -> Void)?) {
-        guard let router = authorizePaymentRouters.popLast() else { return }
-		
-		viewControllable.uiviewController.dismiss(
-			animated: true,
-			completion: {
-				if let completion {
-					completion()
-				}
-			}
-		)
-		detachChild(router)
-	}
 }

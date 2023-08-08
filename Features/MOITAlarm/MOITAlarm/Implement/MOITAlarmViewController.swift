@@ -46,18 +46,6 @@ final class MOITAlarmViewController: UIViewController,
 	private let disposeBag = DisposeBag()
     
     private var items: [MOITAlarmCollectionViewCellItem] = [
-//        MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이댜fealfijaelfieajhlfiajflieglaigjaleigaeligalghelighagleiglaihgeilhglei러미랴더ㅣ랴ㅓㅁ랴ㅣㄷㅁ너리먀ㅓ랴ㅣㄷ러미ㅑㄷ러미ㅑ럼디ㅑ럼디이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: false, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: false, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: false, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: false, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: false, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: true, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: ""),
-//        MOITAlarmCollectionViewCellItem(isRead: false, title: "일번알림", description: "일번알림미이이이이이이이이이", urlScheme: "")
     ]
     weak var listener: MOITAlarmPresentableListener?
     
