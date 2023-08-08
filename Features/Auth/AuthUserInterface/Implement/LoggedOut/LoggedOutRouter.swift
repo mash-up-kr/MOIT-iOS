@@ -53,7 +53,7 @@ extension LoggedOutRouter {
     func attachSignInWeb() {
         if signInWebRouting != nil { return }
         
-        let router = signInWebBuildable.build(
+        let (router, _) = signInWebBuildable.build(
             withListener: interactor,
             domain: .backend,
             path: .signIn

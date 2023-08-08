@@ -8,16 +8,13 @@
 
 import UIKit
 import WebKit
-
 import CSLogger
 import Utils
-
 import RIBs
 import RxSwift
-
 import DesignSystem
 import Toast
-
+import TokenManagerImpl
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
@@ -68,7 +65,9 @@ extension MOITWebViewController {
         webView.uiDelegate = self
 		webView.navigationDelegate = self
         self.view.addSubview(webView)
-
+//        if #available(iOS 16.4, *) {
+//            webView.isInspectable = true
+//        } 
         guard let url = URL(string: "\(domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
         webView.load(URLRequest)
@@ -84,7 +83,7 @@ extension MOITWebViewController {
             .domain: "dev-moit-web.vercel.app",
             .path: path,
             .name: "accessToken",
-            .value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqd3QtdXNlci3shJzrpqwiLCJhdWQiOiJhcHBsZXx6MjJraDd0OTY2QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbXwyM3zshJzrpqwiLCJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vbWFzaC11cC1rci9NT0lULWJhY2tlbmQiLCJpYXQiOjE2OTA2NTQxNDIsImV4cCI6MTY5MzI0NjE0MiwiaW5mbyI6eyJpZCI6MjMsInByb3ZpZGVyVW5pcXVlS2V5IjoiYXBwbGV8ejIya2g3dDk2NkBwcml2YXRlcmVsYXkuYXBwbGVpZC5jb20iLCJuaWNrbmFtZSI6IuyEnOumrCIsInByb2ZpbGVJbWFnZSI6MCwiZW1haWwiOiJzdHJpbmciLCJyb2xlcyI6WyJVU0VSIl19fQ.aOCBK2wzqwsyjQAo9W3VFHEbHa-7mGQqb1yZaBi1JO0"
+            .value: "\(TokenManagerImpl().get(key: .authorizationToken) ?? "")"
         ])
     }
     

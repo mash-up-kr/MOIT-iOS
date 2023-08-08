@@ -17,8 +17,8 @@ import FineUserInterfaceImpl
 import FineDomain
 import MOITShareImpl
 import MOITShare
-
 import RIBs
+import RxRelay
 
 final class MOITDetailComponent: Component<MOITDetailDependency>,
                                  MOITDetailAttendanceDependency,
@@ -41,6 +41,8 @@ final class MOITDetailComponent: Component<MOITDetailDependency>,
 	var postFineEvaluateUseCase: PostFineEvaluateUseCase {
 		dependency.postFineEvaluateUseCase
 	}
+    fileprivate let isMasterRelay = PublishRelay<Bool>()
+    var isMasterUsecase: CompareUserIDUseCase { compareUserIDUseCase }
 }
 
 // MARK: - Builder
@@ -55,7 +57,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
     public func build(
         withListener listener: MOITDetailListener,
         moitID: String
-    ) -> ViewableRouting {
+    ) -> (router: ViewableRouting, actionableItem: MOITDetailActionableItem) {
         
         let component = MOITDetailComponent(dependency: dependency)
         let viewController = MOITDetailViewController()
@@ -64,7 +66,9 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
             moitID: moitID,
             tabTypes: [.attendance, .fine],
             presenter: viewController,
-            detailUsecase: component.moitDetailUsecase
+            detailUsecase: component.moitDetailUsecase,
+            isMasterUsecase: component.isMasterUsecase,
+            isMasterRelay: component.isMasterRelay
         )
         interactor.listener = listener
         
@@ -74,7 +78,7 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
         let shareBuilder = ShareBuilder(dependency: component)
 		let authorizePaymentBuilder = AuthorizePaymentBuilder(dependency: component)
         
-        return MOITDetailRouter(
+        let router = MOITDetailRouter(
             interactor: interactor,
             viewController: viewController,
             attendanceBuiler: attendanceBuiler,
@@ -83,5 +87,6 @@ public final class MOITDetailBuilder: Builder<MOITDetailDependency>,
 			shareBuilder: shareBuilder,
 			authorizePaymentBuilder: authorizePaymentBuilder
         )
+        return (router, interactor)
     }
 }

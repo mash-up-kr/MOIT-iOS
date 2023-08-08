@@ -14,5 +14,5 @@ public protocol AuthorizePaymentBuildable: Buildable {
 		moitID: Int,
 		fineID: Int,
 		isMaster: Bool
-	) -> ViewableRouting
+    ) -> (router: ViewableRouting, actionableItem: AuthorizePaymentActionableItem)
 }

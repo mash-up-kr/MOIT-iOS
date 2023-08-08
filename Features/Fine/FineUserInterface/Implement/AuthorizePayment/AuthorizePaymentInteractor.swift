@@ -164,3 +164,7 @@ final class AuthorizePaymentInteractor: PresentableInteractor<AuthorizePaymentPr
 		.disposeOnDeactivate(interactor: self)
 	}
 }
+
+// MARK: - AuthorizePaymentActionableItem
+extension AuthorizePaymentInteractor: AuthorizePaymentActionableItem {
+}

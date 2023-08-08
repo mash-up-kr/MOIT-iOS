@@ -47,12 +47,14 @@ public final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>,
         super.init(dependency: dependency)
     }
 
-    public func build(
-		withListener listener: AuthorizePaymentListener,
-		moitID: Int,
-		fineID: Int,
-		isMaster: Bool
-	) -> ViewableRouting {
+
+  // TODO: AuthorizePayment 
+    func build(
+        withListener listener: AuthorizePaymentListener,
+        moitID: Int,
+        fineID: Int,
+        isMaster: Bool
+    ) -> (router: ViewableRouting, actionableItem: AuthorizePaymentActionableItem) {
         let component = AuthorizePaymentComponent(
 			dependency: dependency,
 			fineID: fineID,
@@ -65,6 +67,10 @@ public final class AuthorizePaymentBuilder: Builder<AuthorizePaymentDependency>,
 			dependency: component
 		)
         interactor.listener = listener
-        return AuthorizePaymentRouter(interactor: interactor, viewController: viewController)
+        let router = AuthorizePaymentRouter(
+            interactor: interactor,
+            viewController: viewController
+        )
+        return (router, interactor)
     }
 }

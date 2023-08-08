@@ -116,14 +116,31 @@ final class MOITDetailRouter: ViewableRouter<MOITDetailInteractable, MOITDetailV
 	
 	func attachFineList(moitID: Int) {
 		guard fineListRouter == nil else { return }
-		
-		let router = fineListBuilder.build(
+    let (router, interactor) = fineListBuilder.build(
 			withListener: interactor,
 			moitID: moitID
 		)
+        fineActionableItem = interactor
 		fineListRouter = router
 		attachChild(router)
 		viewController.addChild(viewController: router.viewControllable)
+        return interactor
+	}
+
+    private var fineActionableItem: FineActionableItem?
+    @discardableResult
+	func attachFineList(moitID: Int) -> FineActionableItem? {
+        guard fineListRouter == nil else { return self.fineActionableItem }
+		
+		let (router, interactor) = fineListBuilder.build(
+			withListener: interactor,
+			moitID: moitID
+		)
+        fineActionableItem = interactor
+		fineListRouter = router
+		attachChild(router)
+		viewController.addChild(viewController: router.viewControllable)
+        return interactor
 	}
 	
 	// MARK: - AuthorizePayment

@@ -80,7 +80,6 @@ extension LoggedOutInteractor {
         self.router?.detachSignInWeb()
         dependency.saveTokenUseCase.execute(token: token)
         dependency.fetchUserInfoUseCase.execute()
-            .debug(":")
             .do(onSuccess: { [weak self] entity in
                 self?.dependency.saveUserIDUseCase.execute(userID: entity.userID)
             })

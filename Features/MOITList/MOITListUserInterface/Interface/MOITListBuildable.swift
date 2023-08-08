@@ -9,5 +9,5 @@
 import RIBs
 
 public protocol MOITListBuildable: Buildable {
-    func build(withListener listener: MOITListListener) -> ViewableRouting
+    func build(withListener listener: MOITListListener) -> (ViewableRouting, MOITListActionableItem)
 }

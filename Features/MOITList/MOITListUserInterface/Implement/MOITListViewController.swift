@@ -20,6 +20,7 @@ import PinLayout
 
 protocol MOITListPresentableListener: AnyObject {
     func viewDidLoad()
+    func viewWillAppear()
     func didTapMOIT(index: Int) // MOIT 하나 탭 시 불리는 함수
     func didTapDeleteMOIT(index: Int) // MOIT 하나 삭제 시 불리는 함수
     func didTapAlarm(index: Int)
@@ -114,9 +115,10 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
         self.listener?.viewDidLoad()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        self.listener?.viewWillAppear()
     }
     
     public override func viewDidLayoutSubviews() {
@@ -197,6 +199,7 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
                 
                 // 참여, 생성 버튼
                 flex.addItem()
+                    .marginTop(10)
                     .direction(.row)
                     .justifyContent(.spaceBetween)
                     .define { flex in
@@ -206,11 +209,13 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
                             .width(47%)
                     }
             }
-        // make contentView height dynamic
-        // make view scrollable
-        
         
         contentView.flex.layout(mode: .adjustHeight)
+        listRootView.flex.markDirty()
+        moitCountLabel.flex.markDirty()
+        listRootView.flex.layout()
+        flexRootView.flex.layout()
+
     }
     
     private func bind() {
@@ -257,12 +262,14 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
     func didReceiveMOITList(moitList: [MOITPreviewViewModel]) {
         print(#function, "previewViewModel: \(moitList)")
         
-        if moitList.isEmpty { return }
+//        if moitList.isEmpty { return }
         
         moitCountLabel.text = moitList.count.description
         moitCountLabel.flex.markDirty()
-        
-        emptyMOITView.flex.display(.none)
+        listRootView.subviews.forEach { $0.removeFromSuperview() }
+        if !moitList.isEmpty {
+            emptyMOITView.flex.display(.none)
+        }
         
         // TODO: - studypreview 모아서 저장해두고 걔를 additem
         let moitPreviewList = moitList.map { makeStudyPreview(with: $0) }

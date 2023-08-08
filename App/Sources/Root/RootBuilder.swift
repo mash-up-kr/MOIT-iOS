@@ -52,6 +52,11 @@ import FineDomainImpl
 import FineData
 import FineDataImpl
 
+import MOITAlarmData
+import MOITAlarmDataImpl
+import MOITAlarmDomain
+import MOITAlarmDomainImpl
+
 final class RootComponent: Component<EmptyDependency>,
                            MOITWebDependency,
                            RootInteractorDependency,
@@ -72,6 +77,7 @@ final class RootComponent: Component<EmptyDependency>,
     private lazy var userRepository: UserRepository = UserRepositoryImpl(network: network)
     private lazy var moitDetailRepository: MOITDetailRepository = MOITDetailRepositoryImpl(network: network)
     private lazy var participateRepository: ParticipateRepositoryImpl = ParticipateRepositoryImpl(network: network)
+	private lazy var alarmRepository: MOITAlarmRepositoryImpl = MOITAlarmRepositoryImpl(network: network)
     
     // MARK: Usecase
     lazy var compareUserIDUseCase: CompareUserIDUseCase = CompareUserIDUseCaseImpl(tokenManager: tokenManager)
@@ -102,6 +108,9 @@ final class RootComponent: Component<EmptyDependency>,
         userRepository: userRepository,
         tokenManager: tokenManager
     )
+	lazy var fetchNotificationUseCase: FetchNotificationListUseCase = FetchNotificationListUseCaseImpl(
+		repository: alarmRepository
+	)
     
     override init(dependency: EmptyDependency = EmptyComponent()) {
         super.init(dependency: dependency)
@@ -110,7 +119,7 @@ final class RootComponent: Component<EmptyDependency>,
 // MARK: - Builder
 
 protocol RootBuildable: Buildable {
-    func build() -> LaunchRouting
+    func build() -> (LaunchRouting, Deeplinkable)
 }
 
 final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
@@ -121,7 +130,7 @@ final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
     
     deinit { debugPrint("\(self) deinit") }
     
-    func build() -> LaunchRouting {
+    func build() -> (LaunchRouting, Deeplinkable) {
         let component = RootComponent()
         let viewController = RootViewController()
         let interactor = RootInteractor(
@@ -132,11 +141,12 @@ final class RootBuilder: Builder<EmptyDependency>, RootBuildable {
         let moitListBuilder = MOITListBuilder(dependency: component)
         let authBuilder = LoggedOutBuilder(dependency: component)
         
-        return RootRouter(
+        let router = RootRouter(
             interactor: interactor,
             viewController: viewController,
             moitListBuilder: moitListBuilder,
             loggedOutBuilder: authBuilder
         )
+        return (router, interactor)
     }
 }

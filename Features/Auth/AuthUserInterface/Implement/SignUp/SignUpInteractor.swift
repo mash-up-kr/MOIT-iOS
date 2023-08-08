@@ -98,6 +98,7 @@ final class SignUpInteractor: PresentableInteractor<SignUpPresentable>,
                 )
                 .asObservable()
             }
+            .observe(on: MainScheduler.instance)
         // 성공하면 화면 moitlist로, 실패하면 처리 따로
             .subscribe(
                 onNext: { [weak self] token in

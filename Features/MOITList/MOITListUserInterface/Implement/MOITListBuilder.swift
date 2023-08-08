@@ -19,6 +19,9 @@ import MOITSettingImpl
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
 import MOITParticipateDomain
+import MOITAlarm
+import MOITAlarmImpl
+import MOITAlarmDomain
 import FineDomain
 import AuthDomain
 
@@ -27,8 +30,9 @@ final class MOITListComponent: Component<MOITListDependency>,
                                MOITWebDependency,
                                MOITDetailDependency,
                                InputParticipateCodeDependency,
-                               MOITSettingDependency {
-    
+                               MOITSettingDependency,
+							   MOITAlarmDependency {
+	var fetchNotificationUseCase: FetchNotificationListUseCase { dependency.fetchNotificationUseCase }
     var userUseCase: UserUseCase { dependency.userUseCase }
     var compareUserIDUseCase: CompareUserIDUseCase { dependency.compareUserIDUseCase }
     var fetchFineInfoUseCase: FetchFineInfoUseCase { dependency.fetchFineInfoUseCase }
@@ -61,7 +65,7 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         super.init(dependency: dependency)
     }
     
-    public func build(withListener listener: MOITListListener) -> ViewableRouting {
+    public func build(withListener listener: MOITListListener) -> (ViewableRouting, MOITListActionableItem) {
         let component = MOITListComponent(dependency: dependency)
         let viewController = MOITListViewController()
         let interactor = MOITListInteractor(
@@ -74,14 +78,17 @@ public final class MOITListBuilder: Builder<MOITListDependency>, MOITListBuildab
         let moitDetailBuilder = MOITDetailBuilder(dependency: component)
         let inputParticipateCodeBuilder = InputParticipateCodeBuilder(dependency: component)
         let settingBuilder = MOITSettingBuilder(dependency: component)
+		let alarmBuilder = MOITAlarmBuilder(dependency: component)
         
-        return MOITListRouter(
+        let router = MOITListRouter(
             interactor: interactor,
             viewController: viewController,
             moitWebBuilder: moitWebBuilder,
             moitDetailBuilder: moitDetailBuilder,
             inputParticipateCodeBuilder: inputParticipateCodeBuilder,
-            settingBuilder: settingBuilder
+            settingBuilder: settingBuilder,
+			alarmBuilder: alarmBuilder
         )
+        return (router, interactor)
     }
 }
