@@ -27,9 +27,9 @@ public struct AttendanceBannerDTO: Decodable {
     let moitId: Int
     let moitName: String
     let studyId: Int
-    let studyStartAt: String
-    let studyLateAt: String
-    let studyAbsenceAt: String
+    let studyStartAt: Date
+    let studyLateAt: Date
+    let studyAbsenceAt: Date
     
     public func toBanner() -> Banner {
         Banner.attendence(

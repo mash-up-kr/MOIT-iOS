@@ -30,17 +30,17 @@ public struct AttendenceBanner {
         moitId: Int,
         moitName: String,
         studyId: Int,
-        studyStartAt: String,
-        studyLateAt: String,
-        studyAbsenceAt: String
+        studyStartAt: Date,
+        studyLateAt: Date,
+        studyAbsenceAt: Date
     ) {
         self.userId = userId
         self.moitId = moitId
         self.moitName = moitName
         self.studyId = studyId
-        self.studyStartAt = studyStartAt.toDate()
-        self.studyLateAt = studyLateAt.toDate()
-        self.studyAbsenceAt = studyAbsenceAt.toDate()
+        self.studyStartAt = studyStartAt
+        self.studyLateAt = studyLateAt
+        self.studyAbsenceAt = studyAbsenceAt
     }
 }
 
