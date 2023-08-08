@@ -32,10 +32,11 @@ let project = Project(
                         "UIApplicationSceneManifest": [
                             "UIApplicationSupportsMultipleScenes": false,
                         ],
+                        "NSPhotoLibraryUsageDescription": "벌금 인증 이미지 업로드를 위해 앨범 접근 권한이 필요합니다.",
+//                        "CFBundleURLTypes" : ["App-prefs"],
                         "UIBackgroundModes": [
                             "fetch",
                             "remote-notification",
-//                            "remove-notification"
                         ]
                     ]
             ),
