@@ -117,7 +117,7 @@ private extension AppDelegate {
         case .home:
             self.deeplinkable?.routeToMOITList()
             
-        case .detail:
+        case .details:
             guard let id = query.split(separator: "=").last else { return false }
             self.deeplinkable?.routeToDetail(id: "\(id)")
             
@@ -149,8 +149,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        guard let urlString = response.notification.request.content.userInfo["urlScheme"] as? String else { return }
-        guard let path = urlString.split(separator: "://").last?.split(separator: "?").first,
+        guard let urlString = response.notification.request.content.userInfo["urlScheme"],
+              let path = urlString.split(separator: "://").last?.split(separator: "?").first,
               let qeury = urlString.split(separator: "://").last?.split(separator: "?").last else { return }
         
         guard let type = DeepLinkType(rawValue: "\(path)") else { return }

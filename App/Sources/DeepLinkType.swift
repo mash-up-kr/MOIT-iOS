@@ -16,7 +16,7 @@ import Foundation
  */
 enum DeepLinkType: String {
     case home
-    case detail
+    case details
     case fine
     case attendance
     case attendanceResult
