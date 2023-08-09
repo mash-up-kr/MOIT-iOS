@@ -166,6 +166,8 @@ public final class MOITStudyPreview: UIView {
         
         remainingDateLabel = MOITChip(type: .dueDate(date: remainingDate))
         
+        profileImageView.image = ResourceKitAsset.Icon.studyPlaceholder.image
+        
         if let profileURLString = profileURLString,
            let url = URL(string: profileURLString) {
             profileImageView.kf.setImage(

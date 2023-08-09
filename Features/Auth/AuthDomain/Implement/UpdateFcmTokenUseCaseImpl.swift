@@ -9,6 +9,7 @@
 import Foundation
 
 import AuthData
+import AuthDomain
 
 import RxSwift
 
