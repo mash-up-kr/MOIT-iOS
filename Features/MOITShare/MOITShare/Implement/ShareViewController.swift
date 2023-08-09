@@ -90,7 +90,12 @@ public final class ShareViewController: BottomSheetViewController,
     
     private func presentUIActivity(item: String) {
         let viewController = UIActivityViewController(
-            activityItems: [item],
+            activityItems: [
+                """
+            MOIT쓰니 스터디 관리 왜 이렇게 편해잇!
+            여기로 당장 모잇 👉 \(item)
+            """
+            ],
             applicationActivities: nil
         )
         viewController.excludedActivityTypes = [
