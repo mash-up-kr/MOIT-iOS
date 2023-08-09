@@ -19,5 +19,4 @@ enum SignUpEndpoint {
             parameters: .body(dto)
         )
     }
-
 }

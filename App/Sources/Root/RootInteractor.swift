@@ -36,6 +36,7 @@ protocol RootListener: AnyObject {
 protocol RootInteractorDependency {
     var fetchTokenUseCase: FetchTokenUseCase { get }
     var fcmTokenObservable: Observable<String> { get }
+    var updateFcmTokenUseCase: UpdateFcmTokenUseCase { get }
 }
 
 final class RootInteractor: PresentableInteractor<RootPresentable>,
@@ -85,9 +86,11 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
     
     private func configureFCMToken() {
         dependency.fcmTokenObservable
-            .subscribe(onNext: { token in
-                // TODO: - 보내라 토큰
-            })
+            .withUnretained(self)
+            .flatMap { owner, token in
+                owner.dependency.updateFcmTokenUseCase.execute(token: token).asObservable()
+            }
+            .subscribe()
             .disposeOnDeactivate(interactor: self)
     }
 }
