@@ -25,4 +25,13 @@ enum UserEndpoint {
             method: .delete
         )
     }
+    
+    static func updateFcmToken(token: String) -> Endpoint<EmptyResponse> {
+        return Endpoint(
+            path: "/api/v1/user/fcm-token",
+            method: .put,
+            parameters: .body(["fcmToken": token])
+        )
+    
+    }
 }

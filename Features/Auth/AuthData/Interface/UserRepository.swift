@@ -13,4 +13,5 @@ import RxSwift
 public protocol UserRepository {
 	func fetchUserInfo() -> Single<UserInfoDTO>
     func withdraw() -> Single<Void>
+    func updateFcmToken(token: String) -> Single<Void>
 }

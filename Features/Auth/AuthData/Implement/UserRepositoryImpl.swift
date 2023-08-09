@@ -33,4 +33,9 @@ public final class UserRepositoryImpl: UserRepository {
         return network.request(with: UserEndpoint.withdraw())
             .map { _ in return }
     }
+    
+    public func updateFcmToken(token: String) -> Single<Void> {
+        return network.request(with: UserEndpoint.updateFcmToken(token: token))
+            .map { _ in return }
+    }
 }
