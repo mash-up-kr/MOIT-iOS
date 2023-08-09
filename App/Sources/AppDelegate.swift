@@ -149,7 +149,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        guard let urlString = response.notification.request.content.userInfo["urlScheme"],
+        guard let urlString = response.notification.request.content.userInfo["urlScheme"] as? String,
               let path = urlString.split(separator: "://").last?.split(separator: "?").first,
               let qeury = urlString.split(separator: "://").last?.split(separator: "?").last else { return }
         

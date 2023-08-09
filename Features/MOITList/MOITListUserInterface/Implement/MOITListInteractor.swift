@@ -304,23 +304,30 @@ extension MOITListInteractor {
 // MARK: - InputParticiateCode
 extension MOITListInteractor {
     func inputParticiateCodeDidTapBack() {
-		self.router?.detachInputParticipateCode(onlyPop: true)
+        self.router?.detachInputParticipateCode(onlyPop: true)
     }
-	
-	func moveToMOITListButtonDidTap() {
-		self.router?.detachInputParticipateCode(onlyPop: false)
-	}
-	
-	func showMOITDetailButtonDidTap(moitID: Int) {
-		self.router?.detachInputParticipateCode(onlyPop: false)
-		self.router?.attachMOITDetail(id: "\(moitID)")
-	}
-	
+    
+    func moveToMOITListButtonDidTap() {
+        self.router?.detachInputParticipateCode(onlyPop: false)
+    }
+    
+    func showMOITDetailButtonDidTap(moitID: Int) {
+        self.router?.detachInputParticipateCode(onlyPop: false)
+        self.router?.attachMOITDetail(id: "\(moitID)")
+    }
+}
+
 // MARK: - Alarm
-	
+
+extension MOITListInteractor {
+    
 	func didSwipeBackAlarm() {
-		self.router?.detachAlarm(withPop: true)
+		self.router?.detachAlarm(withPop: false)
 	}
+    
+    func didTapBackAlarm() {
+        self.router?.detachAlarm(withPop: true)
+    }
 }
 
 // MARK: - MOITListActionableItem

@@ -21,6 +21,7 @@ import RxSwift
 protocol MOITAlarmPresentableListener: AnyObject {
     func didSwipeBack()
 	func viewDidLoad()
+    func didTapBack()
 }
 
 final class MOITAlarmViewController: UIViewController,
@@ -98,7 +99,7 @@ final class MOITAlarmViewController: UIViewController,
 	
 	private func bind() {
 		self.navigationView.leftItems?[0].rx.tap.subscribe(onNext: { [weak self] in
-			self?.listener?.didSwipeBack()
+			self?.listener?.didTapBack()
 		}).disposed(by: self.disposeBag)
 	}
 }

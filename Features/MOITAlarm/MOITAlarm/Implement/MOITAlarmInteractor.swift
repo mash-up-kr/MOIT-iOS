@@ -67,6 +67,10 @@ final class MOITAlarmInteractor: PresentableInteractor<MOITAlarmPresentable>, MO
 	func didSwipeBack() {
 		listener?.didSwipeBackAlarm()
 	}
+    
+    func didTapBack() {
+        listener?.didTapBackAlarm()
+    }
 	
 	private func convertToMOITAlarmViewModel(entity: NotificationEntity) -> [MOITAlarmCollectionViewCellItem] {
 		entity.map { item in
