@@ -113,6 +113,7 @@ final class RootComponent: Component<AppDependency>,
 	lazy var fetchNotificationUseCase: FetchNotificationListUseCase = FetchNotificationListUseCaseImpl(
 		repository: alarmRepository
 	)
+    lazy var updateFcmTokenUseCase: UpdateFcmTokenUseCase = UpdateFcmTokenUseCaseImpl(userRepository: userRepository)
     
     var fcmToken: PublishRelay<String> { dependency.fcmToken }
     
