@@ -10,6 +10,7 @@ import Foundation
 
 import AuthData
 import AuthDomain
+
 import RxSwift
 
 public final class UpdateFcmTokenUseCaseImpl: UpdateFcmTokenUseCase {
