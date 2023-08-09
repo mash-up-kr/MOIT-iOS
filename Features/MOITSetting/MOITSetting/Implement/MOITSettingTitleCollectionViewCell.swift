@@ -13,7 +13,11 @@ import FlexLayout
 import ResourceKit
 
 final class MOITSettingTitleCollectionViewCell: UICollectionViewCell {
-    private let flexRootview = UIView()
+    private let flexRootview: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = ResourceKitFontFamily.h6

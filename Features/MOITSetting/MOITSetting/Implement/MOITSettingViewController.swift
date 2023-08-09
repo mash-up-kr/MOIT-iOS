@@ -52,6 +52,7 @@ final class MOITSettingViewController: UIViewController,
         self.navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         self.flexRootView.backgroundColor = .white
+        self.collectionView.backgroundColor = .white
         define()
         configureCollectionView()
         bind()
@@ -60,7 +61,7 @@ final class MOITSettingViewController: UIViewController,
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        flexRootView.pin.top(view.pin.safeArea).bottom().horizontally()
+        flexRootView.pin.top(view.pin.safeArea.top).bottom().horizontally()
         flexRootView.flex.layout()
     }
     
