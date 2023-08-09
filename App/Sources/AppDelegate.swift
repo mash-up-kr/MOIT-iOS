@@ -186,8 +186,7 @@ extension AppDelegate: MessagingDelegate {
     ) {
         guard let fcmToken else { return }
         TokenManagerImpl().save(token: fcmToken, with: .fcmToken)
-        // TODO: - fcmToken 새걸로 업데이트
-        
+        self.fcmToken.accept(fcmToken)
     }
 }
 
