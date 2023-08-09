@@ -328,6 +328,10 @@ extension MOITListInteractor {
     func didTapBackAlarm() {
         self.router?.detachAlarm(withPop: true)
     }
+    
+    func didTapAlarm(scheme: String) {
+        self.listener?.didTapAlarm(scheme: scheme)
+    }
 }
 
 // MARK: - MOITListActionableItem

@@ -116,8 +116,8 @@ final class RootComponent: Component<AppDependency>,
     lazy var updateFcmTokenUseCase: UpdateFcmTokenUseCase = UpdateFcmTokenUseCaseImpl(userRepository: userRepository)
     
     var fcmToken: PublishRelay<String> { dependency.fcmToken }
-    
     var fcmTokenObservable: Observable<String> { dependency.fcmToken.asObservable() }
+    var executeDeeplinkObservable: Observable<String> { dependency.executeDeepLink.asObservable() }
     
     override init(dependency: AppDependency) {
         super.init(dependency: dependency)
@@ -126,7 +126,7 @@ final class RootComponent: Component<AppDependency>,
 // MARK: - Builder
 
 protocol RootBuildable: Buildable {
-    func build() -> (LaunchRouting, Deeplinkable)
+    func build() -> LaunchRouting
 }
 
 final class RootBuilder: Builder<AppDependency>, RootBuildable {
@@ -137,8 +137,9 @@ final class RootBuilder: Builder<AppDependency>, RootBuildable {
     
     deinit { debugPrint("\(self) deinit") }
     
-    func build() -> (LaunchRouting, Deeplinkable) {
-        let component = RootComponent(dependency: AppComponent(fcmToken: dependency.fcmToken))
+    func build() -> LaunchRouting {
+        let appComponent = AppComponent(fcmToken: dependency.fcmToken, executeDeepLink: dependency.executeDeepLink)
+        let component = RootComponent(dependency: appComponent)
         let viewController = RootViewController()
         let interactor = RootInteractor(
             presenter: viewController,
@@ -154,6 +155,6 @@ final class RootBuilder: Builder<AppDependency>, RootBuildable {
             moitListBuilder: moitListBuilder,
             loggedOutBuilder: authBuilder
         )
-        return (router, interactor)
+        return router
     }
 }

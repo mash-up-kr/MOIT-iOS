@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol FetchNotificationListUseCase {
-	func execute() -> Single<NotificationEntity>
+	func execute() -> Single<NotificationEntities>
 }

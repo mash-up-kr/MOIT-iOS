@@ -11,4 +11,5 @@ import Foundation
 public protocol MOITListListener: AnyObject {
     func didLogout()
     func didWithdraw()
+    func didTapAlarm(scheme: String)
 }

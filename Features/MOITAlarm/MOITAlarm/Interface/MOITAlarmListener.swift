@@ -11,4 +11,5 @@ import Foundation
 public protocol MOITAlarmListener: AnyObject {
     func didSwipeBackAlarm()
     func didTapBackAlarm()
+    func didTapAlarm(scheme: String)
 }

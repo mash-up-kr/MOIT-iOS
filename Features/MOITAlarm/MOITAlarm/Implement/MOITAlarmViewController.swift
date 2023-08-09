@@ -22,6 +22,7 @@ protocol MOITAlarmPresentableListener: AnyObject {
     func didSwipeBack()
 	func viewDidLoad()
     func didTapBack()
+    func didTapItem(at index: Int)
 }
 
 final class MOITAlarmViewController: UIViewController,
@@ -111,10 +112,12 @@ extension MOITAlarmViewController {
 		if collectionViewCellItems.isEmpty {
 			emptyLabel.flex.display(.flex)
 			collectionView.flex.display(.none)
+            emptyLabel.isHidden = false
 		} else {
 			items = collectionViewCellItems
 			collectionView.reloadData()
-
+            emptyLabel.isHidden = true
+            
 			emptyLabel.flex.display(.none)
 			collectionView.flex.display(.flex)
 		}
@@ -142,12 +145,34 @@ extension MOITAlarmViewController: UICollectionViewDataSource {
         items.count
     }
 }
+
+// MARK: - UICollectionViewDelegate
+
 extension MOITAlarmViewController: UICollectionViewDelegate {
- 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        self.listener?.didTapItem(at: indexPath.item)
+    }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
+
 extension MOITAlarmViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         CGSize(width: collectionView.bounds.width, height: 95)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        .zero
     }
 }

@@ -21,12 +21,13 @@ public class FetchNotificationListUseCaseImpl: FetchNotificationListUseCase {
 		self.repository = repository
 	}
 	
-	public func execute() -> Single<NotificationEntity> {
+	public func execute() -> Single<NotificationEntities> {
 		return repository.fetchNotificationList()
-			.compactMap({ notiModel -> NotificationEntity? in
+			.compactMap({ notiModel -> NotificationEntities? in
 				let notificationEntityList = notiModel.notificationItems.map {
 					NotificationItem(
-						title: $0.title,
+                        id: "\($0.id)",
+                        title: $0.title,
 						body: $0.body,
 						urlScheme: $0.urlScheme
 					)

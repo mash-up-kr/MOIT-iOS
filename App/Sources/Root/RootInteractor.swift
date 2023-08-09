@@ -37,6 +37,7 @@ protocol RootInteractorDependency {
     var fetchTokenUseCase: FetchTokenUseCase { get }
     var fcmTokenObservable: Observable<String> { get }
     var updateFcmTokenUseCase: UpdateFcmTokenUseCase { get }
+    var executeDeeplinkObservable: Observable<String> { get }
 }
 
 final class RootInteractor: PresentableInteractor<RootPresentable>,
@@ -84,6 +85,58 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
         self.waitForLoginSubject.onNext(self)
     }
     
+    private func executeDeepLink(type: DeepLinkType, query: String) {
+        switch type {
+        case .home:
+            RootWorkflow()
+                .subscribe(self)
+                .disposeOnDeactivate(interactor: self)
+            
+        case .details:
+            guard let id = query.split(separator: "=").last else { return }
+            MOITDetailWorkflow(id: "\(id)")
+                .subscribe(self)
+                .disposeOnDeactivate(interactor: self)
+            
+        case .attendance:
+            guard let id = query.split(separator: "=").last else { return }
+            MOITAttendanceWorkflow(id: "\(id)")
+                .subscribe(self)
+                .disposeOnDeactivate(interactor: self)
+            
+        case .attendanceResult:
+            guard let id = query.split(separator: "=").last else { return }
+            AttendanceResultWorkflow(id: "\(id)")
+                .subscribe(self)
+                .disposeOnDeactivate(interactor: self)
+            
+        case .fine:
+            let params = query.split(separator: "&")
+            let moitId = params.first?.split(separator: "=").last ?? ""
+            let fineId = params.last?.split(separator: "=").last ?? ""
+            
+            FineWorkflow(moitID: "\(moitId)", fineID: "\(fineId)")
+                .subscribe(self)
+                .disposeOnDeactivate(interactor: self)
+        }
+    }
+    
+    private func createTypeAndQuery(scheme: String) -> (type: DeepLinkType, query: String)? {
+        guard let path = scheme.split(separator: "://").last?.split(separator: "?").first,
+              let query = scheme.split(separator: "://").last?.split(separator: "?").last,
+              let type =  DeepLinkType(rawValue: "\(path)") else { return nil }
+        return (type, "\(query)")
+    }
+    
+    private func bind() {
+        self.dependency.executeDeeplinkObservable
+            .subscribe(onNext: { [weak self] urlString in
+                guard let (type, query) = self?.createTypeAndQuery(scheme: urlString) else { return }
+                self?.executeDeepLink(type: type, query: query)
+            })
+            .disposeOnDeactivate(interactor: self)
+    }
+    
     private func configureFCMToken() {
         dependency.fcmTokenObservable
             .withUnretained(self)
@@ -100,6 +153,8 @@ final class RootInteractor: PresentableInteractor<RootPresentable>,
 extension RootInteractor {
     func viewDidAppear() {
         configureRIB()
+        bind()
+        configureFCMToken()
     }
 }
 
@@ -124,6 +179,11 @@ extension RootInteractor {
         self.router?.detachMOITList()
         self.router?.routeToAuth()
     }
+    
+    func didTapAlarm(scheme: String) {
+        guard let (type, query) = createTypeAndQuery(scheme: scheme) else { return }
+        executeDeepLink(type: type, query: query)
+    }
 }
 
 // MARK: - RootActionableItem
@@ -140,38 +200,5 @@ extension RootInteractor: RootActionableItem {
     func routeToMOITList() -> Observable<(MOITListActionableItem, ())> {
         guard let item = router?.routeToMOITList() else { fatalError() }
         return Observable.just((item, ()))
-    }
-}
-
-// MARK: - Deeplinkable
-extension RootInteractor: Deeplinkable {
-    func routeToMOITList() {
-        RootWorkflow()
-            .subscribe(self)
-            .disposeOnDeactivate(interactor: self)
-    }
-    
-    func routeToDetail(id: String) {
-        MOITDetailWorkflow(id: id)
-            .subscribe(self)
-            .disposeOnDeactivate(interactor: self)
-    }
-    
-    func routeToAttendance(id: String) {
-        MOITAttendanceWorkflow(id: id)
-            .subscribe(self)
-            .disposeOnDeactivate(interactor: self)
-    }
-    
-    func routeToAttendanceResult(id: String) {
-        AttendanceResultWorkflow(id: id)
-            .subscribe(self)
-            .disposeOnDeactivate(interactor: self)
-    }
-    
-    func routeToFine(moitID: String, fineID: String) {
-        FineWorkflow(moitID: moitID, fineID: fineID)
-            .subscribe(self)
-            .disposeOnDeactivate(interactor: self)
     }
 }

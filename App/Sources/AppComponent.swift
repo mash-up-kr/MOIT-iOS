@@ -14,8 +14,13 @@ import RIBs
 public final class AppComponent: Component<EmptyDependency>, AppDependency {
     
     public let fcmToken: PublishRelay<String>
+    public let executeDeepLink: PublishRelay<String>
     
-    public init(fcmToken: PublishRelay<String>) {
+    public init(
+        fcmToken: PublishRelay<String>,
+        executeDeepLink: PublishRelay<String>
+    ) {
+        self.executeDeepLink = executeDeepLink
         self.fcmToken = fcmToken
         super.init(dependency: EmptyComponent())
     }
@@ -24,5 +29,6 @@ public final class AppComponent: Component<EmptyDependency>, AppDependency {
 
 protocol AppDependency: Dependency {
     var fcmToken: PublishRelay<String> { get }
+    var executeDeepLink: PublishRelay<String> { get }
 }
 

@@ -26,7 +26,8 @@ final class AppDelegate: UIResponder,
     var window: UIWindow?
     private var launchRouter: LaunchRouting?
     private var builder: RootBuildable?
-    var fcmToken = PublishRelay<String>()
+    private let fcmToken = PublishRelay<String>()
+    private let executeDeepLink = PublishRelay<String>()
     private var deeplinkable: Deeplinkable?
     
     func application(
@@ -39,18 +40,16 @@ final class AppDelegate: UIResponder,
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        
-        
-        let builder = RootBuilder(
-            dependency: AppComponent(fcmToken: self.fcmToken)
+        let component = AppComponent(
+            fcmToken: self.fcmToken,
+            executeDeepLink: self.executeDeepLink
         )
+        
+        let builder = RootBuilder(dependency: component)
         self.builder = builder
-        let (router, interactor) = builder.build()
-//        let router = builder?.build()
+        let router = builder.build()
         self.launchRouter = router
         self.launchRouter?.launch(from: window)
-        self.deeplinkable = interactor
-        
         self.configure(application)
         return true
     }
@@ -110,35 +109,6 @@ private extension AppDelegate {
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
     }
-    
-    @discardableResult
-    func processDeeplink(query: String, type: DeepLinkType) -> Bool {
-        switch type {
-        case .home:
-            self.deeplinkable?.routeToMOITList()
-            
-        case .details:
-            guard let id = query.split(separator: "=").last else { return false }
-            self.deeplinkable?.routeToDetail(id: "\(id)")
-            
-        case .attendance:
-            guard let id = query.split(separator: "=").last else { return false }
-            self.deeplinkable?.routeToAttendance(id: "\(id)")
-            
-        case .attendanceResult:
-            guard let id = query.split(separator: "=").last else { return false }
-            self.deeplinkable?.routeToAttendanceResult(id: "\(id)")
-            
-        case .fine:
-            let params = query.split(separator: "&")
-            let moitId = params.first?.split(separator: "=").last ?? ""
-            let fineId = params.last?.split(separator: "=").last ?? ""
-            
-            self.deeplinkable?.routeToFine(moitID: "\(moitId)", fineID: "\(fineId)")
-        }
-        
-        return true
-    }
 }
 
 // MARK: - UNUserNotificationCenterDelegate
@@ -149,29 +119,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        guard let urlString = response.notification.request.content.userInfo["urlScheme"] as? String,
-              let path = urlString.split(separator: "://").last?.split(separator: "?").first,
-              let qeury = urlString.split(separator: "://").last?.split(separator: "?").last else { return }
-        
-        guard let type = DeepLinkType(rawValue: "\(path)") else { return }
-        processDeeplink(query: "\(qeury)", type: type)
-    }
-    
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-    ) -> Bool {
-        print("🤖", #function)
-        guard let components = NSURLComponents(
-            url: url,
-            resolvingAgainstBaseURL: true
-        ),
-              let query = components.query,
-              let path = components.host,
-              let type = DeepLinkType(rawValue: path) else { return false }
-        print(type, query)
-        return processDeeplink(query: query, type: type)
+        guard let urlString = response.notification.request.content.userInfo["urlScheme"] as? String else { return }
+        executeDeepLink.accept(urlString)
     }
 }
 
