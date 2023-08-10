@@ -61,21 +61,26 @@ final class MOITWebViewController: UIViewController,
 // MARK: - MOITWebPresentable
 
 extension MOITWebViewController {
+    
     func render(domain: String, path: String) {
-        guard let cookie = self.setCookie(path: path) else { return }
         let configuration = self.setWebConfiguration()
         
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        self.view.addSubview(webView)
+        
         
         if #available(iOS 16.4, *) {
+//            webView.isInspectable = true
             webView.isInspectable = true
         }
         
         guard let url = URL(string: "\(domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
+        
+        guard let cookie = self.setCookie(url: url) else { return }
+        
+        self.view.addSubview(webView)
         
         webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie) {
             webView.load(URLRequest)
@@ -86,13 +91,13 @@ extension MOITWebViewController {
 // MARK: - Private functions
 
 extension MOITWebViewController {
-    
-    private func setCookie(path: String) -> HTTPCookie? {
-        HTTPCookie(properties: [
-            .domain: "dev-moit-web.vercel.app",
-            .path: path,
+    private func setCookie(url: URL) -> HTTPCookie? {
+        let token = TokenManagerImpl().get(key: .authorizationToken) ?? ""
+        return HTTPCookie(properties: [
+            .domain: url.host() ?? "",
+            .path: url.path(),
             .name: "accessToken",
-            .value: "\(TokenManagerImpl().get(key: .authorizationToken) ?? "")"
+            .value: "\(token)"
         ])
     }
     
