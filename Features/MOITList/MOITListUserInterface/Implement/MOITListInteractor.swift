@@ -99,12 +99,14 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
     
     func viewWillAppear() {
         dependency.fetchMOITListsUseCase.execute()
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] moits in
                 self?.moitList.accept(moits)
             })
             .disposeOnDeactivate(interactor: self)
         
         dependency.fetchBannersUseCase.execute()
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] banners in
                 self?.bannerList.accept(banners)
             })
