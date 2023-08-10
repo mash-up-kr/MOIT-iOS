@@ -164,10 +164,17 @@ final class MOITListViewController: UIViewController, MOITListPresentable, MOITL
                     .width(100%)
                     .backgroundColor(ResourceKitAsset.Color.gray100.color)
                     
+                flex.addItem()
+                    .backgroundColor(ResourceKitAsset.Color.gray100.color)
+                    .width(100%)
+                    .height(56)
+                    
                 flex.addItem(self.navigationBar)
+                    
+                    .backgroundColor(ResourceKitAsset.Color.gray100.color)
                     .height(56)
                     .width(100%)
-                    .marginTop(self.view.safeAreaInsets.top + 56)
+//                    .marginTop(self.view.safeAreaInsets.top)
             }
         
         self.scrollView.flex
