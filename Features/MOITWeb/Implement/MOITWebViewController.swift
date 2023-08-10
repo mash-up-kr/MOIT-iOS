@@ -63,19 +63,23 @@ final class MOITWebViewController: UIViewController,
 extension MOITWebViewController {
     func render(domain: String, path: String) {
         guard let cookie = self.setCookie(path: path) else { return }
-        let configuration = self.setWebConfiguration(with: cookie)
+        let configuration = self.setWebConfiguration()
+        
         let webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.uiDelegate = self
-		webView.navigationDelegate = self
+        webView.navigationDelegate = self
         self.view.addSubview(webView)
-		
+        
         if #available(iOS 16.4, *) {
-            webView.isInspectable = true
+                webView.isInspectable = true
         }
-		
+        
         guard let url = URL(string: "\(domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
-        webView.load(URLRequest)
+        
+        webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie) {
+            webView.load(URLRequest)
+        }
     }
 }
 
@@ -92,15 +96,12 @@ extension MOITWebViewController {
         ])
     }
     
-    private func setWebConfiguration(with cookie: HTTPCookie) -> WKWebViewConfiguration {
+    private func setWebConfiguration() -> WKWebViewConfiguration {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.preferences.isTextInteractionEnabled = true
         webConfiguration.websiteDataStore = .nonPersistent()
-        webConfiguration.websiteDataStore.httpCookieStore.setCookie(cookie)
-        
         let userContentViewController = self.setUserContentViewController(with: Self.Constant.messageName)
         webConfiguration.userContentController = userContentViewController
-        
         return webConfiguration
     }
     
