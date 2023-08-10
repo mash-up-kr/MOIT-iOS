@@ -68,9 +68,11 @@ extension MOITWebViewController {
         webView.uiDelegate = self
 		webView.navigationDelegate = self
         self.view.addSubview(webView)
-//        if #available(iOS 16.4, *) {
-//            webView.isInspectable = true
-//        } 
+		
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
+		
         guard let url = URL(string: "\(domain)\(path)") else { return }
         let URLRequest = URLRequest(url: url)
         webView.load(URLRequest)
