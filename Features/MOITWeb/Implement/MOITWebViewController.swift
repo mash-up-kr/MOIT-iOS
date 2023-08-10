@@ -21,10 +21,10 @@ import FirebaseMessaging
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()
-	func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
-	func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
+    func notRegisteredMemeberDidSignIn(with headerFields: [AnyHashable: Any])
+    func registeredMemberDidSignIn(with headerFields: [AnyHashable: Any])
     func didTapBackButton()
-	func didTapErrorAlertOkButton()
+    func didTapErrorAlertOkButton()
     func didTapShare(with code: String)
 }
 
@@ -47,9 +47,9 @@ final class MOITWebViewController: UIViewController,
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-		
-		self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
-		
+        
+        self.removeWKScriptMessageHandler(messageName: Self.Constant.messageName)
+        
         if self.isMovingFromParent {
             self.listener?.didSwipeBack()
         }
@@ -71,7 +71,7 @@ extension MOITWebViewController {
         self.view.addSubview(webView)
         
         if #available(iOS 16.4, *) {
-                webView.isInspectable = true
+            webView.isInspectable = true
         }
         
         guard let url = URL(string: "\(domain)\(path)") else { return }
@@ -131,9 +131,9 @@ extension MOITWebViewController: WKScriptMessageHandler {
         didReceive message: WKScriptMessage
     ) {
         guard message.name == Constant.messageName,
-            let messages = message.body as? [String: Any],
-            let cmd = messages["command"] as? String,
-            let command = Command(rawValue: cmd) else { return }
+              let messages = message.body as? [String: Any],
+              let cmd = messages["command"] as? String,
+              let command = Command(rawValue: cmd) else { return }
         
         print(cmd)
         print(command)
@@ -143,7 +143,7 @@ extension MOITWebViewController: WKScriptMessageHandler {
             didReceiveCloseCommand()
             
         case .alert:
-           didReceiveAlertCommand(messages: messages)
+            didReceiveAlertCommand(messages: messages)
             
         case .toast:
             didReceiveToastCommand(messages: messages)
@@ -162,11 +162,18 @@ extension MOITWebViewController: WKScriptMessageHandler {
     
     private func didReceiveAlertCommand(messages: [String: Any]) {
         guard let value = messages["value"] as? String else { return }
+        
+        guard let data = value.data(using: .utf8),
+              let alertFormat = try? JSONDecoder().decode(AlertFormat.self, from: data) else {
+            return
+        }
+        
         let alertController = UIAlertController(
-            title: "타이틀",
-            message: value,
+            title: alertFormat.title,
+            message: alertFormat.body,
             preferredStyle: .alert
         )
+        
         let okAction = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(okAction)
         self.present(alertController, animated: true)
@@ -200,81 +207,87 @@ extension MOITWebViewController: WKUIDelegate {
 // MARK: - WKNavigationDelegate
 
 extension MOITWebViewController: WKNavigationDelegate {
-	func webView(
-		_ webView: WKWebView,
-		decidePolicyFor navigationResponse: WKNavigationResponse,
-		decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
-	) {
-		let currentPath = navigationResponse.response.url?.path() ?? ""
-		let redirectURL = RedirectURL(pathRawValue: currentPath)
-		
-		switch redirectURL {
-		case .signInSuccess:
-			guard let response = navigationResponse.response as? HTTPURLResponse else { return decisionHandler(.allow) }
-			
-			let responsePolicy = executeResponseForSignIn(with: response)
-			decisionHandler(responsePolicy)
-		default:
-			decisionHandler(.allow)
-		}
-	}
-	
-	private func executeResponseForSignIn(
-		with response: HTTPURLResponse
-	) -> WKNavigationResponsePolicy {
-		
-		Logger.debug(response.statusCode)
-		
-		let headerFields = response.allHeaderFields
-
-		switch response.statusCode {
-		case (200...299):
-			listener?.registeredMemberDidSignIn(with: headerFields)
-			return .allow
-		case 401:
-			listener?.notRegisteredMemeberDidSignIn(with: headerFields)
-			return .cancel
-		default:
-			return .allow
-		}
-	}
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationResponse: WKNavigationResponse,
+        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+    ) {
+        let currentPath = navigationResponse.response.url?.path() ?? ""
+        let redirectURL = RedirectURL(pathRawValue: currentPath)
+        
+        switch redirectURL {
+        case .signInSuccess:
+            guard let response = navigationResponse.response as? HTTPURLResponse else { return decisionHandler(.allow) }
+            
+            let responsePolicy = executeResponseForSignIn(with: response)
+            decisionHandler(responsePolicy)
+        default:
+            decisionHandler(.allow)
+        }
+    }
+    
+    private func executeResponseForSignIn(
+        with response: HTTPURLResponse
+    ) -> WKNavigationResponsePolicy {
+        
+        Logger.debug(response.statusCode)
+        
+        let headerFields = response.allHeaderFields
+        
+        switch response.statusCode {
+        case (200...299):
+            listener?.registeredMemberDidSignIn(with: headerFields)
+            return .allow
+        case 401:
+            listener?.notRegisteredMemeberDidSignIn(with: headerFields)
+            return .cancel
+        default:
+            return .allow
+        }
+    }
 }
 
 // MARK: - presentable
 extension MOITWebViewController {
-	func showErrorAlert() {
-		showAlert(
-			message: StringResource.errorMessage.value,
-			type: .single,
-			okActionHandler: { [weak self] in
-				self?.listener?.didTapErrorAlertOkButton()
-			}
-		)
-	}
+    func showErrorAlert() {
+        showAlert(
+            message: StringResource.errorMessage.value,
+            type: .single,
+            okActionHandler: { [weak self] in
+                self?.listener?.didTapErrorAlertOkButton()
+            }
+        )
+    }
 }
 
 extension MOITWebViewController {
-	enum RedirectURL: String {
-		case none = ""
-		case signInSuccess = "/api/v1/auth/sign-in/success"
-
-		init(
-			pathRawValue: String
-		) {
-			self = RedirectURL(rawValue: pathRawValue) ?? .none
-		}
-	}
+    enum RedirectURL: String {
+        case none = ""
+        case signInSuccess = "/api/v1/auth/sign-in/success"
+        
+        init(
+            pathRawValue: String
+        ) {
+            self = RedirectURL(rawValue: pathRawValue) ?? .none
+        }
+    }
 }
 
 extension MOITWebViewController {
-	enum StringResource {
-		case errorMessage
-		
-		var value: String {
-			switch self {
-			case .errorMessage:
-				return "네트워크 에러가 발생했습니다. 다시 시도해주세요!"
-			}
-		}
-	}
+    enum StringResource {
+        case errorMessage
+        
+        var value: String {
+            switch self {
+            case .errorMessage:
+                return "네트워크 에러가 발생했습니다. 다시 시도해주세요!"
+            }
+        }
+    }
+}
+
+struct AlertFormat: Decodable {
+    let title: String
+    let body: String
+    let type: String
 }
