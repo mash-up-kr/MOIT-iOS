@@ -72,6 +72,7 @@ extension MOITWebViewController {
         
         if #available(iOS 16.4, *) {
 //            webView.isInspectable = true
+            webView.isInspectable = true
         }
         
         guard let url = URL(string: "\(domain)\(path)") else { return }
