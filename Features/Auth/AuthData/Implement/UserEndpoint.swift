@@ -29,9 +29,8 @@ enum UserEndpoint {
     static func updateFcmToken(token: String) -> Endpoint<EmptyResponse> {
         return Endpoint(
             path: "/api/v1/user/fcm-token",
-            method: .put,
+            method: .post,
             parameters: .body(["fcmToken": token])
         )
-    
     }
 }
