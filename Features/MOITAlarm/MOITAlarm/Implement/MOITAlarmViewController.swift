@@ -65,9 +65,14 @@ final class MOITAlarmViewController: UIViewController,
 		bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.viewDidLoad()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        flexRootView.pin.all(view.safeAreaInsets)
+        flexRootView.pin.top(view.pin.safeArea).bottom().horizontally()
         flexRootView.flex.layout()
 		emptyLabel.pin.hCenter().vCenter()
     }

@@ -42,6 +42,8 @@ final class MOITWebViewController: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         self.navigationController?.navigationBar.isHidden = true
     }
     
@@ -71,7 +73,6 @@ extension MOITWebViewController {
         
         
         if #available(iOS 16.4, *) {
-//            webView.isInspectable = true
             webView.isInspectable = true
         }
         
