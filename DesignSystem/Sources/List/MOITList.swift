@@ -239,6 +239,7 @@ extension MOITList {
 	public func configure(
 		title: String?,
 		detail: String?,
+        imageType: ProfileImageType? = nil,
 		chipType: MOITChipType? = nil,
 		isButtonHidden: Bool = true,
 		buttonTitle: String? = nil,
@@ -246,7 +247,7 @@ extension MOITList {
 	) {
         self.titleLabel?.text = title
         self.detailLabel?.text = detail
-		
+        profileImageView?.configureImage(with: imageType ?? .zero)
 		if let chipType {
 			self.chip?.setType(to: chipType)
 			self.chip?.flex.markDirty()

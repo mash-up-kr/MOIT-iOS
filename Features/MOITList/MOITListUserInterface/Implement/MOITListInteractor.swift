@@ -184,7 +184,7 @@ final class MOITListInteractor: PresentableInteractor<MOITListPresentable>, MOIT
                     // 화면 전환
                     self?.router?.attachMOITDetail(id: "\(banner.moitId)")
                 case .attendence(let banner):
-                    self?.router?.attachMOITAttendance(id: "\(banner.moitId)")
+                    self?.router?.attachMOITAttendance(id: "\(banner.studyId)")
                 case .empty:
                     return
                 }

@@ -179,6 +179,7 @@ extension MOITWebViewController: WKScriptMessageHandler {
             preferredStyle: .alert
         )
         
+//        if alertFormat.type
         let okAction = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(okAction)
         self.present(alertController, animated: true)
@@ -295,4 +296,9 @@ struct AlertFormat: Decodable {
     let title: String
     let body: String
     let type: String
+}
+
+enum AlertType: String {
+    case home
+    case none
 }

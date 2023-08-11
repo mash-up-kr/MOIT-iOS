@@ -25,6 +25,7 @@ final class MOITUserCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.configureView()
+        self.flexRootview.backgroundColor = .white
     }
     
     override func layoutSubviews() {
@@ -38,10 +39,11 @@ final class MOITUserCollectionViewCell: UICollectionViewCell {
         self.flexRootview.flex.addItem(userView)
     }
     
-    func configureUser(profileImage: String, name: String) {
+    func configureUser(profileImage: Int, name: String) {
         userView.configure(
             title: name,
-            detail: nil
+            detail: nil,
+            imageType: ProfileImageType(rawValue: profileImage) ?? .zero
         )
         self.userView.flex.markDirty()
         self.setNeedsLayout()

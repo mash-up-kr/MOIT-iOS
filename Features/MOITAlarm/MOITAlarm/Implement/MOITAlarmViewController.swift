@@ -58,6 +58,7 @@ final class MOITAlarmViewController: UIViewController,
 		
         view.backgroundColor = .white
         flexRootView.backgroundColor = .white
+        collectionView.backgroundColor = .white
         configureCollectionView()
         define()
         collectionView.reloadData()

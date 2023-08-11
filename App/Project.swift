@@ -23,7 +23,7 @@ let project = Project(
                     [
                         "CFBundleIconName": "AppIcon",
                         "CFBundleDevelopmentRegion": "ko_KR",
-                        "CFBundleShortVersionString": "1.0",
+                        "CFBundleShortVersionString": "1.1.1",
                         "CFBundleVersion": "1",
                         "UILaunchStoryboardName": "LaunchScreen",
                         "NSAppTransportSecurity": [

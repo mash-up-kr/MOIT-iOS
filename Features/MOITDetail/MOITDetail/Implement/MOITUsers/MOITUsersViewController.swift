@@ -60,6 +60,7 @@ final class MOITUsersViewController: UIViewController,
         configureCollectionView()
         bind()
         listener?.viewDidLoad()
+        collectionView.backgroundColor = .white
     }
     
     override func viewDidLayoutSubviews() {
@@ -164,7 +165,7 @@ extension MOITUsersViewController: UICollectionViewDataSource {
         ) as? MOITUserCollectionViewCell,
               let user = self.users[safe: indexPath.item] else { fatalError() }
         cell.configureUser(
-            profileImage: user.imageURL,
+            profileImage: Int(user.imageURL) ?? 0,
             name: user.name
         )
         

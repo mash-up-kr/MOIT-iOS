@@ -45,7 +45,8 @@ public final class MOITShareView: UIView {
     public init(invitationCode: String) {
         self.invitationCode = invitationCode
         super.init(frame: .zero)
-        
+        invitationCodeTitleLabel.textColor = .black
+        invitationCodeLabel.textColor = .black
         self.titleLabel.text = "초대링크 공유하기"
         self.titleLabel.font = ResourceKitFontFamily.h5
         self.titleLabel.textColor = ResourceKitAsset.Color.gray900.color

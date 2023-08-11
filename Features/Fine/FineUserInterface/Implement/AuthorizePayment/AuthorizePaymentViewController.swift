@@ -112,7 +112,8 @@ final class AuthorizePaymentViewController: UIViewController, AuthorizePaymentPr
 
 		fineDetailList.configure(
 			title: viewModel.userNickName,
-			detail: viewModel.fineAmount,
+            detail: viewModel.fineAmount,
+            imageType: nil,
 			chipType: viewModel.chipType,
 			isButtonHidden: viewModel.buttonTitle == nil,
 			buttonTitle: viewModel.buttonTitle,

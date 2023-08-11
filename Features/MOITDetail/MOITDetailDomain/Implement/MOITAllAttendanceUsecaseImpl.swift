@@ -47,24 +47,37 @@ public struct MOITAllAttendanceUsecaseImpl: MOITAllAttendanceUsecase,
         var latePeople = 0
         var absencePeople = 0
         studies.forEach { study in
-            attendancePeople += study.attendances.compactMap { AttendanceStatus(rawValue: $0.status) ?? .UNDECIDED }.filter { $0 == .ATTENDANCE }.count
-            latePeople += study.attendances.compactMap { AttendanceStatus(rawValue: $0.status) ?? .UNDECIDED }.filter { $0 == .LATE }.count
-            absencePeople += study.attendances.compactMap { AttendanceStatus(rawValue: $0.status) ?? .UNDECIDED }.filter { $0 == .ABSENCE }.count
+            study.attendances.forEach { attendance in
+                let status = AttendanceStatus(rawValue: attendance.status) ?? .UNDECIDED
+                switch status {
+                case .ABSENCE: absencePeople += 1
+                case .LATE: latePeople += 1
+                case .ATTENDANCE: attendancePeople += 1
+                default: break
+                }
+            }
         }
         let totalPeople = attendancePeople + latePeople + absencePeople
+        print("😆 attendance people", attendancePeople)
+        print("😆 latePeople people", latePeople)
+        print("😆 absencePeople people", absencePeople)
+        print("😆 totalpeople", totalPeople)
         if totalPeople == .zero {
             return MOITAllAttendanceRateEntity(attendanceRate: .zero, lateRate: .zero, absentRate: .zero)
         } 
         return MOITAllAttendanceRateEntity(
-            attendanceRate: Double(attendancePeople / totalPeople),
-            lateRate: Double(latePeople / totalPeople),
-            absentRate: Double(absencePeople / totalPeople)
+            attendanceRate: CGFloat((attendancePeople * 100) / totalPeople),
+            lateRate: CGFloat((latePeople*100) / totalPeople),
+            absentRate: CGFloat((absencePeople*100) / totalPeople)
         )
     }
     
     public func getMyAttendance(studyID: String, myID: String) -> Single<[AttendanceEntity]> {
         self.repository.fetchAttendance(moitID: studyID)
             .map { $0.studies.compactMap { $0.attendances.filter { "\($0.userID)" == myID }.first } }
+            .do(onSuccess: {
+                print("😆",$0.count)
+            })
             .map { attendances -> [AttendanceEntity] in
                 attendances.map { attendance in
                     AttendanceEntity(

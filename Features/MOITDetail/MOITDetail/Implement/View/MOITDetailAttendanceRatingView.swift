@@ -43,7 +43,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                 .font: ResourceKitFontFamily.caption,
                 .foregroundColor: UIColor.white.cgColor
             ])
-            attributedString.append(NSAttributedString(string: "\n\(Int(attendanceRating * 100))", attributes: [
+            attributedString.append(NSAttributedString(string: "\n\(Int(attendanceRating))", attributes: [
                 .font: ResourceKitFontFamily.h5,
                 .foregroundColor: UIColor.white.cgColor
             ]))
@@ -64,7 +64,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                 .font: ResourceKitFontFamily.caption,
                 .foregroundColor: UIColor.white.cgColor
             ])
-            attributedString.append(NSAttributedString(string: "\(Int(lateRating * 100))", attributes: [
+            attributedString.append(NSAttributedString(string: "\(Int(lateRating))", attributes: [
                 .font: ResourceKitFontFamily.h5,
                 .foregroundColor: UIColor.white.cgColor
             ]))
@@ -85,7 +85,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                 .font: ResourceKitFontFamily.caption,
                 .foregroundColor: UIColor.white.cgColor
             ])
-            attributedString.append(NSAttributedString(string: "\(Int(absentRating * 100))", attributes: [
+            attributedString.append(NSAttributedString(string: "\(Int(absentRating))", attributes: [
                 .font: ResourceKitFontFamily.h5,
                 .foregroundColor: UIColor.white.cgColor
             ]))
@@ -105,6 +105,8 @@ final class MOITDetailAttendanceRatingView: UIView {
         self.addSubview(self.flexRootView)
         self.bind()
         self.layer.cornerRadius = 6
+        self.flexRootView.layer.cornerRadius = 6
+        self.flexRootView.clipsToBounds = true
         self.clipsToBounds = true
     }
     
@@ -133,7 +135,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                         flex.addItem(self.attendanceRatingLabel)
                             .margin(10)
                     }
-                    .width(self.attendanceRating * width)
+                    .width((self.attendanceRating/100) * width)
                 
                 // 지각
                 flex.addItem(lateView)
@@ -142,7 +144,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                         flex.addItem(self.lateRatingLabel)
                             .margin(10)
                     }
-                    .width(self.lateRating * width)
+                    .width((self.lateRating/100) * width)
                 
                 
                 // 결석
@@ -152,7 +154,7 @@ final class MOITDetailAttendanceRatingView: UIView {
                         flex.addItem(self.absentRatingLabel)
                             .margin(10)
                     }
-                    .width(self.absentRating * width)
+                    .width((self.absentRating/100) * width)
             }
     }
 }

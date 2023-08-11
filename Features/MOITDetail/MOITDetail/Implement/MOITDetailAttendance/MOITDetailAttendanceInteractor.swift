@@ -11,6 +11,7 @@ import RxSwift
 import MOITDetailDomain
 import Collections
 import MOITDetail
+import TokenManagerImpl
 
 protocol MOITDetailAttendanceRouting: ViewableRouting {
 }
@@ -85,8 +86,14 @@ extension MOITDetailAttendanceInteractor {
     }
     
     private func fetch() {
-        moitAllAttendanceUsecase.fetchAllAttendance(moitID: self.moitID, myID: "2")
+        guard let myUserId = TokenManagerImpl().get(key: .userID) else { return }
+        moitAllAttendanceUsecase.fetchAllAttendance(moitID: self.moitID, myID: myUserId)
             .asObservable()
+            .do(onNext: { [weak self] all, rate, my in
+                print("😆",rate)
+                print("--------------------------------------------------------------------------------")
+                print("😆",my)
+            })
         .compactMap { [weak self] allAttendances, attendanceRate, myAttendances -> MOITDetailAttendanceViewModel? in
             guard let self else { return nil }
             var studiesDictionary = OrderedDictionary<StudyID, MOITAttendanceStudyViewModel>()
