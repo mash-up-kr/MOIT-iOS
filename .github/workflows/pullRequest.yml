@@ -4,6 +4,8 @@ name: MOIT
 on:
   pull_request: 
     branches: [ develop ]
+  push: 
+      branches: [ fix/actions-버그-수정 ]
 
 jobs:
   build:
@@ -11,11 +13,19 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
+    
     - name: Install Tuist
       run: curl -Ls https://install.tuist.io | bash
+    
+    - name: Select Xcode 13.3
+      run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app/Contents/Developer
+
     - name: Access Available
       run: chmod +x Scripts/setup_remote.sh
+    
     - name: Install Setup Script and Fetch Dependencies
       run: ./Scripts/setup_remote.sh
+  
     - name: Build and Test
       run:  tuist test MOIT-Workspace
+
