@@ -23,6 +23,7 @@ import MOITDetailData
 import MOITDetailDataImpl
 
 import ResourceKit
+import TokenManagerImpl
 
 import RxSwift
 import RIBs
@@ -32,7 +33,7 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
     
 	let network: Network
 	let moitDetailUseCase: MOITDetailUsecase
-    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network))
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network), tokenManager: TokenManagerImpl())
     
 	init(
 		network: Network,
