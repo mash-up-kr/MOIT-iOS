@@ -9,7 +9,10 @@
 import UIKit
 import MOITSetting
 import MOITSettingImpl
+import AuthDomain
+
 import RIBs
+import RxSwift
 
 @main
 final class MOITSettingAppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,8 +20,22 @@ final class MOITSettingAppDelegate: UIResponder, UIApplicationDelegate {
     private var router: ViewableRouting?
     
     private final class StubMOITSettingDependency: MOITSettingDependency {
+        var userUseCase: UserUseCase = MockUserUseCase()
     }
+    
     private final class StubMOITSettingListener: MOITSettingListener {
+        func didSwipeBack() {
+            print(#function)
+        }
+        
+        func didWithdraw() {
+            print(#function)
+        }
+        
+        func didLogout() {
+            print(#function)
+        }
+        
         func didTapBackButton() {
             print(#function)
         }
@@ -37,3 +54,14 @@ final class MOITSettingAppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+final class MockUserUseCase: AuthDomain.UserUseCase {
+    func logout() -> Single<Void> {
+        return .never()
+    }
+    
+    func withdraw() -> Single<Void> {
+        return .never()
+    }
+    
+    
+}
