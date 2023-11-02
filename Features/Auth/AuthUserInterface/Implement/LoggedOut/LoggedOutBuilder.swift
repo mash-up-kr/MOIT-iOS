@@ -11,12 +11,9 @@ import Foundation
 import AuthUserInterface
 import AuthDomain
 import MOITWeb
+import MOITWebImpl
 
 import RIBs
-import MOITWebImpl
-
-import MOITWebImpl
-import MOITWeb
 
 final class LoggedOutComponent: Component<LoggedOutDependency>,
 								LoggedOutInteractorDependency,
