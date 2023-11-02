@@ -18,6 +18,7 @@ import Toast
 import RIBs
 import RxSwift
 import FirebaseMessaging
+import Firebase
 
 protocol MOITWebPresentableListener: AnyObject {
     func didSwipeBack()

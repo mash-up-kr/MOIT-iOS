@@ -37,6 +37,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITParticipate.Data.Implement,
         
 		.Feature.MOITDetail.Domain.Interface,
+        .ThirdParty.FirebaseMessaging,
     ],
 	demoAppDependencies: [
         .Feature.MOITParticipate.UserInterface.Implement,
