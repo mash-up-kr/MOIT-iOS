@@ -4,13 +4,11 @@ name: MOIT
 on:
   pull_request: 
     branches: [ develop ]
-  push: 
-      branches: [ fix/actions-버그-수정 ]
 
 jobs:
   build:
     name: test action
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
     
@@ -19,7 +17,7 @@ jobs:
     
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: latest-stable
+        xcode-version: '14.3.1'
 
     - name: Access Available
       run: chmod +x Scripts/setup_remote.sh
