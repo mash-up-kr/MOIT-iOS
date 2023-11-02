@@ -10,10 +10,13 @@ import UIKit
 
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
+
 import MOITParticipateData
 import MOITParticipateDataImpl
+
 import MOITParticipateDomain
 import MOITParticipateDomainImpl
+
 import MOITNetwork
 import MOITNetworkImpl
 
@@ -23,6 +26,7 @@ import MOITDetailData
 import MOITDetailDataImpl
 
 import ResourceKit
+import TokenManagerImpl
 
 import RxSwift
 import RIBs
@@ -32,7 +36,7 @@ final class MockMOITParticipateDependency: InputParticipateCodeDependency {
     
 	let network: Network
 	let moitDetailUseCase: MOITDetailUsecase
-    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network))
+    lazy var participateUseCase: ParticipateUseCase = ParticipateUseCaseImpl(participateRepository: ParticipateRepositoryImpl(network: network), tokenManager: TokenManagerImpl())
     
 	init(
 		network: Network,
@@ -68,7 +72,7 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
 		let window = UIWindow(frame: UIScreen.main.bounds)
-		
+
 		setToastStyle()
 
 		router = InputParticipateCodeBuilder(

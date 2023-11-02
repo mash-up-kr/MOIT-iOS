@@ -8,14 +8,23 @@ on:
 jobs:
   build:
     name: test action
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
+    
     - name: Install Tuist
       run: curl -Ls https://install.tuist.io | bash
+    
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '14.3.1'
+
     - name: Access Available
       run: chmod +x Scripts/setup_remote.sh
+    
     - name: Install Setup Script and Fetch Dependencies
       run: ./Scripts/setup_remote.sh
+  
     - name: Build and Test
       run:  tuist test MOIT-Workspace
+
