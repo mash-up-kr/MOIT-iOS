@@ -3,6 +3,16 @@
 
 스터디 벌금 관리 서비스 - MOIT
 
+## 🧐 About
+![moit](https://github.com/mash-up-kr/moit-web/assets/52898735/08da0a5d-426d-4960-917e-b6a73ef651a3)
+
+Moit is a study management app created by the team '전자군단'.
+
+The study management app allows users to check in participants quickly and easily using their smartphones. It also provides real-time attendance tracking, so you can monitor who is present and who is absent at any given time. This makes it easier to identify trends and patterns in attendance, enabling you to take proactive measures to address issues.
+
+In addition to attendance tracking, Moit also makes it easy to manage fines. You can set up rules and guidelines for attendance, and the app will automatically calculate any fines owed based on those rules. This makes it easy to enforce fines and ensures that participants are held accountable for their attendance.
+
+### App Store : https://apps.apple.com/kr/app/moit/id6448715747
 
 ## 프로젝트 실행하는 법
 FlexLayout 설정으로 인해서 간단한 추가적인 명령어가 필요합니다.
