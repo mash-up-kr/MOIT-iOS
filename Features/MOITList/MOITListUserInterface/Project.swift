@@ -19,10 +19,11 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .ThirdParty.RIBs,
         .Feature.MOITDetail.Domain.Interface,
         .Feature.MOITParticipate.Domain.Interface,
-		.Feature.MOITList.Domain.Interface,
+        .Feature.MOITList.Domain.Interface,
         .Feature.Fine.Domain.Interface,
         .Feature.MOITDetail.Interface,
-        .Feature.MOITAlarm.Domain.Interface
+        .Feature.MOITAlarm.Domain.Interface,
+        .Feature.MOITWeb.Interface
     ],
     implementDependencies: [
         .ThirdParty.RxSwift,
@@ -46,8 +47,9 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITParticipate.UserInterface.Interface,
         .Feature.MOITSetting.Interface,
         .Feature.MOITSetting.Implement,
-		.Feature.MOITAlarm.Interface,
-		.Feature.MOITAlarm.Implement
+        .Feature.MOITAlarm.Interface,
+        .Feature.MOITAlarm.Implement,
+        .Feature.MOITWeb.Implement,
     ],
     demoAppDependencies: [
         .Feature.MOITList.Domain.Implement,
