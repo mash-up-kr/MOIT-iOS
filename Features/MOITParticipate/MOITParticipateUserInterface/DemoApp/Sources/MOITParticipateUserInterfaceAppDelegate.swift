@@ -10,10 +10,13 @@ import UIKit
 
 import MOITParticipateUserInterface
 import MOITParticipateUserInterfaceImpl
+
 import MOITParticipateData
 import MOITParticipateDataImpl
+
 import MOITParticipateDomain
 import MOITParticipateDomainImpl
+
 import MOITNetwork
 import MOITNetworkImpl
 
@@ -69,7 +72,7 @@ final class MOITParticipateAppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
 		let window = UIWindow(frame: UIScreen.main.bounds)
-		
+
 		setToastStyle()
 
 		router = InputParticipateCodeBuilder(

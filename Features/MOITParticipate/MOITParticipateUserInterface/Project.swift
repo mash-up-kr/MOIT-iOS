@@ -19,7 +19,7 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITParticipate.Domain.Interface,
         .Feature.MOITParticipate.Data.Interface,
 		.MOITNetwork.Interface,
-		
+        .Feature.MOITDetail.Interface,
 		.ThirdParty.RIBs,
     ],
     implementDependencies: [
@@ -34,12 +34,13 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.DesignSystem,
 		
         .Feature.MOITParticipate.Domain.Implement,
-		
         .Feature.MOITParticipate.Data.Implement,
-		.Feature.MOITDetail.Interface,
+        
 		.Feature.MOITDetail.Domain.Interface,
     ],
 	demoAppDependencies: [
+        .Feature.MOITParticipate.UserInterface.Implement,
+        .Feature.MOITParticipate.UserInterface.Interface,
 		.Feature.MOITParticipate.Domain.Implement,
 		.Feature.MOITParticipate.Data.Implement,
 		.Feature.MOITDetail.Domain.Interface,
@@ -47,7 +48,16 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
 		.Feature.MOITDetail.Data.Interface,
 		.Feature.MOITDetail.Data.Implement,
 		
-		.MOITNetwork.Implement
+		.MOITNetwork.Implement,
+        
+        .ResourceKit,
+        .TokenManager.Implement,
+        .ThirdParty.RxSwift,
+        .ThirdParty.RIBs,
+        .ThirdParty.Toast,
+
+        
+        .ThirdParty.FirebaseMessaging
 	],
     isUserInterface: true
 )
