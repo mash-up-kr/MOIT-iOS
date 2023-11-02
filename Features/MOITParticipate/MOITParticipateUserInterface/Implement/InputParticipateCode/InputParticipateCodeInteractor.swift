@@ -12,7 +12,8 @@ import MOITParticipateUserInterface
 import MOITParticipateDomain
 import MOITDetail
 import MOITDetailDomain
-//import FirebaseMessaging
+
+import FirebaseMessaging
 import RIBs
 import RxSwift
 
@@ -73,10 +74,10 @@ final class InputParticipateCodeInteractor: PresentableInteractor<InputParticipa
 					let moitDetailProfileInfoViewModel = self.convertToMOITDetailProfileInfoViewModel(
 						model: participateEntity
 					)
-//                    print("모👀잇 아이디 등록 MOIT-\(participateEntity.moitID)")
-//                    Messaging.messaging().subscribe(toTopic: "MOIT-\(participateEntity.moitID)") { error in
-//                        print("register topic subscribe error is 👉", error)
-//                    }
+                    print("모👀잇 아이디 등록 MOIT-\(participateEntity.moitID)")
+                    Messaging.messaging().subscribe(toTopic: "MOIT-\(participateEntity.moitID)") { error in
+                        print("register topic subscribe error is 👉", error)
+                    }
 
 					self.router?.attachPariticipationSuccess(with: moitDetailProfileInfoViewModel)
 				case .failure:
