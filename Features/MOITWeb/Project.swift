@@ -24,7 +24,8 @@ let project = Project.invertedDualTargetProjectWithDemoApp(
         .Feature.MOITShare.Implement,
         .Feature.MOITShare.Interface,
         .ThirdParty.FirebaseMessaging,
-		.ThirdParty.Toast
+		.ThirdParty.Toast,
+        
     ],
     useTestTarget: true,
     isUserInterface: true
