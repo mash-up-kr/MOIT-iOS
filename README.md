@@ -1,6 +1,9 @@
 # MOIT-iOS
 이거 모잇 ! 왤케 편해잇 !
 
+스터디 벌금 관리 서비스 - MOIT
+
+
 ## 프로젝트 실행하는 법
 FlexLayout 설정으로 인해서 간단한 추가적인 명령어가 필요합니다.
 1. `chmod +x Scripts/setup.sh`
@@ -12,7 +15,7 @@ FlexLayout 설정으로 인해서 간단한 추가적인 명령어가 필요합�
 - moit 명령어를 사용해서 간편하게 dependency를 받을 수 있습니다. 
     - `moit fetch`, `moit clean`, `moit edit`, `moit generate`
 
-    
+
 ## 👩‍💻 팀원
 
 |[김찬수](https://github.com/chansooo)|[송서영](https://github.com/SongSeoYoung)|[최혜린](https://github.com/hope1053)|
